@@ -22,7 +22,7 @@ https://gnucashew.lorimarksolutions.com/demo
 
 Source Code Repository is found here;
 
-https://github.com/lorimark/gnucashew
+https://github.com/lorimark/gnucashew-dev
 
 This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library.
 
