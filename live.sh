@@ -12,9 +12,9 @@ echo "running"
 ./gnucashew-live /home/serveradmin/gnucash-dev.gnucash \
   --pid-file=gnucashew-bin-live.pid \
   --config=../src/wt_config.xml \
-  --approot="approot" \
-  --docroot="docroot;.,/images,/resources,/styles,/themes,/dox" \
-  --errroot="errroot" \
+  --approot="../approot" \
+  --docroot="../docroot;.,/images,/resources,/styles,/themes,/dox" \
+  --errroot="../errroot" \
   --http-listen 0.0.0.0:8081 \
 
 echo "restarting in 5..."
