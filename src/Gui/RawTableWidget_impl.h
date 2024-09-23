@@ -21,21 +21,31 @@ RawTableWidget()
   **
   */
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
-  auto w = std::make_unique< GCW::Gui::TableView >();
-  m_tableView = w.get();
-  lw-> addWidget( std::move( w ), 1 );
-//  tableView()-> setRowHeight( "20px" );
+
+  auto tb = std::make_unique< Wt::WContainerWidget >();
+  m_toolBar = tb.get();
+
+  m_toolBar-> addNew< Wt::WText >( "tool bar" );
 
   /*
   ** Configure the table view.
   **
   */
+  auto tv = std::make_unique< GCW::Gui::TableView >();
+  m_tableView = tv.get();
   tableView()-> setSortingEnabled       ( true                                                          );
   tableView()-> setAlternatingRowColors ( true                                                          );
   tableView()-> setSelectionBehavior    ( Wt::SelectionBehavior::Rows                                   );
   tableView()-> setSelectionMode        ( Wt::SelectionMode::Single                                     );
   tableView()-> setEditTriggers         ( Wt::EditTrigger::None /* SingleClicked */                     );
 //  tableView()-> setEditOptions          ( Wt::EditOption::SingleEditor | Wt::EditOption::SaveWhenClosed ); // FIXME: this should probably be: MultipleEditor | LeaveEditorsOpen so we can open all editors on a single entry
+
+  auto sb = std::make_unique< Wt::WContainerWidget >();
+  m_statusBar = sb.get();
+
+  lw-> addWidget( std::move( tb )    );
+  lw-> addWidget( std::move( tv ), 1 );
+  lw-> addWidget( std::move( sb )    );
 
 } // endSlotsWidget()
 
@@ -47,6 +57,8 @@ load()-> void
   Wt::WContainerWidget::load();
 
   loadData();
+
+  m_statusBar-> addNew< Wt::WText >( Wt::WString( "{1} Rows" ).arg( tableView()-> model()-> rowCount() ) );
 
 } // endload()-> void
 

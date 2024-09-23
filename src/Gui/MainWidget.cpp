@@ -107,7 +107,7 @@ MainWidget()
     if( GCW::app()-> gnucashew_session().hasGnuCashewExtensions() )
       popActions-> addItem( TR( "gcw.MainWidget.mu.actions.billpay"       ), centralWidget(), &GCW::Gui::CentralWidget::open_BillPayWidget );
 
-    popActions-> addItem( "RawTables", centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
+    popActions-> addItem( "Raw Tables", centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
 
     popActions-> addSeparator();
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.resetwarnings" ) )-> setDisabled( true );

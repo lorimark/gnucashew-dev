@@ -61,7 +61,9 @@ class RawTableWidget
     auto loadData()-> void;
 
     std::shared_ptr< Model >   m_model;
+    Wt::WContainerWidget     * m_toolBar   = nullptr;
     GCW::Gui::TableView      * m_tableView = nullptr;
+    Wt::WContainerWidget     * m_statusBar = nullptr;
 
 };  // endclass RawTableWidget
 
