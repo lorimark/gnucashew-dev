@@ -1,0 +1,7 @@
+
+set( GCW_FILES ${GCW_FILES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Splits.cpp
+  #  ${CMAKE_CURRENT_SOURCE_DIR}/Item.cpp
+  PARENT_SCOPE
+)
+

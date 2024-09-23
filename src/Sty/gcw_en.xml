@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages xmlns:if="Wt.WTemplate.conditions">
+
+  <message id="gcw.language_file">English</message>
+
+  <message id="gcw.welcome.title">Welcome to GnuCashew</message>
+  <message id="gcw.welcome.body">
+    <p>
+      Welcome to GnuCashew!
+    </p>
+
+    <p>
+      This project is in development.
+    </p>
+
+    <p>
+      This is a running development-copy of the GnuCashew
+      program.  At this point, not much is working.  The main
+      'Accounts' tree-view is working, and double-clicking
+      on an account opens the 'Account Register'.  The Account
+      Register is working in view-mode only.  You can scroll
+      up and down, and the editing works, but it does not save
+      back to the database file.
+      The menu items are mostly disabled, execpt for any menu
+      item that is working.  The 'Business:Customer:Overview' is
+      working.  The 'Assets:Checking' account has a few transactions in
+      it for scrolling around.  Also, the input fields in the
+      account register support 'suggestions', so when typing
+      an account name or description, the suggestion will immediately
+      pop up and provide some suggestions... it's pretty neat!
+    </p>
+
+    <p>
+      The source-generated doxygen files can be found here;
+      <br />
+      <a href="https://gnucashew.lorimarksolutions.com/dox/html/index.html" target="_blank">
+               https://gnucashew.lorimarksolutions.com/dox/html/index.html
+      </a>
+    </p>
+
+    <p>
+      The source-code repository can be found here;
+      <br />
+      <a href="https://github.com/lorimark/gnucashew" target="_blank">
+               https://github.com/lorimark/gnucashew
+      </a>
+    </p>
+
+    <p>
+      This project uses Wt (
+      <a href="https://www.webtoolkit.eu/" target="_blank">
+               https://www.webtoolkit.eu/wt
+      </a>
+      ) as the web rendering library.
+    </p>
+
+    <p>
+      Feel free to poke around.<br />
+      Have fun! Let me know what you think!<br />
+      mark@lorimarksolutions.com
+    </p>
+    (press &lt;esc&gt; to continue)
+  </message>
+
+  <message id="gcw.MainWidget.mu.file">File</message>
+  <message id="gcw.MainWidget.mu.file.new">New File</message>
+  <message id="gcw.MainWidget.mu.file.open">Open...</message>
+  <message id="gcw.MainWidget.mu.file.import">Import</message>
+  <message id="gcw.MainWidget.mu.file.save">Save</message>
+  <message id="gcw.MainWidget.mu.file.saveas">Save As...</message>
+  <message id="gcw.MainWidget.mu.file.revert">Revert</message>
+  <message id="gcw.MainWidget.mu.file.print">Print</message>
+  <message id="gcw.MainWidget.mu.file.pagesetup">Page Setup</message>
+  <message id="gcw.MainWidget.mu.file.export">Export</message>
+  <message id="gcw.MainWidget.mu.file.properties">Properties</message>
+  <message id="gcw.MainWidget.mu.file.close">Close</message>
+  <message id="gcw.MainWidget.mu.file.quit">Quit</message>
+
+  <message id="gcw.MainWidget.mu.edit">Edit</message>
+  <message id="gcw.MainWidget.mu.edit.cut">Cut</message>
+  <message id="gcw.MainWidget.mu.edit.copy">Copy</message>
+  <message id="gcw.MainWidget.mu.edit.paste">Paste</message>
+  <message id="gcw.MainWidget.mu.edit.edit">Edit Account</message>
+  <message id="gcw.MainWidget.mu.edit.delete">Delete Account</message>
+  <message id="gcw.MainWidget.mu.edit.find">Find Account</message>
+  <message id="gcw.MainWidget.mu.edit.cascade">Cascade Account Properties</message>
+  <message id="gcw.MainWidget.mu.edit.renumber">Renumber Subaccounts</message>
+  <message id="gcw.MainWidget.mu.edit.openaccount">Open Account</message>
+  <message id="gcw.MainWidget.mu.edit.opensubaccounts">Open SubAccounts</message>
+
+  <message id="gcw.MainWidget.mu.view">View</message>
+  <message id="gcw.MainWidget.mu.view.toolbar">Toolbar</message>
+  <message id="gcw.MainWidget.mu.view.summarybar">Summary Bar</message>
+  <message id="gcw.MainWidget.mu.view.statusbar">Status Bar</message>
+  <message id="gcw.MainWidget.mu.view.tabposition">Tab Position</message>
+  <message id="gcw.MainWidget.mu.view.filterby">Filter by...</message>
+  <message id="gcw.MainWidget.mu.view.refresh">Refresh</message>
+  <message id="gcw.MainWidget.mu.view.newaccounts">New Accounts Page</message>
+
+  <message id="gcw.MainWidget.mu.actions">Actions</message>
+  <message id="gcw.MainWidget.mu.actions.online">Online Actions</message>
+  <message id="gcw.MainWidget.mu.actions.scheduled">Scheduled Transactions</message>
+  <message id="gcw.MainWidget.mu.actions.budget">Budget</message>
+  <message id="gcw.MainWidget.mu.actions.billpay">Bill Pay</message>
+  <message id="gcw.MainWidget.mu.actions.resetwarnings">Reset Warnings...</message>
+  <message id="gcw.MainWidget.mu.actions.renamepage">Rename Page</message>
+
+  <message id="gcw.MainWidget.mu.business">Business</message>
+  <message id="gcw.MainWidget.mu.business.customer">Customer</message>
+  <message id="gcw.MainWidget.mu.business.vendor">Vendor</message>
+  <message id="gcw.MainWidget.mu.business.employee">Employee</message>
+  <message id="gcw.MainWidget.mu.business.linked">Linked Documents</message>
+  <message id="gcw.MainWidget.mu.business.salestax">Sales Tax Table</message>
+  <message id="gcw.MainWidget.mu.business.billingterms">Billing Terms Editor</message>
+
+  <message id="gcw.MainWidget.mu.business.customer.overview">Customers Overview</message>
+  <message id="gcw.MainWidget.mu.business.customer.newCustomer">New Customer...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findCustomer">Find Customer...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newInvoice">New Invoice...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findInvoice">Find Invoice...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newJob">New Job...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findJob">Find Job...</message>
+  <message id="gcw.MainWidget.mu.business.customer.processPayment">Process Payment...</message>
+  <message id="gcw.MainWidget.mu.business.customer.invoicesDue">Invoices Due Reminder</message>
+
+  <message id="gcw.MainWidget.mu.help">Help</message>
+  <message id="gcw.MainWidget.mu.help.tutorial">Tutorial and Concepts Guide</message>
+  <message id="gcw.MainWidget.mu.help.tip">Tips Of The Day</message>
+  <message id="gcw.MainWidget.mu.help.contents">Contents</message>
+  <message id="gcw.MainWidget.mu.help.about">About</message>
+
+  <message id="gcw.MainWidget.tb.save">save</message>
+  <message id="gcw.MainWidget.tb.close">close</message>
+  <message id="gcw.MainWidget.tb.newInvoice">new invoice</message>
+  <message id="gcw.MainWidget.tb.open">open</message>
+  <message id="gcw.MainWidget.tb.edit">edit</message>
+  <message id="gcw.MainWidget.tb.new">new</message>
+  <message id="gcw.MainWidget.tb.delete">delete</message>
+
+  <message id="gcw.AccountEditor.ident"><h4>Identification</h4></message>
+  <message id="gcw.AccountEditor.name">Account Name</message>
+  <message id="gcw.AccountEditor.code">Account Code</message>
+  <message id="gcw.AccountEditor.desc">Description</message>
+  <message id="gcw.AccountEditor.parent">Parent Account</message>
+  <message id="gcw.AccountEditor.accountType">Account Type</message>
+  <message id="gcw.AccountEditor.security">Security/Currency</message>
+  <message id="gcw.AccountEditor.fraction">Smallest Fraction</message>
+  <message id="gcw.AccountEditor.usecommodity">Use Commodity Value</message>
+  <message id="gcw.AccountEditor.color">Account Color</message>
+  <message id="gcw.AccountEditor.colorpicker">picker</message>
+  <message id="gcw.AccountEditor.colordefault">Default</message>
+  <message id="gcw.AccountEditor.notes">Notes</message>
+  <message id="gcw.AccountEditor.placeholder">Placeholder</message>
+  <message id="gcw.AccountEditor.hidden">Hidden</message>
+  <message id="gcw.AccountEditor.autoTransfer">Auto Interest Transfer</message>
+  <message id="gcw.AccountEditor.taxRelated">Tax Related</message>
+  <message id="gcw.AccountEditor.openingBalance">Opening Balance</message>
+  <message id="gcw.AccountEditor.editaccount"><h4><b>Edit Account ~ {1}</b></h4></message>
+
+  <message id="gcw.Account.tip.name">Account Name</message>
+  <message id="gcw.Account.tip.code"></message>
+  <message id="gcw.Account.tip.desc"></message>
+  <message id="gcw.Account.tip.parent"></message>
+  <message id="gcw.Account.tip.accountType"></message>
+  <message id="gcw.Account.tip.security"></message>
+  <message id="gcw.Account.tip.fraction"></message>
+  <message id="gcw.Account.tip.usecommodity"></message>
+  <message id="gcw.Account.tip.color"></message>
+  <message id="gcw.Account.tip.colorpicker"></message>
+  <message id="gcw.Account.tip.colordefault"></message>
+  <message id="gcw.Account.tip.notes"></message>
+  <message id="gcw.Account.tip.placeholder"></message>
+  <message id="gcw.Account.tip.hidden"></message>
+  <message id="gcw.Account.tip.autoTransfer"></message>
+  <message id="gcw.Account.tip.taxRelated"></message>
+  <message id="gcw.Account.tip.openingBalance"></message>
+
+  <message id="gcw.PropertiesWidget.titleBar">Properties</message>
+
+  <message id="gcw.AccountRegisterModel.orphan">Orphan (USD)</message>
+
+  <message id="gcw.AccountsTreeView.tabName">Accounts</message>
+  <message id="gcw.AccountsTreeView.column.accountcode">Account Code</message>
+  <message id="gcw.AccountsTreeView.column.accountcolor">Account Color</message>
+  <message id="gcw.AccountsTreeView.column.accountname">Account Name</message>
+  <message id="gcw.AccountsTreeView.column.balance">Balance</message>
+  <message id="gcw.AccountsTreeView.column.balancelimit">Balance Limit</message>
+  <message id="gcw.AccountsTreeView.column.balanceperiod">Balance Period</message>
+  <message id="gcw.AccountsTreeView.column.balanceusd">Balance (USD)</message>
+  <message id="gcw.AccountsTreeView.column.cleared">Cleared</message>
+  <message id="gcw.AccountsTreeView.column.clearedusd">Cleared (USD)</message>
+  <message id="gcw.AccountsTreeView.column.commodity">Commodity</message>
+  <message id="gcw.AccountsTreeView.column.description">Description</message>
+  <message id="gcw.AccountsTreeView.column.futureminimum">Future Minimum</message>
+  <message id="gcw.AccountsTreeView.column.futureminimumusd">Future Minumum (USD)</message>
+  <message id="gcw.AccountsTreeView.column.hidden">Hidden</message>
+  <message id="gcw.AccountsTreeView.column.lastnum">Last Num</message>
+  <message id="gcw.AccountsTreeView.column.lastreconciledate">Last Reconcile Date</message>
+  <message id="gcw.AccountsTreeView.column.notes">Notes</message>
+  <message id="gcw.AccountsTreeView.column.openingbalance">Opening Balance</message>
+  <message id="gcw.AccountsTreeView.column.placeholder">Placeholder</message>
+  <message id="gcw.AccountsTreeView.column.present">Present</message>
+  <message id="gcw.AccountsTreeView.column.presentusd">Present (USD)</message>
+  <message id="gcw.AccountsTreeView.column.reconciled">Reconciled</message>
+  <message id="gcw.AccountsTreeView.column.reconciledusd">Reconciled (USD)</message>
+  <message id="gcw.AccountsTreeView.column.taxinfo">Tax Info</message>
+  <message id="gcw.AccountsTreeView.column.total">Total</message>
+  <message id="gcw.AccountsTreeView.column.totalperiod">Total (Period)</message>
+  <message id="gcw.AccountsTreeView.column.totalusd">Total (USD)</message>
+  <message id="gcw.AccountsTreeView.column.type">Type</message>
+
+  <message id="gcw.AccountRegister">Register</message>
+  <message id="gcw.AccountRegister.column.account">Account</message>
+  <message id="gcw.AccountRegister.column.balance">Balance</message>
+  <message id="gcw.AccountRegister.column.blank"></message>
+  <message id="gcw.AccountRegister.column.charge">Tot Charge</message>
+  <message id="gcw.AccountRegister.column.credit">Credit</message>
+  <message id="gcw.AccountRegister.column.date">Date</message>
+  <message id="gcw.AccountRegister.column.debit">Debit</message>
+  <message id="gcw.AccountRegister.column.decrease">Decrease</message>
+  <message id="gcw.AccountRegister.column.deposit">Deposit</message>
+  <message id="gcw.AccountRegister.column.expense">Expense</message>
+  <message id="gcw.AccountRegister.column.increase">Increase</message>
+  <message id="gcw.AccountRegister.column.memo">Memo</message>
+  <message id="gcw.AccountRegister.column.num">Num</message>
+  <message id="gcw.AccountRegister.column.payment">Tot Payment</message>
+  <message id="gcw.AccountRegister.column.rebate">Rebate</message>
+  <message id="gcw.AccountRegister.column.receive">Receive</message>
+  <message id="gcw.AccountRegister.column.reconcile">R</message>
+  <message id="gcw.AccountRegister.column.spend">Spend</message>
+  <message id="gcw.AccountRegister.column.transfer">Transfer</message>
+  <message id="gcw.AccountRegister.column.withdrawal">Withdrawal</message>
+  <message id="gcw.AccountRegister.StatusBar.present">Present</message>
+  <message id="gcw.AccountRegister.StatusBar.future">Future</message>
+  <message id="gcw.AccountRegister.StatusBar.cleared">Cleared</message>
+  <message id="gcw.AccountRegister.StatusBar.reconciled">Reconciled</message>
+  <message id="gcw.AccountRegister.StatusBar.projected">Projected Minimum</message>
+
+  <message id="gcw.AccountRegister.account.multisplit">~~ Split Transaction ~~</message>
+  <message id="gcw.AccountRegister.account.imbalanceUSD">Imbalance-USD</message>
+  <message id="gcw.AccountRegister.account.imbalanceUSD.toolTip">This transaction is incomplete without a complete split.  Assign a split account to this transaction to clear this message.</message>
+  <message id="gcw.AccountRegister.account.invalidTarget.toolTip">This transaction is split, but the target account does not exist.</message>
+  <message id="gcw.AccountRegister.account.tooltip">
+    Split: {1}
+    Date: {2}
+    Num: {3}
+    Memo: {4}
+    Account: {5}
+  </message>
+
+  <message id="gcw.cw.tabName.Customer">Customer</message>
+  <message id="gcw.cw.tabName.Customers">Customers</message>
+  <message id="gcw.cw.tabName.BillPay">Bill Pay</message>
+
+  <message id="gcw.billPay.tableName.Paid">Paid</message>
+  <message id="gcw.billPay.tableName.Unpaid">Unpaid</message>
+  <message id="gcw.billPay.tableName.Disabled">Disabled</message>
+  <message id="gcw.billPay.pb.save">save</message>
+  <message id="gcw.billPay.pb.cancel">cancel</message>
+  <message id="gcw.billPay.pb.delete">delete</message>
+  <message id="gcw.billPay.pb.ap">AP</message>
+  <message id="gcw.billPay.pb.isActive">is Active</message>
+  <message id="gcw.billPay.pb.isVisible">is Visible</message>
+  <message id="gcw.billPay.pb.autoPay">Auto Pay</message>
+  <message id="gcw.billPay.pb.payNow">Pay Now</message>
+  <message id="gcw.billPay.pb.clear">clear</message>
+  <message id="gcw.billPay.pb.clear.toolTip">Clear all the payment check-boxes</message>
+  <message id="gcw.billPay.tabName.payment">Payment</message>
+  <message id="gcw.billPay.tabName.history">History</message>
+
+</messages>
+

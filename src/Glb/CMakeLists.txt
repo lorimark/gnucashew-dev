@@ -1,0 +1,6 @@
+
+set( GCW_FILES ${GCW_FILES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Core.cpp
+  PARENT_SCOPE
+)
+

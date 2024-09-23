@@ -1,0 +1,189 @@
+
+/*
+** root document container
+**  background-color: ghostwhite;
+**  background-color: whitesmoke;
+**  background-color: floralwhite;
+**  font-size: smaller;
+*/
+.Wt-domRoot
+{
+  font-family: Arial;
+  font-weight: normal;
+  background-color: azure;
+}
+
+.AccountRegister
+{
+/*  font-size:smaller; */
+}
+
+/*
+** Background and big fat line on the
+**  bottom border of the header
+*/
+.AccountRegister
+ .Wt-header
+{
+  background-color: #96b183;
+  border-bottom:2px solid black;
+}
+
+/*
+** Negative values are red
+**
+*/
+.AccountRegister
+ .negval
+{
+  color:red;
+}
+
+/*
+** Error values are super-red
+**
+*/
+.AccountRegister
+ div.errval
+{
+  color:#0713ce;
+  background-color:#ff000082 !important;
+  border-radius:5px;
+}
+
+.AccountRegister input
+{
+  padding:0px;
+}
+
+
+/* Account elipsis '...' on the left */
+.AccountRegister
+ .Wt-header
+  .Wt-tv-c4,
+.AccountRegister
+ .Wt-tv-contents
+  .Wt-tv-c4
+{
+  direction: rtl;
+}
+
+/* read-only selected row */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents.Wt-striped
+   div.Wt-tv-c.active
+{
+  color: #0d0c0c;
+  font-weight:bold;
+  background-color:#ffff7e !important;
+}
+
+/* Alternating Row Colors */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents.Wt-striped
+   div.Wt-tv-c:nth-child(2n)
+{
+  background-color:#ffcb0024;
+}
+
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents.Wt-striped
+   div.Wt-tv-c:nth-child(2n+1)
+{
+  background-color:#1c861333;
+}
+
+/* Thin black line underneath each row */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .Wt-tv-c
+{
+  border-bottom: 1px solid black;
+}
+
+/* Thin black line on the left */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .Wt-tv-c1
+{
+  border-left: 1px solid black;
+}
+
+/* Selected Editor Widget background highlight */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   div.Wt-tv-c.selectable
+    input
+{
+  background-color:yellow;
+}
+
+.AccountEditor
+{
+  background-color:#ffbf0047;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.BillPay_EditWidget
+{
+  background-color:#ffbf0047;
+  border: 1px solid black;
+}
+
+/*
+** Selected 'month' columns are highlighted
+**  important overrides the alternating row colors
+*/
+.billpay .colsel
+{
+  background-color:#1aeaff !important;
+}
+
+.billpay.unpaid.Wt-tableview .Wt-header
+{
+  background-color:#ffb6c194;
+}
+
+.billpay.paid.Wt-tableview .Wt-header
+{
+  background-color:#90ee909e;
+}
+
+.billpay.disabled.Wt-tableview .Wt-header
+{
+  background-color:lightgray;
+}
+
+.billpayedit
+{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 5px;
+}
+
+.billpayedit
+ .t1
+{
+  border-collapse: collapse;
+  width: 75%;
+}
+
+.billpayedit
+ .t1
+  td
+{
+  padding-left: 3px;
+  padding-right: 3px;
+  text-align: left;
+}
+
+
+
