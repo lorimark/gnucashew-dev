@@ -10,10 +10,10 @@ echo "running"
 # gdb --args \
 # valgrind -v --leak-check=full --show-leak-kinds=all \
 ./gnucashew-bin /home/serveradmin/LorimarkSolutions.gnucash \
-  --pid-file=gnucashew-bin.pid \
-  --config=wt_config.xml \
-  --approot="approot" \
-  --docroot="docroot;.,/images,/resources,/styles,/themes,/dox" \
+  --pid-file=gnucashew-bin-dev.pid \
+  --config=../src/wt_config.xml \
+  --approot="../approot" \
+  --docroot="../docroot;.,/images,/resources,/styles,/themes,/dox" \
   --errroot="errroot" \
   --http-listen 0.0.0.0:8080 \
 

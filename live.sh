@@ -11,7 +11,7 @@ echo "running"
 # gdb --args \
 ./gnucashew-live /home/serveradmin/gnucash-dev.gnucash \
   --pid-file=gnucashew-bin-live.pid \
-  --config=wt_config.xml \
+  --config=../src/wt_config.xml \
   --approot="approot" \
   --docroot="docroot;.,/images,/resources,/styles,/themes,/dox" \
   --errroot="errroot" \
