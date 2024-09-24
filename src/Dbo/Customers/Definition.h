@@ -1,13 +1,13 @@
 #line 2 "src/Dbo/Customers/Definition.h"
 
-#ifndef __DBO_CUSTOMER_DEFINITION_H___
-#define __DBO_CUSTOMER_DEFINITION_H___
+#ifndef __DBO_CUSTOMERS_DEFINITION_H___
+#define __DBO_CUSTOMERS_DEFINITION_H___
 
 #include <Wt/WFormModel.h>
 
 namespace GCW {
   namespace Dbo {
-    namespace Customer {
+    namespace Customers {
       namespace Field {
 
 extern Wt::WFormModel::Field guid           ; // text(32) PRIMARY KEY NOT NULL
@@ -42,11 +42,11 @@ extern Wt::WFormModel::Field tax_included   ; // integer,
 extern Wt::WFormModel::Field taxtable       ; // text(32)
 
       } // endnamespace Field {
-    } // endnamespace Customer {
+    } // endnamespace Customers {
   } // endnamespace Dbo {
 } // endnamespace GCW {
 
-#endif // __DBO_CUSTOMER_DEFINITION_H___
+#endif // __DBO_CUSTOMERS_DEFINITION_H___
 
 
 

@@ -115,36 +115,36 @@ class Item
 
     template< class Action > void persist( Action & action )
     {
-      Wt::Dbo::id   ( action, m_guid           , GCW::Dbo::Customer::Field::guid            ,   32 ); // text(32) PRIMARY KEY NOT NULL
-      Wt::Dbo::field( action, m_name           , GCW::Dbo::Customer::Field::name            , 2048 ); // text(2048) NOT NULL
-      Wt::Dbo::field( action, m_id             , GCW::Dbo::Customer::Field::id              , 2048 ); // text(2048) NOT NULL
-      Wt::Dbo::field( action, m_notes          , GCW::Dbo::Customer::Field::notes           , 2048 ); // text(2048) NOT NULL,
-      Wt::Dbo::field( action, m_active         , GCW::Dbo::Customer::Field::active                 ); // integer NOT NULL,
-      Wt::Dbo::field( action, m_discount_num   , GCW::Dbo::Customer::Field::discount_num           ); // bigint NOT NULL,
-      Wt::Dbo::field( action, m_discount_denom , GCW::Dbo::Customer::Field::discount_denom         ); // bigint NOT NULL,
-      Wt::Dbo::field( action, m_credit_num     , GCW::Dbo::Customer::Field::credit_num             ); // bigint NOT NULL,
-      Wt::Dbo::field( action, m_credit_denom   , GCW::Dbo::Customer::Field::credit_denom           ); // bigint NOT NULL,
-      Wt::Dbo::field( action, m_currency       , GCW::Dbo::Customer::Field::currency        ,   32 ); // text(32) NOT NULL,
-      Wt::Dbo::field( action, m_tax_override   , GCW::Dbo::Customer::Field::tax_override           ); // integer NOT NULL,
-      Wt::Dbo::field( action, m_addr_name      , GCW::Dbo::Customer::Field::addr_name       , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_addr_addr1     , GCW::Dbo::Customer::Field::addr_addr1      , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_addr_addr2     , GCW::Dbo::Customer::Field::addr_addr2      , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_addr_addr3     , GCW::Dbo::Customer::Field::addr_addr3      , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_addr_addr4     , GCW::Dbo::Customer::Field::addr_addr4      , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_addr_phone     , GCW::Dbo::Customer::Field::addr_phone      ,  128 ); // text(128),
-      Wt::Dbo::field( action, m_addr_fax       , GCW::Dbo::Customer::Field::addr_fax        ,  128 ); // text(128),
-      Wt::Dbo::field( action, m_addr_email     , GCW::Dbo::Customer::Field::addr_email      ,  256 ); // text(256),
-      Wt::Dbo::field( action, m_shipaddr_name  , GCW::Dbo::Customer::Field::shipaddr_name   , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_shipaddr_addr1 , GCW::Dbo::Customer::Field::shipaddr_addr1  , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_shipaddr_addr2 , GCW::Dbo::Customer::Field::shipaddr_addr2  , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_shipaddr_addr3 , GCW::Dbo::Customer::Field::shipaddr_addr3  , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_shipaddr_addr4 , GCW::Dbo::Customer::Field::shipaddr_addr4  , 1024 ); // text(1024),
-      Wt::Dbo::field( action, m_shipaddr_phone , GCW::Dbo::Customer::Field::shipaddr_phone  ,  128 ); // text(128),
-      Wt::Dbo::field( action, m_shipaddr_fax   , GCW::Dbo::Customer::Field::shipaddr_fax    ,  128 ); // text(128),
-      Wt::Dbo::field( action, m_shipaddr_email , GCW::Dbo::Customer::Field::shipaddr_email  ,  256 ); // text(256),
-      Wt::Dbo::field( action, m_terms          , GCW::Dbo::Customer::Field::terms           ,   32 ); // text(32),
-      Wt::Dbo::field( action, m_tax_included   , GCW::Dbo::Customer::Field::tax_included           ); // integer,
-      Wt::Dbo::field( action, m_taxtable       , GCW::Dbo::Customer::Field::taxtable        ,   32 ); // text(32)
+      Wt::Dbo::id   ( action, m_guid           , GCW::Dbo::Customers::Field::guid            ,   32 ); // text(32) PRIMARY KEY NOT NULL
+      Wt::Dbo::field( action, m_name           , GCW::Dbo::Customers::Field::name            , 2048 ); // text(2048) NOT NULL
+      Wt::Dbo::field( action, m_id             , GCW::Dbo::Customers::Field::id              , 2048 ); // text(2048) NOT NULL
+      Wt::Dbo::field( action, m_notes          , GCW::Dbo::Customers::Field::notes           , 2048 ); // text(2048) NOT NULL,
+      Wt::Dbo::field( action, m_active         , GCW::Dbo::Customers::Field::active                 ); // integer NOT NULL,
+      Wt::Dbo::field( action, m_discount_num   , GCW::Dbo::Customers::Field::discount_num           ); // bigint NOT NULL,
+      Wt::Dbo::field( action, m_discount_denom , GCW::Dbo::Customers::Field::discount_denom         ); // bigint NOT NULL,
+      Wt::Dbo::field( action, m_credit_num     , GCW::Dbo::Customers::Field::credit_num             ); // bigint NOT NULL,
+      Wt::Dbo::field( action, m_credit_denom   , GCW::Dbo::Customers::Field::credit_denom           ); // bigint NOT NULL,
+      Wt::Dbo::field( action, m_currency       , GCW::Dbo::Customers::Field::currency        ,   32 ); // text(32) NOT NULL,
+      Wt::Dbo::field( action, m_tax_override   , GCW::Dbo::Customers::Field::tax_override           ); // integer NOT NULL,
+      Wt::Dbo::field( action, m_addr_name      , GCW::Dbo::Customers::Field::addr_name       , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_addr_addr1     , GCW::Dbo::Customers::Field::addr_addr1      , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_addr_addr2     , GCW::Dbo::Customers::Field::addr_addr2      , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_addr_addr3     , GCW::Dbo::Customers::Field::addr_addr3      , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_addr_addr4     , GCW::Dbo::Customers::Field::addr_addr4      , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_addr_phone     , GCW::Dbo::Customers::Field::addr_phone      ,  128 ); // text(128),
+      Wt::Dbo::field( action, m_addr_fax       , GCW::Dbo::Customers::Field::addr_fax        ,  128 ); // text(128),
+      Wt::Dbo::field( action, m_addr_email     , GCW::Dbo::Customers::Field::addr_email      ,  256 ); // text(256),
+      Wt::Dbo::field( action, m_shipaddr_name  , GCW::Dbo::Customers::Field::shipaddr_name   , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_shipaddr_addr1 , GCW::Dbo::Customers::Field::shipaddr_addr1  , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_shipaddr_addr2 , GCW::Dbo::Customers::Field::shipaddr_addr2  , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_shipaddr_addr3 , GCW::Dbo::Customers::Field::shipaddr_addr3  , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_shipaddr_addr4 , GCW::Dbo::Customers::Field::shipaddr_addr4  , 1024 ); // text(1024),
+      Wt::Dbo::field( action, m_shipaddr_phone , GCW::Dbo::Customers::Field::shipaddr_phone  ,  128 ); // text(128),
+      Wt::Dbo::field( action, m_shipaddr_fax   , GCW::Dbo::Customers::Field::shipaddr_fax    ,  128 ); // text(128),
+      Wt::Dbo::field( action, m_shipaddr_email , GCW::Dbo::Customers::Field::shipaddr_email  ,  256 ); // text(256),
+      Wt::Dbo::field( action, m_terms          , GCW::Dbo::Customers::Field::terms           ,   32 ); // text(32),
+      Wt::Dbo::field( action, m_tax_included   , GCW::Dbo::Customers::Field::tax_included           ); // integer,
+      Wt::Dbo::field( action, m_taxtable       , GCW::Dbo::Customers::Field::taxtable        ,   32 ); // text(32)
 
     } // endtemplate< class Action > void persist( Action & action )
 
