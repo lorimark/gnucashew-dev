@@ -10,13 +10,13 @@ namespace GCW {
     namespace Entries {
 
 /*!
-** \brief Load Account by Guid
+** \brief Load Entry by Guid
 **
 */
 auto load( const std::string & _guid )-> Item::Ptr;
 
 /*!
-** \brief Load Account by Guid
+** \brief Load Entry by Guid
 **
 */
 auto byGuid( const std::string & _guid )-> Item::Ptr;

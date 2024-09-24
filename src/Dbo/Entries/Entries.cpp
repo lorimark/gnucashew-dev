@@ -1,6 +1,6 @@
+#line 2 "src/Dbo/Entries/Entries.cpp"
 
 #include <gnucash/gnc-session.h>
-#include <gnucash/Account.h>
 
 #include "../App.h"
 #include "../Glb/Core.h"
@@ -74,6 +74,6 @@ byGuid( const std::string & _guid )-> GCW::Dbo::Entries::Item::Ptr
 {
   return load( _guid );
 
-} // endbyGuid( const std::string & _guid )-> GCW::Dbo::Accounts::Item::Ptr
+} // endbyGuid( const std::string & _guid )-> GCW::Dbo::Entries::Item::Ptr
 
 

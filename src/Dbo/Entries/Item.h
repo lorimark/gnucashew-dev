@@ -55,7 +55,7 @@ namespace GCW {
 ** }
 ** \enddot
 **
-** \par Native GnuCash Account Sqlite Schema
+** \par Native GnuCash Entries Sqlite Schema
 ** \code
 **   CREATE TABLE entries
 **   (

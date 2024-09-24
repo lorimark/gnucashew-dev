@@ -1,4 +1,4 @@
-#line 2 "src/Dbo/Accounts/Item.cpp"
+#line 2 "src/Dbo/Entries/Item.cpp"
 
 #include "Definition.h"
 
