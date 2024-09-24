@@ -41,9 +41,9 @@ extern Wt::WFormModel::Field terms          ; // text(32),
 extern Wt::WFormModel::Field tax_included   ; // integer,
 extern Wt::WFormModel::Field taxtable       ; // text(32)
 
-      }
-    }
-  }
+      } // endnamespace Field {
+    } // endnamespace Customer {
+  } // endnamespace Dbo {
 } // endnamespace GCW {
 
 #endif // __DBO_CUSTOMER_DEFINITION_H___

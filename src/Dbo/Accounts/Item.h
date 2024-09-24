@@ -95,28 +95,28 @@ class Item
     Item(){}
 
     /*!
-    ** \brief ctor with guid
+    ** \brief ctor with guid.
     */
     Item( const std::string & _guid ): m_guid( _guid ){}
 
     /*!
     ** \brief Account Definition
     **
-    ** Return the definition object for the account
+    ** Return the definition object for the account.
     */
     auto accountDef() const-> const GCW::Dbo::Accounts::AccountDef_t &;
 
     /*!
     ** \brief Account Debit/Credit
     **
-    ** Return the account Debit/Credit type
+    ** Return the account Debit/Credit type.
     */
     auto accountDrCr() const-> GCW::Dbo::Accounts::DrCr;
 
     /*!
     ** \brief Account Type
     **
-    ** Return the account Type
+    ** Return the account Type as an enum.
     */
     auto accountType() const-> GCW::Dbo::Accounts::Type;
 
@@ -128,7 +128,7 @@ class Item
     auto guid() const-> const std::string & { return m_guid; }
 
     /*!
-    ** brief Name
+    ** \brief Name
     **
     ** Return account printable 'name' value
     */
@@ -140,7 +140,9 @@ class Item
     ** Return account type as a 'string' value.  This is, in fact, how the account
     **  type is actually recorded in the back-end database, as a 'text' string such
     **  as 'BANK', 'CASH', 'INCOME' and so forth.  GnuCashew takes this text value
-    **  and uses that to switch to the account type enum.
+    **  and uses that to switch to the GCW::Dbo::Accounts::Type account type enum.
+    **
+    ** \ref Item::accountType()
     */
     auto accountTypeName() const-> const std::string & { return m_account_typeName; }
 
@@ -152,11 +154,21 @@ class Item
     auto commodity_guid() const-> const std::string & { return m_commodity_guid; }
 
     /*!
-    ** \brief Commodity SCU
+    ** \brief Commodity SCU (Special Currency Unit)
     **
-    ** \todo document
+    ** Currency Unit is usually 1/100.  This field allows it to be changed.  If this value
+    **  is non-standard, the Item::non_std_scu() will return true.
+    **
     */
     auto commodity_scu() const-> const int { return m_commodity_scu; }
+
+    /*!
+    ** \brief Non Standard SCU (Special Currency Unit)
+    **
+    ** If the Item::commodity_scu() is non-standard, this returns true
+    **
+    */
+    auto non_std_scu() const-> const int { return m_non_std_scu; }
 
     /*!
     ** \brief Parent GUID
@@ -212,17 +224,22 @@ class Item
     /*!
     ** \brief Has Color
     **
-    ** Returns 'true' if this account has a color assigned to it
+    ** Returns 'true' if this account has a color assigned to it.
     */
     auto hasColor() const-> bool;
 
     /*!
     ** \brief Color
     **
-    ** Return the color as a string-value
+    ** Return the color as a string-value.
     */
     auto color() const-> std::string;
 
+    /*!
+    ** \brief persist the data
+    **
+    ** This connects this object to the back-end database.
+    */
     template< class Action > void persist( Action & action )
     {
       Wt::Dbo::id   ( action, m_guid             , GCW::Dbo::Accounts::Field::guid             ,   32 ); // text(32) PRIMARY KEY NOT NULL

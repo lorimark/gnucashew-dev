@@ -36,10 +36,13 @@ enum class DrCr
 ** \brief Account Type
 **
 ** These are used internally to switch the views depending on the account type.
-**  They should not be relied on for the native gnucash account type codes (those are textual)
-*** These types exactly model the GnuCash AccountType values.
+**  While these codes exactly match the codes in the native gnucash proper, they
+**  should not be relied on to match the native gnucash account type codes
+**  (those are textual, see; GCW::Dbo::Accounts::Item::accountTypeName).  But,
+**  these are internal anyhow, and they don't get stored.  They're just used to
+**  steer the application, especially as it pertains to debit/credit calculations.
 **
-** \note source reference: ..src/libgnucash/engine/Account.h
+** \note gnucash source reference: ..src/libgnucash/engine/Account.h
 **
 */
 enum class Type
@@ -50,34 +53,34 @@ enum class Type
   /// -1 ~ not a type
   NONE       = -1,
 
-  /// 0 ~ bank institution held monies, can be interest bearing
+  /// 00 ~ bank institutionally held monies, can be interest bearing
   BANK       = 0,
 
-  /// 1 ~ pure cash (shoebox)
+  /// 01 ~ pure cash (shoebox)
   CASH       = 1,
 
-  /// 3 ~ AMEX / VISA / DISCOVER type of credit cards
+  /// 03 ~ AMEX / VISA / DISCOVER type of credit cards
   CREDIT     = 3,
 
-  /// 2 ~ generic generalized asset account
+  /// 02 ~ generic generalized asset account
   ASSET      = 2,
 
-  /// 4 ~ generic generalized liability account
+  /// 04 ~ generic generalized liability account
   LIABILITY  = 4,
 
-  /// 5 ~ stock account show as three-column registers: price, # shares, value
+  /// 05 ~ stock account show as three-column registers: price, # shares, value
   STOCK      = 5,
 
-  /// 6 ~ similar to stock, shows: price, # shares, value
+  /// 06 ~ similar to stock, shows: price, # shares, value
   MUTUAL     = 6,
 
-  /// 7 ~ currency trading account (DEPRECATED)
+  /// 07 ~ currency trading account (DEPRECATED)
   CURRENCY   = 7,
 
-  /// 8 ~ income tracking account
+  /// 08 ~ income tracking account
   INCOME     = 8,
 
-  /// 9 ~ expense tracking account
+  /// 09 ~ expense tracking account
   EXPENSE    = 9,
 
   /// 10 ~ used to balance the balance sheet
@@ -133,13 +136,13 @@ typedef struct ACCOUNTDEF_S
   /// a printable 'name' for the account
   std::string name;
 
-  /// a printable 'label' for the account column in the registers
+  /// a printable 'label' for the 'account' column in the registers
   std::string colAccount;
 
-  /// a printable 'label' for the debit column in the registers
+  /// a printable 'label' for the 'debit' column in the registers
   std::string colDr;
 
-  /// a printable 'label' for the credit column in the registers
+  /// a printable 'label' for the 'credit' column in the registers
   std::string colCr;
 
 } AccountDef_t;
@@ -152,8 +155,8 @@ extern const Wt::WFormModel::Field guid             ; // text(32) PRIMARY KEY NO
 extern const Wt::WFormModel::Field name             ; // text(2048) NOT NULL
 extern const Wt::WFormModel::Field account_typeName ; // text(2048) NOT NULL
 extern const Wt::WFormModel::Field commodity_guid   ; // text(32)
-extern const Wt::WFormModel::Field commodity_scu    ; // integer NOT NULL
-extern const Wt::WFormModel::Field non_std_scu      ; // integer NOT NULL
+extern const Wt::WFormModel::Field commodity_scu    ; // integer NOT NULL (special currency unit)
+extern const Wt::WFormModel::Field non_std_scu      ; // integer NOT NULL (1=special currency unit in use)
 extern const Wt::WFormModel::Field parent_guid      ; // text(32)
 extern const Wt::WFormModel::Field code             ; // text(2048)
 extern const Wt::WFormModel::Field description      ; // text(2048)

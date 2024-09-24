@@ -47,7 +47,7 @@ auto byFullName( const std::string & _fullName )-> Item::Ptr;
 auto allAccounts()-> Item::Vector;
 
 /*!
-** \brief Load accounts with !hidden() and !placeHolder()
+** \brief Load accounts as; if( !hidden() && !placeHolder() )
 **
 */
 auto activeAccounts()-> Item::Vector;
@@ -59,7 +59,7 @@ auto activeAccounts()-> Item::Vector;
 auto fullName( const std::string & _guid )-> std::string;
 
 /*!
-** \brief Account Fullname vis Item
+** \brief Account Fullname via Item
 **
 */
 auto fullName( Item::Ptr _item )-> std::string;
