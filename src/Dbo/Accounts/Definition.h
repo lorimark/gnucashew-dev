@@ -9,6 +9,8 @@ namespace GCW {
   namespace Dbo {
     namespace Accounts {
 
+extern const char * s_tableName;
+
 /*!
 ** \brief Account Debit/Credit Enum
 **

@@ -7,6 +7,7 @@
 #include "../define.h"
 #include "../App.h"
 #include "../Dbo/Accounts/Accounts.h"
+#include "../Dbo/Entries/Entries.h"
 #include "../Dbo/GncLock/GncLock.h"
 #include "../Dbo/Customers/Customers.h"
 #include "../Dbo/Slots/Slots.h"
@@ -323,6 +324,7 @@ open_TablesWidget()-> void
     tab-> setCloseable( true );
 
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Accounts     ::Item > >(), "accounts"     );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Entries      ::Item > >(), "entries"      );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: GncLock      ::Item > >(), "gnclock"      );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Customers    ::Item > >(), "customers"    );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Slots        ::Item > >(), "slots"        );
