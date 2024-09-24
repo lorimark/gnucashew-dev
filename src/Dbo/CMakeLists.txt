@@ -1,6 +1,6 @@
 
 add_subdirectory( Accounts        )
-#add_subdirectory( BillTerms       )
+add_subdirectory( BillTerms       )
 add_subdirectory( Books           )
 #add_subdirectory( BudgetAmounts   )
 #add_subdirectory( Budgets         )

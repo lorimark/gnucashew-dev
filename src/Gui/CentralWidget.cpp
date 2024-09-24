@@ -7,6 +7,7 @@
 #include "../define.h"
 #include "../App.h"
 #include "../Dbo/Books/Books.h"
+#include "../Dbo/BillTerms/BillTerms.h"
 #include "../Dbo/Accounts/Accounts.h"
 #include "../Dbo/Entries/Entries.h"
 #include "../Dbo/Invoices/Invoices.h"
@@ -326,7 +327,8 @@ open_TablesWidget()-> void
 
     tab-> setCloseable( true );
 
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Books        ::Item > >(), "books"     );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Books        ::Item > >(), "books"        );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: BillTerms    ::Item > >(), "billterms"    );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Accounts     ::Item > >(), "accounts"     );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Versions     ::Item > >(), "versions"     );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Entries      ::Item > >(), "entries"      );
