@@ -24,6 +24,10 @@ open( const std::string & _path )
   */
   GCW::Dbo::AbstractSession::open( _path );
 
+  GCW::Dbo::Users::mapClasses( *this );
+
+  users_ = std::make_unique< GCW::Dbo::Users::UserDatabase >( *this );
+
   /*
   ** Try to get the sqlite3 file open
   **
@@ -48,6 +52,8 @@ open( const std::string & _path )
   }
 
   m_isOpen = true;
+
+//  std::cout << __FILE__ << ":" << __LINE__ << " " << tableCreationSql() << std::endl;
 
   return isOpen();
 
@@ -128,13 +134,12 @@ addGnuCashewExtensions()
   ** Add a table to contain the vars
   **
   */
-  auto sql =
-    Wt::WString( TR("gcw_sql.create_vars") )
-    .arg( GCW::Dbo::Vars::s_tableName )
-    .toUTF8()
-    ;
-
-  execute( sql );
+  for( int i=0; i< 5; i++ )
+  {
+    auto key = Wt::WString( "gcw_sql.create_vars.{1}").arg( i ).toUTF8();
+    auto sql = TR( key ).toUTF8();
+    execute( sql );
+  }
 
   /*
   ** poke some initial values in to the vars table

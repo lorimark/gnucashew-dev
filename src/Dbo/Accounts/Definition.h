@@ -42,6 +42,8 @@ enum class DrCr
 **  these are internal anyhow, and they don't get stored.  They're just used to
 **  steer the application, especially as it pertains to debit/credit calculations.
 **
+** The definition-table can be found here: \ref s_accountDefs
+**
 ** \note gnucash source reference: ..src/libgnucash/engine/Account.h
 **
 */
@@ -164,7 +166,7 @@ extern const Wt::WFormModel::Field hidden           ; // integer
 extern const Wt::WFormModel::Field placeHolder      ; // integer
 
       } // endnamespace Field {
-    } // endnamespace Account {
+    } // endnamespace Accounts {
   } // endnamespace Dbo {
 } // endnamespace GCW {
 

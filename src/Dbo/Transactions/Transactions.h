@@ -92,6 +92,13 @@ class Item
       return d.toString( _format ).toUTF8();
     }
 
+    /*!
+    ** \brief Date as Date :)
+    **
+    ** This will take the stored string-date of the transaction and covert it to
+    **  a system WDate value.
+    **
+    */
     Wt::WDate post_date_as_date() const
     {
       auto d = Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );

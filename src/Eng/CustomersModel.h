@@ -4,6 +4,7 @@
 #define __ENG_CUSTOMERSMODEL_H___
 
 #include <Wt/WStandardItemModel.h>
+#include <Wt/Dbo/QueryModel.h>
 
 #include "../Dbo/Customers/Customers.h"
 
@@ -11,14 +12,15 @@ namespace GCW {
   namespace Eng {
 
 class CustomersModel
-: public Wt::WStandardItemModel
+//: public Wt::WStandardItemModel
+: public Wt::Dbo::QueryModel< GCW::Dbo::Customers::Item::Ptr >
 {
   public:
 
     CustomersModel();
     CustomersModel( const std::vector< Wt::WFormModel::Field > & _fields );
 
-    void refreshFromDisk();
+    auto refreshFromDisk()-> void ;
 
   private:
 

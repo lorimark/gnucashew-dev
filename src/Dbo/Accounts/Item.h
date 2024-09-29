@@ -75,12 +75,12 @@ namespace GCW {
 **   placeholder    integer
 **  );
 **  sqlite> select * from accounts;
-**  guid                             name         type commodity                        scu 
-**  aa283385e0cf4f57b3360ca5a843bde5|Root Account|ROOT|10b24d11b4b94b8789d1830da2695bbb|100|0||||0|0
-**  6e5313b77b4247039f0240ca79e4d871|Assets|ASSET|10b24d11b4b94b8789d1830da2695bbb|100|0|aa283385e0cf4f57b3360ca5a843bde5||Assets|0|1
-**  b61b07c024fc463489f5db031135a29e|Current Assets|ASSET|10b24d11b4b94b8789d1830da2695bbb|100|0|6e5313b77b4247039f0240ca79e4d871||Current Assets|0|1
-**  822a857c5f484affa5a6a3e62f4b700f|Checking Account|BANK|10b24d11b4b94b8789d1830da2695bbb|100|0|b61b07c024fc463489f5db031135a29e||Checking Account|0|0
-**  9e851f524a6a44ef8c93a6b52b004cae|Savings Account|BANK|10b24d11b4b94b8789d1830da2695bbb|100|0|b61b07c024fc463489f5db031135a29e||Savings Account|0|0
+**  guid                             name             type  commodity                        scu nss parent                           code desc             h p
+**  aa283385e0cf4f57b3360ca5a843bde5|Root Account    |ROOT |10b24d11b4b94b8789d1830da2695bbb|100|0  |                                |    |                |0|0
+**  6e5313b77b4247039f0240ca79e4d871|Assets          |ASSET|10b24d11b4b94b8789d1830da2695bbb|100|0  |aa283385e0cf4f57b3360ca5a843bde5|    |Assets          |0|1
+**  b61b07c024fc463489f5db031135a29e|Current Assets  |ASSET|10b24d11b4b94b8789d1830da2695bbb|100|0  |6e5313b77b4247039f0240ca79e4d871|    |Current Assets  |0|1
+**  822a857c5f484affa5a6a3e62f4b700f|Checking Account|BANK |10b24d11b4b94b8789d1830da2695bbb|100|0  |b61b07c024fc463489f5db031135a29e|    |Checking Account|0|0
+**  9e851f524a6a44ef8c93a6b52b004cae|Savings Account |BANK |10b24d11b4b94b8789d1830da2695bbb|100|0  |b61b07c024fc463489f5db031135a29e|    |Savings Account |0|0
 ** \endcode
 **
 */

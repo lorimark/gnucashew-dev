@@ -19,6 +19,7 @@
 #include "../Dbo/Versions/Versions.h"
 #include "BillPay/MainWidget.h"
 #include "CentralWidget.h"
+#include "EmployeesWidget.h"
 #include "CustomerReportWidget.h"
 #include "CustomersWidget.h"
 #include "RawTableWidget.h"
@@ -231,6 +232,56 @@ open_CustomersWidget()-> void
       doubleClicked().connect( [=]( const std::string & _customerGuid )
       {
         open_CustomerReportWidget( _customerGuid );
+      });
+
+    auto tab =
+      tabWidget()->
+        insertTab
+        ( 1,
+          std::move( widget ),
+          tabName
+        );
+
+    tab-> setCloseable( true );
+
+  } // endif( tabIndex( _account-> name() ) == -1 )
+
+  /*
+  ** Go straight to the tab.
+  **
+  */
+  tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
+
+} // endopen_CustomersWidget()-> void
+
+auto
+GCW::Gui::CentralWidget::
+open_EmployeesWidget()-> void
+{
+  auto tabName = TR8( "gcw.cw.tabName.Employees" );
+
+  /*
+  ** See if this tab exists, if not, then add it.
+  **
+  */
+  if( tabIndex( tabName ) == -1 )
+  {
+    /*
+    ** Open a new EmployeesWidget tab that is connected to the account
+    **
+    */
+    auto widget = std::make_unique< GCW::Gui::EmployeesWidget >();
+    auto w = widget.get();
+
+    /*
+    ** Double Clicking on a employee causes the customer report
+    **  widget to open.
+    **
+    */
+    w->
+      doubleClicked().connect( [=]( const std::string & _customerGuid )
+      {
+        open_EmployeesWidget();
       });
 
     auto tab =

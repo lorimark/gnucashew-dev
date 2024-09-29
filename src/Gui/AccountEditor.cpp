@@ -35,6 +35,17 @@ class AccountTypeCombo
 
 }; // endclass AccountTypeCombo
 
+class SecurityCombo
+: public Wt::WComboBox
+{
+  public:
+
+    SecurityCombo()
+    {
+    }
+
+}; // endclass AccountTypeCombo
+
 class SmallestFractionCombo
 : public Wt::WComboBox
 {
@@ -87,7 +98,7 @@ Tab1( const std::string & _accountGuid )
   auto desc           = t1-> bindNew< Wt::WLineEdit              >( "desc"           , accountItem-> description()              );
   auto parent         = t1-> bindNew< GCW::Gui::AccountsTreeView >( "parent"         , accountItem-> parent_guid() , 2          );
   auto accountType    = t1-> bindNew< AccountTypeCombo           >( "accountType"                                               );
-  auto security       = t1-> bindNew< Wt::WLineEdit              >( "security"                                                  );
+  auto security       = t1-> bindNew< SecurityCombo              >( "security"                                                  );
   auto fraction       = t1-> bindNew< SmallestFractionCombo      >( "fraction"                                                  );
   auto color          = t1-> bindNew< Wt::WPushButton            >( "color"          , TR( "gcw.AccountEditor.colorpicker"    ) );
   auto colordefault   = t1-> bindNew< Wt::WPushButton            >( "colordefault"   , TR( "gcw.AccountEditor.colordefault"   ) );

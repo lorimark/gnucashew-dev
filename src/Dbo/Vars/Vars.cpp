@@ -8,7 +8,7 @@
 #include "Vars.h"
 
 
-const char * GCW::Dbo::Vars::s_tableName = "gnucashew_vars";
+const char * GCW::Dbo::Vars::s_tableName = "gcw_vars";
 
 
 GCW::Dbo::Vars::Item::Ptr

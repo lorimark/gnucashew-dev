@@ -6,8 +6,9 @@ First off... I love <a href="https://www.gnucash.org" target="_blank">GnuCash!</
 
 Secondly... this is ~not~ GnuCash.  At present, no GnuCash code is in use
  here.  This tool works directly with gnucash.sqlite files only, by making
- direct calls to the database.  Therefore, Gnucashew intends to replicate
- the functionality of the gnucash engine (lots to do there!).
+ direct calls to the database (it can also work with MySql and Postgres).
+ Therefore, Gnucashew intends to replicate the functionality of the gnucash
+ engine (lots to do there!).
 
 This is an attempt to produce a web-based interface for the GnuCash program.
  Knowing that there have been several other attempts, this is based on my
@@ -25,7 +26,36 @@ Source Code Repository is found here;
 https://github.com/lorimark/gnucashew-dev
 
 This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library.
+ This is a very powerful c++ web-rendering library with features such as;
+  1. multi-lingual
+  2. super-fast table-views with editing
+  3. multi-user integration
 
+\par Multi-lingual
+ GnuCashew support multiple language capacity.
+
+\par Super Fast Table Views
+ GnuCashew makes use of the
+  <a href="https://www.webtoolkit.eu/wt/doc/reference/html/classWt_1_1WTableView.html">"WTableView"</a>
+  object which provides fast-access to the table data.  The view is scrollable,
+  and will dynamically fetch data for display presentation.  The view can handle
+  millions of rows of data seamlessly with no visible degradation in performance.
+  This provides nearly the same fluidity that GnuCash offers.  It makes working
+  with GnuCashew an easy transition for folks that are already familiar with GnuCash.
+  The view-object is lightening fast and really quite impressive to work with.
+
+\par Mult-User Integration
+ GnuCashew supports multiple users.  It accomplishes this by adding some user-management
+  data tables to the the GnuCash data file.  The addition of these data tables does not
+  impact the performance of GnuCash itself, as it does not touch the existing native GnuCash
+  tables.  This allows multiple users to be connected to the data file simultaneously.
+  GnuCashew has a process that 'monitors' the data file for changes, and when it observes
+  a change it will automatically propagate the change back in to the user interface.
+  Obviously this can create issues when two users are editing the same item (don't do that!)
+  but for the most part, one user is likely to be working in one area of the system
+  (customer invoices) and another user is likely working in a different area (some account
+  register).  It's imperfect, but quite functional, and adds multi-user capability for a
+  fairly small code payload.
 
 \page AccountEditor Account Editor
 
@@ -34,7 +64,79 @@ This will edit the details of the selected account.
 \image html EditAccountDetailForm.png "Edit Account Detail Form" width=320
 
 
-\page Tables Gnucash SQL Table Creation List
+\page TablesRelation Gnucash SQL Table Relationships
+
+\dot
+digraph AccountMap
+{
+  rankdir=LR
+  book
+  [
+    label="Book"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+  root
+  [
+    label="Root Account"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+  rootTemplate
+  [
+    label="Template Root"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+  account
+  [
+    label="Account"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+  transaction
+  [
+    label="Transaction"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+
+  split
+  [
+    label="Split"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+
+  book -> root;
+  book -> rootTemplate;
+
+  account -> root
+  [
+    label="Parent"
+    fontsize=11
+  ];
+
+  split -> account;
+  split -> transaction;
+
+}
+\enddot
+
+
+\page TablesCreation Gnucash SQL Table Creation List
 
 SQL Tables
 

@@ -3,6 +3,7 @@
 #ifndef __DBO_SESSIONGNUCASHEW_H___
 #define __DBO_SESSIONGNUCASHEW_H___
 
+#include "Users/Auth.h"
 #include "AbstractSession.h"
 
 namespace GCW {
@@ -55,7 +56,14 @@ class Session
     void openGnucash();
     void closeGnucash();
 
+    auto users()-> Wt::Auth::AbstractUserDatabase & ;
+    auto login()-> Wt::Auth::Login &  { return login_; }
+
   private:
+
+    std::unique_ptr< GCW::Dbo::Users::UserDatabase > users_;
+    Wt::Auth::Login login_;
+
 
 }; // endclass Session
 

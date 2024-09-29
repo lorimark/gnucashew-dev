@@ -24,6 +24,9 @@ namespace GCW {
 **  to simply have gnucashew keep is customized data in a separate
 **  database.
 **
+** \ref see: https://wiki.gnucash.org/wiki/SQL
+**
+** \ref see: https://wiki.gnucash.org/wiki/images/8/86/Gnucash_erd.png
 */
   namespace Dbo {
 

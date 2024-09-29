@@ -1,14 +1,11 @@
 #line 2 "src/Eng/CustomersModel.cpp"
 
-#include <gnucash/gncCustomer.h>
-
 #include "../App.h"
-#include "CustomersModel.h"
+#include "EmployeesModel.h"
 
-GCW::Eng::CustomersModel::
-CustomersModel()
-//: Wt::WStandardItemModel()
-: Wt::Dbo::QueryModel< GCW::Dbo::Customers::Item::Ptr >()
+GCW::Eng::EmployeesModel::
+EmployeesModel()
+: Wt::Dbo::QueryModel< GCW::Dbo::Employees::Item::Ptr >()
 {
   refreshFromDisk();
 
@@ -31,12 +28,12 @@ CustomersModel()
 
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
-} // endGCW::Eng::CustomersModel::CustomersModel()
+} // endEmployeesModel()
 
-GCW::Eng::CustomersModel::
-CustomersModel( const std::vector< Wt::WFormModel::Field > & _fields )
+GCW::Eng::EmployeesModel::
+EmployeesModel( const std::vector< Wt::WFormModel::Field > & _fields )
 //: Wt::WStandardItemModel(),
-: Wt::Dbo::QueryModel< GCW::Dbo::Customers::Item::Ptr >(),
+: Wt::Dbo::QueryModel< GCW::Dbo::Employees::Item::Ptr >(),
   m_fields( _fields )
 {
   refreshFromDisk();
@@ -49,7 +46,7 @@ CustomersModel( const std::vector< Wt::WFormModel::Field > & _fields )
 **
 */
 auto
-GCW::Eng::CustomersModel::
+GCW::Eng::EmployeesModel::
 refreshFromDisk()-> void
 {
 
@@ -58,7 +55,7 @@ refreshFromDisk()-> void
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
     auto results =
-      GCW::app()-> gnucashew_session().find< GCW::Dbo::Customers::Item >()
+      GCW::app()-> gnucashew_session().find< GCW::Dbo::Employees::Item >()
       ;
 
     setQuery( results );
@@ -78,7 +75,7 @@ refreshFromDisk()-> void
     addAllFieldsAsColumns();
   }
 
-} // endGCW::Eng::RegisterModel::refreshFromDisk()
+} // endrefreshFromDisk()-> void
 
 
 

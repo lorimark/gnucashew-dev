@@ -1,16 +1,16 @@
-#line 2 "src/Gui/CustomersWidget.cpp"
+#line 2 "src/Gui/EmployeesWidget.cpp"
 
 #include <Wt/WText.h>
 #include <Wt/WVBoxLayout.h>
 
 #include "../define.h"
 #include "../GnuCashew.h"
-#include "CustomersWidget.h"
+#include "EmployeesWidget.h"
 
-GCW::Gui::CustomersWidget::
-CustomersWidget()
+GCW::Gui::EmployeesWidget::
+EmployeesWidget()
 {
-  addStyleClass( "CustomersWidget" );
+  addStyleClass( "EmployeesWidget" );
 
   /*
   ** Apply a layout so everything will fit in the window
@@ -34,7 +34,7 @@ CustomersWidget()
   view()-> setSelectionBehavior( Wt::SelectionBehavior::Rows );
   view()-> setSelectionMode(     Wt::SelectionMode::Single   );
   view()-> setAlternatingRowColors( true );
-  view()-> doubleClicked().connect( this, &GCW::Gui::CustomersWidget::doubleClicked );
+  view()-> doubleClicked().connect( this, &EmployeesWidget::doubleClicked );
 
   /*
   ** Prepare a column list
@@ -42,33 +42,24 @@ CustomersWidget()
   */
   std::vector< Wt::WFormModel::Field > fields =
   {
-    GCW::Dbo::Customers::Field::id,
-    GCW::Dbo::Customers::Field::name,
-    GCW::Dbo::Customers::Field::addr_phone,
-    GCW::Dbo::Customers::Field::addr_email
+    GCW::Dbo::Employees::Field::id,
+    GCW::Dbo::Employees::Field::username,
+    GCW::Dbo::Employees::Field::addr_phone,
+    GCW::Dbo::Employees::Field::addr_email
   };
 
   /*
   ** Create the model and apply it to the view
   **
   */
-  m_model = std::make_shared< GCW::Eng::CustomersModel >( fields );
+  m_model = std::make_shared< GCW::Eng::EmployeesModel >( fields );
   view()-> setModel( model() );
 
-} // endGCW::Gui::CustomersWidget::CustomersWidget()
+} // endGCW::Gui::EmployeesWidget::EmployeesWidget()
 
-void GCW::Gui::CustomersWidget::
+void GCW::Gui::EmployeesWidget::
 doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 {
-  /*
-  ** get to the customerItem that was clicked on
-  */
-//  auto customerItem = model()-> resultRow( _index.row() );
-
-  /*
-  ** emit the guid of the item
-  */
-//  doubleClicked().emit( customerItem-> guid() );
 
 } // endvoid GCW::Gui::CustomersWidget::doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 

@@ -50,14 +50,71 @@
     <br />
   </message>
 
-  <message id="gcw_sql.create_vars">
+  <message id="gcw_sql.create_vars.0">
     <![CDATA[
-      create table "{1}" (
-      "id"        integer     primary key autoincrement,
-      "version"   integer     not null,
-      "keyField"  varchar(32) not null,
-      "cfyField"  varchar(32) not null,
-      "varField"  text        not null
+      create table "gcw_users" (
+        "id" integer primary key autoincrement,
+        "version" integer not null
+      );
+    ]]>
+  </message>
+
+  <message id="gcw_sql.create_vars.1">
+    <![CDATA[
+      create table "gcw_vars" (
+        "id"        integer     primary key autoincrement,
+        "version"   integer     not null,
+        "keyField"  varchar(32) not null,
+        "cfyField"  varchar(32) not null,
+        "varField"  text        not null
+      );
+    ]]>
+  </message>
+
+  <message id="gcw_sql.create_vars.2">
+    <![CDATA[
+      create table "gcw_info" (
+        "id" integer primary key autoincrement,
+        "version" integer not null,
+        "user_id" bigint,
+        "password_hash" varchar(100) not null,
+        "password_method" varchar(20) not null,
+        "password_salt" varchar(20) not null,
+        "status" integer not null,
+        "failed_login_attempts" integer not null,
+        "last_login_attempt" text,
+        "email" varchar(256) not null,
+        "unverified_email" varchar(256) not null,
+        "email_token" varchar(64) not null,
+        "email_token_expires" text,
+        "email_token_role" integer not null,
+        constraint "fk_auth_info_user" foreign key ("user_id") references "gcw_users" ("id") on delete cascade deferrable initially deferred
+      );
+    ]]>
+  </message>
+
+  <message id="gcw_sql.create_vars.3">
+    <![CDATA[
+      create table "gcw_identity" (
+        "id"            integer primary key autoincrement,
+        "version"       integer not null,
+        "auth_info_id"  bigint,
+        "provider"      varchar(64) not null,
+        "identity"      varchar(512) not null,
+        constraint "fk_auth_identity_auth_info" foreign key ("auth_info_id") references "gcw_info" ("id") on delete cascade deferrable initially deferred
+      );
+    ]]>
+  </message>
+
+  <message id="gcw_sql.create_vars.4">
+    <![CDATA[
+      create table "gcw_token" (
+        "id" integer primary key autoincrement,
+        "version" integer not null,
+        "auth_info_id" bigint,
+        "value" varchar(64) not null,
+        "expires" text,
+        constraint "fk_auth_token_auth_info" foreign key ("auth_info_id") references "gcw_info" ("id") on delete cascade deferrable initially deferred
       );
     ]]>
   </message>

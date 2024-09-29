@@ -14,7 +14,7 @@ set ( CMAKE_CXX_FLAGS "-std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g" )
 set (PACKAGE_NAME GnuCashew)
 #set (PACKAGE_BUGREPORT "https://bugs.gnucash.org")
 set (PACKAGE_STRING "${PACKAGE_NAME} ${PROJECT_VERSION}")
-set (PACKAGE_URL "https://www.gnucashew.org/")
+set (PACKAGE_URL "https://github.com/lorimark/gnucashew-dev")
 
 # Change this in development versions when changing anything that
 # affects stored data structures. Reset to zero when bumping version.

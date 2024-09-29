@@ -49,7 +49,7 @@ namespace GCW {
 /*!
 ** \brief Split Item Class
 **
-** This class represents an 'split' within gnucash
+** This class represents a 'split' within gnucash
 **
 ** \code
 **
@@ -68,21 +68,20 @@ namespace GCW {
 **   quantity_denom bigint NOT NULL,
 **   lot_guid text(32)
 **  );
-**
 **  CREATE INDEX splits_tx_guid_index ON splits(tx_guid);
 **  CREATE INDEX splits_account_guid_index ON splits(account_guid);
 **
 **  sqlite> select * from accounts;
-**  guid
-**  822a857c5f484affa5a6a3e62f4b700f|Checking Account|BANK|10b24d11b4b94b8789d1830da2695bbb|100|0|b61b07c024fc463489f5db031135a29e||Checking Account|0|0
-**  d934f2e5606c4da6b25c703c4661d747|Opening Balances|EQUITY|10b24d11b4b94b8789d1830da2695bbb|100|0|745365afce5946b19d4189c593b9f6aa||Opening Balances|0|0
+**  guid                             name             account_type commodity_guid                   scu non parent_guid                      code description      h p
+**  822a857c5f484affa5a6a3e62f4b700f|Checking Account|BANK        |10b24d11b4b94b8789d1830da2695bbb|100|0  |b61b07c024fc463489f5db031135a29e|    |Checking Account|0|0
+**  d934f2e5606c4da6b25c703c4661d747|Opening Balances|EQUITY      |10b24d11b4b94b8789d1830da2695bbb|100|0  |745365afce5946b19d4189c593b9f6aa|    |Opening Balances|0|0
 **  sqlite> select * from transactions;
-**  guid
-**  4b2259ef3fbb486bad1b42f28ec84346|10b24d11b4b94b8789d1830da2695bbb||2023-05-28 10:59:00|2023-05-28 21:46:09|
+**  guid                             currency_guid                    num post_date           enter_date          description
+**  4b2259ef3fbb486bad1b42f28ec84346|10b24d11b4b94b8789d1830da2695bbb|   |2023-05-28 10:59:00|2023-05-28 21:46:09|
 **  sqlite> select * from splits;
-**  guid                             tx_guid                          account_guid
-**  c68c279c3ef64d00ae682f5573bb55bc|4b2259ef3fbb486bad1b42f28ec84346|822a857c5f484affa5a6a3e62f4b700f|||n|1970-01-01 00:00:00|100|100|100|100|
-**  a67a975bc58a4fa1bd00421b37fed115|4b2259ef3fbb486bad1b42f28ec84346|d934f2e5606c4da6b25c703c4661d747|||n|1970-01-01 00:00:00|-100|100|-100|100|
+**  guid                             tx_guid                          account_guid                     memo action rs reconcile_date      value_num value_denom q_num q_den lot_guid
+**  c68c279c3ef64d00ae682f5573bb55bc|4b2259ef3fbb486bad1b42f28ec84346|822a857c5f484affa5a6a3e62f4b700f|    |      |n |1970-01-01 00:00:00|100      |100        |100  |100  |
+**  a67a975bc58a4fa1bd00421b37fed115|4b2259ef3fbb486bad1b42f28ec84346|d934f2e5606c4da6b25c703c4661d747|    |      |n |1970-01-01 00:00:00|-100     |100        |-100 |100  |
 **
 ** \endcode
 **
@@ -260,7 +259,11 @@ extern const char * s_tableName;
 ** This function returns a split based on the GUID.
 **
 */
-Item::Ptr load( const std::string & _splitGuid );
+auto
+load
+(
+ const std::string & _splitGuid
+)-> Item::Ptr ;
 
 /*!
 ** \brief Load Splits by Account
@@ -271,11 +274,12 @@ Item::Ptr load( const std::string & _splitGuid );
 **
 ** \return Vector of Items sorted by Transction Date
 */
-Item::Vector byAccount
+auto
+byAccount
 (
  /** Account GUID */
  const std::string & _accountGuid
-);
+)-> Item::Vector ;
 
 /*!
 ** \brief Load Splits by Split
@@ -289,11 +293,12 @@ Item::Vector byAccount
 **
 ** \return Vector of Items sorted by Transction Date
 */
-Item::Vector bySplit
+auto
+bySplit
 (
  /** Split GUID */
  const std::string & _splitGuid
-);
+)-> Item::Vector ;
 
 /*!
 ** \brief Load Splits by Transaction
@@ -304,11 +309,12 @@ Item::Vector bySplit
 **
 ** \return Vector of Items sorted by Transction Date
 */
-Item::Vector byTransaction
+auto
+byTransaction
 (
  /** Transaction GUID */
  const std::string & _txGuid
-);
+)-> Item::Vector ;
 
     } // endnamespace Splits {
   } // endnamespace Dbo {

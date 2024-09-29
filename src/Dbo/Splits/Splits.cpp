@@ -45,9 +45,15 @@ void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
        /*
        ** return .bool. if the .trans1. date is .less than. the .trans2. date
        **
+       ** note: it is possible to string-compare these date values, as they are
+       **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
+       **        sortable.  Alternatively, we can convert this string to an
+       **        internal WDate element, but it's an unnecessary step.
        */
-       return trans1-> post_date_as_date()
-            < trans2-> post_date_as_date();
+       return trans1-> post_date()
+            < trans2-> post_date();
+//       return trans1-> post_date_as_date()
+//            < trans2-> post_date_as_date();
      }
   );
 

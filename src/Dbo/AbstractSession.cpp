@@ -13,6 +13,7 @@
 #include "Invoices/Invoices.h"
 #include "Entries/Entries.h"
 #include "Customers/Customers.h"
+#include "Employees/Employees.h"
 #include "Slots/Slots.h"
 #include "Splits/Splits.h"
 #include "Transactions/Transactions.h"
@@ -48,6 +49,7 @@ open( const std::string & _path )-> bool
   mapClass< GCW::Dbo:: Entries      ::Item >( GCW::Dbo:: Entries      ::s_tableName );
   mapClass< GCW::Dbo:: Invoices     ::Item >( GCW::Dbo:: Invoices     ::s_tableName );
   mapClass< GCW::Dbo:: Customers    ::Item >( GCW::Dbo:: Customers    ::s_tableName );
+  mapClass< GCW::Dbo:: Employees    ::Item >( GCW::Dbo:: Employees    ::s_tableName );
   mapClass< GCW::Dbo:: Transactions ::Item >( GCW::Dbo:: Transactions ::s_tableName );
   mapClass< GCW::Dbo:: Slots        ::Item >( GCW::Dbo:: Slots        ::s_tableName );
   mapClass< GCW::Dbo:: Splits       ::Item >( GCW::Dbo:: Splits       ::s_tableName );

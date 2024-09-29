@@ -3,6 +3,7 @@
 #include <Wt/WMenu.h>
 #include <Wt/WDialog.h>
 #include <Wt/WPopupMenu.h>
+#include <Wt/WComboBox.h>
 #include <Wt/WPushButton.h>
 #include <Wt/WVBoxLayout.h>
 #include <Wt/Json/Serializer.h>
@@ -27,8 +28,17 @@ MainWidget()
   m_toolBar-> addStyleClass( "ToolBar" );
 
   m_centralWidget = lw-> addWidget( std::make_unique< GCW::Gui::CentralWidget >(), 1 );
+
   m_statusBar     = lw-> addWidget( std::make_unique< Wt::WContainerWidget    >()    );
   m_statusBar-> addStyleClass( "StatusBar" );
+
+} // endGCW::MainWidget::MainWidget()
+
+auto
+GCW::Gui::MainWidget::
+load()-> void
+{
+  Wt::WContainerWidget::load();
 
   /*
   ** Set up the navbar
@@ -41,6 +51,14 @@ MainWidget()
   navBar()-> setTitle( "GCW", link );
 
   auto m_menu = navBar()-> addMenu( std::make_unique< Wt::WMenu >() );
+
+  {
+    auto w_ = std::make_unique< Wt::WComboBox >();
+    auto langCombo = w_.get();
+    langCombo-> addItem( "EN" );
+    langCombo-> addItem( "CB" );
+    navBar()-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
+  }
 
   {
     auto m_uFile = m_menu-> addItem( TR("gcw.MainWidget.mu.file") );
@@ -57,7 +75,7 @@ MainWidget()
     popFile-> addItem( TR( "gcw.MainWidget.mu.file.pagesetup"  ) )-> setDisabled( true );
     popFile-> addItem( TR( "gcw.MainWidget.mu.file.export"     ) )-> setDisabled( true );
     popFile-> addSeparator();
-    popFile-> addItem( TR( "gcw.MainWidget.mu.file.properties" ), this, &GCW::Gui::MainWidget::open_properties );
+    popFile-> addItem( TR( "gcw.MainWidget.mu.file.properties" ), this, &MainWidget:: open_properties );
     popFile-> addSeparator();
     popFile-> addItem( TR( "gcw.MainWidget.mu.file.close"      ) )-> setDisabled( true );
     popFile-> addItem( TR( "gcw.MainWidget.mu.file.quit"       ) )-> setDisabled( true );
@@ -71,7 +89,7 @@ MainWidget()
     popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.copy"            ) )-> setDisabled( true );
     popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.paste"           ) )-> setDisabled( true );
     popEdit-> addSeparator();
-    popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.edit"            ) )-> setDisabled( true );
+    popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.edit"            ), this, &MainWidget:: openSelectedAccount );
     popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.delete"          ) )-> setDisabled( true );
     popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.find"            ) )-> setDisabled( true );
     popEdit-> addItem( TR( "gcw.MainWidget.mu.edit.cascade"         ) )-> setDisabled( true );
@@ -122,7 +140,7 @@ MainWidget()
     {
       auto m_uCustomer = popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.customer" ) );
       auto popCustomer = std::make_unique< Wt::WPopupMenu >();
-      popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.overview"       ), centralWidget(), &GCW::Gui::CentralWidget::open_CustomersWidget );
+      popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.overview"       ), centralWidget(), &CentralWidget::open_CustomersWidget );
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.newCustomer"    ) )-> setDisabled( true );
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.findCustomer"   ) )-> setDisabled( true );
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.newInvoice"     ) )-> setDisabled( true );
@@ -130,11 +148,24 @@ MainWidget()
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.newJob"         ) )-> setDisabled( true );
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.findJob"        ) )-> setDisabled( true );
       popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.processPayment" ) )-> setDisabled( true );
+      popCustomer-> addItem( TR( "gcw.MainWidget.mu.business.customer.invoicesDue"    ) )-> setDisabled( true );
       m_uCustomer-> setMenu( std::move( popCustomer ) );
     }
 
     popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.vendor"        ) )-> setDisabled( true );
-    popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.employee"      ) )-> setDisabled( true );
+
+    {
+      auto m_uEmployee = popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.employee" ) );
+      auto popEmployee = std::make_unique< Wt::WPopupMenu >();
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.overview"       ), centralWidget(), &CentralWidget::open_EmployeesWidget );
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.new"            ) )-> setDisabled( true );
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.find"           ) )-> setDisabled( true );
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.newExpense"     ) )-> setDisabled( true );
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.findExpense"    ) )-> setDisabled( true );
+      popEmployee-> addItem( TR( "gcw.MainWidget.mu.business.employee.processPayment" ) )-> setDisabled( true );
+      m_uEmployee-> setMenu( std::move( popEmployee ) );
+    }
+
     popBusiness-> addSeparator();
     popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.linked"        ) )-> setDisabled( true );
     popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.salestax"      ) )-> setDisabled( true );
@@ -176,11 +207,11 @@ MainWidget()
 
   statusBar()-> addNew< Wt::WText >( "status bar" );
 
-} // endGCW::MainWidget::MainWidget()
+} // endload()-> void
 
-void
+auto
 GCW::Gui::MainWidget::
-open_properties()
+open_properties()-> void
 {
   if( !GCW::app()-> gnucashew_session().isOpen() )
     return;
@@ -201,24 +232,24 @@ open_properties()
 
 } // endopen_properties()
 
-void
+auto
 GCW::Gui::MainWidget::
-openSelectedAccount()
+openSelectedAccount()-> void
 {
   centralWidget()-> accountsTreeView()-> editSelectedAccount();
 
 } // endopenSelectedAccount()
 
 
-void test_gnucash()
+auto
+test_gnucash()-> void
 {
 
 } // endvoid test_gnucash()
 
-
-void
+auto
 GCW::Gui::MainWidget::
-test()
+test()-> void
 {
   test_gnucash();
 
