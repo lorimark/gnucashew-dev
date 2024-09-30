@@ -24,9 +24,19 @@ open( const std::string & _path )
   */
   GCW::Dbo::AbstractSession::open( _path );
 
+  /*
+  ** Setup authentication services
+  **
+  ** This module needs initialization if it is going to be used.  If it is
+  **  not going to be used, then no damage is done here.  Once the database
+  **  is opened then we can determine if it supports user authentication.
+  **
+  */
+  GCW::Dbo::Users::configure();
+
   GCW::Dbo::Users::mapClasses( *this );
 
-  users_ = std::make_unique< GCW::Dbo::Users::UserDatabase >( *this );
+  m_users = std::make_unique< GCW::Dbo::Users::UserDatabase >( *this );
 
   /*
   ** Try to get the sqlite3 file open
@@ -136,7 +146,7 @@ addGnuCashewExtensions()
   */
   for( int i=0; i< 5; i++ )
   {
-    auto key = Wt::WString( "gcw_sql.create_vars.{1}").arg( i ).toUTF8();
+    auto key = Wt::WString( "gcw_sql.create.{1}").arg( i ).toUTF8();
     auto sql = TR( key ).toUTF8();
     execute( sql );
   }

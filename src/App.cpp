@@ -1,17 +1,27 @@
 #line 2 "src/App.cpp"
 
+/*
+** USER_LOGIN is a switch that sets up the UI with
+**  a user-login-widget.  It's not working yet.
+**
+*/
+//#define USER_LOGIN
+
 #include <Wt/Date/tz.h>
 #include <Wt/WBootstrapTheme.h>
+#include <Wt/Auth/AuthWidget.h>
 #include <Wt/WDate.h>
 #include <Wt/WDialog.h>
 #include <Wt/WEnvironment.h>
 #include <Wt/WHBoxLayout.h>
+#include <Wt/WVBoxLayout.h>
 #include <Wt/WLocale.h>
 #include <Wt/WServer.h>
 #include <Wt/WText.h>
 #include <Wt/WVBoxLayout.h>
 
 #include "App.h"
+#include "Dbo/Users/Auth.h"
 #include "GnuCashew.h"
 
 extern std::string g_dbName;
@@ -61,7 +71,7 @@ GCW::App * GCW::app()
 GCW::App::App( const Wt::WEnvironment & env )
 : Wt::WApplication( env )
 {
-  root()-> addStyleClass( "GnuCashew" );
+  root()-> addStyleClass( "GnuCashewRoot" );
 
 #ifdef USE_GNUCASH_ENGINE
   gnucash_session()  .open( g_dbName );
@@ -103,6 +113,117 @@ GCW::App::App( const Wt::WEnvironment & env )
   loc.setTimeZone( tz );
 #endif
 
+#ifdef USER_LOGIN
+  auto lw = root()-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
+
+  lw-> addWidget( std::move( createAuthWidget() ) );
+
+  m_mainContainer = lw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
+
+  /*
+  ** If the login status changes, respond to it.
+  **
+  */
+  gnucashew_session().login().changed().connect( this, &App::buildSite );
+#endif
+
+  /*
+  ** build the site
+  **
+  */
+  buildSite();
+
+} // endGCW::App::App( const Wt::WEnvironment & env )
+
+auto
+GCW::App::
+showWelcome()-> void
+{
+  Wt::WDialog dialog( TR( "gcw.welcome.title" )  );
+  dialog.rejectWhenEscapePressed( true );
+  dialog.setClosable( true );
+  dialog.contents()-> addNew< Wt::WText >( TR( "gcw.welcome.body" ) );
+  dialog.exec();
+
+} // endshowWelcome()-> void
+
+auto
+GCW::App::
+createAuthWidget() -> std::unique_ptr< Wt::Auth::AuthWidget >
+{
+  auto retVal = std::make_unique< Wt::Auth::AuthWidget >
+    (
+     GCW::Dbo::Users::service(),
+     gnucashew_session().users(),
+     gnucashew_session().login()
+    );
+
+  retVal-> model()-> addPasswordAuth( & GCW::Dbo::Users::passwordService() );
+  retVal-> model()-> addOAuth(          GCW::Dbo::Users::oService()        );
+  retVal-> setRegistrationEnabled( true );
+  retVal-> processEnvironment();
+
+  return std::move( retVal );
+
+} // endcreateLoginWidget() -> std::unique_ptr< Wt::Auth::AuthWidget >
+
+
+auto
+GCW::App::
+buildSite()-> void
+{
+#ifdef USER_LOGIN
+  std::cout << __FILE__ << ":" << __LINE__ << " " << gnucashew_session().login().loggedIn() << std::endl;
+
+  if( m_mainWidget )
+      m_mainContainer-> removeWidget( m_mainWidget );
+//  m_mainContainer-> clear();
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << gnucashew_session().login().loggedIn() << std::endl;
+
+//  if( gnucashew_session().login().loggedIn() )
+//  if( true )
+  if( bookmarkUrl() == "demo" || gnucashew_session().login().loggedIn() )
+    buildLoggedIn();
+  else
+    buildLogin();
+#else
+
+  buildLoggedIn();
+
+#endif
+
+} // endbuildSite()-> void
+
+auto
+GCW::App::
+buildLogin()-> void
+{
+
+} // endbuildLogin()-> void
+
+auto
+GCW::App::
+buildLoggedIn()-> void
+{
+
+#ifdef USER_LOGIN
+  /*
+  ** Set a layout manager on the root widget so that everything can
+  **  be laid out correctly.
+  **
+  */
+  auto lw = m_mainContainer-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
+       lw-> setSpacing( 0 );
+
+  /*
+  ** Build and install the main desktop widget.
+  **
+  */
+  m_mainWidget = lw-> addWidget( std::make_unique< GCW::Gui::MainWidget >() );
+
+#else
+
   /*
   ** Set a layout manager on the root widget so that everything can
   **  be laid out correctly.
@@ -116,6 +237,8 @@ GCW::App::App( const Wt::WEnvironment & env )
   **
   */
   m_mainWidget = lw-> addWidget( std::make_unique< GCW::Gui::MainWidget >() );
+
+#endif
 
   /*
   ** If this is the demo, wait a second and pop a welcome screen.
@@ -144,18 +267,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 //    item.modify()-> setVar( "logonBy", "dev(0)" );
 //  }
 
-} // endGCW::App::App( const Wt::WEnvironment & env )
+} // endbuildLoggedIn()-> void
 
-void
-GCW::App::
-showWelcome()
-{
-  Wt::WDialog dialog( TR( "gcw.welcome.title" )  );
-  dialog.rejectWhenEscapePressed( true );
-  dialog.setClosable( true );
-  dialog.contents()-> addNew< Wt::WText >( TR( "gcw.welcome.body" ) );
-  dialog.exec();
-
-} // endvoid showWelcome()
 
 

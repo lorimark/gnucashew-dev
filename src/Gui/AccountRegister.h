@@ -32,6 +32,8 @@ namespace GCW {
 **  format with multiple columns representing other field values such as;
 **  date, check-number, description... and so on.
 **
+** \image html AccountRegister.png "Account Register" width=480
+**
 ** At present this widget does only a quick 'view-only' of an account.  Editable fields
 **  are available when a transaction is ~not~ reconciled.  If a transaction is reconciled,
 **  then clicking on the row just causes the whole row to highlight.

@@ -56,14 +56,13 @@ class Session
     void openGnucash();
     void closeGnucash();
 
-    auto users()-> Wt::Auth::AbstractUserDatabase & ;
-    auto login()-> Wt::Auth::Login &  { return login_; }
+    auto users()-> Wt::Auth::AbstractUserDatabase & { return *m_users; }
+    auto login()-> Wt::Auth::Login                & { return  m_login; }
 
   private:
 
-    std::unique_ptr< GCW::Dbo::Users::UserDatabase > users_;
-    Wt::Auth::Login login_;
-
+    std::unique_ptr< GCW::Dbo::Users::UserDatabase > m_users;
+    Wt::Auth::Login m_login;
 
 }; // endclass Session
 

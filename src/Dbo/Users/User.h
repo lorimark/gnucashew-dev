@@ -3,10 +3,11 @@
 #ifndef __DBO_USERS_H___
 #define __DBO_USERS_H___
 
-#include "../BaseItem.h"
-
 #include <Wt/Dbo/Types.h>
 #include <Wt/WGlobal.h>
+
+#include "../BaseItem.h"
+#include "Definition.h"
 
 namespace GCW {
   namespace Dbo {
@@ -22,7 +23,7 @@ class Item
     template <class Action>
     auto persist( Action & a )-> void
     {
-      Wt::Dbo::field( a, m_employee_guid , "employee_guid" , 32 ); // text(32) NOT NULL
+      Wt::Dbo::field( a, m_employee_guid , Field::employee_guid, 32 ); // text(32) NOT NULL
     }
 
     std::string m_employee_guid;

@@ -19,6 +19,7 @@
 #include <Wt/WResource.h>
 #include <Wt/WServer.h>
 
+#include "Dbo/Users/Auth.h"
 #include "GnuCashew.h"
 
 std::string g_dbName;

@@ -6,6 +6,7 @@
 #include <Wt/Dbo/Session.h>
 #include <Wt/Auth/Login.h>
 #include <Wt/Auth/Dbo/UserDatabase.h>
+#include <Wt/Auth/PasswordService.h>
 
 #include "User.h"
 
