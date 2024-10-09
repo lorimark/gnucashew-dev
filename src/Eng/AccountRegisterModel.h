@@ -28,8 +28,13 @@ class AccountRegisterModel
 
     enum ViewMode
     {
+      /// basic one-line per transaction
       BASIC_LEDGER,
+
+      /// one-line ledger that auto-opens to multi-line for each selected row
       AUTOSPLIT_LEDGER,
+
+      /// self explanatory
       TRANSACTION_JOURNAL
     };
 
@@ -49,6 +54,12 @@ class AccountRegisterModel
     auto doubleLine() const-> bool { return m_doubleLine; }
     auto setDoubleLine( bool _doubleLine )-> void;
 
+    /*!
+    ** \brief Get GUID from row
+    **
+    ** This will retrieve the GUID value from the row.
+    **
+    */
     auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
 
     /*!
@@ -63,14 +74,14 @@ class AccountRegisterModel
     **        consistent with GnuCash.
     **
     */
-    auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime ;
-    auto getAction( const Wt::WModelIndex & _index )-> std::string ;
-    auto getDescription( const Wt::WModelIndex & _index )-> std::string ;
-    auto getTransfer( const Wt::WModelIndex & _index )-> std::string ;
-    auto getReconcile( const Wt::WModelIndex & _index )-> std::string ;
-    auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
-    auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
-    auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getDate        ( const Wt::WModelIndex & _index )-> Wt::WDateTime ;
+    auto getAction      ( const Wt::WModelIndex & _index )-> std::string   ;
+    auto getDescription ( const Wt::WModelIndex & _index )-> std::string   ;
+    auto getTransfer    ( const Wt::WModelIndex & _index )-> std::string   ;
+    auto getReconcile   ( const Wt::WModelIndex & _index )-> std::string   ;
+    auto getNumeric     ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
+    auto getDebit       ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
+    auto getCredit      ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
 
     /*!
     ** \brief Get Value (positive or negative)
@@ -81,20 +92,20 @@ class AccountRegisterModel
     **  the returned value should be positive or negative.
     **
     */
-    auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
-    auto getBalance( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getValue   ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getBalance ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
-    GCW_NUMERIC present    () const { return m_present;    }
-    GCW_NUMERIC future     () const { return m_future;     }
-    GCW_NUMERIC cleared    () const { return m_cleared;    }
-    GCW_NUMERIC reconciled () const { return m_reconciled; }
-    GCW_NUMERIC projected  () const { return m_projected;  }
+    auto present    () const-> GCW_NUMERIC { return m_present;    }
+    auto future     () const-> GCW_NUMERIC { return m_future;     }
+    auto cleared    () const-> GCW_NUMERIC { return m_cleared;    }
+    auto reconciled () const-> GCW_NUMERIC { return m_reconciled; }
+    auto projected  () const-> GCW_NUMERIC { return m_projected;  }
 
-    RowItem makeRow( const std::string & _splitGuid );
+    auto makeRow( const std::string & _splitGuid )-> RowItem ;
 
-    std::set< std::string > suggestionsFromColumn( int _column ) const;
+    auto suggestionsFromColumn( int _column ) const-> std::set< std::string > ;
 
-    bool setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role );
+    auto setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool ;
 
 /*
 
@@ -120,7 +131,7 @@ balance
 
   private:
 
-    void saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role );
+    auto saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> void ;
 
 #ifdef NEVER
     template <typename T>
@@ -145,8 +156,10 @@ balance
     */
 //    std::set< int > m_dirtyRows;
 
-    /*
+    /*!
+    ** \brief Editable Indicator
     **
+    ** The model can be either R/W (read-write) or R/O (read-only).
     **
     */
     bool m_editable = false;
@@ -154,7 +167,9 @@ balance
     ViewMode m_viewMode   = BASIC_LEDGER;
     bool     m_doubleLine = false;
 
-    /*
+    /*!
+    ** \brief Account GUID
+    **
     ** The model is associated with a single account.
     **
     */
@@ -178,8 +193,7 @@ balance
   } //  namespace Eng {
 } // endnamespace GCW {
 
-
-#endif // #ifndef __ENG_REGISTERMODEL_H___
+#endif // #ifndef __ENG_ACCOUNTREGISTERMODEL_H___
 
 
 
