@@ -17,13 +17,13 @@ namespace GCW {
 auto root()-> Item::Ptr;
 
 /*!
-** \brief Load Account by Guid
+** \brief Load Account by GUID
 **
 */
 auto load( const std::string & _guid )-> Item::Ptr;
 
 /*!
-** \brief Load Account by Guid
+** \brief Load Account by GUID
 **
 */
 auto byGuid( const std::string & _guid )-> Item::Ptr;

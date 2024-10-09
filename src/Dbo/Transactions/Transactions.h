@@ -7,6 +7,7 @@
 #include <Wt/WDate.h>
 #include <Wt/WDateTime.h>
 
+#include "../../Glb/gcwglobal.h"
 #include "../Splits/Splits.h"
 
 /*
@@ -78,34 +79,54 @@ class Item
     using Vector = std::vector< Ptr >;
 
     Item() {};
+    Item( const std::string & _txGuid ) { m_guid = _txGuid; }
 
-    const std::string & guid          () const { return m_guid          ; }
-    const std::string & currency_guid () const { return m_currency_guid ; }
-    const std::string & num           () const { return m_num           ; }
-    const std::string & post_date     () const { return m_post_date     ; }
-    const std::string & enter_date    () const { return m_enter_date    ; }
-    const std::string & description   () const { return m_description   ; }
+    auto guid              () const-> const std::string & { return m_guid          ; }
+    auto currency_guid     () const-> const std::string & { return m_currency_guid ; }
+    auto num               () const-> const std::string & { return m_num           ; }
+    auto post_date         () const-> const std::string & { return m_post_date     ; }
+    auto enter_date        () const-> const std::string & { return m_enter_date    ; }
+    auto description       () const-> const std::string & { return m_description   ; }
 
-    std::string post_date( const std::string & _format ) const
+    auto set_currency_guid ( const std::string & _guid )-> void
+    {
+      m_currency_guid = _guid;
+    }
+
+    auto set_enter_date ( const std::string & _value )-> void;
+    auto set_enter_date ( const Wt::WDateTime & _value )-> void;
+
+    /*!
+    ** \brief Post Date as String
+    **
+    ** This pulls the post-date from the back-end and formats it with
+    **  the requested format.  This is used for screen-representations
+    **  of the date.
+    **
+    */
+    auto post_date_as_string( const std::string & _format ) const-> std::string
     {
       auto d = Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );
       return d.toString( _format ).toUTF8();
     }
 
     /*!
-    ** \brief Date as Date :)
+    ** \brief Date as WDate
     **
     ** This will take the stored string-date of the transaction and covert it to
-    **  a system WDate value.
+    **  a system WDateTime value.
     **
     */
-    Wt::WDate post_date_as_date() const
+    auto post_date_as_date() const-> Wt::WDateTime
     {
-      auto d = Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );
-      return d.date();
+      return
+        Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );
     }
 
-    void set_post_date( const Wt::WDate & _value );
+    auto set_post_date( const std::string   & _value )-> void ;
+    auto set_post_date( const Wt::WDateTime & _value )-> void ;
+
+    auto set_description( const std::string & _value )-> void ;
 
     template< class Action > void persist( Action & action )
     {
@@ -132,9 +153,10 @@ extern const char * s_tableName;
 ** \brief Load Transaction by Guid
 **
 */
-Item::Ptr load( const std::string & _txGuid );
-Item::Ptr byGuid( const std::string & _txGuid );
-Item::Vector byAccount( const std::string & _accountGuid );
+auto load( const std::string & _txGuid )-> Item::Ptr ;
+auto byGuid( const std::string & _txGuid )-> Item::Ptr ;
+auto add( const std::string & _txGuid )-> Item::Ptr ;
+auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 
     } // endnamespace Transactions {
   } // endnamespace Dbo {

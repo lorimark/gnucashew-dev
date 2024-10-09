@@ -70,9 +70,9 @@ This will edit the details of the selected account.
 digraph AccountMap
 {
   rankdir=LR
-  book
+  books
   [
-    label="Book"
+    label="Books"
     shape="Plain"
     style="Striped"
     fontsize=11
@@ -94,43 +94,81 @@ digraph AccountMap
     fontsize=11
   ];
 
-  account
+  accounts
   [
-    label="Account"
+    label="Accounts"
     shape="Plain"
     style="Striped"
     fontsize=11
   ];
 
-  transaction
+  commodities
   [
-    label="Transaction"
+    label="Commodities"
+    shape="Plain"
+    style="Striped"
+    fontsize=11
+  ];
+
+  transactions
+  [
+    label="Transactions"
     shape="Plain"
     style="Striped"
     fontsize=11
   ];
 
 
-  split
+  splits
   [
-    label="Split"
+    label="Splits"
     shape="Plain"
     style="Striped"
     fontsize=11
   ];
 
 
-  book -> root;
-  book -> rootTemplate;
-
-  account -> root
+  books -> root
   [
-    label="Parent"
+    label="root_account_guid"
     fontsize=11
   ];
 
-  split -> account;
-  split -> transaction;
+  books -> rootTemplate
+  [
+    label="root_template_guid"
+    fontsize=11
+  ];
+
+  accounts -> root
+  [
+    label="parent_guid"
+    fontsize=11
+  ];
+
+  accounts -> commodities
+  [
+    label="commodity_guid"
+    fontsize=11
+  ];
+
+  splits -> accounts
+  [
+    label="account_guid"
+    fontsize=11
+  ];
+
+  splits -> transactions
+  [
+    label="tx_guid"
+    fontsize=11
+  ];
+
+  transactions -> commodities
+  [
+    label="currency_guid"
+    fontsize=11
+  ];
 
 }
 \enddot

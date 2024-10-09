@@ -4,7 +4,11 @@
 #include <algorithm>
 
 #include <Wt/WModelIndex.h>
+#include <Wt/WDateTime.h>
+#include <Wt/WLocalDateTime.h>
 
+#include "../3rd/guid.hpp"
+#include "gcwglobal.h"
 #include "Core.h"
 
 static
@@ -22,7 +26,7 @@ split( const std::string & s, char delim, std::vector<std::string> & elems )
 
 
 std::vector<std::string>
-Wtx::Core::
+GCW::Core::
 split( const std::string & s, char delim )
 {
   std::vector<std::string> elems;
@@ -30,11 +34,11 @@ split( const std::string & s, char delim )
   return elems;
 }
 
-const char* Wtx::Core::trim_ws = " \t\n\r\f\v";
+const char* GCW::Core::trim_ws = " \t\n\r\f\v";
 
 // trim from end of string (right)
 std::string &
-Wtx::Core::
+GCW::Core::
 rtrim( std::string & s, const char* t )
 {
   s.erase( s.find_last_not_of(t) + 1 );
@@ -43,7 +47,7 @@ rtrim( std::string & s, const char* t )
 
 // trim from beginning of string (left)
 std::string &
-Wtx::Core::
+GCW::Core::
 ltrim( std::string & s, const char* t )
 {
   s.erase( 0, s.find_first_not_of(t) );
@@ -52,14 +56,14 @@ ltrim( std::string & s, const char* t )
 
 // trim from both ends of string (left & right)
 std::string &
-Wtx::Core::
+GCW::Core::
 trim( std::string & s, const char* t )
 {
   return ltrim( rtrim(s, t), t );
 }
 
 std::string
-Wtx::Core::
+GCW::Core::
 toupper( const std::string & s )
 {
   std::string retVal = s;
@@ -70,7 +74,7 @@ toupper( const std::string & s )
 }
 
 std::string
-Wtx::Core::
+GCW::Core::
 tolower( const std::string & s )
 {
   std::string retVal = s;
@@ -140,7 +144,7 @@ iterate( Wt::Json::Array & _jary, Wt::WModelIndex _parent )
 } // endvoid iterate( Wt::WModelIndex _index ) const
 
 Wt::Json::Object
-Wtx::Core::
+GCW::Core::
 toJson( Wt::WTreeView * _view )
 {
   Wt::Json::Object jobj;
@@ -161,8 +165,9 @@ toJson( Wt::WTreeView * _view )
 
 }
 
-
-std::string Wtx::Core::hexDump( const std::string & string, int start, int end )
+auto
+GCW::Core::
+hexDump( const std::string & string, int start, int end )-> std::string
 {
   std::stringstream rv;
 
@@ -223,5 +228,61 @@ std::string Wtx::Core::hexDump( const std::string & string, int start, int end )
 
   return rv.str();
 
-} // endstd::string Wtx::hexDump( const std::string & string )
+} // endstd::string GCW::hexDump( const std::string & string )
+
+auto
+GCW::Core::
+newGuid()-> std::string
+{
+  std::string g = xg::newGuid();
+
+  std::string retVal;
+  for( auto c : g )
+    if( c != '-' )
+      retVal.push_back( c );
+
+  return retVal;
+
+} // endnewGuid()-> std::string
+
+
+/*
+** note about this date time:
+**  WLocalDateTime will produce the local-time
+**  WDateTime will product a GMT time
+**
+** This was tested, and gnucash seems to want the GMT time-stamp
+**  rather than the local time (makes sense really)
+**
+*/
+auto
+GCW::Core::
+currentDateTime()-> Wt::WDateTime
+{
+  return
+//    Wt::WLocalDateTime::currentDateTime().toString( GCW_DATE_FORMAT ).toUTF8();
+    Wt::WDateTime::currentDateTime();
+
+} // endcurrentDateTime()-> std::string
+
+
+/*
+** note about this date time:
+**  WLocalDateTime will produce the local-time
+**  WDateTime will product a GMT time
+**
+** This was tested, and gnucash seems to want the GMT time-stamp
+**  rather than the local time (makes sense really)
+**
+*/
+auto
+GCW::Core::
+currentDateTimeStorageString()-> std::string
+{
+  return
+    currentDateTime().toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+
+} // endcurrentDateTime()-> std::string
+
+
 

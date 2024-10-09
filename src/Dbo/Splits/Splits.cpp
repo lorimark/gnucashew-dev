@@ -61,9 +61,9 @@ void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 
 } // endnamespace {
 
-GCW::Dbo::Splits::Item::Ptr
+auto
 GCW::Dbo::Splits::
-load( const std::string & _splitGuid )
+load( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Ptr
 {
   GCW::Dbo::Splits::Item::Ptr retVal;
 
@@ -80,9 +80,53 @@ load( const std::string & _splitGuid )
 
 } // endload( const std::string & _splitGuid )
 
-GCW::Dbo::Splits::Item::Vector
+auto
 GCW::Dbo::Splits::
-byAccount( const std::string & _accountGuid )
+find( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Ptr
+{
+  GCW::Dbo::Splits::Item::Ptr retVal;
+
+  if( _splitGuid != "" )
+  {
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+    /*
+    ** grab the raw data items out of the storage
+    */
+    auto results =
+      GCW::app()-> gnucashew_session().find< Item >()
+      .where( "guid = ?" )
+      .bind( _splitGuid )
+      .resultList()
+      ;
+
+    /*
+    ** We should find only one item
+    **
+    */
+    if( results.size() == 1 )
+      retVal = *results.begin();
+
+  } // endif( _splitGuid != "" )
+
+  return retVal;
+
+} // endfind( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Ptr
+
+auto
+GCW::Dbo::Splits::
+add( const std::string & _splitGuid )-> Item::Ptr
+{
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+  return
+    GCW::app()-> gnucashew_session().addNew< Item >( _splitGuid );
+
+} // endadd( const std::string & _splitGuid )-> Item::Ptr
+
+auto
+GCW::Dbo::Splits::
+byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
@@ -115,11 +159,11 @@ byAccount( const std::string & _accountGuid )
 
   return retVal;
 
-} // endbyAccount( const std::string & _accountGuid )
+} // endbyAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
 
-GCW::Dbo::Splits::Item::Vector
+auto
 GCW::Dbo::Splits::
-bySplit( const std::string & _splitGuid )
+bySplit( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
@@ -160,15 +204,11 @@ bySplit( const std::string & _splitGuid )
 
   return retVal;
 
-} // endbySplit( const std::string & _splitGuid )
+} // endbySplit( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
 
-
-/*!
-* \return Vector of Split Items Sorted by Transaction Date
-*/
-GCW::Dbo::Splits::Item::Vector
+auto
 GCW::Dbo::Splits::
-byTransaction( const std::string & _txGuid )
+byTransaction( const std::string & _txGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
@@ -193,7 +233,23 @@ byTransaction( const std::string & _txGuid )
 
   return retVal;
 
-} // endbyTransaction( const std::string & _txGuid )
+} // endbyTransaction( const std::string & _txGuid )-> GCW::Dbo::Splits::Item::Vector
 
+auto
+GCW::Dbo::Splits::Item::
+set_value( GCW_NUMERIC _value )-> void
+{
+  m_value_num   = (_value * 100).getAsInteger();
+  m_value_denom = 100;
 
+} // endset_value( GCW_NUMERIC _value )-> void
+
+auto
+GCW::Dbo::Splits::Item::
+set_quantity( GCW_NUMERIC _value )-> void
+{
+  m_quantity_num   = (_value * 100).getAsInteger();
+  m_quantity_denom = 100;
+
+} // endset_quantity( GCW_NUMERIC _value )-> void
 

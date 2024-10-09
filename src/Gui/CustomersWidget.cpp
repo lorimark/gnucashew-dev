@@ -53,6 +53,7 @@ CustomersWidget()
   **
   */
   m_model = std::make_shared< GCW::Eng::CustomersModel >( fields );
+  model()-> sort( 0 );
   view()-> setModel( model() );
 
 } // endGCW::Gui::CustomersWidget::CustomersWidget()

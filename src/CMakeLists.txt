@@ -9,6 +9,12 @@ project (gnucashew-bin
     VERSION 1.0
 )
 
+#
+# this library is used in the file guid.cpp for generating
+#  UUID values for the back-end database.
+#
+add_compile_definitions( GUID_LIBUUID )
+
 set ( CMAKE_CXX_FLAGS "-std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g" )
 
 set (PACKAGE_NAME GnuCashew)
@@ -25,6 +31,7 @@ set (GNUCASHEW_RESAVE_VERSION "19920")
 unset(dist_generated CACHE)
 unset(dist_generated_depends CACHE)
 
+add_subdirectory( 3rd )
 add_subdirectory( Dbo )
 add_subdirectory( Eng )
 add_subdirectory( Gui )
@@ -75,5 +82,6 @@ target_link_libraries(
   gnucash-guile
   glib-2.0
   gobject-2.0
+  uuid
 )
 

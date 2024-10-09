@@ -1,7 +1,7 @@
 #line 2 "src/Glb/Core.h"
 
-#ifndef __WTX_CORE_H_234e0174_6b7d_11e8_b503_fb1ef3651ec0__
-#define __WTX_CORE_H_234e0174_6b7d_11e8_b503_fb1ef3651ec0__
+#ifndef __GCW_CORE_H___
+#define __GCW_CORE_H___
 
 #include <string>
 #include <vector>
@@ -15,10 +15,10 @@
 //#define COUT_(x)  COUT_BEG << x << COUT_END
 
 
-namespace Wtx {
+namespace GCW {
 
   /*!
-  ** \brief functions and features
+  ** \brief helper functions and features
   **
   */
   namespace Core {
@@ -37,8 +37,26 @@ Wt::Json::Object toJson( Wt::WTreeView * _view );
 
 std::string hexDump( const std::string & data, int start = -1, int end = -1 );
 
+/*!
+** \brief Generate new GUID string value
+**
+** This GUID is suitable for use as the primary-guid-key value for the
+**  data tables.
+**
+*/
+auto newGuid()-> std::string ;
+
+/*!
+** \brief Current Date/Time
+**
+** This will return the current date/time suitable for back-end storage
+**
+*/
+auto currentDateTime()-> Wt::WDateTime ;
+auto currentDateTimeStorageString()-> std::string ;
+
   } // endnamespace Core
-} // endnamespace Wtx
+} // endnamespace GCW
 
 #endif
 

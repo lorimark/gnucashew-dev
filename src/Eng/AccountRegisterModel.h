@@ -45,11 +45,44 @@ class AccountRegisterModel
     void saveToDisk();
 
     auto viewMode() const-> ViewMode { return m_viewMode; }
-    auto setViewMode( ViewMode _viewMode );
+    auto setViewMode( ViewMode _viewMode )-> void;
     auto doubleLine() const-> bool { return m_doubleLine; }
     auto setDoubleLine( bool _doubleLine )-> void;
 
-    std::string splitGuid( const Wt::WModelIndex & _index );
+    auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
+
+    /*!
+    ** \brief Get Date from the index
+    **
+    ** This pulls the 'date' column out and returns it as a WDateTime
+    **  value.
+    **
+    ** \note This will 'force' the 'time' component to be equal to
+    **        the default time of '10:59:00', since the 'date' column
+    **        does not support a time component... this seems to be
+    **        consistent with GnuCash.
+    **
+    */
+    auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime ;
+    auto getAction( const Wt::WModelIndex & _index )-> std::string ;
+    auto getDescription( const Wt::WModelIndex & _index )-> std::string ;
+    auto getTransfer( const Wt::WModelIndex & _index )-> std::string ;
+    auto getReconcile( const Wt::WModelIndex & _index )-> std::string ;
+    auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+
+    /*!
+    ** \brief Get Value (positive or negative)
+    **
+    ** The value that gets stored in the back-end database is either positive
+    **  for debit, and negative for credit.  This function will read-out the
+    **  debit and credit columns in the register display and figure out if
+    **  the returned value should be positive or negative.
+    **
+    */
+    auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getBalance( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     GCW_NUMERIC present    () const { return m_present;    }
     GCW_NUMERIC future     () const { return m_future;     }
@@ -110,7 +143,7 @@ balance
     ** keep track of rows as they go dirty.
     **
     */
-    std::set< int > m_dirtyRows;
+//    std::set< int > m_dirtyRows;
 
     /*
     **

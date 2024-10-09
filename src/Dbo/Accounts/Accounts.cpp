@@ -6,6 +6,15 @@
 
 const char * GCW::Dbo::Accounts::s_tableName = "accounts";
 
+/*!
+** \code
+** {   type                                   dbcr                                name           colAccount   colDr        colCr
+** \endcode
+**
+** These are the account-types, debit/credit types, and register column labels for said accounts.
+**
+** \ref GCW::Eng::AccountRegisterModel::refreshFromDisk() "refreshFromDisk()"
+*/
 const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_accountDefs =
 {// type                                   dbcr                                name           colAccount   colDr        colCr
   { GCW::Dbo::Accounts::Type::INVALID    , GCW::Dbo::Accounts::DrCr::NONE   ,  "INVALID"    , "account"  , "debit"    , "credit"      },
@@ -183,7 +192,7 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
   **  account.
   **
   */
-  auto split = Wtx::Core::split( _fullName, ':' );
+  auto split = GCW::Core::split( _fullName, ':' );
 
   /*
   ** Start at the root and lope on up.  The return value

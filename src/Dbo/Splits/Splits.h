@@ -5,6 +5,7 @@
 
 #include <Wt/WDate.h>
 
+#include "../../Glb/gcwglobal.h"
 #include "../../GnuCashew.h"
 #include "../BaseItem.h"
 
@@ -91,10 +92,19 @@ class Item
 {
   public:
 
+    Item(){}
+
+    Item( const std::string & _splitGuid ): m_guid( _splitGuid ) {}
+
     /*!
     ** Split GUID
     */
     auto guid() const-> const std::string & { return m_guid; }
+
+    /*!
+    ** Set Split GUID
+    */
+    auto set_guid( const std::string & _guid )-> void { m_guid = _guid; }
 
     /*!
     ** Transaction GUID
@@ -102,9 +112,19 @@ class Item
     auto tx_guid() const-> const std::string & { return m_tx_guid; }
 
     /*!
+    ** Set Transaction GUID
+    */
+    auto set_tx_guid( const std::string & _guid )-> void { m_tx_guid = _guid; }
+
+    /*!
     ** Account GUID
     */
     auto account_guid() const-> const std::string & { return m_account_guid; }
+
+    /*!
+    ** Set Account GUID
+    */
+    auto set_account_guid( const std::string & _guid )-> void { m_account_guid = _guid; }
 
     /*!
     ** Memo field
@@ -122,9 +142,19 @@ class Item
     auto reconcile_state() const-> const std::string & { return m_reconcile_state; }
 
     /*!
+    ** Set Reconcile State field
+    */
+    auto set_reconcile_state( const std::string & _state )-> void { m_reconcile_state = _state; }
+
+    /*!
     ** Reconcile Date field
     */
     auto reconcile_date() const-> const std::string & { return m_reconcile_date; }
+
+    /*!
+    ** Set Reconcile Date field
+    */
+    auto set_reconcile_date( const std::string & _date )-> void { m_reconcile_date = _date; }
 
     /*!
     ** Value Number field
@@ -164,7 +194,8 @@ class Item
     {
       auto inv = invert? -1:1;
       GCW_NUMERIC retVal( value_num()*inv );
-      retVal /= value_denom();
+      if( value_denom() > 0 )
+        retVal /= value_denom();
       return retVal;
     }
 
@@ -193,6 +224,8 @@ class Item
       return toString( value(negate), GCW::Cfg::decimal_format() );
     }
 
+    auto set_value( GCW_NUMERIC _value )-> void ;
+
     /*!
     ** \brief Return 'quantity' as a decimal.h number.
     **
@@ -212,10 +245,12 @@ class Item
       return toString( quantity(), GCW::Cfg::decimal_format() );
     }
 
-    bool quantityIsNegative() const
+    auto quantityIsNegative() const-> bool
     {
       return quantity() < 0;
     }
+
+    auto set_quantity( GCW_NUMERIC _value )-> void ;
 
     template< class Action > void persist( Action & action )
     {
@@ -236,18 +271,18 @@ class Item
 
   private:
 
-    std::string m_guid            ; // text(32) PRIMARY KEY NOT NULL,
-    std::string m_tx_guid         ; // text(32) NOT NULL,
-    std::string m_account_guid    ; // text(32) NOT NULL,
-    std::string m_memo            ; // text(2048) NOT NULL,
-    std::string m_action          ; // text(2048) NOT NULL,
-    std::string m_reconcile_state ; // text(1) NOT NULL,
-    std::string m_reconcile_date  ; // text(19),
-    int         m_value_num       ; // bigint NOT NULL,
-    int         m_value_denom     ; // bigint NOT NULL,
-    int         m_quantity_num    ; // bigint NOT NULL,
-    int         m_quantity_denom  ; // bigint NOT NULL,
-    std::string m_lot_guid        ; // text(32)
+    std::string m_guid                               ; // text(32) PRIMARY KEY NOT NULL,
+    std::string m_tx_guid                            ; // text(32) NOT NULL,
+    std::string m_account_guid                       ; // text(32) NOT NULL,
+    std::string m_memo                               ; // text(2048) NOT NULL,
+    std::string m_action                             ; // text(2048) NOT NULL,
+    std::string m_reconcile_state = GCW_RECONCILE_NO ; // text(1) NOT NULL,
+    std::string m_reconcile_date                     ; // text(19),
+    int         m_value_num       = 0                ; // bigint NOT NULL,
+    int         m_value_denom     = 0                ; // bigint NOT NULL,
+    int         m_quantity_num    = 0                ; // bigint NOT NULL,
+    int         m_quantity_denom  = 0                ; // bigint NOT NULL,
+    std::string m_lot_guid                           ; // text(32)
 
 }; // endclass Item
 
@@ -259,11 +294,24 @@ extern const char * s_tableName;
 ** This function returns a split based on the GUID.
 **
 */
-auto
-load
-(
- const std::string & _splitGuid
-)-> Item::Ptr ;
+auto load( const std::string & _splitGuid )-> Item::Ptr ;
+
+/*!
+** \brief Find a single split
+**
+** This function returns a split based on the GUID.  If the
+**  split is not found, a simple empty object is returned.
+**
+*/
+auto find( const std::string & _splitGuid )-> Item::Ptr ;
+
+/*!
+** \brief Add a single split
+**
+** This adds a new split item containing the guid requested
+**
+*/
+auto add( const std::string & _splitGuid )-> Item::Ptr ;
 
 /*!
 ** \brief Load Splits by Account
@@ -274,12 +322,7 @@ load
 **
 ** \return Vector of Items sorted by Transction Date
 */
-auto
-byAccount
-(
- /** Account GUID */
- const std::string & _accountGuid
-)-> Item::Vector ;
+auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 
 /*!
 ** \brief Load Splits by Split
@@ -289,16 +332,11 @@ byAccount
 **  associated with a transaction except for the split
 **  ID used to identify the transaction.  This function
 **  acts as a convenience function for a split to quickly
-**  identify all of the 'other' splits.
+**  identify all of the 'other' splits in the transaction.
 **
 ** \return Vector of Items sorted by Transction Date
 */
-auto
-bySplit
-(
- /** Split GUID */
- const std::string & _splitGuid
-)-> Item::Vector ;
+auto bySplit( const std::string & _splitGuid )-> Item::Vector ;
 
 /*!
 ** \brief Load Splits by Transaction
@@ -309,12 +347,7 @@ bySplit
 **
 ** \return Vector of Items sorted by Transction Date
 */
-auto
-byTransaction
-(
- /** Transaction GUID */
- const std::string & _txGuid
-)-> Item::Vector ;
+auto byTransaction( const std::string & _txGuid )-> Item::Vector ;
 
     } // endnamespace Splits {
   } // endnamespace Dbo {

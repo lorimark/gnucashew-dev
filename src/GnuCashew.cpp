@@ -17,12 +17,13 @@
 #include "GnuCashew.h"
 
 
+/// TODO these should be moved to a user-adjustable config file
 DECIMAL::decimal_format GCW::Cfg::decimal_format()
 {
   return DECIMAL::decimal_format( '.', ',' );
 }
 
-
+/// TODO these should be moved to a user-adjustable config file
 std::string GCW::Cfg::date_format()
 {
   return "MM/dd/yyyy";
@@ -30,6 +31,7 @@ std::string GCW::Cfg::date_format()
 }
 
 
+/// TODO these should be moved to a user-adjustable config file
 std::string GCW::Cfg::time_format()
 {
   return "hh:mm:ss";

@@ -5,16 +5,44 @@
 
 const char * GCW::Dbo::Transactions::s_tableName = "transactions";
 
-void
+auto
 GCW::Dbo::Transactions::Item::
-set_post_date( const Wt::WDate & _value )
+set_enter_date ( const std::string & _value )-> void
+{
+  m_enter_date = _value;
+}
+
+auto
+GCW::Dbo::Transactions::Item::
+set_enter_date ( const Wt::WDateTime & _value )-> void
+{
+  m_enter_date = _value.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+}
+
+auto
+GCW::Dbo::Transactions::Item::
+set_post_date( const std::string & _value )-> void
+{
+  m_post_date = _value;
+}
+
+auto
+GCW::Dbo::Transactions::Item::
+set_post_date( const Wt::WDateTime & _value )-> void
 {
   m_post_date = _value.toString( "yyyy-MM-dd 00:00:00" ).toUTF8();
 }
 
-GCW::Dbo::Transactions::Item::Ptr
+auto
+GCW::Dbo::Transactions::Item::
+set_description( const std::string & _value )-> void
+{
+  m_description = _value;
+}
+
+auto
 GCW::Dbo::Transactions::
-load( const std::string & _txGuid )
+load( const std::string & _txGuid )-> GCW::Dbo::Transactions::Item::Ptr
 {
   GCW::Dbo::Transactions::Item::Ptr retVal;
 
@@ -38,17 +66,28 @@ load( const std::string & _txGuid )
 
 } // endGCW::Dbo::Transactions::Item::Ptr GCW::Dbo::Transactions::byGuid( const std::string & _txGuid )
 
-GCW::Dbo::Transactions::Item::Ptr
+auto
 GCW::Dbo::Transactions::
-byGuid( const std::string & _txGuid )
+byGuid( const std::string & _txGuid )-> GCW::Dbo::Transactions::Item::Ptr
 {
   return load( _txGuid );
 
 } // endGCW::Dbo::Transactions::Item::Ptr GCW::Dbo::Transactions::byGuid( const std::string & _txGuid )
 
-GCW::Dbo::Transactions::Item::Vector
+auto
 GCW::Dbo::Transactions::
-byAccount( const std::string & _accountGuid )
+add( const std::string & _txGuid )-> Item::Ptr
+{
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+  return
+    GCW::app()-> gnucashew_session().addNew< Item >( _txGuid );
+
+} // endadd( const std::string & _txGuid )-> Item::Ptr
+
+auto
+GCW::Dbo::Transactions::
+byAccount( const std::string & _accountGuid )-> GCW::Dbo::Transactions::Item::Vector
 {
   GCW::Dbo::Transactions::Item::Vector retVal;
 
