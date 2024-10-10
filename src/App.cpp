@@ -73,6 +73,38 @@ GCW::App::App( const Wt::WEnvironment & env )
 {
   root()-> addStyleClass( "GnuCashewRoot" );
 
+#ifdef NEVER
+  // something to note about the X-Forwarded-For haproxy value.  This setting
+  //  needs to be set within the 'haproxy.cfg haproxy_loop' section.  To
+  //  troubleshoot this, open the /var/log/haproxy.log file and look for the
+  //  reported IP address;
+  //    Oct 10 09:45:26 lsus1 haproxy[31634]: 104.28.50.130:50944 [10/Oct/2024:09:45:24.526] www-https~ haproxy_loop/haproxy_loop 0/0/1998 297 -- 6/3/2/1/0 0/0
+  //    Oct 10 09:45:27 lsus1 haproxy[31634]: 127.0.0.1:43110 [10/Oct/2024:09:45:26.362] www-http gnucashew/gnucashew_wt 976/0/0/6/982 200 3777 - - ---- 6/3/0/1/0 0/0 "POST /demo?wtd=wDqiKVj7Wjibd276 HTTP/1.1"
+  //  note in the first-line, haproxy_loop, the IP address noted is the actual
+  //  ip address of the incoming client.  this is the section that needs to
+  //  carry the 'option forwardfor' setting to forward that address along to
+  //  the next section;
+  //    backend haproxy_loop
+  //      mode http
+  //      option forwardfor
+  //      server haproxy_loop localhost:80
+  //
+  //  note: also that the wt_config.xml file needs to posess the
+  //         <behind-reverse-proxy>true</behind-reverse-proxy> value
+  //  note: that the wthttp back-end does not regard the X-Forwarded-For value
+  //         and therefore will report the incorrect IP address to the console
+  //
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " " << environment().headerValue( "X-Forwarded-For" ) << std::endl;
+  for( const auto & kvp : environment().getParameterMap() )
+    for( const auto vvv : kvp.second )
+      std::cout << __FILE__ << ":" << __LINE__ << " " << kvp.first << " " << vvv << std::endl;
+#endif
+
+#ifndef NEVER
+  std::cout << __FILE__ << ":" << __LINE__ << std::endl << __FILE__ << ":" << __LINE__ << " client:" << environment().clientAddress() << " " << sessionId() << std::endl << __FILE__ << ":" << __LINE__ << std::endl;
+#endif
+
 #ifdef USE_GNUCASH_ENGINE
   gnucash_session()  .open( g_dbName );
 #endif

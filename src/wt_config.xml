@@ -133,6 +133,7 @@
                the frequency.
               -->
             <server-push-timeout>50</server-push-timeout>
+
         </session-management>
 
         <!-- Settings that apply only to the FastCGI connector.
@@ -404,6 +405,8 @@
            of your application.
           -->
         <redirect-message>Load basic HTML</redirect-message>
+
+        <behind-reverse-proxy>true</behind-reverse-proxy>
 
         <!-- The following configuration options can be used when Wt is behind a reverse proxy.
           -->
