@@ -26,7 +26,7 @@ class AccountRegisterModel
 
   public:
 
-    enum ViewMode
+    enum class ViewMode
     {
       /// basic one-line per transaction
       BASIC_LEDGER,
@@ -164,7 +164,7 @@ balance
     */
     bool m_editable = false;
 
-    ViewMode m_viewMode   = BASIC_LEDGER;
+    ViewMode m_viewMode   = ViewMode::BASIC_LEDGER;
     bool     m_doubleLine = false;
 
     /*!

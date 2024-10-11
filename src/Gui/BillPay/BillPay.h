@@ -49,10 +49,10 @@ GCW::Dbo::Vars::Item::Ptr configItem();
 /*!
 ** \brief Bill Pay Item
 **
-** This returns a bill-pay item based on the guid of the relative account.
+** This returns a bill-pay item based on the NICKNAME of the relative account.
 **
 */
-GCW::Dbo::Vars::Item::Ptr bpItem( const std::string & _accountGuid );
+GCW::Dbo::Vars::Item::Ptr bpItem( const std::string & _nickname );
 
 /*!
 ** \brief Convert Integer to String

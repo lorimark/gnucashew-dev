@@ -406,7 +406,10 @@
           -->
         <redirect-message>Load basic HTML</redirect-message>
 
-        <behind-reverse-proxy>true</behind-reverse-proxy>
+        <!--
+          not needed: see trusted-proxy-config below
+          <behind-reverse-proxy>true</behind-reverse-proxy>
+        -->
 
         <!-- The following configuration options can be used when Wt is behind a reverse proxy.
           -->

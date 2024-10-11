@@ -102,7 +102,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 #endif
 
 #ifndef NEVER
-  std::cout << __FILE__ << ":" << __LINE__ << std::endl << __FILE__ << ":" << __LINE__ << " client:" << environment().clientAddress() << " " << sessionId() << std::endl << __FILE__ << ":" << __LINE__ << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << std::endl << __FILE__ << ":" << __LINE__ << " [" << Wt::WDateTime::currentDateTime().toString() << "] " << environment().clientAddress() << " " << sessionId() << " " << url() << std::endl << __FILE__ << ":" << __LINE__ << std::endl;
 #endif
 
 #ifdef USE_GNUCASH_ENGINE

@@ -11,20 +11,14 @@
 GCW::Gui::BillPay::MainWidget::
 MainWidget()
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
   buildContent();
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 } // endMainWidget()
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-buildContent()
+buildContent()-> void
 {
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-
   clear();
 
   addStyleClass( "MainWidget" );
@@ -106,11 +100,11 @@ buildContent()
       });
   }
 
-} // endbuildContent()
+} // endbuildContent()-> void
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-openEditor( const std::string & _accountGuid )
+openEditor( const std::string & _nickname )-> void
 {
 
 #ifdef EDIT_FORM_AS_POPUP_DIALOG
@@ -121,7 +115,7 @@ openEditor( const std::string & _accountGuid )
   ** Add a dialog to open/edit this item
   **
   */
-  m_dialog = std::make_unique< GCW::Gui::BillPay::EditWidgetDialog >( _accountGuid );
+  m_dialog = std::make_unique< GCW::Gui::BillPay::EditWidgetDialog >( _nickname );
   m_dialog-> show();
   m_dialog->
     finished().connect( [&]()
@@ -133,8 +127,6 @@ openEditor( const std::string & _accountGuid )
 #endif
 
 #ifdef EDIT_FORM_AS_SPLIT_PAGE
-
-  std::cout << __FILE__ << ":" << __LINE__ << " opening split" << std::endl;
 
   /*
   **
@@ -151,7 +143,7 @@ openEditor( const std::string & _accountGuid )
   ** Split the page to open/edit this item
   **
   */
-  auto u_ = std::make_unique< GCW::Gui::BillPay::EditWidget >( _accountGuid );
+  auto u_ = std::make_unique< GCW::Gui::BillPay::EditWidget >( _nickname );
   m_editWidget = u_.get();
   m_gridLayout-> addWidget( std::move( u_), 1, 1 );
   m_gridLayout-> setColumnResizable( 0, true, "30%" );
@@ -160,34 +152,32 @@ openEditor( const std::string & _accountGuid )
     save().connect( [=]()
     {
       refreshViews();
-      m_gridLayout-> removeWidget( m_editWidget );
-      m_editWidget = nullptr;
+      m_gridLayout-> removeWidget( m_editWidget.get() );
     });
 
   m_editWidget->
     cancel().connect( [=]()
     {
       refreshViews();
-      m_gridLayout-> removeWidget( m_editWidget );
-      m_editWidget = nullptr;
+      m_gridLayout-> removeWidget( m_editWidget.get() );
     });
+
 #endif
 
-} // endopenEditor( const std::string & _accountGuid )
+} // endopenEditor( const std::string & _nickname )-> void
 
-
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-addClicked()
+addClicked()-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   openEditor( "" );
 
-} // endaddClicked()
+} // endaddClicked()-> void
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-editClicked( Table * _table, Wt::WModelIndex _index )
+editClicked( Table * _table, Wt::WModelIndex _index )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
@@ -197,15 +187,15 @@ editClicked( Table * _table, Wt::WModelIndex _index )
   **  guid.
   **
   */
-  auto zcolIndex = _index.model()-> index( _index.row(), 0 );
-  auto accountGuid = Wt::asString( _table-> model()-> itemFromIndex( zcolIndex )-> data() ).toUTF8();
-  openEditor( accountGuid );
+  auto zcolIndex = _index.model()-> index( _index.row(), 2 );
+  auto nickname = Wt::asString( _table-> model()-> itemFromIndex( zcolIndex )-> data() ).toUTF8();
+  openEditor( nickname );
 
-} // endeditClicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+} // endeditClicked( Table * _table, Wt::WModelIndex _index )-> void
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-buttonChanged( Wt::WRadioButton * _button )
+buttonChanged( Wt::WRadioButton * _button )-> void
 {
   /*
   ** If there is a button (sometimes there is not), then there's
@@ -225,18 +215,19 @@ buttonChanged( Wt::WRadioButton * _button )
 
   setMonth( std::stoi( _button-> text().toUTF8() ) );
 
-} // endbuttonChanged( Wt::WRadioButton * _button )
+} // endbuttonChanged( Wt::WRadioButton * _button )-> void
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-disabledClicked()
+disabledClicked()-> void
 {
   buildContent();
-}
 
-void
+} // enddisabledClicked()-> void
+
+auto
 GCW::Gui::BillPay::MainWidget::
-setMonth( int _month )
+setMonth( int _month )-> void
 {
   if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
@@ -246,22 +237,23 @@ setMonth( int _month )
 
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );
 
-} // endsetMonth( int _month )
+} // endsetMonth( int _month )-> void
 
-void
+auto
 GCW::Gui::BillPay::MainWidget::
-refreshViews()
+refreshViews()-> void
 {
   setMonth( m_selectedMonth );
-}
 
-void
+} // endrefreshViews()-> void
+
+auto
 GCW::Gui::BillPay::MainWidget::
-on_headerClicked( int _col, const Wt::WMouseEvent _me )
+on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void
 {
   if( _col >= 9 )
     setMonth( _col - 8 );
 
-} // endon_headerClicked( int _col, const Wt::WMouseEvent _me )
+} // endon_headerClicked( int _col, const Wt::WMouseEvent _me )-> void
 
 

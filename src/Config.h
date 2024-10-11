@@ -21,7 +21,7 @@ namespace GCW {
 */
 class Config
 {
-  enum Area
+  enum class Area
   {
     GLOBAL,
     APP,

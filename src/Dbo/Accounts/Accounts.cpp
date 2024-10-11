@@ -40,6 +40,21 @@ const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_acco
   { GCW::Dbo::Accounts::Type::CREDITLINE , GCW::Dbo::Accounts::DrCr::CREDIT ,  "CREDITLINE" , "account"  , "debit"    , "credit"      },
 };
 
+const std::vector< GCW::Dbo::Accounts::AccountParent_t > GCW::Dbo::Accounts::s_accountParents =
+{
+  { GCW::Dbo::Accounts::Type::BANK,       GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::CASH,       GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::STOCK,      GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::MUTUAL,     GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::CURRENCY,   GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::RECEIVABLE, GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::TRADING,    GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::CHECKING,   GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::SAVINGS,    GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::MONEYMRKT,  GCW::Dbo::Accounts::Type::ASSET     },
+  { GCW::Dbo::Accounts::Type::CREDIT,     GCW::Dbo::Accounts::Type::LIABILITY },
+};
+
 const Wt::WFormModel::Field GCW::Dbo::Accounts::Field::guid             = "guid"           ; // text(32) PRIMARY KEY NOT NULL
 const Wt::WFormModel::Field GCW::Dbo::Accounts::Field::name             = "name"           ; // text(2048) NOT NULL
 const Wt::WFormModel::Field GCW::Dbo::Accounts::Field::account_typeName = "account_type"   ; // text(2048) NOT NULL

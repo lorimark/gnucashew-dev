@@ -320,11 +320,7 @@ open_BillPayWidget()-> void
     ** Open a new CustomersWidget tab that is connected to the account
     **
     */
-    std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
     auto widget = std::make_unique< GCW::Gui::BillPay::MainWidget >();
-    std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
     auto w = widget.get();
 
     auto tab =

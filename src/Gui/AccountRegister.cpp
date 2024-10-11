@@ -867,7 +867,7 @@ loadData()-> void
   tableView()-> setColumnAlignment( 2, Wt::AlignmentFlag::Left   );
 
   // 3 = Account/Transfer
-  tableView()-> setColumnWidth    ( 3, "200px"                   );
+  tableView()-> setColumnWidth    ( 3, "150px"                   );
   tableView()-> setHeaderAlignment( 3, Wt::AlignmentFlag::Right  );
   tableView()-> setColumnAlignment( 3, Wt::AlignmentFlag::Right  );
 

@@ -151,6 +151,22 @@ typedef struct ACCOUNTDEF_S
 
 extern const std::vector< AccountDef_t > s_accountDefs;
 
+/*!
+** \brief AccountType Parentage
+**
+** This array defines the various account types and their suitable
+**  parentages.
+**
+*/
+typedef struct ACCOUNTPARENT_S
+{
+  Type type;
+  Type parent;
+
+} AccountParent_t;
+
+extern const std::vector< AccountParent_t > s_accountParents;
+
       namespace Field {
 
 extern const Wt::WFormModel::Field guid             ; // text(32) PRIMARY KEY NOT NULL

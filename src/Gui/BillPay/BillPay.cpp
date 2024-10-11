@@ -16,10 +16,10 @@ configItem()
 
 GCW::Dbo::Vars::Item::Ptr
 GCW::Gui::BillPay::
-bpItem( const std::string & _accountGuid )
+bpItem( const std::string & _nickname )
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  return GCW::Dbo::Vars::get( _accountGuid, GCW_GUI_BILLPAY_ITEM_CFY );
+  return GCW::Dbo::Vars::get( _nickname, GCW_GUI_BILLPAY_ITEM_CFY );
 }
 
 std::string

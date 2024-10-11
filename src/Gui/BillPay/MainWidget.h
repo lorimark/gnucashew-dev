@@ -28,23 +28,32 @@ class MainWidget
 
   private:
 
-    void buildContent();
-    void addClicked();
-    void editClicked( Table * _table, Wt::WModelIndex _index );
-    void openEditor( const std::string & _accountGuid );
-    void buttonChanged( Wt::WRadioButton * _button );
-    void setMonth( int _month );
-    void disabledClicked();
-    void refreshViews();
+    auto buildContent()-> void ;
+    auto addClicked()-> void ;
+    auto editClicked( Table * _table, Wt::WModelIndex _index )-> void ;
+    auto openEditor( const std::string & _accountGuid )-> void ;
+    auto buttonChanged( Wt::WRadioButton * _button )-> void ;
+    auto setMonth( int _month )-> void ;
+    auto disabledClicked()-> void ;
+    auto refreshViews()-> void ;
 
     std::unique_ptr< EditWidgetDialog > m_dialog;
-    EditWidget       * m_editWidget   = nullptr;
+
+    /*
+    ** The edit widget gets loaded and unloaded for the
+    **  editing functions.  Using an observing pointer
+    **  let's us know automatically when the editor is
+    **  open and when it's not.
+    **
+    */
+    Wt::Core::observing_ptr< EditWidget > m_editWidget;
+
     ToolBar          * m_toolBar      = nullptr;
     Table            * m_paidView     = nullptr;
     Table            * m_unpaidView   = nullptr;
     Table            * m_disabledView = nullptr;
 
-    void on_headerClicked( int _col, const Wt::WMouseEvent _me );
+    auto on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void ;
 
     int m_selectedMonth = -1;
 

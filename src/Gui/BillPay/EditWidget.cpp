@@ -22,7 +22,8 @@
 
 namespace {
 
-std::string toString( int _value )
+auto
+toString( int _value )-> std::string
 {
   std::string retVal = std::to_string( _value );
 
@@ -31,7 +32,7 @@ std::string toString( int _value )
 
   return retVal;
 
-} // endstd::string toString( int _value )
+} // endtoString( int _value )-> std::string
 
 } // endnamespace {
 
@@ -62,9 +63,9 @@ ComboBox()
 
 
 GCW::Gui::BillPay::EditWidget::
-EditWidget( const std::string & _accountGuid )
+EditWidget( const std::string & _nickname )
 : Wt::WContainerWidget(),
-  m_accountGuid( _accountGuid )
+  m_nick( _nickname )
 {
   addStyleClass( "BillPay_EditWidget" );
 
@@ -112,13 +113,14 @@ EditWidget( const std::string & _accountGuid )
   **  somewhat of a technical reason due to the setup of this item.
   **  We don't want to start with one account on this billPay item
   **  and then switch it to a different account.
-  **
+  ** (move to the load function)
   */
-  if( _accountGuid != "" )
-    m_key-> setDisabled( true );
+//  if( _nickname != "" )
+//    m_key-> setDisabled( true );
 
   /*
-  ** this is the tab widget.
+  ** this is the tab widget.  It takes up the remaining bottom space
+  **  on the form.
   */
   m_tabWidget = lw-> addWidget( std::make_unique< Wt::WTabWidget >(), 1 );
 
@@ -166,8 +168,8 @@ EditWidget( const std::string & _accountGuid )
     **  to set the widget height.
     **
     */
-    auto tab = m_tabWidget-> addTab( std::make_unique< GCW::Gui::AccountRegister >( _accountGuid ), TR("gcw.billPay.tabName.history") );
-    tab-> contents()-> setMaximumSize( Wt::WLength::Auto, "300px" );
+//    auto tab = m_tabWidget-> addTab( std::make_unique< GCW::Gui::AccountRegister >( _accountGuid ), TR("gcw.billPay.tabName.history") );
+//    tab-> contents()-> setMaximumSize( Wt::WLength::Auto, "300px" );
 
   } // endWt::WTemplate * templtHistory;
 
@@ -182,26 +184,26 @@ EditWidget( const std::string & _accountGuid )
 
 } // endEditWidget( const std::string & _accountGuid )
 
-void
+auto
 GCW::Gui::BillPay::EditWidget::
-loadData()
+loadData()-> void
 {
   /*
   ** be safe
   */
-  if( m_accountGuid == "" )
+  if( m_nick == "" )
     return;
-
-  /*
-  ** format the 'name' to be something readable
-  */
-  auto fullName = GCW::Dbo::Accounts::fullName( m_accountGuid );
 
   /*
   ** Get the item that carries the bill-pay info
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  auto bpItem = GCW::Gui::BillPay::bpItem( m_accountGuid );
+  auto bpItem = GCW::Gui::BillPay::bpItem( m_nick );
+
+  /*
+  ** format the 'name' to be something readable
+  */
+  auto fullName = GCW::Dbo::Accounts::fullName( bpItem-> getVarString( FN_NICKNAME ) );
 
   /*
   ** populate the form
@@ -226,40 +228,29 @@ loadData()
   for( auto cb : m_cbx )
     cb-> setValueText( bpItem-> getVarString( "cb" + toString( i++ ) ) );
 
-} // endloadData( const std::string & _accountGuid )
+} // endloadData()-> void
 
-void
+auto
 GCW::Gui::BillPay::EditWidget::
-saveData()
+saveData()-> void
 {
-  auto key = m_key-> valueText().toUTF8();
-
   GCW::Dbo::Accounts::Item::Ptr accountItem;
 
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  auto nickname = m_nickname-> valueText().toUTF8();
 
+#ifdef NEVER
   /*
-  ** If the account guid is not set, then this is a '(new)'
+  ** If the nickname is not set, then this is a '(new)'
   **  entry.  We have to generate a new item for storage
   **
   */
-  if( m_accountGuid == "" )
+  if( m_nick == "" )
   {
-    /*
-    ** If the key is not set, there is nothing to do
-    **
-    */
-    if( key == "" )
-      return;
 
-    accountItem = GCW::Dbo::Accounts::byFullName( key );
-
-    m_accountGuid = accountItem-> guid();
-
-  } // endif( m_accountGuid == "" )
+  } // endif( m_nick == "" )
 
   /*
-  ** We have an account guid, so just fetch the account
+  ** We have an nick, so just fetch the account
   **
   */
   else
@@ -268,6 +259,9 @@ saveData()
 
     accountItem = GCW::Dbo::Accounts::byGuid( m_accountGuid );
   }
+
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
 
   auto varItem = GCW::Gui::BillPay::bpItem( m_accountGuid );
 
@@ -290,9 +284,10 @@ saveData()
   for( auto cb : m_cbx )
     varItem.modify()-> setVar( "cb" + toString( i++ ), cb-> valueText() );
 
+#endif
   m_save.emit();
 
-} // endsaveData()
+} // endsaveData()-> void
 
 
 

@@ -33,11 +33,11 @@ class EditWidget
 
     EditWidget( const std::string & _accountGuid );
 
-    void loadData();
-    void saveData();
+    auto loadData()-> void ;
+    auto saveData()-> void ;
 
-    Wt::Signal<> & save()   { return m_save;   }
-    Wt::Signal<> & cancel() { return m_cancel; }
+    auto save   ()-> Wt::Signal<> & { return m_save;   }
+    auto cancel ()-> Wt::Signal<> & { return m_cancel; }
 
   private:
 
@@ -52,7 +52,7 @@ class EditWidget
     Wt::Signal<> m_cancel;
     Wt::Signal<> m_delete;
 
-    std::string m_accountGuid;
+    std::string m_nick;
 
     Wt::WPushButton * m_pbSave    = nullptr;
     Wt::WPushButton * m_pbCancel  = nullptr;
