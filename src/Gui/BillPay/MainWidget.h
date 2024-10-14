@@ -57,7 +57,8 @@ class MainWidget
 
     int m_selectedMonth = -1;
 
-    Wt::WGridLayout * m_gridLayout = nullptr;
+//    Wt::WGridLayout * m_gridLayout = nullptr;
+    Wt::WHBoxLayout * m_hlw = nullptr;
 
 };  // endclass MainWidget
 

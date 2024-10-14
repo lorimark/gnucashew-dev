@@ -36,6 +36,14 @@ enum class Status
 **
 */
 std::string asString( Status _status );
+
+/*!
+** \brief Get Status as Style Class
+**
+** The style-class is used to alter the display rendering based
+**  on the status.
+**
+*/
 std::string asStyleClass( Status _status );
 
     } // endnamespace BillPay {

@@ -255,26 +255,35 @@
     Account: {5}
   </message>
 
-  <message id="gcw.cw.tabName.Customer"                            >Customer</message>
-  <message id="gcw.cw.tabName.Customers"                           >Customers</message>
-  <message id="gcw.cw.tabName.Employees"                           >Employees</message>
-  <message id="gcw.cw.tabName.BillPay"                             >Bill Pay</message>
+  <message id="gcw.cw.tabName.Customer"         >Customer</message>
+  <message id="gcw.cw.tabName.Customers"        >Customers</message>
+  <message id="gcw.cw.tabName.Employees"        >Employees</message>
+  <message id="gcw.cw.tabName.BillPay"          >Bill Pay</message>
 
-  <message id="gcw.billPay.tableName.Paid"                         >Paid</message>
-  <message id="gcw.billPay.tableName.Unpaid"                       >Unpaid</message>
-  <message id="gcw.billPay.tableName.Disabled"                     >Disabled</message>
-  <message id="gcw.billPay.pb.save"                                >save</message>
-  <message id="gcw.billPay.pb.cancel"                              >cancel</message>
-  <message id="gcw.billPay.pb.delete"                              >delete</message>
-  <message id="gcw.billPay.pb.ap"                                  >AP</message>
-  <message id="gcw.billPay.pb.isActive"                            >is Active</message>
-  <message id="gcw.billPay.pb.isVisible"                           >is Visible</message>
-  <message id="gcw.billPay.pb.autoPay"                             >Auto Pay</message>
-  <message id="gcw.billPay.pb.payNow"                              >Pay Now</message>
-  <message id="gcw.billPay.pb.clear"                               >clear</message>
-  <message id="gcw.billPay.pb.clear.toolTip"                       >Clear all the payment check-boxes</message>
-  <message id="gcw.billPay.tabName.payment"                        >Payment</message>
-  <message id="gcw.billPay.tabName.history"                        >History</message>
+  <message id="gcw.billPay.accountLabel"        >Account</message>
+  <message id="gcw.billPay.dueDayLabel"         >Due Day</message>
+  <message id="gcw.billPay.minimumLabel"        >Minimum</message>
+  <message id="gcw.billPay.budgetLabel"         >Budget</message>
+  <message id="gcw.billPay.nicknameLabel"       >Nickname</message>
+  <message id="gcw.billPay.groupLabel"          >Group</message>
+  <message id="gcw.billPay.limitLabel"          >Limit</message>
+  <message id="gcw.billPay.actualLabel"         >Actual</message>
+
+  <message id="gcw.billPay.tableName.Paid"      >Paid</message>
+  <message id="gcw.billPay.tableName.Unpaid"    >Unpaid</message>
+  <message id="gcw.billPay.tableName.Disabled"  >Disabled</message>
+  <message id="gcw.billPay.pb.save"             >save</message>
+  <message id="gcw.billPay.pb.cancel"           >cancel</message>
+  <message id="gcw.billPay.pb.delete"           >delete</message>
+  <message id="gcw.billPay.pb.ap"               >AP</message>
+  <message id="gcw.billPay.pb.isActive"         >is Active</message>
+  <message id="gcw.billPay.pb.isVisible"        >is Visible</message>
+  <message id="gcw.billPay.pb.autoPay"          >Auto Pay</message>
+  <message id="gcw.billPay.pb.payNow"           >Pay Now</message>
+  <message id="gcw.billPay.pb.clear"            >clear</message>
+  <message id="gcw.billPay.pb.clear.toolTip"    >Clear all the payment check-boxes</message>
+  <message id="gcw.billPay.tabName.payment"     >Payment</message>
+  <message id="gcw.billPay.tabName.history"     >History</message>
 
 </messages>
 

@@ -11,9 +11,9 @@
 const char * GCW::Dbo::Vars::s_tableName = "gcw_vars";
 
 
-GCW::Dbo::Vars::Item::Ptr
+auto
 GCW::Dbo::Vars::
-get( const std::string & _keyValue, const std::string & _cfyValue )
+get( const std::string & _keyValue, const std::string & _cfyValue, bool _add )-> GCW::Dbo::Vars::Item::Ptr
 {
   GCW::Dbo::Vars::Item::Ptr retVal;
 
@@ -39,6 +39,7 @@ get( const std::string & _keyValue, const std::string & _cfyValue )
   ** find the item (or try to)
   **
   */
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   retVal =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Vars::Item >()
       .where( where )
@@ -50,7 +51,7 @@ get( const std::string & _keyValue, const std::string & _cfyValue )
   **  the key and cfy if available.
   **
   */
-  if( !retVal )
+  if( !retVal && _add )
   {
     retVal =
       GCW::app()-> gnucashew_session().addNew< GCW::Dbo::Vars::Item >()
@@ -67,11 +68,11 @@ get( const std::string & _keyValue, const std::string & _cfyValue )
 
   return retVal;
 
-} // endget( const std::string & _keyValue, const std::string & _cfyValue )
+} // endget( const std::string & _keyValue, const std::string & _cfyValue )-> GCW::Dbo::Vars::Item::Ptr
 
-std::string
+auto
 GCW::Dbo::Vars::Item::
-getVarString( const std::string & _field ) const
+getVarString( const std::string & _field ) const-> std::string
 {
   std::string retVal;
 
@@ -92,11 +93,11 @@ getVarString( const std::string & _field ) const
 
   return retVal;
 
-} // endgetVarString( const std::string & _field ) const
+} // endgetVarString( const std::string & _field ) const-> std::string
 
-int
+auto
 GCW::Dbo::Vars::Item::
-getVarInt( const std::string & _field ) const
+getVarInt( const std::string & _field ) const-> int
 {
   int retVal = 0;
 
@@ -117,27 +118,27 @@ getVarInt( const std::string & _field ) const
 
   return retVal;
 
-} // endgetVarInt( const std::string & _field ) const
+} // endgetVarInt( const std::string & _field ) const-> int
 
-void
+auto
 GCW::Dbo::Vars::Item::
-setVar( const std::string & _field, const char * _value )
+setVar( const std::string & _field, const char * _value )-> void
 {
   setVar( _field, std::string( _value ) );
 
-} // endsetVar( const std::string & _field, const std::string & _value )
+} // endsetVar( const std::string & _field, const char * _value )-> void
 
-void
+auto
 GCW::Dbo::Vars::Item::
-setVar( const std::string & _field, const Wt::WString & _value )
+setVar( const std::string & _field, const Wt::WString & _value )-> void
 {
   setVar( _field, _value.toUTF8() );
 
-} // endsetVar( const std::string & _field, const std::string & _value )
+} // endsetVar( const std::string & _field, const Wt::WString & _value )-> void
 
-void
+auto
 GCW::Dbo::Vars::Item::
-setVar( const std::string & _field, const std::string & _value )
+setVar( const std::string & _field, const std::string & _value )-> void
 {
   /*
   ** If there is no field specified, then there's nothing
@@ -161,11 +162,11 @@ setVar( const std::string & _field, const std::string & _value )
 
   setVarField( Wt::Json::serialize( jobj ) );
 
-} // endsetVar( const std::string & _field, const std::string & _value )
+} // endsetVar( const std::string & _field, const std::string & _value )-> void
 
-void
+auto
 GCW::Dbo::Vars::Item::
-setVar( const std::string & _field, int _value )
+setVar( const std::string & _field, int _value )-> void
 {
   /*
   ** If there is no field specified, then there's nothing
@@ -188,7 +189,7 @@ setVar( const std::string & _field, int _value )
 
   setVarField( Wt::Json::serialize( jobj ) );
 
-} // endsetVar( const std::string & _field, int & _value )
+} // endsetVar( const std::string & _field, int _value )-> void
 
 
 

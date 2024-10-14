@@ -44,10 +44,11 @@ class AccountRegisterModel
     ** This opens the model associated with a specific account.
     **
     */
-    AccountRegisterModel( const std::string & _accountGuid, bool _editable = true );
+    AccountRegisterModel( const std::string & _accountGuid = "", bool _editable = true );
 
-    void refreshFromDisk();
-    void saveToDisk();
+    auto setAccountGuid( const std::string & _accountGuid )-> void ;
+    auto refreshFromDisk()-> void ;
+    auto saveToDisk()-> void ;
 
     auto viewMode() const-> ViewMode { return m_viewMode; }
     auto setViewMode( ViewMode _viewMode )-> void;

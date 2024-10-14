@@ -126,11 +126,11 @@
     </div>
     <div class="billpayedit">
       <table class="t1">
-        <tr><td> Key         </td><td> Due Day   </td><td> Minimum    </td><td> Budget    </td></tr>
-        <tr><td> ${key}      </td><td> ${dueDay} </td><td> ${minimum} </td><td> ${budget} </td></tr>
+        <tr><td> ${accountLabel}  </td><td> ${dueDayLabel} </td><td> ${minimumLabel} </td><td> ${budgetLabel} </td></tr>
+        <tr><td> ${account}       </td><td> ${dueDay}      </td><td> ${minimum}      </td><td> ${budget}      </td></tr>
 
-        <tr><td> Nickname    </td><td> Group     </td><td> Limit      </td><td> Actual    </td></tr>
-        <tr><td> ${nickname} </td><td> ${group}  </td><td> ${limit}   </td><td> ${actual} </td></tr>
+        <tr><td> ${nicknameLabel} </td><td> ${groupLabel}  </td><td> ${limitLabel}   </td><td> ${actualLabel} </td></tr>
+        <tr><td> ${nickname}      </td><td> ${group}       </td><td> ${limit}        </td><td> ${actual}      </td></tr>
       </table>
       <table class="t2">
         <tr><td> ${ap}        </td></tr>
@@ -154,6 +154,8 @@
                 <table>
                   <tr><td>   last4  </td>                     </tr>
                   <tr><td> ${last4} </td> <td> ${clear} </td> </tr>
+                  <tr><td>   url    </td>                     </tr>
+                  <tr><td> ${url}   </td> <td> ${go}    </td> </tr>
                 </table>
               </td>
             </tr>

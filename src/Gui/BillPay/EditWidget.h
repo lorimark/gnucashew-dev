@@ -46,6 +46,8 @@ class EditWidget
     {
       public:
         ComboBox();
+
+        auto valueGuid()-> std::string ;
     };
 
     Wt::Signal<> m_save;
@@ -54,27 +56,28 @@ class EditWidget
 
     std::string m_nick;
 
-    Wt::WPushButton * m_pbSave    = nullptr;
-    Wt::WPushButton * m_pbCancel  = nullptr;
-    Wt::WPushButton * m_pbDelete  = nullptr;
-    ComboBox        * m_key       = nullptr;
-    Wt::WLineEdit   * m_dueDay    = nullptr;
-    Wt::WLineEdit   * m_minimum   = nullptr;
-    Wt::WLineEdit   * m_budget    = nullptr;
-    Wt::WLineEdit   * m_nickname  = nullptr;
-    Wt::WLineEdit   * m_group     = nullptr;
-    Wt::WLineEdit   * m_limit     = nullptr;
-    Wt::WLineEdit   * m_actual    = nullptr;
-    Wt::WCheckBox   * m_ap        = nullptr;
-    Wt::WCheckBox   * m_isActive  = nullptr;
-    Wt::WCheckBox   * m_isVisible = nullptr;
-    Wt::WCheckBox   * m_autoPay   = nullptr;
-    Wt::WCheckBox   * m_payNow    = nullptr;
-    Wt::WTextArea   * m_note      = nullptr;
-    Wt::WLineEdit   * m_last4     = nullptr;
-    Wt::WLabel      * m_label     = nullptr;
-    Wt::WImage      * m_image     = nullptr;
-    Wt::WTabWidget  * m_tabWidget = nullptr;
+    GCW::Gui::AccountRegister * m_register  = nullptr ;
+    Wt::WPushButton           * m_pbSave    = nullptr ;
+    Wt::WPushButton           * m_pbCancel  = nullptr ;
+    Wt::WPushButton           * m_pbDelete  = nullptr ;
+    ComboBox                  * m_account   = nullptr ;
+    Wt::WLineEdit             * m_dueDay    = nullptr ;
+    Wt::WLineEdit             * m_minimum   = nullptr ;
+    Wt::WLineEdit             * m_budget    = nullptr ;
+    Wt::WLineEdit             * m_nickname  = nullptr ;
+    Wt::WLineEdit             * m_group     = nullptr ;
+    Wt::WLineEdit             * m_limit     = nullptr ;
+    Wt::WLineEdit             * m_actual    = nullptr ;
+    Wt::WCheckBox             * m_ap        = nullptr ;
+    Wt::WCheckBox             * m_isActive  = nullptr ;
+    Wt::WCheckBox             * m_isVisible = nullptr ;
+    Wt::WCheckBox             * m_autoPay   = nullptr ;
+    Wt::WCheckBox             * m_payNow    = nullptr ;
+    Wt::WTextArea             * m_note      = nullptr ;
+    Wt::WLineEdit             * m_last4     = nullptr ;
+    Wt::WLabel                * m_label     = nullptr ;
+    Wt::WImage                * m_image     = nullptr ;
+    Wt::WTabWidget            * m_tabWidget = nullptr ;
     std::vector< Wt::WCheckBox* > m_cbx;
 
 }; // endclass EditWidget

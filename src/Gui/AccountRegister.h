@@ -34,13 +34,9 @@ namespace GCW {
 **
 ** \image html AccountRegister.png "Account Register" width=480
 **
-** At present this widget does only a quick 'view-only' of an account.  Editable fields
-**  are available when a transaction is ~not~ reconciled.  If a transaction is reconciled,
-**  then clicking on the row just causes the whole row to highlight.
-**
 ** The goal here is to make this widget behave just as closely as possible to the
 **  GnuCash interface, because theirs is very slick and makes navigating the register
-**  a mouse-not-necessary affair.  One of the problems with web-based interfaces, however,
+**  a no-mouse-necessary affair.  One of the problems with web-based interfaces, however,
 **  is trapping keys completely, such as the ~tab~ key.  So... we'll see how this
 **  goes!
 **
@@ -94,7 +90,7 @@ class AccountRegister
     **  opens, allows registry entries, but has no place to save them (dangerous?).
     **
     */
-    AccountRegister( const std::string & _accountGuid );
+    AccountRegister( const std::string & _accountGuid = "" );
 
     /*!
     ** \brief Table View

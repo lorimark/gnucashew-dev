@@ -2,9 +2,9 @@
 
 #include "BillPay.h"
 
-GCW::Dbo::Vars::Item::Ptr
+auto
 GCW::Gui::BillPay::
-configItem()
+configItem()-> GCW::Dbo::Vars::Item::Ptr
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
@@ -12,19 +12,28 @@ configItem()
 
   return retVal;
 
-} // endconfigItem()
+} // endconfigItem()-> GCW::Dbo::Vars::Item::Ptr
 
-GCW::Dbo::Vars::Item::Ptr
+auto
 GCW::Gui::BillPay::
-bpItem( const std::string & _nickname )
+bpItem( const std::string & _nickname )-> GCW::Gui::BillPay::Item
 {
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  return GCW::Dbo::Vars::get( _nickname, GCW_GUI_BILLPAY_ITEM_CFY );
-}
+  return
+    GCW::Gui::BillPay::Item
+    (
+     GCW::Dbo::Vars::get
+     (
+      _nickname,
+      GCW_GUI_BILLPAY_ITEM_CFY,
+      true
+     )
+    );
 
-std::string
+} // endbpItem( const std::string & _nickname )-> GCW::Dbo::Vars::Item::Ptr
+
+auto
 GCW::Gui::BillPay::
-toString( int _value )
+toString( int _value )-> std::string
 {
   std::string retVal = std::to_string( _value );
 
@@ -33,6 +42,6 @@ toString( int _value )
 
   return retVal;
 
-} // endstd::string toString( int _value )
+} // endtoString( int _value )-> std::string
 
 

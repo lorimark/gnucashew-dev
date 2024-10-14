@@ -4,6 +4,8 @@
 #define EDIT_FORM_AS_SPLIT_PAGE
 
 #include <Wt/WVBoxLayout.h>
+#include <Wt/WHBoxLayout.h>
+#include <Wt/WTable.h>
 #include <Wt/WPushButton.h>
 
 #include "BillPay.h"
@@ -23,13 +25,15 @@ buildContent()-> void
 
   addStyleClass( "MainWidget" );
 
-  m_gridLayout = setLayout( std::make_unique< Wt::WGridLayout >() );
+  m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
+
+  auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout >() );
 
   // toolbar
   {
     auto u_ = std::make_unique< ToolBar >();
     m_toolBar = u_.get();
-    m_gridLayout-> addWidget( std::move( u_ ), 0, 0 );
+    vlw-> addWidget( std::move( u_ ) );
 
     m_toolBar-> addClicked().connect( this, &GCW::Gui::BillPay::MainWidget::addClicked );
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
@@ -45,23 +49,23 @@ buildContent()-> void
   if( m_selectedMonth < 1 )
       m_selectedMonth = 1;
 
-  Wt::WVBoxLayout      * lw2;
-  Wt::WContainerWidget * cw;
-  {
-    auto u_ = std::make_unique< Wt::WContainerWidget >();
-    cw = u_.get();
-    m_gridLayout-> addWidget( std::move( u_ ), 1, 0 );
-    m_gridLayout-> setRowStretch( 1, 1 );
-
-    lw2 = cw-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
-    lw2-> setSpacing( 0 );
-  }
+//  Wt::WVBoxLayout      * lw2;
+//  Wt::WContainerWidget * cw;
+//  {
+//    auto u_ = std::make_unique< Wt::WContainerWidget >();
+//    cw = u_.get();
+//    m_gridLayout-> addWidget( std::move( u_ ), 1, 0 );
+//    m_gridLayout-> setRowStretch( 1, 1 );
+//
+//    lw2 = cw-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
+//    lw2-> setSpacing( 0 );
+//  }
 
   // unpaid items
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Unpaid );
     m_unpaidView = u_.get();
-    lw2-> addWidget( std::move( u_ ) );
+    vlw-> addWidget( std::move( u_ ) );
     m_unpaidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -79,7 +83,7 @@ buildContent()-> void
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Paid );
     m_paidView = u_.get();
-    lw2-> addWidget( std::move( u_ ), m_toolBar-> showDisabled()? 0:1 );
+    vlw-> addWidget( std::move( u_ ) );
     m_paidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -92,13 +96,16 @@ buildContent()-> void
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Disabled );
     m_disabledView = u_.get();
-    lw2-> addWidget( std::move( u_ ), 1 );
+    vlw-> addWidget( std::move( u_ ) );
     m_disabledView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
         editClicked( m_disabledView, _index );
       });
+
   }
+
+  vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 
 } // endbuildContent()-> void
 
@@ -145,21 +152,24 @@ openEditor( const std::string & _nickname )-> void
   */
   auto u_ = std::make_unique< GCW::Gui::BillPay::EditWidget >( _nickname );
   m_editWidget = u_.get();
-  m_gridLayout-> addWidget( std::move( u_), 1, 1 );
-  m_gridLayout-> setColumnResizable( 0, true, "30%" );
+//  m_gridLayout-> addWidget( std::move( u_), 1, 1 );
+//  m_gridLayout-> setColumnResizable( 0, true, "30%" );
+
+  m_hlw-> addWidget( std::move( u_ ) );
+  m_hlw-> setResizable( 0, true, Wt::WLength(25,Wt::LengthUnit::Percentage) );
 
   m_editWidget->
     save().connect( [=]()
     {
       refreshViews();
-      m_gridLayout-> removeWidget( m_editWidget.get() );
+      m_hlw-> removeWidget( m_editWidget.get() );
     });
 
   m_editWidget->
     cancel().connect( [=]()
     {
       refreshViews();
-      m_gridLayout-> removeWidget( m_editWidget.get() );
+      m_hlw-> removeWidget( m_editWidget.get() );
     });
 
 #endif
@@ -179,16 +189,14 @@ auto
 GCW::Gui::BillPay::MainWidget::
 editClicked( Table * _table, Wt::WModelIndex _index )-> void
 {
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-
   /*
-  ** Get the 0-col index and use that to get the guid of this
+  ** Get the 2-col index and use that to get the guid of this
   **  row, and use that to get the Edit dialog open on that
   **  guid.
   **
   */
   auto zcolIndex = _index.model()-> index( _index.row(), 2 );
-  auto nickname = Wt::asString( _table-> model()-> itemFromIndex( zcolIndex )-> data() ).toUTF8();
+  auto nickname = Wt::asString( zcolIndex.data() ).toUTF8();
   openEditor( nickname );
 
 } // endeditClicked( Table * _table, Wt::WModelIndex _index )-> void

@@ -8,6 +8,7 @@
 
 #include "EditWidget.h"
 #include "MainWidget.h"
+#include "Item.h"
 #include "Model.h"
 #include "Status.h"
 #include "Table.h"
@@ -44,7 +45,7 @@ namespace GCW {
 **  bill pay sub-system.
 **
 */
-GCW::Dbo::Vars::Item::Ptr configItem();
+auto configItem()-> GCW::Dbo::Vars::Item::Ptr ;
 
 /*!
 ** \brief Bill Pay Item
@@ -52,7 +53,7 @@ GCW::Dbo::Vars::Item::Ptr configItem();
 ** This returns a bill-pay item based on the NICKNAME of the relative account.
 **
 */
-GCW::Dbo::Vars::Item::Ptr bpItem( const std::string & _nickname );
+auto bpItem( const std::string & _nickname )-> GCW::Gui::BillPay::Item ;
 
 /*!
 ** \brief Convert Integer to String
@@ -61,7 +62,7 @@ GCW::Dbo::Vars::Item::Ptr bpItem( const std::string & _nickname );
 **  that 10 return "09", "08", "07"... as a string.
 **
 */
-std::string toString( int _value );
+auto toString( int _value )-> std::string ;
 
     } // endnamespace BillPay {
   } // endnamespace Gui {

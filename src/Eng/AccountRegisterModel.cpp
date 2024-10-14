@@ -79,6 +79,15 @@ AccountRegisterModel( const std::string & _accountGuid, bool _editable )
 
 auto
 GCW::Eng::AccountRegisterModel::
+setAccountGuid( const std::string & _accountGuid )-> void
+{
+  m_accountGuid = _accountGuid;
+  refreshFromDisk();
+
+} // endsetAccountGuid( const std::string & _accountGuid )-> void
+
+auto
+GCW::Eng::AccountRegisterModel::
 setViewMode( ViewMode _viewMode )-> void
 {
   m_viewMode = _viewMode;
@@ -411,6 +420,9 @@ auto
 GCW::Eng::AccountRegisterModel::
 refreshFromDisk()-> void
 {
+  if( m_accountGuid == "" )
+    return;
+
   /*
   ** Signal the model is about to be reset.
   **

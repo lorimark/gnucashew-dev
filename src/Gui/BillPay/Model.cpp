@@ -16,7 +16,7 @@ namespace {
 **
 **
 */
-void sort( std::vector< GCW::Dbo::Vars::Item::Ptr > & _varItems )
+void sort( std::vector< GCW::Gui::BillPay::Item > & _varItems )
 {
   /*!
   ** Sort the vector of accounts by nickName
@@ -26,8 +26,8 @@ void sort( std::vector< GCW::Dbo::Vars::Item::Ptr > & _varItems )
   (
    _varItems.begin(),
    _varItems.end(),
-   []( const GCW::Dbo::Vars::Item::Ptr item1,
-       const GCW::Dbo::Vars::Item::Ptr item2
+   []( const GCW::Gui::BillPay::Item item1,
+       const GCW::Gui::BillPay::Item item2
      )
      {
 //       auto account1 = GCW::Dbo::Accounts::byGuid( item1-> keyField() );
@@ -35,8 +35,8 @@ void sort( std::vector< GCW::Dbo::Vars::Item::Ptr > & _varItems )
 //       auto name1 = account1-> name();
 //       auto name2 = account2-> name();
 
-       auto name1 = item1-> getVarString( "nickname" );
-       auto name2 = item2-> getVarString( "nickname" );
+       auto name1 = item1.nickname();
+       auto name2 = item2.nickname();
 
        /*
        ** return .bool. of the nickname comparison
@@ -165,15 +165,17 @@ loadData( int _selectedMonth )
   **  paid/unpaid/disabled accordingly.
   **
   */
-  std::vector< GCW::Dbo::Vars::Item::Ptr > varItems;
-  for( auto i : items )
+  std::vector< GCW::Gui::BillPay::Item > varItems;
+  for( auto item : items )
   {
+    auto bpItem = GCW::Gui::BillPay::Item( item );
+
     /*
     ** Calculate these boolean.
     **
     */
-    auto isActive  = i-> getVarString( "isActive"  ) == "yes";
-    auto isVisible = i-> getVarString( "isVisible" ) == "yes";
+    auto isActive  = bpItem.isActive()  == "yes";
+    auto isVisible = bpItem.isVisible() == "yes";
 
     /*
     ** This is for Paid and Unpaid (not Disabled).
@@ -196,8 +198,9 @@ loadData( int _selectedMonth )
         **  we calculated above.  If it's a match, we grab it.
         **
         */
-        if( i-> getVarString( "cb" + GCW::Gui::BillPay::toString( _selectedMonth ) ) == yesNo )
-          varItems.push_back( i );
+        if( bpItem.cb( _selectedMonth ) == yesNo )
+//        if( i-> getVarString( "cb" + GCW::Gui::BillPay::toString( _selectedMonth ) ) == yesNo )
+          varItems.push_back( bpItem );
 
     } // endif( m_status != GCW::Gui::BillPay::Status::Disabled )
 
@@ -212,7 +215,7 @@ loadData( int _selectedMonth )
       **
       */
       if( !isActive || !isVisible )
-          varItems.push_back( i );
+          varItems.push_back( bpItem );
 
     } // endelse( .disabled. )
 
@@ -235,7 +238,14 @@ loadData( int _selectedMonth )
     ** Grab a few handles.
     **
     */
-    auto accountGuid = varItem-> keyField();
+    auto accountGuid = varItem.accountGuid();
+
+    if( accountGuid == "" )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " no accountGuid" << std::endl;
+      continue;
+    }
+
     auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
 
     /*
@@ -253,18 +263,18 @@ loadData( int _selectedMonth )
          name-> setData( accountGuid );
     columns.push_back( std::move( name ) );
 
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "last4"    ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "nickname" ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "group"    ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "dueDay"   ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "minimum"  ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "budget"   ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "actual"   ) ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "autoPay"  ) ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.last4    () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.nickname () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.group    () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.dueDay   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.minimum  () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.budget   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.actual   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.autoPay  () ) );
 
     for( int month=1; month<= 12; month++ )
     {
-      auto cb = std::make_unique< Wt::WStandardItem >( varItem-> getVarString( "cb" + toString( month ) ) );
+      auto cb = std::make_unique< Wt::WStandardItem >( varItem.cb( month ) );
 
       /*!
       ** While building the 'month columns', apply a style class to the

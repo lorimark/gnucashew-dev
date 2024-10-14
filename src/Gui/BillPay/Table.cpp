@@ -20,10 +20,10 @@ Table( int _selectedMonth, const Status _status )
   ** Set up some controls
   **
   */
-  setSortingEnabled      ( false                       );
-  setSelectionBehavior   ( Wt::SelectionBehavior::Rows );
-  setSelectionMode       ( Wt::SelectionMode::Single   );
-  setAlternatingRowColors( true                        );
+  setSortingEnabled       ( false                       );
+  setSelectionBehavior    ( Wt::SelectionBehavior::Rows );
+  setSelectionMode        ( Wt::SelectionMode::Single   );
+  setAlternatingRowColors ( true                        );
 
   /*
   ** Make a data model
