@@ -1,6 +1,6 @@
 #line 2 "src/Eng/CustomersModel.cpp"
 
-#include <gnucash/gncCustomer.h>
+//#include <gnucash/gncCustomer.h>
 
 #include "../App.h"
 #include "CustomersModel.h"
