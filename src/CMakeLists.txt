@@ -70,18 +70,6 @@ target_link_libraries(
   hpdf
   pthread
   xml2
-  gnc-app-utils
-  gnc-backend-sql
-  gnc-backend-xml-utils
-  gnc-core-utils
-  gnc-engine
-  gnc-gnome
-  gnc-html
-  gnc-locale-tax
-  gnc-module
-  gnucash-guile
-  glib-2.0
-  gobject-2.0
   uuid
 )
 
