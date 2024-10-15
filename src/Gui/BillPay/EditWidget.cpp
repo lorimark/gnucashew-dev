@@ -110,6 +110,7 @@ EditWidget( const std::string & _nickname )
     for( int cb = 0; cb < 12; cb++ )
       m_cbx.push_back( templtPayment-> bindNew< Wt::WCheckBox >( "cb" + toString( cb+1 ), toString( cb+1 ) ) );
 
+    m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
     m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
     m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
     m_label = templtPayment-> bindNew< Wt::WLabel    >( "image", "image" );
@@ -190,6 +191,7 @@ loadData()-> void
   m_group     -> setValueText( bpItem.group     () );
   m_limit     -> setValueText( bpItem.limit     () );
   m_actual    -> setValueText( bpItem.actual    () );
+  m_url       -> setValueText( bpItem.url       () );
   m_ap        -> setValueText( bpItem.ap        () );
   m_isActive  -> setValueText( bpItem.isActive  () );
   m_isVisible -> setValueText( bpItem.isVisible () );
@@ -228,6 +230,7 @@ saveData()-> void
   bpItem.set_group       ( m_group     -> valueText() );
   bpItem.set_limit       ( m_limit     -> valueText() );
   bpItem.set_actual      ( m_actual    -> valueText() );
+  bpItem.set_url         ( m_url       -> valueText() );
   bpItem.set_ap          ( m_ap        -> valueText() );
   bpItem.set_isActive    ( m_isActive  -> valueText() );
   bpItem.set_isVisible   ( m_isVisible -> valueText() );

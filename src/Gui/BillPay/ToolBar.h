@@ -33,14 +33,20 @@ class ToolBar
 //    int selectedMonth() const;
 
 //    std::shared_ptr< Wt::WButtonGroup > buttonGroup    () const { return m_group;    }
-    Wt::WCheckBox *                     disabledButton () const { return m_disabled; }
-    bool                                showDisabled   () const;
+    auto disabledButton () const-> Wt::WCheckBox * { return m_disabled; }
+    auto showDisabled   () const-> bool            ;
+
+    auto importClicked()-> Wt::Signal<> & { return m_importClicked; }
+    auto exportClicked()-> Wt::Signal<> & { return m_exportClicked; }
 
   private:
 
 //    std::shared_ptr< Wt::WButtonGroup > m_group;
     Wt::WCheckBox * m_disabled = nullptr;
     Wt::WCheckBox * m_summary  = nullptr;
+
+    Wt::Signal<> m_importClicked;
+    Wt::Signal<> m_exportClicked;
 
 }; // endclass ToolBar
 

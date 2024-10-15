@@ -1,7 +1,5 @@
 #line 2 "src/Dbo/BillTerms/BillTerms.cpp"
 
-#include <gnucash/gnc-session.h>
-
 #include "../App.h"
 #include "../Glb/Core.h"
 

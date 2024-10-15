@@ -68,6 +68,7 @@ class EditWidget
     Wt::WLineEdit             * m_group     = nullptr ;
     Wt::WLineEdit             * m_limit     = nullptr ;
     Wt::WLineEdit             * m_actual    = nullptr ;
+    Wt::WLineEdit             * m_url       = nullptr ;
     Wt::WCheckBox             * m_ap        = nullptr ;
     Wt::WCheckBox             * m_isActive  = nullptr ;
     Wt::WCheckBox             * m_isVisible = nullptr ;

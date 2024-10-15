@@ -39,6 +39,9 @@ buildContent()-> void
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
     m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::disabledClicked );
 
+    m_toolBar-> importClicked().connect( this, &MainWidget::importClicked );
+    m_toolBar-> exportClicked().connect( this, &MainWidget::exportClicked );
+
   } // toolbar
 
   /*
@@ -254,6 +257,22 @@ refreshViews()-> void
   setMonth( m_selectedMonth );
 
 } // endrefreshViews()-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
+importClicked()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endimportClicked()-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
+exportClicked()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endexportClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::

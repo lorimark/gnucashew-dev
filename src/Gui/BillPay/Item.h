@@ -23,6 +23,7 @@ class Item
     auto group       () const-> std::string ;
     auto limit       () const-> std::string ;
     auto actual      () const-> std::string ;
+    auto url         () const-> std::string ;
     auto ap          () const-> std::string ;
     auto isActive    () const-> std::string ;
     auto isVisible   () const-> std::string ;
@@ -40,6 +41,7 @@ class Item
     auto set_group       ( const Wt::WString & _value )-> void ;
     auto set_limit       ( const Wt::WString & _value )-> void ;
     auto set_actual      ( const Wt::WString & _value )-> void ;
+    auto set_url         ( const Wt::WString & _value )-> void ;
     auto set_ap          ( const Wt::WString & _value )-> void ;
     auto set_isActive    ( const Wt::WString & _value )-> void ;
     auto set_isVisible   ( const Wt::WString & _value )-> void ;

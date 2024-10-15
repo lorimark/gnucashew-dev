@@ -11,6 +11,7 @@
 #define FN_GROUP       "group"
 #define FN_LIMIT       "limit"
 #define FN_ACTUAL      "actual"
+#define FN_URL         "url"
 #define FN_AP          "ap"
 #define FN_ISACTIVE    "isActive"
 #define FN_ISVISIBLE   "isVisible"
@@ -98,6 +99,15 @@ actual () const-> std::string
     m_varItem-> getVarString( FN_ACTUAL );
 
 } // endactual () const-> std::string
+
+auto
+GCW::Gui::BillPay::Item::
+url () const-> std::string
+{
+  return
+    m_varItem-> getVarString( FN_URL );
+
+} // endurl () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
@@ -244,6 +254,14 @@ set_actual( const Wt::WString & _value )-> void
   setVar( FN_ACTUAL, _value );
 
 } // endset_actual( const Wt::WString & _value )-> void
+
+auto
+GCW::Gui::BillPay::Item::
+set_url( const Wt::WString & _value )-> void
+{
+  setVar( FN_URL, _value );
+
+} // endset_url( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::

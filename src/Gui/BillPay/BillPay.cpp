@@ -44,4 +44,18 @@ toString( int _value )-> std::string
 
 } // endtoString( int _value )-> std::string
 
+auto
+GCW::Gui::BillPay::
+exportAll()-> void
+{
+
+} // endexportAll()-> void
+
+auto
+GCW::Gui::BillPay::
+importAll()-> void
+{
+
+} // endimportAll()-> void
+
 

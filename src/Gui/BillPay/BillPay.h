@@ -64,6 +64,9 @@ auto bpItem( const std::string & _nickname )-> GCW::Gui::BillPay::Item ;
 */
 auto toString( int _value )-> std::string ;
 
+auto exportAll()-> void;
+auto importAll()-> void;
+
     } // endnamespace BillPay {
   } // endnamespace Gui {
 } // endnamespace GCW {

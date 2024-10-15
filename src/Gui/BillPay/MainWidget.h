@@ -36,6 +36,8 @@ class MainWidget
     auto setMonth( int _month )-> void ;
     auto disabledClicked()-> void ;
     auto refreshViews()-> void ;
+    auto importClicked()-> void ;
+    auto exportClicked()-> void ;
 
     std::unique_ptr< EditWidgetDialog > m_dialog;
 

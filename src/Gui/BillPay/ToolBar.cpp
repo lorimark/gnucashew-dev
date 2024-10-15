@@ -72,6 +72,24 @@ ToolBar()
 
     });
 
+  /*
+  ** import export buttons
+  **
+  */
+#ifdef NEVER
+  {
+    auto pbImport = table-> elementAt( 0, 4 )-> addWidget( std::make_unique< Wt::WPushButton >( "import" ) );
+    auto pbExport = table-> elementAt( 0, 5 )-> addWidget( std::make_unique< Wt::WPushButton >( "export" ) );
+
+    pbImport-> setStyleClass( "btn-xs" );
+    pbExport-> setStyleClass( "btn-xs" );
+
+    pbImport-> clicked().connect( [=]{ m_importClicked.emit(); } );
+    pbExport-> clicked().connect( [=]{ m_exportClicked.emit(); } );
+
+  }
+#endif
+
 } // endToolBar()
 
 bool
