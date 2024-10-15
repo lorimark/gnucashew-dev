@@ -281,6 +281,7 @@
   <message id="gcw.billPay.pb.autoPay"          >Auto Pay</message>
   <message id="gcw.billPay.pb.payNow"           >Pay Now</message>
   <message id="gcw.billPay.pb.clear"            >clear</message>
+  <message id="gcw.billPay.pb.go"               >go</message>
   <message id="gcw.billPay.pb.clear.toolTip"    >Clear all the payment check-boxes</message>
   <message id="gcw.billPay.tabName.payment"     >Payment</message>
   <message id="gcw.billPay.tabName.history"     >History</message>

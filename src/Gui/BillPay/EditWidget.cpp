@@ -110,6 +110,9 @@ EditWidget( const std::string & _nickname )
     for( int cb = 0; cb < 12; cb++ )
       m_cbx.push_back( templtPayment-> bindNew< Wt::WCheckBox >( "cb" + toString( cb+1 ), toString( cb+1 ) ) );
 
+    auto pbgo = templtPayment-> bindNew< Wt::WPushButton >( "go", TR("gcw.billPay.pb.go") );
+//    pbgo-> setStyleClass( "btn-xs" );
+
     m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
     m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
     m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
