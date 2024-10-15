@@ -1,7 +1,5 @@
 #line 2 "src/Dbo/Entries/Entries.cpp"
 
-#include <gnucash/gnc-session.h>
-
 #include "../App.h"
 #include "../Glb/Core.h"
 
