@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include <gnucash/gnc-session.h>
-#include <gnucash/Account.h>
-#include <gnucash/Transaction.h>
-#include <gnucash/qofsession.h>
+//#include <gnucash/gnc-session.h>
+//#include <gnucash/Account.h>
+//#include <gnucash/Transaction.h>
+//#include <gnucash/qofsession.h>
 
 #include "Engine.h"
 

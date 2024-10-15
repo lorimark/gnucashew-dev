@@ -4,10 +4,10 @@
 #ifndef __DBO_SESSIONGNUCASH_H___
 #define __DBO_SESSIONGNUCASH_H___
 
-#include <gnucash/gnc-session.h>
-#include <gnucash/Account.h>
-#include <gnucash/Transaction.h>
-#include <gnucash/qofsession.h>
+//#include <gnucash/gnc-session.h>
+//#include <gnucash/Account.h>
+//#include <gnucash/Transaction.h>
+//#include <gnucash/qofsession.h>
 
 #include "AbstractSession.h"
 
