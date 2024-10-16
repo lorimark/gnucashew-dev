@@ -31,7 +31,7 @@ class EditWidget
 {
   public:
 
-    EditWidget( const std::string & _accountGuid );
+    EditWidget( const std::string & _bpGuid );
 
     auto loadData()-> void ;
     auto saveData()-> void ;
@@ -54,7 +54,7 @@ class EditWidget
     Wt::Signal<> m_cancel;
     Wt::Signal<> m_delete;
 
-    std::string m_nick;
+    std::string m_bpGuid;
 
     GCW::Gui::AccountRegister * m_register  = nullptr ;
     Wt::WPushButton           * m_pbSave    = nullptr ;

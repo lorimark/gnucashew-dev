@@ -1,8 +1,5 @@
 #line 2 "src/Gui/BillPay/MainWidget.cpp"
 
-//#define EDIT_FORM_AS_POPUP_DIALOG
-#define EDIT_FORM_AS_SPLIT_PAGE
-
 #include <Wt/WVBoxLayout.h>
 #include <Wt/WHBoxLayout.h>
 #include <Wt/WTable.h>
@@ -23,10 +20,11 @@ buildContent()-> void
 {
   clear();
 
+  // identify
   addStyleClass( "MainWidget" );
 
+  // layout
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
-
   auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout >() );
 
   // toolbar
@@ -44,10 +42,7 @@ buildContent()-> void
 
   } // toolbar
 
-  /*
-  ** recall
-  **
-  */
+  // recall
   m_selectedMonth = configItem()-> getVarInt( "selectedMonth" );
   if( m_selectedMonth < 1 )
       m_selectedMonth = 1;
@@ -108,56 +103,38 @@ buildContent()-> void
 
   }
 
+  // fill-up remaining space
   vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 
 } // endbuildContent()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
-openEditor( const std::string & _nickname )-> void
+openEditor( const std::string & _bpGuid )-> void
 {
 
-#ifdef EDIT_FORM_AS_POPUP_DIALOG
-
-  std::cout << __FILE__ << ":" << __LINE__ << " opening popup" << std::endl;
-
   /*
-  ** Add a dialog to open/edit this item
-  **
-  */
-  m_dialog = std::make_unique< GCW::Gui::BillPay::EditWidgetDialog >( _nickname );
-  m_dialog-> show();
-  m_dialog->
-    finished().connect( [&]()
-    {
-      refreshViews();
-      m_dialog.release();
-    });
-
-#endif
-
-#ifdef EDIT_FORM_AS_SPLIT_PAGE
-
-  /*
-  **
-  **
+  ** if the edit widget is open, then we can't do anything.
   */
   if( m_editWidget )
-  {
-//    m_gridLayout-> removeWidget( m_editWidget );
-//    m_editWidget = nullptr;
     return;
-  }
 
   /*
   ** Split the page to open/edit this item
   **
   */
-  auto u_ = std::make_unique< GCW::Gui::BillPay::EditWidget >( _nickname );
+  auto u_ = std::make_unique< GCW::Gui::BillPay::EditWidget >( _bpGuid );
   m_editWidget = u_.get();
 //  m_gridLayout-> addWidget( std::move( u_), 1, 1 );
 //  m_gridLayout-> setColumnResizable( 0, true, "30%" );
 
+  /*
+  ** This splits the page, and sets the first side to 25% width, and the second
+  **  side to 75%.  The edit form occupies the 75% width side.  The split also
+  **  has a slider, so if the user wants to temporarily slide the detail form
+  **  out of the way, he can do that.
+  **
+  */
   m_hlw-> addWidget( std::move( u_ ) );
   m_hlw-> setResizable( 0, true, Wt::WLength(25,Wt::LengthUnit::Percentage) );
 
@@ -175,8 +152,6 @@ openEditor( const std::string & _nickname )-> void
       m_hlw-> removeWidget( m_editWidget.get() );
     });
 
-#endif
-
 } // endopenEditor( const std::string & _nickname )-> void
 
 auto
@@ -193,14 +168,16 @@ GCW::Gui::BillPay::MainWidget::
 editClicked( Table * _table, Wt::WModelIndex _index )-> void
 {
   /*
-  ** Get the 2-col index and use that to get the guid of this
+  ** Get the 0-col index and use that to get the guid of this
   **  row, and use that to get the Edit dialog open on that
   **  guid.
   **
   */
-  auto zcolIndex = _index.model()-> index( _index.row(), 2 );
-  auto nickname = Wt::asString( zcolIndex.data() ).toUTF8();
-  openEditor( nickname );
+  auto zcolIndex = _index.model()-> index( _index.row(), 0 );
+  auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
+  std::cout << __FILE__ << ":" << __LINE__ << " " << bpGuid << std::endl;
+
+  openEditor( bpGuid );
 
 } // endeditClicked( Table * _table, Wt::WModelIndex _index )-> void
 
@@ -246,6 +223,7 @@ setMonth( int _month )-> void
 
   m_selectedMonth = _month;
 
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );
 
 } // endsetMonth( int _month )-> void

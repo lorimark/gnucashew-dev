@@ -16,14 +16,19 @@ configItem()-> GCW::Dbo::Vars::Item::Ptr
 
 auto
 GCW::Gui::BillPay::
-bpItem( const std::string & _nickname )-> GCW::Gui::BillPay::Item
+bpItem( const std::string & _guid )-> GCW::Gui::BillPay::Item
 {
   return
     GCW::Gui::BillPay::Item
     (
+     /*
+     ** get the BP item based on the GUID provided.  Note
+     **  that if the item doesn't exist, it will be added.
+     **
+     */
      GCW::Dbo::Vars::get
      (
-      _nickname,
+      _guid,
       GCW_GUI_BILLPAY_ITEM_CFY,
       true
      )

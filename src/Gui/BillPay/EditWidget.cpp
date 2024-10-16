@@ -4,12 +4,12 @@
 #include <Wt/WVBoxLayout.h>
 
 #include "../../Eng/AccountComboModel.h"
+#include "../../Glb/Core.h"
 #include "BillPay.h"
 
 GCW::Gui::BillPay::EditWidget::ComboBox::
 ComboBox()
 {
-
   setModel( std::make_shared< GCW::Eng::AccountComboModel >() );
   setModelColumn( 1 );
 
@@ -26,9 +26,9 @@ valueGuid()-> std::string
 
 
 GCW::Gui::BillPay::EditWidget::
-EditWidget( const std::string & _nickname )
+EditWidget( const std::string & _bpGuid )
 : Wt::WContainerWidget(),
-  m_nick( _nickname )
+  m_bpGuid( _bpGuid )
 {
   addStyleClass( "BillPay_EditWidget" );
 
@@ -79,16 +79,6 @@ EditWidget( const std::string & _nickname )
   templtMain-> bindString( "groupLabel"    , TR("gcw.billPay.groupLabel"    ) );
   templtMain-> bindString( "limitLabel"    , TR("gcw.billPay.limitLabel"    ) );
   templtMain-> bindString( "actualLabel"   , TR("gcw.billPay.actualLabel"   ) );
-
-  /*
-  ** Once an nickname is assigned we can't change it.
-  ** (move to the load function?)
-  */
-  if( _nickname != "" )
-  {
-//    m_nickname -> setDisabled( true );
-//    m_account  -> setDisabled( true );
-  }
 
   /*
   ** this is the tab widget.  It takes up the remaining bottom space
@@ -169,13 +159,13 @@ loadData()-> void
   /*
   ** be safe
   */
-  if( m_nick == "" )
+  if( m_bpGuid == "" )
     return;
 
   /*
   ** Get the item that carries the bill-pay info
   */
-  auto bpItem = GCW::Gui::BillPay::bpItem( m_nick );
+  auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
   /*
   ** format the 'name' to be something readable
@@ -213,18 +203,23 @@ auto
 GCW::Gui::BillPay::EditWidget::
 saveData()-> void
 {
-  auto nickname = m_nickname-> valueText().toUTF8();
+  /*
+  ** little bit of housekeeping before we begin
+  */
+  if( m_bpGuid == "" )
+      m_bpGuid = GCW::Core::newGuid();
 
-  if( nickname == "" )
-  {
-    Wt::WMessageBox::show( "BillPay", "Please provide a nickname", Wt::StandardButton::Ok );
-    return;
-  }
+  /*
+  ** load the bpItem, if we had to create a new guid above,
+  **  then we'll end up with a 'new' bpItem.
+  **
+  */
+  auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
-  auto bpItem = GCW::Gui::BillPay::bpItem( nickname );
-
+  /*
+  ** save everything
+  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-
   bpItem.set_accountGuid ( m_account   -> valueGuid() );
   bpItem.set_dueDay      ( m_dueDay    -> valueText() );
   bpItem.set_minimum     ( m_minimum   -> valueText() );

@@ -31,7 +31,7 @@ class MainWidget
     auto buildContent()-> void ;
     auto addClicked()-> void ;
     auto editClicked( Table * _table, Wt::WModelIndex _index )-> void ;
-    auto openEditor( const std::string & _accountGuid )-> void ;
+    auto openEditor( const std::string & _bpGuid )-> void ;
     auto buttonChanged( Wt::WRadioButton * _button )-> void ;
     auto setMonth( int _month )-> void ;
     auto disabledClicked()-> void ;

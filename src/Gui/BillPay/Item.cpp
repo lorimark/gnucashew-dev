@@ -30,6 +30,15 @@ Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 
 auto
 GCW::Gui::BillPay::Item::
+guid () const-> std::string
+{
+  return
+    m_varItem-> keyField();
+
+} // endaccountGuid () const-> std::string
+
+auto
+GCW::Gui::BillPay::Item::
 accountGuid () const-> std::string
 {
   return

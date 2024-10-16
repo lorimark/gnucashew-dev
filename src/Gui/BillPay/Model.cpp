@@ -114,7 +114,7 @@ GCW::Gui::BillPay::Model::
 loadData( int _selectedMonth )
 {
   /*!
-  ** On load, the first column is set to indicate the
+  ** On load, the first column-label is set to indicate the
   **  model type as well as the month selected.
   **
   ** \code
@@ -162,7 +162,7 @@ loadData( int _selectedMonth )
   /*!
   ** Run the resultList collection through an analyzer that will
   **  extract billpay items that match the selection criteria of
-  **  paid/unpaid/disabled accordingly.
+  **  paid/unpaid/disabled/yes/no accordingly.
   **
   */
   std::vector< GCW::Gui::BillPay::Item > varItems;
@@ -238,31 +238,31 @@ loadData( int _selectedMonth )
     ** Grab a few handles.
     **
     */
+    auto accountName = std::make_unique< Wt::WStandardItem >();
     auto accountGuid = varItem.accountGuid();
 
-    if( accountGuid == "" )
+    if( accountGuid != "" )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " no accountGuid" << std::endl;
-      continue;
-    }
+      auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
 
-    auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
+      /*
+      ** build the account column to;
+      **  display the account name
+      **  carry the account-full-name as a toolTip,
+      **  carry the guid of the originating bpItem
+      */
+      accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
+      accountName-> setData( varItem.guid()       , Wt::ItemDataRole::User    );
+      accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
+
+    } // endif( accountGuid != "" )
 
     /*
     ** The columns are pushed in to this.
     **
     */
     std::vector< std::unique_ptr< Wt::WStandardItem > > columns;
-
-    /*
-    ** Build each column.
-    **
-    */
-    auto name = std::make_unique< Wt::WStandardItem >( accountItem-> name() );
-         name-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid ) );
-         name-> setData( accountGuid );
-    columns.push_back( std::move( name ) );
-
+    columns.push_back( std::move( accountName ) );
     columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.last4    () ) );
     columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.nickname () ) );
     columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.group    () ) );

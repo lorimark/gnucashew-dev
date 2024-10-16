@@ -15,6 +15,7 @@ class Item
 
     Item( GCW::Dbo::Vars::Item::Ptr _varItem );
 
+    auto guid        () const-> std::string ;
     auto accountGuid () const-> std::string ;
     auto dueDay      () const-> std::string ;
     auto minimum     () const-> std::string ;
