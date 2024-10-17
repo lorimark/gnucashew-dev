@@ -105,13 +105,14 @@ EditWidget( const std::string & _bpGuid )
 
     m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
     m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
-//    m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
-    m_note  = templtPayment-> bindNew< Wt::WTextEdit >( "note"           );
+    m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
+//    m_note  = templtPayment-> bindNew< Wt::WTextEdit >( "note"           );
     m_label = templtPayment-> bindNew< Wt::WLabel    >( "image", "image" );
     m_label-> setMinimumSize( "160px", "160px" );
     m_label-> resize( "160px", "160px" );
 
-    m_note-> resize( Wt::WLength::Auto, Wt::WLength( 200 ) );
+    m_note-> setRows( 20 );
+//    m_note-> resize( Wt::WLength::Auto, Wt::WLength( 200 ) );
 
     auto pbClear = templtPayment-> bindNew< Wt::WPushButton >( "clear", TR("gcw.billPay.pb.clear") );
     pbClear-> setToolTip( TR("gcw.billPay.pb.clear.toolTip") );
