@@ -111,6 +111,8 @@ EditWidget( const std::string & _bpGuid )
     m_label-> setMinimumSize( "160px", "160px" );
     m_label-> resize( "160px", "160px" );
 
+    m_note-> resize( Wt::WLength::Auto, Wt::WLength( 200 ) );
+
     auto pbClear = templtPayment-> bindNew< Wt::WPushButton >( "clear", TR("gcw.billPay.pb.clear") );
     pbClear-> setToolTip( TR("gcw.billPay.pb.clear.toolTip") );
     pbClear->
