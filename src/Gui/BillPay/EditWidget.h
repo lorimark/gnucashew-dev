@@ -10,6 +10,7 @@
 #include <Wt/WImage.h>
 #include <Wt/WLabel.h>
 #include <Wt/WLineEdit.h>
+#include <Wt/WSpinBox.h>
 #include <Wt/WPushButton.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WTabWidget.h>
@@ -62,11 +63,11 @@ class EditWidget
     Wt::WPushButton           * m_pbCancel  = nullptr ;
     Wt::WPushButton           * m_pbDelete  = nullptr ;
     ComboBox                  * m_account   = nullptr ;
-    Wt::WLineEdit             * m_dueDay    = nullptr ;
+    Wt::WSpinBox              * m_dueDay    = nullptr ;
     Wt::WLineEdit             * m_minimum   = nullptr ;
     Wt::WLineEdit             * m_budget    = nullptr ;
     Wt::WLineEdit             * m_nickname  = nullptr ;
-    Wt::WLineEdit             * m_group     = nullptr ;
+    Wt::WSpinBox              * m_group     = nullptr ;
     Wt::WLineEdit             * m_limit     = nullptr ;
     Wt::WLineEdit             * m_actual    = nullptr ;
     Wt::WLineEdit             * m_url       = nullptr ;

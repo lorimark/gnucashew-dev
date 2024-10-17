@@ -58,11 +58,11 @@ EditWidget( const std::string & _bpGuid )
   m_pbCancel  = templtMain-> bindNew< Wt::WPushButton >( "cancel"    , TR("gcw.billPay.pb.cancel")    );
   m_pbDelete  = templtMain-> bindNew< Wt::WPushButton >( "delete"    , TR("gcw.billPay.pb.delete")    );
   m_account   = templtMain-> bindNew< ComboBox        >( "account"                                    );
-  m_dueDay    = templtMain-> bindNew< Wt::WLineEdit   >( "dueDay"                                     );
+  m_dueDay    = templtMain-> bindNew< Wt::WSpinBox    >( "dueDay"                                     );
   m_minimum   = templtMain-> bindNew< Wt::WLineEdit   >( "minimum"                                    );
   m_budget    = templtMain-> bindNew< Wt::WLineEdit   >( "budget"                                     );
   m_nickname  = templtMain-> bindNew< Wt::WLineEdit   >( "nickname"                                   );
-  m_group     = templtMain-> bindNew< Wt::WLineEdit   >( "group"                                      );
+  m_group     = templtMain-> bindNew< Wt::WSpinBox    >( "group"                                      );
   m_limit     = templtMain-> bindNew< Wt::WLineEdit   >( "limit"                                      );
   m_actual    = templtMain-> bindNew< Wt::WLineEdit   >( "actual"                                     );
   m_ap        = templtMain-> bindNew< Wt::WCheckBox   >( "ap"        , TR("gcw.billPay.pb.ap")        );
@@ -70,6 +70,10 @@ EditWidget( const std::string & _bpGuid )
   m_isVisible = templtMain-> bindNew< Wt::WCheckBox   >( "isVisible" , TR("gcw.billPay.pb.isVisible") );
   m_autoPay   = templtMain-> bindNew< Wt::WCheckBox   >( "autoPay"   , TR("gcw.billPay.pb.autoPay")   );
   m_payNow    = templtMain-> bindNew< Wt::WCheckBox   >( "payNow"    , TR("gcw.billPay.pb.payNow")    );
+
+  m_dueDay-> setRange( 1, 31 );
+  m_group-> setRange( 0, 30 );
+  m_group-> setSingleStep( 5 );
 
   templtMain-> bindString( "accountLabel"  , TR("gcw.billPay.accountLabel"  ) );
   templtMain-> bindString( "dueDayLabel"   , TR("gcw.billPay.dueDayLabel"   ) );
