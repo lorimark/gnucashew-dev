@@ -175,8 +175,6 @@ editClicked( Table * _table, Wt::WModelIndex _index )-> void
   */
   auto zcolIndex = _index.model()-> index( _index.row(), 0 );
   auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
-  std::cout << __FILE__ << ":" << __LINE__ << " " << bpGuid << std::endl;
-
   openEditor( bpGuid );
 
 } // endeditClicked( Table * _table, Wt::WModelIndex _index )-> void

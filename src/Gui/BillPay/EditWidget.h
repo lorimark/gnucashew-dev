@@ -15,6 +15,7 @@
 #include <Wt/WTabWidget.h>
 #include <Wt/WText.h>
 #include <Wt/WTextArea.h>
+#include <Wt/WTextEdit.h>
 
 namespace GCW {
   namespace Gui {
@@ -74,7 +75,8 @@ class EditWidget
     Wt::WCheckBox             * m_isVisible = nullptr ;
     Wt::WCheckBox             * m_autoPay   = nullptr ;
     Wt::WCheckBox             * m_payNow    = nullptr ;
-    Wt::WTextArea             * m_note      = nullptr ;
+//    Wt::WTextArea             * m_note      = nullptr ;
+    Wt::WTextEdit             * m_note      = nullptr ;
     Wt::WLineEdit             * m_last4     = nullptr ;
     Wt::WLabel                * m_label     = nullptr ;
     Wt::WImage                * m_image     = nullptr ;
