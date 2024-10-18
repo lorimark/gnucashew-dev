@@ -25,13 +25,14 @@ buildContent()-> void
 
   // layout
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
-  auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout >() );
+  auto cw  = m_hlw-> addWidget( std::make_unique< Wt::WContainerWidget >() );
+//  auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout      >() );
 
   // toolbar
   {
     auto u_ = std::make_unique< ToolBar >();
     m_toolBar = u_.get();
-    vlw-> addWidget( std::move( u_ ) );
+    cw-> addWidget( std::move( u_ ) );
 
     m_toolBar-> addClicked().connect( this, &GCW::Gui::BillPay::MainWidget::addClicked );
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
@@ -63,7 +64,7 @@ buildContent()-> void
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Unpaid );
     m_unpaidView = u_.get();
-    vlw-> addWidget( std::move( u_ ) );
+    cw-> addWidget( std::move( u_ ) );
     m_unpaidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -81,7 +82,7 @@ buildContent()-> void
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Paid );
     m_paidView = u_.get();
-    vlw-> addWidget( std::move( u_ ) );
+    cw-> addWidget( std::move( u_ ) );
     m_paidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -94,7 +95,7 @@ buildContent()-> void
   {
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Disabled );
     m_disabledView = u_.get();
-    vlw-> addWidget( std::move( u_ ) );
+    cw-> addWidget( std::move( u_ ) );
     m_disabledView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -104,7 +105,7 @@ buildContent()-> void
   }
 
   // fill-up remaining space
-  vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
+//  vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 
 } // endbuildContent()-> void
 
