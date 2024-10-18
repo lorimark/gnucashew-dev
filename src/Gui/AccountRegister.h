@@ -92,10 +92,10 @@ class AccountRegister
     */
     AccountRegister( const std::string & _accountGuid = "" );
 
+    auto setAccountGuid( const std::string & _accountGuid )-> void ;
+
     /*!
     ** \brief Table View
-    **
-    **
     **
     */
     auto tableView ()-> GCW::Gui::TableView * { return m_tableView; }

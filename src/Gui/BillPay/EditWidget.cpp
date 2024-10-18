@@ -205,6 +205,8 @@ loadData()-> void
   for( auto cb : m_cbx )
     cb-> setValueText( bpItem.cb( i++ ) );
 
+  m_register-> setAccountGuid( bpItem.accountGuid() );
+
 } // endloadData()-> void
 
 auto

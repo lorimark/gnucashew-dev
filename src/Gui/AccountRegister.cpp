@@ -572,7 +572,6 @@ void GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value )
 
 GCW::Gui::AccountRegister::
 AccountRegister( const std::string & _accountGuid )
-: m_accountGuid( _accountGuid )
 {
   /*
   ** Look in gcw.css for styling.
@@ -818,7 +817,7 @@ AccountRegister( const std::string & _accountGuid )
     });
 #endif
 
-  m_baseModel       = std::make_shared< BaseModel                 >( m_accountGuid );
+  m_baseModel       = std::make_shared< BaseModel                 >();
   m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
   m_batchEditModel  = std::make_shared< Wt::WBatchEditProxyModel  >();
 
@@ -826,6 +825,16 @@ AccountRegister( const std::string & _accountGuid )
   m_sortFilterModel-> sort(0);
   m_batchEditModel -> setSourceModel( m_sortFilterModel );
   m_batchEditModel -> setSourceModel( m_baseModel );
+
+} // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+
+auto
+GCW::Gui::AccountRegister::
+setAccountGuid( const std::string & _accountGuid )-> void
+{
+  m_accountGuid = _accountGuid;
+
+  baseModel()-> setAccountGuid( _accountGuid );
 
   loadData();
 
@@ -835,7 +844,7 @@ AccountRegister( const std::string & _accountGuid )
   */
   editRow( lastIndex().row() );
 
-} // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+} // endsetAccountGuid( const std::string & _accountGuid )-> void
 
 auto
 GCW::Gui::AccountRegister::
