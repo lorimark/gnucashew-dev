@@ -146,7 +146,7 @@
     <table width="100%" border="1">
       <tr>
         <td>
-          <table width="100%">
+          <table width="50%">
             <tr><td>${cb01}</td><td>${cb02}</td><td>${cb03}</td><td>${cb04}</td><td>${cb05}</td><td>${cb06}</td></tr>
             <tr><td>${cb07}</td><td>${cb08}</td><td>${cb09}</td><td>${cb10}</td><td>${cb11}</td><td>${cb12}</td></tr>
             <tr>

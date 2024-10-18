@@ -9,7 +9,7 @@ echo "running"
 #./gnucashew-bin /home/serveradmin/gnucash-dev.gnucash \
 # gdb --args \
 # valgrind -v --leak-check=full --show-leak-kinds=all \
-./gnucashew-bin /home/serveradmin/LorimarkSolutions.gnucash \
+./gnucashew-bin /home/serveradmin/LorimarkSolutions-5.8.gnucash \
   --pid-file=gnucashew-bin-dev.pid \
   --config=../src/wt_config.xml \
   --approot="../approot" \
