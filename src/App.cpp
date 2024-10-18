@@ -73,6 +73,8 @@ GCW::App::App( const Wt::WEnvironment & env )
 {
   root()-> addStyleClass( "GnuCashewRoot" );
 
+  setTitle( "GnuCashew ~ " + g_dbName );
+
 #ifdef NEVER
   // something to note about the X-Forwarded-For haproxy value.  This setting
   //  needs to be set within the 'haproxy.cfg haproxy_loop' section.  To
