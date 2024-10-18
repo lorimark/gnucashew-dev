@@ -52,6 +52,18 @@ class Item
     auto set_note        ( const Wt::WString & _value )-> void ;
     auto set_cb(int _index, const Wt::WString & _value)-> void ;
 
+    /*!
+    ** \brief Sort Value
+    **
+    ** This produces a value suitable for sorting the model.
+    **
+    ** The model gets sorted on the 'group.dueDay' value.  This
+    **  provides a nice group/sorted display of the bills-due view.
+    **  All items that share the same group appear in the same area
+    **  and subsequent items are sorted on the dueDay value.
+    */
+    auto sorter() const -> float ;
+
     auto setVar( const std::string & _key, const Wt::WString & _value )-> void;
 
     GCW::Dbo::Vars::Item::Ptr m_varItem ;

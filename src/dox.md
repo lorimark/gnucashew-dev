@@ -7,7 +7,7 @@ First off... I love <a href="https://www.gnucash.org" target="_blank">GnuCash!</
 Secondly... this is ~not~ GnuCash.  At present, no GnuCash code is in use
  here.  This tool works directly with gnucash.sqlite files only, by making
  direct calls to the database (it can also work with MySql and Postgres).
- Therefore, Gnucashew intends to replicate the functionality of the gnucash
+ Therefore, GnuCashew intends to replicate the functionality of the gnucash
  engine (lots to do there!).
 
 This is an attempt to produce a web-based interface for the GnuCash program.

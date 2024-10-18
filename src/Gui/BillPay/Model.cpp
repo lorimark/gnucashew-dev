@@ -14,12 +14,19 @@ namespace {
 /*!
 ** \brief Accounts Sorter
 **
+** This sorter produces a sorted list of bills-to-pay sorted
+**  by first 'group' then 'dueDay'.  This produces a number
+**  that might be like 20.22, meaning group=20, day=22.  The
+**  result in the view is all the "due next" items at the top
+**  of the list, and so on.  The group-value is to just help
+**  clean the display.  The result makes it very clear what bills
+**  are due next in line.
 **
 */
 void sort( std::vector< GCW::Gui::BillPay::Item > & _varItems )
 {
   /*!
-  ** Sort the vector of accounts by nickName
+  ** Sort the vector of accounts by group.dueDay
   **
   */
   std::sort
@@ -35,15 +42,16 @@ void sort( std::vector< GCW::Gui::BillPay::Item > & _varItems )
 //       auto name1 = account1-> name();
 //       auto name2 = account2-> name();
 
-       auto name1 = item1.nickname();
-       auto name2 = item2.nickname();
+//       auto name1 = item1.nickname();
+//       auto name2 = item2.nickname();
 
        /*
-       ** return .bool. of the nickname comparison
+       ** return .bool. of the comparison
        **
        */
-       return name1
-            < name2;
+       return item1.sorter()
+            < item2.sorter()
+            ;
      }
   );
 
@@ -222,8 +230,9 @@ loadData( int _selectedMonth )
   } // endfor( auto i : items )
 
   /*!
-  ** All items get sorted Sort all the items by the account nickname.  (The
-  **  user is not allowed to sort these views so we do it)
+  ** All items get sorted Sort all the items by the account group.dueDay.  (The
+  **  user is not allowed to sort these views so we do it)  This sorts the items
+  **  with the items that are due first, above those that are due next.
   **
   */
   ::sort( varItems );

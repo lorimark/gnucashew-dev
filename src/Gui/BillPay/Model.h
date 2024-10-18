@@ -58,7 +58,7 @@ class Model
     **
     ** During construction, the model examines all the billpay-items
     **  to detemine if the item meets the parameter criteria.  This
-    **  allows a TableView to be constructed to 'present' the items
+    **  allows a TableView to be constructed to present the items
     **  that meet this criteria as a grouped set of items.
     **
     ** To return all the items in the month of February that are

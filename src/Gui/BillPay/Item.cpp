@@ -30,6 +30,22 @@ Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 
 auto
 GCW::Gui::BillPay::Item::
+sorter() const -> float
+{
+  std::string sortvalue = "0";
+
+  if( group() != "" )
+    sortvalue += group();
+
+  if( dueDay() != "" )
+    sortvalue += "." + dueDay();
+
+  return std::stof( sortvalue );
+
+} // endsorter() const -> double
+
+auto
+GCW::Gui::BillPay::Item::
 guid () const-> std::string
 {
   return
