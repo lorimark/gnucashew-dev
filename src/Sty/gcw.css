@@ -144,6 +144,7 @@
 .billpay .colsel
 {
   background-color:#1aeaff !important;
+  color: black;
 }
 
 .billpay.unpaid.Wt-tableview .Wt-header
