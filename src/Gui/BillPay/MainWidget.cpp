@@ -21,7 +21,7 @@ buildContent()-> void
   clear();
 
   // identify
-  addStyleClass( "MainWidget" );
+  addStyleClass( "BillPay" );
 
   // layout
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );

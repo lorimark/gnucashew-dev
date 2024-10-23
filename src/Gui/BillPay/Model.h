@@ -6,6 +6,7 @@
 #include <Wt/WLength.h>
 #include <Wt/WStandardItemModel.h>
 
+#include "Item.h"
 #include "Status.h"
 
 namespace GCW {
@@ -84,7 +85,7 @@ class Model
     ** Return the column definition for the selected column.
     **
     */
-    ColumnDef_t columnDef( int _col );
+    auto columnDef( int _col )-> ColumnDef_t ;
 
     /*!
     ** \brief Reload the data based on the selected month.
@@ -93,9 +94,23 @@ class Model
     **  the month selected.
     **
     */
-    void loadData( int _selectedMonth );
+    auto loadData( int _selectedMonth )-> void ;
 
   private:
+
+    /*!
+    ** \brief Sorter
+    **
+    ** This sorter produces a sorted list of bills-to-pay sorted
+    **  by first 'group' then 'dueDay'.  This produces a number
+    **  that might be like 20.22, meaning group=20, day=22.  The
+    **  result in the view is all the "due next" items at the top
+    **  of the list, and so on.  The group-value is to just help
+    **  clean the display.  The result makes it very clear what bills
+    **  are due next in line.
+    **
+    */
+    auto sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void ;
 
     /*!
     ** \brief Model Status

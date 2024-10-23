@@ -62,7 +62,7 @@ class Item
     **  All items that share the same group appear in the same area
     **  and subsequent items are sorted on the dueDay value.
     */
-    auto sorter() const -> float ;
+    auto sortValue() const -> float ;
 
     auto setVar( const std::string & _key, const Wt::WString & _value )-> void;
 

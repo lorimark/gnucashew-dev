@@ -11,52 +11,6 @@
 
 namespace {
 
-/*!
-** \brief Accounts Sorter
-**
-** This sorter produces a sorted list of bills-to-pay sorted
-**  by first 'group' then 'dueDay'.  This produces a number
-**  that might be like 20.22, meaning group=20, day=22.  The
-**  result in the view is all the "due next" items at the top
-**  of the list, and so on.  The group-value is to just help
-**  clean the display.  The result makes it very clear what bills
-**  are due next in line.
-**
-*/
-void sort( std::vector< GCW::Gui::BillPay::Item > & _varItems )
-{
-  /*!
-  ** Sort the vector of accounts by group.dueDay
-  **
-  */
-  std::sort
-  (
-   _varItems.begin(),
-   _varItems.end(),
-   []( const GCW::Gui::BillPay::Item item1,
-       const GCW::Gui::BillPay::Item item2
-     )
-     {
-//       auto account1 = GCW::Dbo::Accounts::byGuid( item1-> keyField() );
-//       auto account2 = GCW::Dbo::Accounts::byGuid( item2-> keyField() );
-//       auto name1 = account1-> name();
-//       auto name2 = account2-> name();
-
-//       auto name1 = item1.nickname();
-//       auto name2 = item2.nickname();
-
-       /*
-       ** return .bool. of the comparison
-       **
-       */
-       return item1.sorter()
-            < item2.sorter()
-            ;
-     }
-  );
-
-} // endvoid sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
-
 GCW::Gui::BillPay::ColumnDef_t columns[] =
 {
   { "accountKey" , "120px", Wt::AlignmentFlag::Left,   "Primary Account Identifier"        },
@@ -93,14 +47,14 @@ Model( int _selectedMonth, const Status _status )
 {
 
   /*
-  ** Load the header only on the 'unpaid' view.
+  ** Load the header _only_ on the 'unpaid' view.
   **
   ** The unpaid view is represented first in the widget so that
   **  bills that are unpaid appear at the top of the browser
   **  window.  The unpaid view, therefore, is the only view
   **  that includes the header.  If the other two remaining
   **  views (Paid, Disabled) also had a header the gui would
-  **  get too cluttered.
+  **  get too cluttered, so those headers are left blank.
   **
   */
   if( m_status == GCW::Gui::BillPay::Status::Unpaid )
@@ -117,16 +71,16 @@ Model( int _selectedMonth, const Status _status )
 
 } // endModel( const Status _status )
 
-void
+auto
 GCW::Gui::BillPay::Model::
-loadData( int _selectedMonth )
+loadData( int _selectedMonth )-> void
 {
   /*!
   ** On load, the first column-label is set to indicate the
   **  model type as well as the month selected.
   **
   ** \code
-  ** Change the label on the column-0
+  ** Change the label on the column-0, example;
   **   "03 Unpaid"
   **   "06 Paid"
   **   "12 Disabled"
@@ -173,7 +127,7 @@ loadData( int _selectedMonth )
   **  paid/unpaid/disabled/yes/no accordingly.
   **
   */
-  std::vector< GCW::Gui::BillPay::Item > varItems;
+  std::vector< GCW::Gui::BillPay::Item > bpItems;
   for( auto item : items )
   {
     auto bpItem = GCW::Gui::BillPay::Item( item );
@@ -194,7 +148,7 @@ loadData( int _selectedMonth )
       )
     {
       /*
-      ** The item ~must~ be active and visible.
+      ** The item ~must~ be active ~and~ visible.
       **
       */
       if( isActive && isVisible )
@@ -208,7 +162,7 @@ loadData( int _selectedMonth )
         */
         if( bpItem.cb( _selectedMonth ) == yesNo )
 //        if( i-> getVarString( "cb" + GCW::Gui::BillPay::toString( _selectedMonth ) ) == yesNo )
-          varItems.push_back( bpItem );
+          bpItems.push_back( bpItem );
 
     } // endif( m_status != GCW::Gui::BillPay::Status::Disabled )
 
@@ -216,39 +170,40 @@ loadData( int _selectedMonth )
     ** This is for Disabled.
     **
     */
-    else if( m_status == GCW::Gui::BillPay::Status::Disabled ) // capture disabled items here
+    else
+    if( m_status == GCW::Gui::BillPay::Status::Disabled ) // capture disabled items here
     {
       /*
       ** Disabled items are either notActive ~or~ notVisible.
       **
       */
       if( !isActive || !isVisible )
-          varItems.push_back( bpItem );
+          bpItems.push_back( bpItem );
 
     } // endelse( .disabled. )
 
   } // endfor( auto i : items )
 
   /*!
-  ** All items get sorted Sort all the items by the account group.dueDay.  (The
+  ** Sort all the items by the account group.dueDay.  (The
   **  user is not allowed to sort these views so we do it)  This sorts the items
   **  with the items that are due first, above those that are due next.
   **
   */
-  ::sort( varItems );
+  sort( bpItems );
 
   /*!
   ** Each item is processed out of the sorted vector and placed
   **  in to the item model.
   */
-  for( auto varItem : varItems )
+  for( auto bpItem : bpItems )
   {
     /*
     ** Grab a few handles.
     **
     */
     auto accountName = std::make_unique< Wt::WStandardItem >();
-    auto accountGuid = varItem.accountGuid();
+    auto accountGuid = bpItem.accountGuid();
 
     if( accountGuid != "" )
     {
@@ -261,7 +216,7 @@ loadData( int _selectedMonth )
       **  carry the guid of the originating bpItem
       */
       accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
-      accountName-> setData( varItem.guid()       , Wt::ItemDataRole::User    );
+      accountName-> setData( bpItem.guid()       , Wt::ItemDataRole::User    );
       accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
 
     } // endif( accountGuid != "" )
@@ -272,18 +227,18 @@ loadData( int _selectedMonth )
     */
     std::vector< std::unique_ptr< Wt::WStandardItem > > columns;
     columns.push_back( std::move( accountName ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.last4    () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.nickname () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.group    () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.dueDay   () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.minimum  () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.budget   () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.actual   () ) );
-    columns.push_back( std::make_unique< Wt::WStandardItem >( varItem.autoPay  () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.last4    () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.nickname () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.group    () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.dueDay   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.minimum  () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.budget   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.actual   () ) );
+    columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.autoPay  () ) );
 
     for( int month=1; month<= 12; month++ )
     {
-      auto cb = std::make_unique< Wt::WStandardItem >( varItem.cb( month ) );
+      auto cb = std::make_unique< Wt::WStandardItem >( bpItem.cb( month ) );
 
       /*!
       ** While building the 'month columns', apply a style class to the
@@ -307,14 +262,51 @@ loadData( int _selectedMonth )
     */
     appendRow( std::move( columns ) );
 
-  } // endfor( auto varItem : varItems )
+  } // endfor( auto bpItem : bpItems )
 
-} // endloadData()
+} // endloadData( int _selectedMonth )-> void
 
-GCW::Gui::BillPay::ColumnDef_t
+auto
 GCW::Gui::BillPay::Model::
-columnDef( int col )
+columnDef( int col )-> GCW::Gui::BillPay::ColumnDef_t
 {
   return columns[col];
 }
+
+auto
+GCW::Gui::BillPay::Model::
+sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
+{
+  /*!
+  ** Sort the vector of bpItems by group.dueDay
+  **
+  */
+  std::sort
+  (
+   _bpItems.begin(),
+   _bpItems.end(),
+   []( const GCW::Gui::BillPay::Item item1,
+       const GCW::Gui::BillPay::Item item2
+     )
+     {
+//       auto account1 = GCW::Dbo::Accounts::byGuid( item1-> keyField() );
+//       auto account2 = GCW::Dbo::Accounts::byGuid( item2-> keyField() );
+//       auto name1 = account1-> name();
+//       auto name2 = account2-> name();
+
+//       auto name1 = item1.nickname();
+//       auto name2 = item2.nickname();
+
+       /*
+       ** return .bool. of the comparison
+       **
+       */
+       return item1.sortValue()
+            < item2.sortValue()
+            ;
+     }
+  );
+
+} // endsort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
+
 

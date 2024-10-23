@@ -30,7 +30,7 @@ Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 
 auto
 GCW::Gui::BillPay::Item::
-sorter() const -> float
+sortValue() const -> float
 {
   std::string sortvalue = "0";
 

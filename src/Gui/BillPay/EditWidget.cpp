@@ -30,7 +30,7 @@ EditWidget( const std::string & _bpGuid )
 : Wt::WContainerWidget(),
   m_bpGuid( _bpGuid )
 {
-  addStyleClass( "BillPay_EditWidget" );
+  addStyleClass( "EditWidget" );
 
   /*
   ** use a layout.

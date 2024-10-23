@@ -111,6 +111,7 @@ open_AccountRegister( const std::string & _accountGuid )-> void
   **  there's nothing for us to do... perhaps pop an error dialog
   **  or something.
   **
+  ** \todo add pop-up dialog message here
   */
   if( !accountItem )
     return;
@@ -121,6 +122,9 @@ open_AccountRegister( const std::string & _accountGuid )-> void
   */
   if( tabIndex( accountItem-> name() ) == -1 )
   {
+    auto u_ = std::make_unique< GCW::Gui::AccountRegister >( _accountGuid );
+    auto accountRegister = u_.get();
+
     /*
     ** Open a new AccountRegister tab that is connected to the account
     **
@@ -129,13 +133,15 @@ open_AccountRegister( const std::string & _accountGuid )-> void
       tabWidget()->
         insertTab
         ( 1,
-          std::make_unique< GCW::Gui::AccountRegister >( _accountGuid ),
+          std::move( u_ ),
           accountItem-> name()
         );
 
     tabWidget()-> setTabToolTip( 1, fullName( accountItem ) );
 
     tab-> setCloseable( true );
+
+    accountRegister-> setAccountGuid( _accountGuid );
 
   } // endif( tabIndex( _account-> name() ) == -1 )
 
