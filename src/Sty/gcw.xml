@@ -260,14 +260,29 @@
   <message id="gcw.cw.tabName.Employees"        >Employees</message>
   <message id="gcw.cw.tabName.BillPay"          >Bill Pay</message>
 
-  <message id="gcw.billPay.accountLabel"        >Account</message>
-  <message id="gcw.billPay.dueDayLabel"         >Due Day</message>
-  <message id="gcw.billPay.minimumLabel"        >Minimum</message>
-  <message id="gcw.billPay.budgetLabel"         >Budget</message>
-  <message id="gcw.billPay.nicknameLabel"       >Nickname</message>
-  <message id="gcw.billPay.groupLabel"          >Group</message>
-  <message id="gcw.billPay.limitLabel"          >Limit</message>
-  <message id="gcw.billPay.actualLabel"         >Actual</message>
+  <message id="gcw.billPay.account.label"        >Account</message>
+  <message id="gcw.billPay.dueDay.label"         >Due Day</message>
+  <message id="gcw.billPay.minimum.label"        >Minimum</message>
+  <message id="gcw.billPay.budget.label"         >Budget</message>
+  <message id="gcw.billPay.nickname.label"       >Nickname</message>
+  <message id="gcw.billPay.group.label"          >Group</message>
+  <message id="gcw.billPay.limit.label"          >Limit</message>
+  <message id="gcw.billPay.actual.label"         >Actual</message>
+
+  <message id="gcw.billPay.account.toolTip"      >Account Reference</message>
+  <message id="gcw.billPay.dueDay.toolTip"       >Specific 'day' within the calendar month that the payment is due.</message>
+  <message id="gcw.billPay.minimum.toolTip"      ></message>
+  <message id="gcw.billPay.budget.toolTip"       ></message>
+  <message id="gcw.billPay.nickname.toolTip"     ></message>
+  <message id="gcw.billPay.group.toolTip"        >Sorting/Group value - put all similar accounts in the same group to have them organized and sorted within the table view so similar accounts that are paid together are grouped together.  For instance, a 'group' might be '10' which could mean that all bills in group "10" are bills that generally get paid on the 10th of the month.  Be sure, then, to set the 'Due Day' to the exact date due, that will help guide your bill-pay schedule.</message>
+  <message id="gcw.billPay.limit.toolTip"        ></message>
+  <message id="gcw.billPay.actual.toolTip"       ></message>
+  <message id="gcw.billPay.pb.ap.toolTip"        ></message>
+  <message id="gcw.billPay.pb.isActive.toolTip"  ></message>
+  <message id="gcw.billPay.pb.isVisible.toolTip" ></message>
+  <message id="gcw.billPay.pb.autoPay.toolTip"   >Indicates that this bill is on a auto-payment schedule.</message>
+  <message id="gcw.billPay.pb.payNow.toolTIp"    ></message>
+  <message id="gcw.billPay.pb.clear.toolTip"    >Clear all the payment check-boxes.</message>
 
   <message id="gcw.billPay.tableName.Paid"      >Paid</message>
   <message id="gcw.billPay.tableName.Unpaid"    >Unpaid</message>
@@ -282,7 +297,6 @@
   <message id="gcw.billPay.pb.payNow"           >Pay Now</message>
   <message id="gcw.billPay.pb.clear"            >clear</message>
   <message id="gcw.billPay.pb.go"               >go</message>
-  <message id="gcw.billPay.pb.clear.toolTip"    >Clear all the payment check-boxes</message>
   <message id="gcw.billPay.tabName.payment"     >Payment</message>
   <message id="gcw.billPay.tabName.history"     >History</message>
 

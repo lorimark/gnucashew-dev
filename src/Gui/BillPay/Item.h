@@ -13,7 +13,7 @@ class Item
 {
   public:
 
-    Item( GCW::Dbo::Vars::Item::Ptr _varItem );
+    Item( GCW::Dbo::Vars::Item::Ptr _varItem ) ;
 
     auto guid        () const-> std::string ;
     auto accountGuid () const-> std::string ;
@@ -64,7 +64,7 @@ class Item
     */
     auto sortValue() const -> float ;
 
-    auto setVar( const std::string & _key, const Wt::WString & _value )-> void;
+    auto setVar( const std::string & _key, const Wt::WString & _value )-> void ;
 
     GCW::Dbo::Vars::Item::Ptr m_varItem ;
 

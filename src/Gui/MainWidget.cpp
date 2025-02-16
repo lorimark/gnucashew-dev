@@ -34,6 +34,14 @@ MainWidget()
 
 } // endGCW::MainWidget::MainWidget()
 
+std::vector< std::vector< std::string > > items =
+{
+  { "en"    , "English"     },
+  { "en_cb" , "Cowboy"      },
+  { "nl"    , "Netherlands" },
+};
+
+
 auto
 GCW::Gui::MainWidget::
 load()-> void
@@ -52,12 +60,28 @@ load()-> void
 
   auto m_menu = navBar()-> addMenu( std::make_unique< Wt::WMenu >() );
 
+  /*
+  ** this is the site language selector
+  **
+  ** This works with .xml language files. the first default language file
+  **  is gcw.xml (for 'us'), and following language files are gcw_nl.xml for
+  **  netherlands and so forth.  These must be loaded in to the combo as
+  **  the xml files are created.
+  **
+  */
   {
     auto w_ = std::make_unique< Wt::WComboBox >();
     auto langCombo = w_.get();
-    langCombo-> addItem( "EN" );
-    langCombo-> addItem( "CB" );
+    for( auto & item : items )
+      langCombo-> addItem( item.at(1) );
     navBar()-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
+
+    langCombo->
+      activated().connect( [langCombo]( int _selection )
+      {
+//        std::cout << __FILE__ << ":" << __LINE__ << " " << _selection << " " << langCombo-> valueText() << " " << items.at(_selection).at(0) << std::endl;
+        wApp-> setLocale( items.at(_selection).at(0) );
+      });
   }
 
   {

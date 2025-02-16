@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages xmlns:if="Wt.WTemplate.conditions">
+
+  <message id="gcw.language_file">Nederlands</message>
+
+  <message id="gcw.welcome.title">Welkom bij GnuCashew</message>
+  <message id="gcw.welcome.body">
+    <p>
+      Welkom bij GnuCashew!
+    </p>
+
+    <p>
+      Dit project is nog in ontwikkeling.
+    </p>
+
+    <p>
+      Dit is een actieve ontwikkelingskopie van het GnuCashew-programma. Op dit moment werkt niet veel. De hoofd 'Accounts' boomweergave werkt, en als je dubbelklikt op een account, opent de 'Account Register'. De Account Register werkt alleen in weergavemodus. Je kunt omhoog en omlaag scrollen en de bewerking werkt, maar het slaat nog niet op in de database. De menu-items zijn grotendeels uitgeschakeld, behalve voor menu-items die werken. Het 'Business:Customer:Overview' werkt. De 'Assets:Checking'-rekening heeft een paar transacties voor scrollen. Ook ondersteunen de invoervelden in de accountregister 'suggesties', dus wanneer je een accountnaam of beschrijving typt, verschijnt onmiddellijk een suggestie en biedt wat alternatieven... best handig!
+    </p>
+
+    <p>
+      De broncode gegenereerde doxygen-bestanden zijn hier te vinden;
+      <br />
+      <a href="https://gnucashew.lorimarksolutions.com/dox/html/index.html" target="_blank">
+               https://gnucashew.lorimarksolutions.com/dox/html/index.html
+      </a>
+    </p>
+
+    <p>
+      De broncode repository is hier te vinden;
+      <br />
+      <a href="https://github.com/lorimark/gnucashew" target="_blank">
+               https://github.com/lorimark/gnucashew
+      </a>
+    </p>
+
+    <p>
+      Dit project maakt gebruik van Wt (
+      <a href="https://www.webtoolkit.eu/" target="_blank">
+               https://www.webtoolkit.eu/wt
+      </a>
+      ) als web rendering bibliotheek.
+    </p>
+
+    <p>
+      Voel je vrij om rond te kijken.<br />
+      Veel plezier! Laat me weten wat je ervan vindt!<br />
+      mark@lorimarksolutions.com
+    </p>
+    (druk op &lt;esc&gt; om door te gaan)
+  </message>
+
+  <message id="gcw.MainWidget.mu.file"                             >Bestand</message>
+  <message id="gcw.MainWidget.mu.file.new"                         >Nieuw bestand</message>
+  <message id="gcw.MainWidget.mu.file.open"                        >Openen...</message>
+  <message id="gcw.MainWidget.mu.file.import"                      >Importeren</message>
+  <message id="gcw.MainWidget.mu.file.save"                        >Opslaan</message>
+  <message id="gcw.MainWidget.mu.file.saveas"                      >Opslaan als...</message>
+  <message id="gcw.MainWidget.mu.file.revert"                      >Terugzetten</message>
+  <message id="gcw.MainWidget.mu.file.print"                       >Afdrukken</message>
+  <message id="gcw.MainWidget.mu.file.pagesetup"                   >Pagina-instelling</message>
+  <message id="gcw.MainWidget.mu.file.export"                      >Exporteer</message>
+  <message id="gcw.MainWidget.mu.file.properties"                  >Eigenschappen</message>
+  <message id="gcw.MainWidget.mu.file.close"                       >Sluiten</message>
+  <message id="gcw.MainWidget.mu.file.quit"                        >Afsluiten</message>
+
+  <message id="gcw.MainWidget.mu.edit"                             >Bewerken</message>
+  <message id="gcw.MainWidget.mu.edit.cut"                         >Knippen</message>
+  <message id="gcw.MainWidget.mu.edit.copy"                        >Kopiëren</message>
+  <message id="gcw.MainWidget.mu.edit.paste"                       >Plakken</message>
+  <message id="gcw.MainWidget.mu.edit.edit"                        >Bewerk Account</message>
+  <message id="gcw.MainWidget.mu.edit.delete"                      >Verwijder Account</message>
+  <message id="gcw.MainWidget.mu.edit.find"                        >Zoek Account</message>
+  <message id="gcw.MainWidget.mu.edit.cascade"                     >Cascadeer Account-eigenschappen</message>
+  <message id="gcw.MainWidget.mu.edit.renumber"                    >Hernoem Subaccounts</message>
+  <message id="gcw.MainWidget.mu.edit.openaccount"                 >Open Account</message>
+  <message id="gcw.MainWidget.mu.edit.opensubaccounts"             >Open Subaccounts</message>
+
+  <message id="gcw.MainWidget.mu.view"                             >Weergave</message>
+  <message id="gcw.MainWidget.mu.view.toolbar"                     >Werkbalk</message>
+  <message id="gcw.MainWidget.mu.view.summarybar"                  >Samenvattingsbalk</message>
+  <message id="gcw.MainWidget.mu.view.statusbar"                   >Statusbalk</message>
+  <message id="gcw.MainWidget.mu.view.tabposition"                 >Tabbladpositie</message>
+  <message id="gcw.MainWidget.mu.view.filterby"                    >Filter op...</message>
+  <message id="gcw.MainWidget.mu.view.refresh"                     >Vernieuwen</message>
+  <message id="gcw.MainWidget.mu.view.newaccounts"                 >Nieuwe Accounts-pagina</message>
+
+  <message id="gcw.MainWidget.mu.actions"                          >Acties</message>
+  <message id="gcw.MainWidget.mu.actions.online"                   >Online Acties</message>
+  <message id="gcw.MainWidget.mu.actions.scheduled"                >Geplande Transacties</message>
+  <message id="gcw.MainWidget.mu.actions.budget"                   >Budget</message>
+  <message id="gcw.MainWidget.mu.actions.billpay"                  >Factuur Betalen</message>
+  <message id="gcw.MainWidget.mu.actions.resetwarnings"            >Waarschuwingen Resetten...</message>
+  <message id="gcw.MainWidget.mu.actions.renamepage"               >Hernoem Pagina</message>
+
+  <message id="gcw.MainWidget.mu.business"                         >Zakelijk</message>
+  <message id="gcw.MainWidget.mu.business.customer"                >Klant</message>
+  <message id="gcw.MainWidget.mu.business.vendor"                  >Leverancier</message>
+  <message id="gcw.MainWidget.mu.business.employee"                >Werknemer</message>
+  <message id="gcw.MainWidget.mu.business.linked"                  >Gelinkte Documenten</message>
+  <message id="gcw.MainWidget.mu.business.salestax"                >BTW Tabel</message>
+  <message id="gcw.MainWidget.mu.business.billingterms"            >Factureringstermijnen</message>
+
+  <message id="gcw.MainWidget.mu.business.customer.overview"       >Overzicht Klanten</message>
+  <message id="gcw.MainWidget.mu.business.customer.newCustomer"    >Nieuwe Klant...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findCustomer"   >Zoek Klant...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newInvoice"     >Nieuwe Factuur...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findInvoice"    >Zoek Factuur...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newJob"         >Nieuwe Taak...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findJob"        >Zoek Taak...</message>
+  <message id="gcw.MainWidget.mu.business.customer.processPayment" >Verwerk Betaling...</message>
+  <message id="gcw.MainWidget.mu.business.customer.invoicesDue"    >Te Betalen Facturen</message>
+
+  <message id="gcw.MainWidget.mu.business.employee.overview"       >Overzicht Werknemers</message>
+  <message id="gcw.MainWidget.mu.business.employee.new"            >Nieuwe Werknemer...</message>
+  <message id="gcw.MainWidget.mu.business.employee.find"           >Zoek Werknemer...</message>
+  <message id="gcw.MainWidget.mu.business.employee.newExpense"     >Nieuwe Uitgave...</message>
+  <message id="gcw.MainWidget.mu.business.employee.findExpense"    >Zoek Uitgave...</message>
+  <message id="gcw.MainWidget.mu.business.employee.processPayment" >Verwerk Betaling...</message>
+
+  <message id="gcw.MainWidget.mu.help"                             >Hulp</message>
+  <message id="gcw.MainWidget.mu.help.tutorial"                    >Handleiding en Concepten</message>
+  <message id="gcw.MainWidget.mu.help.tip"                         >Tip van de Dag</message>
+  <message id="gcw.MainWidget.mu.help.contents"                    >Inhoud</message>
+  <message id="gcw.MainWidget.mu.help.about"                       >Over</message>
+
+</messages>
+

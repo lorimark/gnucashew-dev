@@ -42,7 +42,7 @@ sortValue() const -> float
 
   return std::stof( sortvalue );
 
-} // endsorter() const -> double
+} // endsortValue() const -> float
 
 auto
 GCW::Gui::BillPay::Item::
@@ -51,7 +51,7 @@ guid () const-> std::string
   return
     m_varItem-> keyField();
 
-} // endaccountGuid () const-> std::string
+} // endguid () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::

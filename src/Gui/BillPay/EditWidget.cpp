@@ -71,18 +71,32 @@ EditWidget( const std::string & _bpGuid )
   m_autoPay   = templtMain-> bindNew< Wt::WCheckBox   >( "autoPay"   , TR("gcw.billPay.pb.autoPay")   );
   m_payNow    = templtMain-> bindNew< Wt::WCheckBox   >( "payNow"    , TR("gcw.billPay.pb.payNow")    );
 
-  m_dueDay-> setRange( 1, 31 );
-  m_group-> setRange( 0, 30 );
-  m_group-> setSingleStep( 5 );
+  m_account   -> setToolTip( TR("gcw.billPay.account.toolTip"        ) );
+  m_dueDay    -> setToolTip( TR("gcw.billPay.dueDay.toolTip"         ) );
+  m_minimum   -> setToolTip( TR("gcw.billPay.minimum.toolTip"        ) );
+  m_budget    -> setToolTip( TR("gcw.billPay.budget.toolTip"         ) );
+  m_nickname  -> setToolTip( TR("gcw.billPay.nickname.toolTip"       ) );
+  m_group     -> setToolTip( TR("gcw.billPay.group.toolTip"          ) );
+  m_limit     -> setToolTip( TR("gcw.billPay.limit.toolTip"          ) );
+  m_actual    -> setToolTip( TR("gcw.billPay.actual.toolTip"         ) );
+  m_ap        -> setToolTip( TR("gcw.billPay.pb.ap.toolTip"          ) );
+  m_isActive  -> setToolTip( TR("gcw.billPay.pb.isActive.toolTip"    ) );
+  m_isVisible -> setToolTip( TR("gcw.billPay.pb.isVisible.toolTip"   ) );
+  m_autoPay   -> setToolTip( TR("gcw.billPay.pb.autoPay.toolTip"     ) );
+  m_payNow    -> setToolTip( TR("gcw.billPay.pb.payNow.toolTIp"      ) );
 
-  templtMain-> bindString( "accountLabel"  , TR("gcw.billPay.accountLabel"  ) );
-  templtMain-> bindString( "dueDayLabel"   , TR("gcw.billPay.dueDayLabel"   ) );
-  templtMain-> bindString( "minimumLabel"  , TR("gcw.billPay.minimumLabel"  ) );
-  templtMain-> bindString( "budgetLabel"   , TR("gcw.billPay.budgetLabel"   ) );
-  templtMain-> bindString( "nicknameLabel" , TR("gcw.billPay.nicknameLabel" ) );
-  templtMain-> bindString( "groupLabel"    , TR("gcw.billPay.groupLabel"    ) );
-  templtMain-> bindString( "limitLabel"    , TR("gcw.billPay.limitLabel"    ) );
-  templtMain-> bindString( "actualLabel"   , TR("gcw.billPay.actualLabel"   ) );
+  m_dueDay -> setRange( 1, 31 );
+  m_group  -> setRange( 0, 30 );
+  m_group  -> setSingleStep( 5 );
+
+  templtMain-> bindString( "accountLabel"  , TR("gcw.billPay.account.label"  ) );
+  templtMain-> bindString( "dueDayLabel"   , TR("gcw.billPay.dueDay.label"   ) );
+  templtMain-> bindString( "minimumLabel"  , TR("gcw.billPay.minimum.label"  ) );
+  templtMain-> bindString( "budgetLabel"   , TR("gcw.billPay.budget.label"   ) );
+  templtMain-> bindString( "nicknameLabel" , TR("gcw.billPay.nickname.label" ) );
+  templtMain-> bindString( "groupLabel"    , TR("gcw.billPay.group.label"    ) );
+  templtMain-> bindString( "limitLabel"    , TR("gcw.billPay.limit.label"    ) );
+  templtMain-> bindString( "actualLabel"   , TR("gcw.billPay.actual.label"   ) );
 
   /*
   ** this is the tab widget.  It takes up the remaining bottom space

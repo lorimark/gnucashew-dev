@@ -72,7 +72,8 @@ buildContent()-> void
       });
 
     /*
-    ** clicking on the header changes the selected month
+    ** unpaid items has a header, whereas the other two item-tables do not have a
+    **  header and clicking on the header changes the selected month
     */
     m_unpaidView->
       headerClicked().connect( this, &MainWidget::on_headerClicked );

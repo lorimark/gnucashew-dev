@@ -131,7 +131,8 @@
   padding: 5px;
 }
 
-.BillPay_EditWidget
+.BillPay
+ .EditWidget
 {
   background-color:#ffbf0047;
   border: 1px solid black;

@@ -1,0 +1,129 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<messages xmlns:if="Wt.WTemplate.conditions">
+
+  <message id="gcw.language_file">English, y’all!</message>
+
+  <message id="gcw.welcome.title">Howdy, welcome to GnuCashew!</message>
+  <message id="gcw.welcome.body">
+    <p>
+      Well, howdy! Welcome to GnuCashew, partner!
+    </p>
+
+    <p>
+      This here project’s still in the works, so don’t go expectin’ too much just yet.
+    </p>
+
+    <p>
+      Right now, we got ourselves a workin’ copy of the GnuCashew program. The big ol’ 'Accounts' tree is up and runnin', and when ya double-click an account, it’ll open up the 'Account Register'. It's in view-mode only, though, so ya can scroll all ya like and edit all you want, but it ain't savin' back to the database just yet. As for the menu items, most of 'em are takin’ a nap, except for the ones that actually work. The 'Business:Customer:Overview' is good to go. You can also mosey through the 'Assets:Checking' account, which has a few transactions for ya to poke around in. Oh, and the account register’s got these here 'suggestions' when ya start typin’ an account name or description. Pretty neat, right?
+    </p>
+
+    <p>
+      You can find them fancy source-generated doxygen files right here:
+      <br />
+      <a href="https://gnucashew.lorimarksolutions.com/dox/html/index.html" target="_blank">
+               https://gnucashew.lorimarksolutions.com/dox/html/index.html
+      </a>
+    </p>
+
+    <p>
+      And the source-code repository is sittin' right here:
+      <br />
+      <a href="https://github.com/lorimark/gnucashew" target="_blank">
+               https://github.com/lorimark/gnucashew
+      </a>
+    </p>
+
+    <p>
+      This here project uses Wt
+      (<a href="https://www.webtoolkit.eu/" target="_blank">
+               https://www.webtoolkit.eu/wt
+      </a>)
+      for renderin' them web pages.
+    </p>
+
+    <p>
+      Feel free to roam around, partner.<br />
+      Have some fun and holler at me if ya got any thoughts!<br />
+      mark@lorimarksolutions.com
+    </p>
+    (press &lt;esc&gt; to keep movin' along)
+  </message>
+
+  <message id="gcw.MainWidget.mu.file">File, partner</message>
+  <message id="gcw.MainWidget.mu.file.new">New File, y’all</message>
+  <message id="gcw.MainWidget.mu.file.open">Open... reckon?</message>
+  <message id="gcw.MainWidget.mu.file.import">Import, saddle up</message>
+  <message id="gcw.MainWidget.mu.file.save">Save it!</message>
+  <message id="gcw.MainWidget.mu.file.saveas">Save as... if ya please</message>
+  <message id="gcw.MainWidget.mu.file.revert">Revert to the old ways</message>
+  <message id="gcw.MainWidget.mu.file.print">Print it out, partner</message>
+  <message id="gcw.MainWidget.mu.file.pagesetup">Set up them pages</message>
+  <message id="gcw.MainWidget.mu.file.export">Export 'em!</message>
+  <message id="gcw.MainWidget.mu.file.properties">Property of the ol' ranch</message>
+  <message id="gcw.MainWidget.mu.file.close">Close up shop</message>
+  <message id="gcw.MainWidget.mu.file.quit">Quitter, huh?</message>
+
+  <message id="gcw.MainWidget.mu.edit">Edit yer stuff</message>
+  <message id="gcw.MainWidget.mu.edit.cut">Cut it out</message>
+  <message id="gcw.MainWidget.mu.edit.copy">Copy it, partner</message>
+  <message id="gcw.MainWidget.mu.edit.paste">Paste it back</message>
+  <message id="gcw.MainWidget.mu.edit.edit">Edit that account</message>
+  <message id="gcw.MainWidget.mu.edit.delete">Delete that account!</message>
+  <message id="gcw.MainWidget.mu.edit.find">Find that account</message>
+  <message id="gcw.MainWidget.mu.edit.cascade">Cascade them account properties</message>
+  <message id="gcw.MainWidget.mu.edit.renumber">Renumber them subaccounts</message>
+  <message id="gcw.MainWidget.mu.edit.openaccount">Open that account</message>
+  <message id="gcw.MainWidget.mu.edit.opensubaccounts">Open them subaccounts</message>
+
+  <message id="gcw.MainWidget.mu.view">View 'em, partner</message>
+  <message id="gcw.MainWidget.mu.view.toolbar">Toolbar, hold tight</message>
+  <message id="gcw.MainWidget.mu.view.summarybar">Summary bar, partner</message>
+  <message id="gcw.MainWidget.mu.view.statusbar">Status bar, y’all</message>
+  <message id="gcw.MainWidget.mu.view.tabposition">Tab position, where’s it at?</message>
+  <message id="gcw.MainWidget.mu.view.filterby">Filter by... reckon?</message>
+  <message id="gcw.MainWidget.mu.view.refresh">Give it a refresh!</message>
+  <message id="gcw.MainWidget.mu.view.newaccounts">New accounts page comin' right up!</message>
+
+  <message id="gcw.MainWidget.mu.actions">Actions, partner</message>
+  <message id="gcw.MainWidget.mu.actions.online">Online actions</message>
+  <message id="gcw.MainWidget.mu.actions.scheduled">Scheduled transactions, like clockwork</message>
+  <message id="gcw.MainWidget.mu.actions.budget">Budgetin' time!</message>
+  <message id="gcw.MainWidget.mu.actions.billpay">Bill payin’ time</message>
+  <message id="gcw.MainWidget.mu.actions.resetwarnings">Reset them warnings</message>
+  <message id="gcw.MainWidget.mu.actions.renamepage">Rename that page, partner</message>
+
+  <message id="gcw.MainWidget.mu.business">Business talk</message>
+  <message id="gcw.MainWidget.mu.business.customer">Customer round-up</message>
+  <message id="gcw.MainWidget.mu.business.vendor">Vendor out yonder</message>
+  <message id="gcw.MainWidget.mu.business.employee">Employee info</message>
+  <message id="gcw.MainWidget.mu.business.linked">Linked documents, y’all</message>
+  <message id="gcw.MainWidget.mu.business.salestax">Sales tax table</message>
+  <message id="gcw.MainWidget.mu.business.billingterms">Billing terms editor</message>
+
+  <message id="gcw.MainWidget.mu.business.customer.overview">Customer overview</message>
+  <message id="gcw.MainWidget.mu.business.customer.newCustomer">New customer on the block</message>
+  <message id="gcw.MainWidget.mu.business.customer.findCustomer">Find that customer</message>
+  <message id="gcw.MainWidget.mu.business.customer.newInvoice">New invoice comin' up!</message>
+  <message id="gcw.MainWidget.mu.business.customer.findInvoice">Find that invoice</message>
+  <message id="gcw.MainWidget.mu.business.customer.newJob">New job, saddle up!</message>
+  <message id="gcw.MainWidget.mu.business.customer.findJob">Find that job</message>
+  <message id="gcw.MainWidget.mu.business.customer.processPayment">Process that payment</message>
+  <message id="gcw.MainWidget.mu.business.customer.invoicesDue">Invoices due reminder</message>
+
+  <message id="gcw.MainWidget.mu.business.employee.overview">Employee overview</message>
+  <message id="gcw.MainWidget.mu.business.employee.new">New employee in town</message>
+  <message id="gcw.MainWidget.mu.business.employee.find">Find 'em!</message>
+  <message id="gcw.MainWidget.mu.business.employee.newExpense">New expense voucher</message>
+  <message id="gcw.MainWidget.mu.business.employee.findExpense">Find that expense</message>
+  <message id="gcw.MainWidget.mu.business.employee.processPayment">Process payment for employee</message>
+
+  <message id="gcw.MainWidget.mu.help">Help, partner!</message>
+  <message id="gcw.MainWidget.mu.help.tutorial">Tutorial and concepts guide</message>
+  <message id="gcw.MainWidget.mu.help.tip">Tips o' the day</message>
+  <message id="gcw.MainWidget.mu.help.contents">Contents</message>
+  <message id="gcw.MainWidget.mu.help.about">About, y’all</message>
+
+</messages>
+
+

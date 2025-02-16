@@ -36,7 +36,7 @@ GCW::Gui::BillPay::ColumnDef_t columns[] =
   { "12"         ,  "35px", Wt::AlignmentFlag::Center, "December"                          },
 };
 
-#define COLUMN_COUNT sizeof(columns)/sizeof(GCW::Gui::BillPay::ColumnDef_t)
+#define COLUMN_COUNT (sizeof(columns)/sizeof(GCW::Gui::BillPay::ColumnDef_t))
 
 } // endnamespace {
 
@@ -58,11 +58,13 @@ Model( int _selectedMonth, const Status _status )
   **
   */
   if( m_status == GCW::Gui::BillPay::Status::Unpaid )
+  {
     for( int col = 1; col< COLUMN_COUNT; col++ )
     {
-      setHeaderData( col, Wt::Orientation::Horizontal, columns[col].name    , Wt::ItemDataRole::Display );
-      setHeaderData( col, Wt::Orientation::Horizontal, columns[col].toolTip , Wt::ItemDataRole::ToolTip );
+      setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].name    , Wt::ItemDataRole::Display );
+      setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].toolTip , Wt::ItemDataRole::ToolTip );
     }
+  }
 
   /*
   ** Load the data based on the month selected.
@@ -136,7 +138,7 @@ loadData( int _selectedMonth )-> void
     ** Calculate these boolean.
     **
     */
-    auto isActive  = bpItem.isActive()  == "yes";
+    auto isActive  = bpItem.isActive () == "yes";
     auto isVisible = bpItem.isVisible() == "yes";
 
     /*
@@ -152,7 +154,7 @@ loadData( int _selectedMonth )-> void
       **
       */
       if( isActive && isVisible )
-
+      {
         /*
         ** Get the .var. string that has the combo-box values for the monthly
         **  indicators of what has been paid and what has not.  Depending on the
@@ -163,6 +165,8 @@ loadData( int _selectedMonth )-> void
         if( bpItem.cb( _selectedMonth ) == yesNo )
 //        if( i-> getVarString( "cb" + GCW::Gui::BillPay::toString( _selectedMonth ) ) == yesNo )
           bpItems.push_back( bpItem );
+
+      } // endif( isActive && isVisible )
 
     } // endif( m_status != GCW::Gui::BillPay::Status::Disabled )
 
@@ -216,7 +220,7 @@ loadData( int _selectedMonth )-> void
       **  carry the guid of the originating bpItem
       */
       accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
-      accountName-> setData( bpItem.guid()       , Wt::ItemDataRole::User    );
+      accountName-> setData( bpItem.guid()        , Wt::ItemDataRole::User    );
       accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
 
     } // endif( accountGuid != "" )
