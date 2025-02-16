@@ -16,7 +16,7 @@ const char * GCW::Dbo::Accounts::s_tableName = "accounts";
 ** \ref GCW::Eng::AccountRegisterModel::refreshFromDisk() "refreshFromDisk()"
 */
 const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_accountDefs =
-{// type                                   dbcr                                name           colAccount   colDr        colCr
+{// type                                   dbcr                                backend_name   colAccount   colDr        colCr
   { GCW::Dbo::Accounts::Type::INVALID    , GCW::Dbo::Accounts::DrCr::NONE   ,  "INVALID"    , "account"  , "debit"    , "credit"      },
   { GCW::Dbo::Accounts::Type::NONE       , GCW::Dbo::Accounts::DrCr::NONE   ,  "NONE"       , "account"  , "debit"    , "credit"      },
   { GCW::Dbo::Accounts::Type::BANK       , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "BANK"       , "transfer" , "deposit"  , "withdrawal"  },
@@ -40,6 +40,7 @@ const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_acco
   { GCW::Dbo::Accounts::Type::CREDITLINE , GCW::Dbo::Accounts::DrCr::CREDIT ,  "CREDITLINE" , "account"  , "debit"    , "credit"      },
 };
 
+/// \todo these need to be properly associated to the proper allowed parent accounts
 const std::vector< GCW::Dbo::Accounts::AccountParent_t > GCW::Dbo::Accounts::s_accountParents =
 {
   { GCW::Dbo::Accounts::Type::BANK,       GCW::Dbo::Accounts::Type::ASSET     },

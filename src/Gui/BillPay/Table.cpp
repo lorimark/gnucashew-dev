@@ -54,7 +54,19 @@ void
 GCW::Gui::BillPay::Table::
 setMonth( int _month )
 {
+  int selected_row = -1;
+
+  if( selectedIndexes().size() > 0 )
+  {
+    selected_row = selectedIndexes().begin()-> row();
+  }
+
   m_model-> loadData( _month );
+
+  if( selected_row > -1 )
+  {
+    select( m_model-> index( selected_row, 0 ) );
+  }
 
 } // endsetMonth( int _month )
 

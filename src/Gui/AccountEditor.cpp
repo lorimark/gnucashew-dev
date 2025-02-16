@@ -16,8 +16,26 @@ class AccountTypeCombo
 {
   public:
 
-    AccountTypeCombo()
+    AccountTypeCombo( const std::string & _initialValue )
     {
+
+#ifdef NEVER
+      /*
+      ** ROOT
+      ** EXPENSE
+      ** LIABILITY
+      ** CREDIT
+      ** PAYABLE
+      ** ASSET
+      ** BANK
+      ** RECEIVABLE
+      ** CASH
+      ** INCOME
+      ** EQUITY
+      ** MUTUAL
+      ** STOCK
+      **
+      */
       addItem( "A/Payable"    );
       addItem( "A/Receivable" );
       addItem( "Asset"        );
@@ -31,7 +49,12 @@ class AccountTypeCombo
       addItem( "Mutual Fund"  );
       addItem( "Stock"        );
       addItem( "Trading"      );
-    }
+#endif
+
+      for( auto & def : GCW::Dbo::Accounts::s_accountDefs )
+        addItem( Wt::WString::tr( Wt::WString("gcw.AccountsType.{1}").arg( def.backend_name ).toUTF8() ) );
+
+    } // endAccountTypeCombo( const std::string & _initialValue )
 
 }; // endclass AccountTypeCombo
 
@@ -93,11 +116,13 @@ Tab1( const std::string & _accountGuid )
   t1-> bindString( "color-label"       , TR( "gcw.AccountEditor.color"       ) );
   t1-> bindString( "notes-label"       , TR( "gcw.AccountEditor.notes"       ) );
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << accountItem-> accountTypeName() << std::endl;
+
   auto name           = t1-> bindNew< Wt::WLineEdit              >( "name"           , accountItem-> name()                     );
   auto code           = t1-> bindNew< Wt::WLineEdit              >( "code"           , accountItem-> code()                     );
   auto desc           = t1-> bindNew< Wt::WLineEdit              >( "desc"           , accountItem-> description()              );
   auto parent         = t1-> bindNew< GCW::Gui::AccountsTreeView >( "parent"         , accountItem-> parent_guid() , 2          );
-  auto accountType    = t1-> bindNew< AccountTypeCombo           >( "accountType"                                               );
+  auto accountType    = t1-> bindNew< AccountTypeCombo           >( "accountType"    , accountItem-> accountTypeName()          );
   auto security       = t1-> bindNew< SecurityCombo              >( "security"                                                  );
   auto fraction       = t1-> bindNew< SmallestFractionCombo      >( "fraction"                                                  );
   auto color          = t1-> bindNew< Wt::WPushButton            >( "color"          , TR( "gcw.AccountEditor.colorpicker"    ) );
@@ -120,9 +145,9 @@ GCW::Gui::AccountEditor::Tab2::
 Tab2( const std::string & _accountGuid )
 : m_accountGuid( _accountGuid )
 {
-  auto lw = setLayout( std::make_unique< Wt::WFitLayout >() );
+  auto lw  = setLayout( std::make_unique< Wt::WFitLayout >() );
   auto at2 = std::make_unique< Wt::WTemplate >( TR( "gcw_gui.accounteditor.form.tab2" ) );
-  auto t2 = at2.get();
+  auto t2  = at2.get();
   lw-> addWidget( std::move( at2 ) );
 
 } // endTab2( const std::string & _accountGuid )
@@ -153,7 +178,7 @@ AccountEditor( const std::string & _accountGuid )
     auto at2 = std::make_unique< Tab2 >( m_accountGuid );
   m_t2 = at2.get();
 
-  m_tabWidget = lw-> addWidget( std::make_unique< Wt::WTabWidget >() );
+  m_tabWidget = lw-> addWidget( std::make_unique< Wt::WTabWidget >(), 1 );
   auto twt1 = tabWidget()-> addTab( std::move( at1 ), "General" );
   auto twt2 = tabWidget()-> addTab( std::move( at2 ), "More Properties" );
 

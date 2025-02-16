@@ -130,13 +130,13 @@ enum class Type
 typedef struct ACCOUNTDEF_S
 {
   /// Account Type as per gnucash
-  Type        type;
+  Type type;
 
   /// indicate if the account is Debit or Credit
-  DrCr        drcr;
+  DrCr drcr;
 
-  /// a printable 'name' for the account
-  std::string name;
+  /// the 'name' used in the back-end for the account
+  std::string backend_name;
 
   /// a printable 'label' for the 'account' column in the registers
   std::string colAccount;
@@ -146,6 +146,9 @@ typedef struct ACCOUNTDEF_S
 
   /// a printable 'label' for the 'credit' column in the registers
   std::string colCr;
+
+  /// list of acceptable parent accounts
+  std::vector< Type > parent;
 
 } AccountDef_t;
 

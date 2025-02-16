@@ -217,8 +217,8 @@ auto
 GCW::Gui::BillPay::MainWidget::
 setMonth( int _month )-> void
 {
-  if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
+  if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_disabledView ) m_disabledView -> setMonth( _month );
 
   m_selectedMonth = _month;
