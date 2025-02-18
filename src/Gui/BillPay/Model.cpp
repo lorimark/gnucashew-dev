@@ -19,8 +19,8 @@ GCW::Gui::BillPay::ColumnDef_t columns[] =
   { "Gp"         ,  "50px", Wt::AlignmentFlag::Center, "Grouping"                          },
   { "Dy"         ,  "50px", Wt::AlignmentFlag::Center, "Day that the payment is due"       },
   { "Min"        ,  "50px", Wt::AlignmentFlag::Right,  "Minimum Payment Due"               },
-  { "Bdgt"       ,  "50px", Wt::AlignmentFlag::Right,  "Payment Budget"                    },
-  { "Actual"     ,  "50px", Wt::AlignmentFlag::Right,  "Actual payment most recently made" },
+  { "Bgt"        ,  "50px", Wt::AlignmentFlag::Right,  "Payment Budget"                    },
+  { "Actual"     ,  "75px", Wt::AlignmentFlag::Right,  "Actual payment most recently made" },
   { "Au"         ,  "50px", Wt::AlignmentFlag::Center, "Automatic Payment Indicator"       },
   { "01"         ,  "35px", Wt::AlignmentFlag::Center, "January"                           },
   { "02"         ,  "35px", Wt::AlignmentFlag::Center, "February"                          },
@@ -168,7 +168,7 @@ loadData( int _selectedMonth )-> void
 
       } // endif( isActive && isVisible )
 
-    } // endif( m_status != GCW::Gui::BillPay::Status::Disabled )
+    } // endif( ..is active.. )
 
     /*
     ** This is for Disabled.

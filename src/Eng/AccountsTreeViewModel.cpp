@@ -58,11 +58,18 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
+  /*
+  ** This 'builds' a row of account info, with the account
+  **  'name' on the first column, and other bits about the account
+  **  on the remaining columns.
+  **
+  */
   auto _append = [=]( Wt::WStandardItem * _item, GCW::Dbo::Accounts::Item::Ptr _accountItem )
   {
     std::vector< std::unique_ptr< Wt::WStandardItem > > columns;
 
     auto accountName = std::make_unique< Wt::WStandardItem >( _accountItem-> name() );
+    auto retVal = accountName.get();
     accountName-> setToolTip( _accountItem-> guid() );
 
 #ifdef NEVER
@@ -79,7 +86,6 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
     **
     */
     accountName-> setData( _accountItem-> guid(), Wt::ItemDataRole::User );
-    auto retVal = accountName.get();
     int col = 0;
     if( col++ < m_columnCount ) columns.push_back( std::move( accountName ) );
     if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> code        () ) );
@@ -91,7 +97,8 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
     _item-> appendRow( std::move( columns ) );
 
     return retVal;
-  };
+
+  }; // end_append()
 
   auto accounts =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()

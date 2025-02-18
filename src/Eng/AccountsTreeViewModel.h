@@ -18,9 +18,10 @@ namespace GCW {
 /*!
 ** \brief AccountsTreeViewModel
 **
+** This builds a tree-type model for the Accounts to allow them to be
+**  displayed and interacted with in a WTreeView type object.
 **
 */
-
 class AccountsTreeViewModel
 : public Wt::WStandardItemModel
 {
@@ -34,7 +35,7 @@ class AccountsTreeViewModel
 
     int m_columnCount = -1;
 
-};
+}; // endclass AccountsTreeViewModel
 
   } // endnamespace Eng {
 } // endnamespace GCW {

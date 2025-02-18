@@ -8,6 +8,7 @@
 
 #include "Accounts/Accounts.h"
 #include "Customers/Customers.h"
+#include "Commodities/Commodities.h"
 #include "Slots/Slots.h"
 #include "Splits/Splits.h"
 #include "Transactions/Transactions.h"

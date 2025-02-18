@@ -136,7 +136,7 @@ typedef struct ACCOUNTDEF_S
   DrCr drcr;
 
   /// the 'name' used in the back-end for the account
-  std::string backend_name;
+  std::string backendName;
 
   /// a printable 'label' for the 'account' column in the registers
   std::string colAccount;
@@ -147,13 +147,14 @@ typedef struct ACCOUNTDEF_S
   /// a printable 'label' for the 'credit' column in the registers
   std::string colCr;
 
-  /// list of acceptable parent accounts
-  std::vector< Type > parent;
+  /// acceptable parent account types
+  Type parentType;
 
 } AccountDef_t;
 
 extern const std::vector< AccountDef_t > s_accountDefs;
 
+#ifdef NEVER
 /*!
 ** \brief AccountType Parentage
 **
@@ -169,6 +170,7 @@ typedef struct ACCOUNTPARENT_S
 } AccountParent_t;
 
 extern const std::vector< AccountParent_t > s_accountParents;
+#endif
 
       namespace Field {
 

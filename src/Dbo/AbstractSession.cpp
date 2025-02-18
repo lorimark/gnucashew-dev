@@ -8,6 +8,7 @@
 
 #include "GncLock/GncLock.h"
 #include "Accounts/Accounts.h"
+#include "Commodities/Commodities.h"
 #include "Books/Books.h"
 #include "BillTerms/BillTerms.h"
 #include "Invoices/Invoices.h"
@@ -46,6 +47,7 @@ open( const std::string & _path )-> bool
   mapClass< GCW::Dbo:: BillTerms    ::Item >( GCW::Dbo:: BillTerms    ::s_tableName );
   mapClass< GCW::Dbo:: GncLock      ::Item >( GCW::Dbo:: GncLock      ::s_tableName );
   mapClass< GCW::Dbo:: Accounts     ::Item >( GCW::Dbo:: Accounts     ::s_tableName );
+  mapClass< GCW::Dbo:: Commodities  ::Item >( GCW::Dbo:: Commodities  ::s_tableName );
   mapClass< GCW::Dbo:: Entries      ::Item >( GCW::Dbo:: Entries      ::s_tableName );
   mapClass< GCW::Dbo:: Invoices     ::Item >( GCW::Dbo:: Invoices     ::s_tableName );
   mapClass< GCW::Dbo:: Customers    ::Item >( GCW::Dbo:: Customers    ::s_tableName );

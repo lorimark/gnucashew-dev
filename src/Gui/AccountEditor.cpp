@@ -18,41 +18,27 @@ class AccountTypeCombo
 
     AccountTypeCombo( const std::string & _initialValue )
     {
-
-#ifdef NEVER
       /*
-      ** ROOT
-      ** EXPENSE
-      ** LIABILITY
-      ** CREDIT
-      ** PAYABLE
-      ** ASSET
-      ** BANK
-      ** RECEIVABLE
-      ** CASH
-      ** INCOME
-      ** EQUITY
-      ** MUTUAL
-      ** STOCK
+      ** Load all the items in the combo box, based on a translation of the
+      **  backend name of the account type.
       **
       */
-      addItem( "A/Payable"    );
-      addItem( "A/Receivable" );
-      addItem( "Asset"        );
-      addItem( "Bank"         );
-      addItem( "Cash"         );
-      addItem( "Credit Card"  );
-      addItem( "Equity"       );
-      addItem( "Expense"      );
-      addItem( "Income"       );
-      addItem( "Liability"    );
-      addItem( "Mutual Fund"  );
-      addItem( "Stock"        );
-      addItem( "Trading"      );
-#endif
-
       for( auto & def : GCW::Dbo::Accounts::s_accountDefs )
-        addItem( Wt::WString::tr( Wt::WString("gcw.AccountsType.{1}").arg( def.backend_name ).toUTF8() ) );
+        addItem( Wt::WString::tr( Wt::WString("gcw.AccountsType.{1}").arg( def.backendName ).toUTF8() ) );
+
+      /*
+      ** Find the backend name requested, and make sure that is the
+      **  selected item.
+      **
+      */
+      int index = 0;
+      for( auto & def : GCW::Dbo::Accounts::s_accountDefs )
+      {
+        if( def.backendName == _initialValue )
+          break;
+        index++;
+      }
+      setCurrentIndex( index );
 
     } // endAccountTypeCombo( const std::string & _initialValue )
 
@@ -115,8 +101,6 @@ Tab1( const std::string & _accountGuid )
   t1-> bindString( "fraction-label"    , TR( "gcw.AccountEditor.fraction"    ) );
   t1-> bindString( "color-label"       , TR( "gcw.AccountEditor.color"       ) );
   t1-> bindString( "notes-label"       , TR( "gcw.AccountEditor.notes"       ) );
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << accountItem-> accountTypeName() << std::endl;
 
   auto name           = t1-> bindNew< Wt::WLineEdit              >( "name"           , accountItem-> name()                     );
   auto code           = t1-> bindNew< Wt::WLineEdit              >( "code"           , accountItem-> code()                     );

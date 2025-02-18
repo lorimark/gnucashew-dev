@@ -5,7 +5,7 @@
 
 #include "../Transactions/Transactions.h"
 #include "../Slots/Slots.h"
-#include "Definition.h"
+#include "Item.h"
 
 auto
 GCW::Dbo::Accounts::Item::
@@ -14,7 +14,7 @@ accountDef() const-> const GCW::Dbo::Accounts::AccountDef_t &
   auto atn = accountTypeName();
 
   for( auto & val : GCW::Dbo::Accounts::s_accountDefs )
-    if( val.backend_name == accountTypeName() )
+    if( val.backendName == accountTypeName() )
       return val;
 
   return GCW::Dbo::Accounts::s_accountDefs.at(0);
@@ -27,7 +27,7 @@ accountDrCr() const-> GCW::Dbo::Accounts::DrCr
   auto atn = accountTypeName();
 
   for( auto & val : GCW::Dbo::Accounts::s_accountDefs )
-    if( val.backend_name == accountTypeName() )
+    if( val.backendName == accountTypeName() )
       return val.drcr;
 
   return GCW::Dbo::Accounts::DrCr::NONE;
@@ -40,7 +40,7 @@ accountType() const-> GCW::Dbo::Accounts::Type
   auto atn = accountTypeName();
 
   for( auto & val : GCW::Dbo::Accounts::s_accountDefs )
-    if( val.backend_name == accountTypeName() )
+    if( val.backendName == accountTypeName() )
       return val.type;
 
   return GCW::Dbo::Accounts::Type::NONE;
