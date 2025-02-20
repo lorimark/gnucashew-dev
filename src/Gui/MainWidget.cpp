@@ -34,13 +34,14 @@ MainWidget()
 
 } // endGCW::MainWidget::MainWidget()
 
-std::vector< std::vector< std::string > > items =
+namespace {
+std::vector< std::vector< std::string > > langItems =
 {
   { "en"    , "English"     },
   { "en_cb" , "Cowboy"      },
   { "nl"    , "Netherlands" },
 };
-
+} // endnamespace {
 
 auto
 GCW::Gui::MainWidget::
@@ -72,7 +73,7 @@ load()-> void
   {
     auto w_ = std::make_unique< Wt::WComboBox >();
     auto langCombo = w_.get();
-    for( auto & item : items )
+    for( auto & item : langItems )
       langCombo-> addItem( item.at(1) );
     navBar()-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
 
@@ -80,7 +81,7 @@ load()-> void
       activated().connect( [langCombo]( int _selection )
       {
 //        std::cout << __FILE__ << ":" << __LINE__ << " " << _selection << " " << langCombo-> valueText() << " " << items.at(_selection).at(0) << std::endl;
-        wApp-> setLocale( items.at(_selection).at(0) );
+        wApp-> setLocale( langItems.at(_selection).at(0) );
       });
   }
 
@@ -195,6 +196,20 @@ load()-> void
     popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.salestax"      ) )-> setDisabled( true );
     popBusiness-> addItem( TR( "gcw.MainWidget.mu.business.billingterms"  ) )-> setDisabled( true );
     m_uBusiness-> setMenu( std::move( popBusiness ) );
+  }
+
+  {
+    auto m_uReports = m_menu-> addItem( TR( "gcw.MainWidget.mu.reports" ) );
+    auto popReports = std::make_unique< Wt::WPopupMenu >();
+
+    m_uReports-> setMenu( std::move( popReports ) );
+  }
+
+  {
+    auto m_uTools = m_menu-> addItem( TR( "gcw.MainWidget.mu.tools" ) );
+    auto popTools = std::make_unique< Wt::WPopupMenu >();
+
+    m_uTools-> setMenu( std::move( popTools ) );
   }
 
   {

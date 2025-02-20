@@ -23,6 +23,7 @@
 #include "App.h"
 #include "Dbo/Users/Auth.h"
 #include "GnuCashew.h"
+#include "Dbo/Commodities/Commodities.h"
 
 extern std::string g_dbName;
 
@@ -133,8 +134,21 @@ GCW::App::App( const Wt::WEnvironment & env )
   /*
   ** GnuCashew english language translations
   **
+  ** Note on the 'language elements' files.
+  **  The 'files' are located in the docroot folder.  The main "united states english"
+  **  translation file is called "gcw.xml".  This file contains all the words used in
+  **  the system called upon by Wt::WString::tr("id value").  Each 'language' file is
+  **  therefore;
+  **    "gcw_nl.xml" Dutch (netherlands)
+  **    "gcw_sp.xml" Spanish
+  **
+  ** It is only necessary to reference the english "gcw.xml" file, and the other language
+  **  files will get loaded automatically when the language changes.
+  **
+  ** See "Gui/MainWidget.cpp" for the references to the 'langCombo' code.
+  **
   */
-  messageResourceBundle().use( docRoot() + "/styles/gcw"  );  // Language Elements
+  messageResourceBundle().use( docRoot() + "/styles/gcw"     );  // Language Elements
   messageResourceBundle().use( docRoot() + "/styles/gcw_gui" );  // UI elements
 
   /*
@@ -166,6 +180,23 @@ GCW::App::App( const Wt::WEnvironment & env )
   **
   */
   buildSite();
+
+#ifdef NEVER
+  for( auto & commodity : GCW::Dbo::Commodities::getIso4217Commodities() )
+  {
+    std::cout << __FILE__ << ":" << __LINE__
+      << " \t" << commodity.isocode
+      << " \t" << commodity.unitname
+      << " \t" << commodity.partname
+      << " \t" << commodity.nameSpace
+      << " \t" << commodity.exchangeCode
+      << " \t" << commodity.partsPerUnit
+      << " \t" << commodity.smallestFraction
+      << " \t" << commodity.localSymbol
+      << " \t" << commodity.fullname
+      << std::endl;
+  }
+#endif
 
 } // endGCW::App::App( const Wt::WEnvironment & env )
 

@@ -2,3 +2,4 @@ rsync.sh
 
 build
 dox
+*.swp

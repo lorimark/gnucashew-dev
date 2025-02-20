@@ -138,7 +138,7 @@ openEditor( const std::string & _bpGuid )-> void
   **
   */
   m_hlw-> addWidget( std::move( u_ ) );
-  m_hlw-> setResizable( 0, true, Wt::WLength(25,Wt::LengthUnit::Percentage) );
+  m_hlw-> setResizable( 0, true, Wt::WLength(40,Wt::LengthUnit::Percentage) );
 
   m_editWidget->
     save().connect( [=]()

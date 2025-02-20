@@ -6,13 +6,14 @@
 
 #include "../define.h"
 #include "../App.h"
-#include "../Dbo/Books/Books.h"
-#include "../Dbo/BillTerms/BillTerms.h"
 #include "../Dbo/Accounts/Accounts.h"
-#include "../Dbo/Entries/Entries.h"
-#include "../Dbo/Invoices/Invoices.h"
-#include "../Dbo/GncLock/GncLock.h"
+#include "../Dbo/BillTerms/BillTerms.h"
+#include "../Dbo/Books/Books.h"
 #include "../Dbo/Customers/Customers.h"
+#include "../Dbo/Commodities/Commodities.h"
+#include "../Dbo/Entries/Entries.h"
+#include "../Dbo/GncLock/GncLock.h"
+#include "../Dbo/Invoices/Invoices.h"
 #include "../Dbo/Slots/Slots.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Transactions/Transactions.h"
@@ -380,18 +381,19 @@ open_TablesWidget()-> void
 
     tab-> setCloseable( true );
 
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Accounts     ::Item > >(), "accounts"     );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Books        ::Item > >(), "books"        );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: BillTerms    ::Item > >(), "billterms"    );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Accounts     ::Item > >(), "accounts"     );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Versions     ::Item > >(), "versions"     );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Entries      ::Item > >(), "entries"      );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Invoices     ::Item > >(), "invoices"     );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: GncLock      ::Item > >(), "gnclock"      );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Commodities  ::Item > >(), "commodities"  );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Customers    ::Item > >(), "customers"    );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Entries      ::Item > >(), "entries"      );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: GncLock      ::Item > >(), "gnclock"      );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Invoices     ::Item > >(), "invoices"     );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Slots        ::Item > >(), "slots"        );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Splits       ::Item > >(), "splits"       );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Transactions ::Item > >(), "transactions" );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Vars         ::Item > >(), "vars"         );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Versions     ::Item > >(), "versions"     );
 
   } // endif( tabIndex( _account-> name() ) == -1 )
 

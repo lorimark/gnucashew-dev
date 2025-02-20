@@ -130,6 +130,10 @@
   <message id="gcw.MainWidget.mu.business.employee.findExpense"    >Find Expense Voucher...</message>
   <message id="gcw.MainWidget.mu.business.employee.processPayment" >Process Payment...</message>
 
+  <message id="gcw.MainWidget.mu.reports"                          >Reports</message>
+
+  <message id="gcw.MainWidget.mu.tools"                            >Tools</message>
+
   <message id="gcw.MainWidget.mu.help"                             >Help</message>
   <message id="gcw.MainWidget.mu.help.tutorial"                    >Tutorial and Concepts Guide</message>
   <message id="gcw.MainWidget.mu.help.tip"                         >Tips Of The Day</message>
@@ -242,6 +246,8 @@
   <message id="gcw.AccountRegister.column.account"                 >Account</message>
   <message id="gcw.AccountRegister.column.balance"                 >Balance</message>
   <message id="gcw.AccountRegister.column.blank"                   ></message>
+  <message id="gcw.AccountRegister.column.buy"                     >Buy</message>
+  <message id="gcw.AccountRegister.column.blank"                   ></message>
   <message id="gcw.AccountRegister.column.charge"                  >Tot Charge</message>
   <message id="gcw.AccountRegister.column.credit"                  >Credit</message>
   <message id="gcw.AccountRegister.column.date"                    >Date</message>
@@ -249,13 +255,17 @@
   <message id="gcw.AccountRegister.column.decrease"                >Decrease</message>
   <message id="gcw.AccountRegister.column.deposit"                 >Deposit</message>
   <message id="gcw.AccountRegister.column.expense"                 >Expense</message>
+  <message id="gcw.AccountRegister.column.fundsin"                 >Funds In</message>
+  <message id="gcw.AccountRegister.column.fundsout"                >Funds Out</message>
   <message id="gcw.AccountRegister.column.increase"                >Increase</message>
+  <message id="gcw.AccountRegister.column.income"                  >Income</message>
   <message id="gcw.AccountRegister.column.memo"                    >Memo</message>
   <message id="gcw.AccountRegister.column.num"                     >Num</message>
   <message id="gcw.AccountRegister.column.payment"                 >Tot Payment</message>
   <message id="gcw.AccountRegister.column.rebate"                  >Rebate</message>
   <message id="gcw.AccountRegister.column.receive"                 >Receive</message>
   <message id="gcw.AccountRegister.column.reconcile"               >R</message>
+  <message id="gcw.AccountRegister.column.sell"                    >Sell</message>
   <message id="gcw.AccountRegister.column.spend"                   >Spend</message>
   <message id="gcw.AccountRegister.column.transfer"                >Transfer</message>
   <message id="gcw.AccountRegister.column.withdrawal"              >Withdrawal</message>

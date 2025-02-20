@@ -496,7 +496,10 @@ refreshFromDisk()-> void
   ** Note that when the splits are loaded based on the account ID, they
   **  are returned in a std::vector(sorted_by_date) that is sorted based on
   **  the transction date.  This chosen sort method insures that the
-  **  running balance can be accurately calculated on the fly.
+  **  running balance can be accurately calculated on the fly, since each
+  **  item is pulled from the vector in a sorted order, and the running
+  **  balance is included in the model row.  The user can sort the user
+  **  interface later and still have the line-item-balance remain accurate.
   **
   */
   auto splitItems = GCW::Dbo::Splits::byAccount( m_accountGuid );
@@ -1032,14 +1035,14 @@ refreshFromDisk()-> void
          post_date-> setFlags( Wt::ItemFlag::Editable );
          post_date-> setData( GCW::Core::newGuid(), Wt::ItemDataRole::User );
 
-    _addColumn( columns, ""          )-> setFlags( Wt::ItemFlag::Editable ); // Num
-    _addColumn( columns, ""          )-> setFlags( Wt::ItemFlag::Editable ); // Memo
-    _addColumn( columns, ""          )-> setFlags( Wt::ItemFlag::Editable ); // Account
-    _addColumn( columns, "n"         )-> setFlags( Wt::ItemFlag::Editable ); // R
-    _addColumn( columns, ""          )-> setFlags( Wt::ItemFlag::Editable ); // Deposit
-    _addColumn( columns, ""          )-> setFlags( Wt::ItemFlag::Editable ); // Withdrawal
-    _addColumn( columns, ""          )                                     ; // Balance
-    appendRow( std::move( columns ) );
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Num
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Memo
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Account
+    _addColumn( columns, "n"        )-> setFlags( Wt::ItemFlag::Editable ); // R
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Deposit
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Withdrawal
+    _addColumn( columns, ""         )                                     ; // Balance
+    appendRow( std::move( columns ) )                                     ;
 
   } // endif( m_editable )
 
@@ -1080,7 +1083,6 @@ refreshFromDisk()-> void
   ** Let the rest of the world know the model changed.
   **
   */
-//  modelReset().emit();
   layoutChanged().emit();
 
 } // endrefreshFromDisk()-> void
