@@ -1,16 +1,16 @@
-#line 2 "src/Gui/CustomersWidget.cpp"
+#line 2 "src/Gui/Customer/MainWidget.cpp"
 
 #include <Wt/WText.h>
 #include <Wt/WVBoxLayout.h>
 
-#include "../define.h"
-#include "../GnuCashew.h"
-#include "CustomersWidget.h"
+#include "../../define.h"
+#include "../../GnuCashew.h"
+#include "MainWidget.h"
 
-GCW::Gui::CustomersWidget::
-CustomersWidget()
+GCW::Gui::Customer::MainWidget::
+MainWidget()
 {
-  addStyleClass( "CustomersWidget" );
+  addStyleClass( "CustomerWidget" );
 
   /*
   ** Apply a layout so everything will fit in the window
@@ -34,7 +34,7 @@ CustomersWidget()
   view()-> setSelectionBehavior( Wt::SelectionBehavior::Rows );
   view()-> setSelectionMode(     Wt::SelectionMode::Single   );
   view()-> setAlternatingRowColors( true );
-  view()-> doubleClicked().connect( this, &GCW::Gui::CustomersWidget::doubleClicked );
+  view()-> doubleClicked().connect( this, &MainWidget::doubleClicked );
 
   /*
   ** Prepare a column list
@@ -58,7 +58,7 @@ CustomersWidget()
 
 } // endGCW::Gui::CustomersWidget::CustomersWidget()
 
-void GCW::Gui::CustomersWidget::
+void GCW::Gui::Customer::MainWidget::
 doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 {
   /*

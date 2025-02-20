@@ -40,17 +40,56 @@ load( int _columnCount )-> void
     **
     */
     int col = 0;
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountname"      ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountcode"      ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.description"      ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.taxinfo"          ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.notes"            ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.futureminimumusd" ) );
-    if( col < m_columnCount ) setHeaderData( col++, TR( "gcw.AccountsTreeView.column.total"            ) );
+    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountname"      ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountcode"      ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.description"      ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.taxinfo"          ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.notes"            ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.futureminimumusd" ) );
+    }
+
+    if( col < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      setHeaderData( col++, TR( "gcw.AccountsTreeView.column.total"            ) );
+    }
+
 
   } // endif( rootAccount-> guid() != "" )
 
-} // endvoid GCW::Gui::AccountsTreeView::Model::load()
+  std::cout << __FILE__ << ":" << __LINE__ << " columnCount:" << columnCount() << std::endl;
+
+} // endload( int _columnCount )-> void
 
 auto
 GCW::Gui::AccountsTreeView::Model::
@@ -87,32 +126,89 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
     */
     accountName-> setData( _accountItem-> guid(), Wt::ItemDataRole::User );
     int col = 0;
-    if( col++ < m_columnCount ) columns.push_back( std::move( accountName ) );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> code        () ) );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> description () ) );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >() );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >() );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >() );
-    if( col++ < m_columnCount ) columns.push_back( std::make_unique< Wt::WStandardItem >() );
+    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::move( accountName ) );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> code        () ) );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> description () ) );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >() );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >() );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >() );
+    }
+
+    if( col++ < m_columnCount )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+      columns.push_back( std::make_unique< Wt::WStandardItem >() );
+    }
+
     _item-> appendRow( std::move( columns ) );
 
     return retVal;
 
   }; // end_append()
 
-  auto accounts =
+  /*
+  ** Pick up all the accounts that are children to the
+  **  specified account.
+  **
+  */
+  auto childAccounts =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
     .where( "parent_guid = ?" )
     .bind( _parentAccount-> guid() )
     .resultList()
     ;
 
-  for( auto account : accounts )
+  /*
+  ** Loop through each child-account for this parent account
+  **
+  */
+  for( auto account : childAccounts )
   {
-    auto ti = _append( _treeItem, account );
-    load( ti, account );
-  }
+    /*
+    ** Append the tree-item
+    **
+    */
+    auto  ti = _append( _treeItem, account );
 
-} // endvoid load( Wt::WStandardItem * _treeItem, Account::Ptr _parentAccount )
+    /*
+    ** Perform a recursive-load on this account to pick up
+    **  any more child accounts
+    **
+    */
+    load( ti, account );
+
+  } // endfor( auto account : accounts )
+
+} // endload( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccount )-> void
 
 

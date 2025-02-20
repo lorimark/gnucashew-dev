@@ -15,8 +15,8 @@ const int GCW::Gui::TableView::kTableCellPadding     = 7;
 const int GCW::Gui::TableView::kScrollBarWidth       = 20;
 const int GCW::Gui::TableView::kDefaultDateTimeWidth = 120;
 
-
-static std::string keyToCode( Wt::Key _key )
+namespace {
+static auto keyToCode( Wt::Key _key )-> std::string
 {
   std::map< Wt::Key, std::string > keyMap =
   {
@@ -31,25 +31,25 @@ static std::string keyToCode( Wt::Key _key )
     { Wt::Key::PageDown  , "Page down"    },
     { Wt::Key::End       , "End"          },
     { Wt::Key::Home      , "Home"         },
-    { Wt::Key::Left      , "Left arrow"   },
-    { Wt::Key::Up        , "Up arrow"     },
-    { Wt::Key::Right     , "Right arrow"  },
-    { Wt::Key::Down      , "Down arrow"   },
+    { Wt::Key::Left      , "Left"         },
+    { Wt::Key::Up        , "Up"           },
+    { Wt::Key::Right     , "Right"        },
+    { Wt::Key::Down      , "Down"         },
     { Wt::Key::Insert    , "Insert"       },
     { Wt::Key::Delete    , "Delete"       },
     { Wt::Key::Escape    , "Escape"       },
-    { Wt::Key::F1        , "F1 function"  },
-    { Wt::Key::F2        , "F2 function"  },
-    { Wt::Key::F3        , "F3 function"  },
-    { Wt::Key::F4        , "F4 function"  },
-    { Wt::Key::F5        , "F5 function"  },
-    { Wt::Key::F6        , "F6 function"  },
-    { Wt::Key::F7        , "F7 function"  },
-    { Wt::Key::F8        , "F8 function"  },
-    { Wt::Key::F9        , "F9 function"  },
-    { Wt::Key::F10       , "F10 function" },
-    { Wt::Key::F11       , "F11 function" },
-    { Wt::Key::F12       , "F12 function" },
+    { Wt::Key::F1        , "F1"           },
+    { Wt::Key::F2        , "F2"           },
+    { Wt::Key::F3        , "F3"           },
+    { Wt::Key::F4        , "F4"           },
+    { Wt::Key::F5        , "F5"           },
+    { Wt::Key::F6        , "F6"           },
+    { Wt::Key::F7        , "F7"           },
+    { Wt::Key::F8        , "F8"           },
+    { Wt::Key::F9        , "F9"           },
+    { Wt::Key::F10       , "F10"          },
+    { Wt::Key::F11       , "F11"          },
+    { Wt::Key::F12       , "F12"          },
     { Wt::Key::Space     , "Space"        },
     { Wt::Key::A         , "'A'"          },
     { Wt::Key::B         , "'B'"          },
@@ -89,9 +89,11 @@ static std::string keyToCode( Wt::Key _key )
     { Wt::Key::Key_0     , "'0'"          }
   }; // endstd::map< Wt::Key, std::string > keyMap =
 
-
   return keyMap[_key];
-};
+
+}; // endstatic auto keyToCode( Wt::Key _key )-> std::string
+
+} // endnamespace {
 
 
 GCW::Gui::TableView::
@@ -229,7 +231,6 @@ TableView()
     });
 #endif
 
-
 #ifdef NEVER
   keyWentDown ()
     .connect( [=]( Wt::WKeyEvent _event )
@@ -250,7 +251,6 @@ TableView()
       std::cout << __FILE__ << ":" << __LINE__ << " keyWentUp charCode:" << _event.charCode() << " key:" << keyToCode( _event.key() ) << std::endl;
     });
 #endif
-
 
 } // endGCW::Gui::TableView::TableView( Wt::WContainerWidget* parent )
 

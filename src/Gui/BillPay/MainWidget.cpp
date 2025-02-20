@@ -131,14 +131,14 @@ openEditor( const std::string & _bpGuid )-> void
 //  m_gridLayout-> setColumnResizable( 0, true, "30%" );
 
   /*
-  ** This splits the page, and sets the first side to 25% width, and the second
-  **  side to 75%.  The edit form occupies the 75% width side.  The split also
+  ** This splits the page, and sets the first side to 20% width, and the second
+  **  side to 75%.  The edit form occupies the 80% width side.  The split also
   **  has a slider, so if the user wants to temporarily slide the detail form
   **  out of the way, he can do that.
   **
   */
   m_hlw-> addWidget( std::move( u_ ) );
-  m_hlw-> setResizable( 0, true, Wt::WLength(40,Wt::LengthUnit::Percentage) );
+  m_hlw-> setResizable( 0, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
   m_editWidget->
     save().connect( [=]()

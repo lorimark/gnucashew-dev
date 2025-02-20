@@ -19,10 +19,9 @@
 #include "../Dbo/Transactions/Transactions.h"
 #include "../Dbo/Versions/Versions.h"
 #include "BillPay/MainWidget.h"
+#include "Customer/MainWidget.h"
 #include "CentralWidget.h"
 #include "EmployeesWidget.h"
-#include "CustomerReportWidget.h"
-#include "CustomersWidget.h"
 #include "RawTableWidget.h"
 
 /*!
@@ -191,6 +190,7 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
     **  selected customer.
     **
     */
+#ifdef NEVER
     auto tab =
       tabWidget()->
         insertTab
@@ -200,6 +200,7 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
         );
 
     tab-> setCloseable( true );
+#endif
 
   } // endif( tabIndex( _account-> name() ) == -1 )
 
@@ -227,7 +228,7 @@ open_CustomersWidget()-> void
     ** Open a new CustomersWidget tab that is connected to the account
     **
     */
-    auto widget = std::make_unique< GCW::Gui::CustomersWidget >();
+    auto widget = std::make_unique< GCW::Gui::Customer::MainWidget >();
     auto w = widget.get();
 
     /*

@@ -102,10 +102,13 @@ Tab1( const std::string & _accountGuid )
   t1-> bindString( "color-label"       , TR( "gcw.AccountEditor.color"       ) );
   t1-> bindString( "notes-label"       , TR( "gcw.AccountEditor.notes"       ) );
 
+  std::cout << __FILE__ << ":" << __LINE__ << " this:" << accountItem-> guid()        << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " parn:" << accountItem-> parent_guid() << std::endl;
+
   auto name           = t1-> bindNew< Wt::WLineEdit              >( "name"           , accountItem-> name()                     );
   auto code           = t1-> bindNew< Wt::WLineEdit              >( "code"           , accountItem-> code()                     );
   auto desc           = t1-> bindNew< Wt::WLineEdit              >( "desc"           , accountItem-> description()              );
-  auto parent         = t1-> bindNew< GCW::Gui::AccountsTreeView >( "parent"         , accountItem-> parent_guid() , 2          );
+  auto parent         = t1-> bindNew< GCW::Gui::AccountsTreeView >( "parent"         , accountItem-> parent_guid() , 7          );
   auto accountType    = t1-> bindNew< AccountTypeCombo           >( "accountType"    , accountItem-> accountTypeName()          );
   auto security       = t1-> bindNew< SecurityCombo              >( "security"                                                  );
   auto fraction       = t1-> bindNew< SmallestFractionCombo      >( "fraction"                                                  );

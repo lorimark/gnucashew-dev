@@ -1,28 +1,29 @@
-#line 2 "src/Gui/CustomersWidget.h"
+#line 2 "src/Gui/Customer/MainWidget.h"
 
-#ifndef __GUI_CUSTOMERSWIDGET_H___
-#define __GUI_CUSTOMERSWIDGET_H___
+#ifndef __GUI_CUSTOMER_MAINWIDGET_H___
+#define __GUI_CUSTOMER_MAINWIDGET_H___
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WTableView.h>
 
-#include "../Eng/CustomersModel.h"
+#include "../../Eng/CustomersModel.h"
 
 namespace GCW {
   namespace Gui {
+    namespace Customer {
 
 /*!
 ** \brief Customer Overview
 **
 **
 */
-class CustomersWidget
+class MainWidget
 : public Wt::WContainerWidget
 {
   public:
     using Model = GCW::Eng::CustomersModel;
 
-    CustomersWidget();
+    MainWidget();
 
     std::shared_ptr< Model >   model () const { return m_model; }
     Wt::WTableView           * view  () const { return m_view;  }
@@ -49,11 +50,12 @@ class CustomersWidget
     Wt::Signal< std::string >  m_doubleClicked;
 
 
-};  // endclass CustomersWidget
+};  // endclass MainWidget
 
+    } // endnamespace Customer {
   } // endnamespace Gui {
 } // endnamespace GCW {
 
-#endif // end __GUI_CUSTOMERSWIDGET_H___
+#endif // end __GUI_CUSTOMER_MAINWIDGET_H___
 
 

@@ -23,6 +23,8 @@ AccountsTreeView( const std::string & _selectedAccountGuid, int _columnCount )
 {
   init();
 
+  setSelected( _selectedAccountGuid );
+
 } // endAccountsTreeView( const std::string & _selectedAccountGuid, int _columnCount )
 
 GCW::Gui::AccountsTreeView::
@@ -51,34 +53,40 @@ init()-> void
   view()-> setAlternatingRowColors( true );
   view()-> doubleClicked().connect( this, &AccountsTreeView::on_doubleClicked );
 
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.accountcode"       ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.accountcolor"      ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.accountname"       ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.balance"           ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.balancelimit"      ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.balanceperiod"     ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.balanceusd"        ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.cleared"           ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.clearedusd"        ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.commodity"         ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.description"       ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.futureminimum"     ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.futureminimumusd"  ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.hidden"            ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.lastnum"           ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.lastreconciledate" ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.notes"             ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.openingbalance"    ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.placeholder"       ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.present"           ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.presentusd"        ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.reconciled"        ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.reconciledusd"     ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.taxinfo"           ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.total"             ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.totalperiod"       ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.totalusd"          ) );
-  m_columns.push_back( TR8( "gcw.AccountsTreeView.column.type"              ) );
+  std::vector< std::string > cols =
+  {
+    "accountcode"       ,
+    "accountcolor"      ,
+    "accountname"       ,
+    "balance"           ,
+    "balancelimit"      ,
+    "balanceperiod"     ,
+    "balanceusd"        ,
+    "cleared"           ,
+    "clearedusd"        ,
+    "commodity"         ,
+    "description"       ,
+    "futureminimum"     ,
+    "futureminimumusd"  ,
+    "hidden"            ,
+    "lastnum"           ,
+    "lastreconciledate" ,
+    "notes"             ,
+    "openingbalance"    ,
+    "placeholder"       ,
+    "present"           ,
+    "presentusd"        ,
+    "reconciled"        ,
+    "reconciledusd"     ,
+    "taxinfo"           ,
+    "total"             ,
+    "totalperiod"       ,
+    "totalusd"          ,
+    "type"
+  };
+
+  for( int i=0; i< m_columnCount; i++ )
+    m_columns.push_back( TR8( "gcw.AccountsTreeView.column." + cols.at(i) ) );
 
   setModel();
 
@@ -152,7 +160,7 @@ editAccount( const std::string & _accountGuid )
   auto u_ = std::make_unique< GCW::Gui::AccountEditor >( _accountGuid );
   m_editAccountWidget = u_.get();
   m_gridLayout-> addWidget( std::move( u_), 0, 1 );
-  m_gridLayout-> setColumnResizable( 0, true, "50%" );
+  m_gridLayout-> setColumnResizable( 0, true, "25%" );
 
   m_editAccountWidget->
     save().connect( [=]()
@@ -188,9 +196,15 @@ void
 GCW::Gui::AccountsTreeView::
 setModel()
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_columnCount << std::endl;
+
   m_model = std::make_shared< Model >();
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   m_model-> load( m_columnCount );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
   view()-> setModel( m_model );
 

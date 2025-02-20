@@ -8,8 +8,8 @@
 #include <Wt/WTabWidget.h>
 
 #include "AccountsTreeView.h"
-#include "CustomersWidget.h"
 #include "AccountRegister.h"
+#include "Customer/MainWidget.h"
 
 namespace GCW {
   namespace Gui {
@@ -33,9 +33,9 @@ class CentralWidget
 
     CentralWidget();
 
-    auto tabWidget()        -> Wt::WTabWidget              * { return m_tabWidget;         }
-    auto accountsTreeView() -> GCW::Gui::AccountsTreeView  * { return m_accountsTreeView;  }
-    auto customersWidget()  -> GCW::Gui::CustomersWidget   * { return m_customersWidget;   }
+    auto tabWidget()        -> Wt::WTabWidget                 * { return m_tabWidget;         }
+    auto accountsTreeView() -> GCW::Gui::AccountsTreeView     * { return m_accountsTreeView;  }
+    auto customersWidget()  -> GCW::Gui::Customer::MainWidget * { return m_customersWidget;   }
 
     auto open_AccountRegister      ( const std::string & _accountGuid  )-> void;
     auto open_CustomersWidget      (                                   )-> void;
@@ -63,10 +63,10 @@ class CentralWidget
 
   private:
 
-    Wt::WGridLayout             * m_gridLayout       = nullptr ;
-    Wt::WTabWidget              * m_tabWidget        = nullptr ;
-    GCW::Gui::AccountsTreeView  * m_accountsTreeView = nullptr ;
-    GCW::Gui::CustomersWidget   * m_customersWidget  = nullptr ;
+    Wt::WGridLayout                * m_gridLayout       = nullptr ;
+    Wt::WTabWidget                 * m_tabWidget        = nullptr ;
+    GCW::Gui::AccountsTreeView     * m_accountsTreeView = nullptr ;
+    GCW::Gui::Customer::MainWidget * m_customersWidget  = nullptr ;
 
 }; // endclass CentralWidget
 
