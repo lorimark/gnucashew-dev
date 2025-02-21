@@ -15,6 +15,9 @@
 #include "Gui/MainWidget.h"
 
 namespace GCW {
+  namespace Gui {
+    class MainWidget;
+  }
 
 
 

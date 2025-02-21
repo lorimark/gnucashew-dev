@@ -8,6 +8,7 @@
 #include <Wt/WToolBar.h>
 
 #include "CentralWidget.h"
+#include "MainMenu.h"
 #include "ToolBar.h"
 
 namespace GCW {
@@ -33,12 +34,10 @@ class MainWidget
 
     MainWidget();
 
-    auto navBar        ()-> Wt::WNavigationBar      * { return m_navBar;        }
-    auto toolBar       ()-> Wt::WToolBar            * { return m_toolBar;       }
-    auto statusBar     ()-> Wt::WContainerWidget    * { return m_statusBar;     }
-    auto centralWidget ()-> CentralWidget           * { return m_centralWidget; }
-
-  private:
+    auto navBar        ()-> Wt::WNavigationBar      * { return m_navBar        ; }
+    auto toolBar       ()-> Wt::WToolBar            * { return m_toolBar       ; }
+    auto statusBar     ()-> Wt::WContainerWidget    * { return m_statusBar     ; }
+    auto centralWidget ()-> CentralWidget           * { return m_centralWidget ; }
 
     auto load()                   -> void ;
     auto open_customersOverview() -> void ;
@@ -46,7 +45,10 @@ class MainWidget
     auto openSelectedAccount()    -> void ;
     auto test()                   -> void ;
 
+  private:
+
     Wt::WNavigationBar   * m_navBar        = nullptr;
+    GCW::Gui::MainMenu   * m_mainMenu      = nullptr;
     Wt::WToolBar         * m_toolBar       = nullptr;
     Wt::WContainerWidget * m_statusBar     = nullptr;
     CentralWidget        * m_centralWidget = nullptr;
