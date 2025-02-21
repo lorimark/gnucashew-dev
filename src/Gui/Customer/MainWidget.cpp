@@ -6,6 +6,7 @@
 #include "../../define.h"
 #include "../../GnuCashew.h"
 #include "MainWidget.h"
+#include "ToolBar.h"
 
 GCW::Gui::Customer::MainWidget::
 MainWidget()
@@ -20,12 +21,23 @@ MainWidget()
   lw-> setSpacing( 0 );
 
   /*
+  ** Install the tool bar
+  **
+  */
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+  auto tb_ = std::make_unique< GCW::Gui::Customer::ToolBar >();
+  lw-> addWidget( std::move( tb_ ) );
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+
+  /*
   ** Standard TableView for now
   **
   */
-  auto w = std::make_unique< Wt::WTableView >();
-  m_view = w.get();
-  lw-> addWidget( std::move( w ), 1 );
+  auto w_ = std::make_unique< Wt::WTableView >();
+  m_view = w_.get();
+  lw-> addWidget( std::move( w_ ), 1 );
 
   /*
   ** Setup standard control

@@ -124,6 +124,44 @@
   <message id="gcw.MainWidget.mu.help.contents">Contents</message>
   <message id="gcw.MainWidget.mu.help.about">About, y’all</message>
 
+  <message id="gcw.AccountsTreeView.tabName">Accounts, partner</message>
+  <message id="gcw.AccountsTreeView.column.accountcode">Account Code, pilgrim</message>
+  <message id="gcw.AccountsTreeView.column.accountcolor">Account Color, partner</message>
+  <message id="gcw.AccountsTreeView.column.accountname">Account Name, cowboy</message>
+  <message id="gcw.AccountsTreeView.column.balance">Balance, buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.balancelimit">Balance Limit, partner</message>
+  <message id="gcw.AccountsTreeView.column.balanceperiod">Balance Period, cowboy</message>
+  <message id="gcw.AccountsTreeView.column.balanceusd">Balance (USD), buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.cleared">Cleared, partner</message>
+  <message id="gcw.AccountsTreeView.column.clearedusd">Cleared (USD), cowboy</message>
+  <message id="gcw.AccountsTreeView.column.commodity">Commodity, partner</message>
+  <message id="gcw.AccountsTreeView.column.description">Description, buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.futureminimum">Future Minimum, cowboy</message>
+  <message id="gcw.AccountsTreeView.column.futureminimumusd">Future Minimum (USD), partner</message>
+  <message id="gcw.AccountsTreeView.column.hidden">Hidden, partner</message>
+  <message id="gcw.AccountsTreeView.column.lastnum">Last Num, cowboy</message>
+  <message id="gcw.AccountsTreeView.column.lastreconciledate">Last Reconcile Date, partner</message>
+  <message id="gcw.AccountsTreeView.column.notes">Notes, buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.openingbalance">Opening Balance, cowboy</message>
+  <message id="gcw.AccountsTreeView.column.placeholder">Placeholder, partner</message>
+  <message id="gcw.AccountsTreeView.column.present">Present, buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.presentusd">Present (USD), cowboy</message>
+  <message id="gcw.AccountsTreeView.column.reconciled">Reconciled, partner</message>
+  <message id="gcw.AccountsTreeView.column.reconciledusd">Reconciled (USD), cowboy</message>
+  <message id="gcw.AccountsTreeView.column.taxinfo">Tax Info, partner</message>
+  <message id="gcw.AccountsTreeView.column.total">Total, buckaroo</message>
+  <message id="gcw.AccountsTreeView.column.totalperiod">Total (Period), cowboy</message>
+  <message id="gcw.AccountsTreeView.column.totalusd">Total (USD), partner</message>
+  <message id="gcw.AccountsTreeView.column.type">Type, cowboy</message>
+
+  <message id="gcw.MainWidget.tb.save">Save it, partner</message>
+  <message id="gcw.MainWidget.tb.close">Shut 'er down, cowboy</message>
+  <message id="gcw.MainWidget.tb.newInvoice">Brand new invoice, buckaroo</message>
+  <message id="gcw.MainWidget.tb.open">Open 'er up, partner</message>
+  <message id="gcw.MainWidget.tb.edit">Fix it up, cowboy</message>
+  <message id="gcw.MainWidget.tb.new">New one, buckaroo</message>
+  <message id="gcw.MainWidget.tb.delete">Toss it out, partner</message>
+
 </messages>
 
 

@@ -1,6 +1,7 @@
 
 set( GCW_FILES ${GCW_FILES}
   ${CMAKE_CURRENT_SOURCE_DIR}/MainWidget.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/ToolBar.cpp
   PARENT_SCOPE
 )
 
