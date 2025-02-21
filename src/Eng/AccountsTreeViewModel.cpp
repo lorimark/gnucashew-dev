@@ -30,7 +30,7 @@ load( int _columnCount )-> void
   ** load the data in to the model
   **
   */
-  auto rootAccount = GCW::Dbo::Accounts::root();
+  auto rootAccount = GCW::Dbo::Accounts::rootAccount();
   if( rootAccount-> guid() != "" )
   {
     load( invisibleRootItem(), rootAccount );

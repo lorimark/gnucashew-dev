@@ -74,7 +74,7 @@ auto
 GCW::Dbo::Commodities::
 byGuid( const std::string & _guid )-> GCW::Dbo::Commodities::Item::Ptr
 {
-  return load( _guid );
+  return GCW::Dbo::Commodities::load( _guid );
 
 } // endbyGuid( const std::string & _guid )-> GCW::Dbo::Commodities::Item::Ptr
 

@@ -167,7 +167,7 @@ bySplit( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
-  auto splitItem = load( _splitGuid );
+  auto splitItem = GCW::Dbo::Splits::load( _splitGuid );
 
   /*
   ** If we don't have a splitItem then we can't do nuthin.

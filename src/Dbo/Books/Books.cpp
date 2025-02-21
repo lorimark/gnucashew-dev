@@ -42,7 +42,7 @@ auto
 GCW::Dbo::Books::
 byGuid( const std::string & _guid )-> GCW::Dbo::Books::Item::Ptr
 {
-  return load( _guid );
+  return GCW::Dbo::Books::load( _guid );
 
 } // endbyGuid( const std::string & _guid )-> GCW::Dbo::Books::Item::Ptr
 

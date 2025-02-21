@@ -51,7 +51,7 @@ auto
 GCW::Dbo::BillTerms::
 byGuid( const std::string & _guid )-> GCW::Dbo::BillTerms::Item::Ptr
 {
-  return load( _guid );
+  return GCW::Dbo::BillTerms::load( _guid );
 
 } // endbyGuid( const std::string & _guid )-> GCW::Dbo::BillTerms::Item::Ptr
 

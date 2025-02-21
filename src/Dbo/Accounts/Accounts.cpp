@@ -123,7 +123,7 @@ rootSql()-> GCW::Dbo::Accounts::Item::Ptr
 
 auto
 GCW::Dbo::Accounts::
-root()-> GCW::Dbo::Accounts::Item::Ptr
+rootAccount()-> GCW::Dbo::Accounts::Item::Ptr
 {
   return rootSql();
 //  return rootGnc();
@@ -203,7 +203,7 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
   **  account, which is the one we wanted.
   **
   */
-  retVal = root();
+  retVal = rootAccount();
   for( int i=0; i< split.size(); i++ )
     retVal = byChildName( retVal-> guid(), split.at(i) );
 
@@ -294,7 +294,7 @@ fullName( const std::string & _accountGuid )-> std::string
   **  results.
   **
   */
-  if( accountItem == root() )
+  if( accountItem == rootAccount() )
     return "";
 
   /*

@@ -57,7 +57,7 @@ auto
 GCW::Dbo::Invoices::
 byGuid( const std::string & _guid )-> GCW::Dbo::Invoices::Item::Ptr
 {
-  return load( _guid );
+  return GCW::Dbo::Invoices::load( _guid );
 
 } // endbyGuid( const std::string & _guid )-> GCW::Dbo::Invoices::Item::Ptr
 

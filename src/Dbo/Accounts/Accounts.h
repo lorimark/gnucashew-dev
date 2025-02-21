@@ -14,7 +14,7 @@ namespace GCW {
 **
 **
 */
-auto root()-> Item::Ptr;
+auto rootAccount()-> Item::Ptr;
 
 /*!
 ** \brief Load Account by GUID
