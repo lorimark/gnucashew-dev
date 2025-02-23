@@ -20,6 +20,8 @@ class CustomersModel
     CustomersModel();
     CustomersModel( const std::vector< Wt::WFormModel::Field > & _fields );
 
+    auto guid( int _row )-> std::string;
+
     auto refreshFromDisk()-> void ;
 
   private:

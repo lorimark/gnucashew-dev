@@ -7,6 +7,7 @@
 #include <Wt/WTableView.h>
 
 #include "../../Eng/CustomersModel.h"
+#include "Invoices.h"
 
 namespace GCW {
   namespace Gui {
@@ -44,11 +45,11 @@ class MainWidget
     void setModel();
     void doubleClicked( const Wt::WModelIndex & index, const Wt::WMouseEvent & event );
 
-    Wt::WTableView           * m_view = nullptr;
-    std::shared_ptr< Model >   m_model;
-    std::vector< std::string > m_columns;
-    Wt::Signal< std::string >  m_doubleClicked;
-
+    Wt::WTableView               * m_view         = nullptr ;
+    std::shared_ptr< Model >       m_model                  ;
+    std::vector< std::string >     m_columns                ;
+    Wt::Signal< std::string >      m_doubleClicked          ;
+    GCW::Gui::Customer::Invoices * m_invoicesView = nullptr ;
 
 };  // endclass MainWidget
 

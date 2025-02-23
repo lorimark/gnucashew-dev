@@ -22,10 +22,6 @@ ToolBar()
   table-> setAttributeValue( "style", "border-spacing:10px;border-collapse:separate;" );
   lw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
-  table-> elementAt( 0, 0 )-> addWidget( std::make_unique< Wt::WText >( "this is a toolBar" ) );
-
 #ifdef NEVER
   /*
   ** click to add

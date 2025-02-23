@@ -91,8 +91,6 @@ MainMenu( MainWidget * _mainWidget )
     if( GCW::app()-> gnucashew_session().hasGnuCashewExtensions() )
       popActions-> addItem( TR( "gcw.MainWidget.mu.actions.billpay"       ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_BillPayWidget );
 
-    popActions-> addItem( "Raw Tables", _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
-
     popActions-> addSeparator();
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.resetwarnings" ) )-> setDisabled( true );
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.renamepage"    ) )-> setDisabled( true );
@@ -322,6 +320,7 @@ MainMenu( MainWidget * _mainWidget )
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.importmap"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.translinkdoc"  ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ) )-> setDisabled( true );
+    popTools-> addItem( "Raw Tables", _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
 
     m_uTools-> setMenu( std::move( popTools ) );
   }

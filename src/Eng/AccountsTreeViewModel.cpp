@@ -40,54 +40,53 @@ load( int _columnCount )-> void
     **
     */
     int col = 0;
-    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountname"      ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.accountcode"      ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.description"      ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.taxinfo"          ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.notes"            ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.futureminimumusd" ) );
     }
 
     if( col < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       setHeaderData( col++, TR( "gcw.AccountsTreeView.column.total"            ) );
     }
 
-
   } // endif( rootAccount-> guid() != "" )
 
-  std::cout << __FILE__ << ":" << __LINE__ << " columnCount:" << columnCount() << std::endl;
+//  std::cout << __FILE__ << ":" << __LINE__ << " columnCount:" << columnCount() << std::endl;
 
 } // endload( int _columnCount )-> void
 
@@ -126,47 +125,47 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
     */
     accountName-> setData( _accountItem-> guid(), Wt::ItemDataRole::User );
     int col = 0;
-    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::move( accountName ) );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> code        () ) );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >( _accountItem-> description () ) );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >() );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >() );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >() );
     }
 
     if( col++ < m_columnCount )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
       columns.push_back( std::make_unique< Wt::WStandardItem >() );
     }
 

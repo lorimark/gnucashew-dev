@@ -2,6 +2,7 @@
 
 #include <Wt/WText.h>
 #include <Wt/WVBoxLayout.h>
+#include <Wt/WHBoxLayout.h>
 
 #include "../../define.h"
 #include "../../GnuCashew.h"
@@ -17,36 +18,36 @@ MainWidget()
   ** Apply a layout so everything will fit in the window
   **
   */
-  auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
-  lw-> setSpacing( 0 );
+  auto vlw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
+  vlw-> setSpacing( 0 );
 
   /*
   ** Install the tool bar
   **
   */
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
   auto tb_ = std::make_unique< GCW::Gui::Customer::ToolBar >();
-  lw-> addWidget( std::move( tb_ ) );
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+  vlw-> addWidget( std::move( tb_ ) );
 
+  auto hlw = vlw-> addLayout( std::make_unique< Wt::WHBoxLayout >(), 1 );
 
-  /*
-  ** Standard TableView for now
-  **
-  */
-  auto w_ = std::make_unique< Wt::WTableView >();
-  m_view = w_.get();
-  lw-> addWidget( std::move( w_ ), 1 );
+  {
+    /*
+    ** Standard TableView for now
+    **
+    */
+    auto w_ = std::make_unique< Wt::WTableView >();
+    m_view = w_.get();
+    hlw-> addWidget( std::move( w_ ), 1 );
+  }
 
   /*
   ** Setup standard control
   **
   */
-  view()-> setSelectionBehavior( Wt::SelectionBehavior::Rows );
-  view()-> setSelectionMode(     Wt::SelectionMode::Single   );
-  view()-> setAlternatingRowColors( true );
-  view()-> doubleClicked().connect( this, &MainWidget::doubleClicked );
+  view()-> setSelectionBehavior    ( Wt::SelectionBehavior::Rows      );
+  view()-> setSelectionMode        ( Wt::SelectionMode::Single        );
+  view()-> setAlternatingRowColors ( true                             );
+  view()-> doubleClicked().connect ( this, &MainWidget::doubleClicked );
 
   /*
   ** Prepare a column list
@@ -67,6 +68,25 @@ MainWidget()
   m_model = std::make_shared< GCW::Eng::CustomersModel >( fields );
   model()-> sort( 0 );
   view()-> setModel( model() );
+
+  auto tabWidget_ = std::make_unique< Wt::WTabWidget >();
+  auto m_tabWidget = tabWidget_.get();
+  hlw-> addWidget( std::move( tabWidget_ ), 1 );
+
+  {
+    auto w_ = std::make_unique< GCW::Gui::Customer::Invoices >();
+    m_invoicesView = w_.get();
+    m_tabWidget-> addTab( std::move( w_ ), "Invoices" );
+
+    hlw-> setResizable( 0, true, "25%" );
+
+    view()->
+      clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        m_invoicesView-> setCustomerGuid( m_model-> guid( _index.row() ) );
+
+      });
+  }
 
 } // endGCW::Gui::CustomersWidget::CustomersWidget()
 

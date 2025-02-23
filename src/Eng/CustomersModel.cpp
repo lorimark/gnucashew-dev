@@ -63,8 +63,6 @@ refreshFromDisk()-> void
 
     setQuery( results );
 
-    std::cout << __FILE__ << ":" << __LINE__ << " " << rowCount() << std::endl;
-
   } // endif( GCW::app()-> gnucashew_session().isOpen() )
 
   if( m_fields.size() > 0 )
@@ -78,7 +76,15 @@ refreshFromDisk()-> void
     addAllFieldsAsColumns();
   }
 
-} // endGCW::Eng::RegisterModel::refreshFromDisk()
+} // endGCW::Eng::CustomersModel::refreshFromDisk()
 
+
+auto
+GCW::Eng::CustomersModel::
+guid( int _row )-> std::string
+{
+  return resultRow( _row )-> guid();
+
+} // endguid( int _row )-> std::string
 
 

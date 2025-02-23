@@ -13,6 +13,7 @@
 #include "BillTerms/BillTerms.h"
 #include "Invoices/Invoices.h"
 #include "Entries/Entries.h"
+#include "Jobs/Jobs.h"
 #include "Customers/Customers.h"
 #include "Employees/Employees.h"
 #include "Slots/Slots.h"
@@ -43,18 +44,19 @@ open( const std::string & _path )-> bool
   ** Dynamicals
   **
   */
-  mapClass< GCW::Dbo:: Books        ::Item >( GCW::Dbo:: Books        ::s_tableName );
-  mapClass< GCW::Dbo:: BillTerms    ::Item >( GCW::Dbo:: BillTerms    ::s_tableName );
-  mapClass< GCW::Dbo:: GncLock      ::Item >( GCW::Dbo:: GncLock      ::s_tableName );
   mapClass< GCW::Dbo:: Accounts     ::Item >( GCW::Dbo:: Accounts     ::s_tableName );
+  mapClass< GCW::Dbo:: BillTerms    ::Item >( GCW::Dbo:: BillTerms    ::s_tableName );
+  mapClass< GCW::Dbo:: Books        ::Item >( GCW::Dbo:: Books        ::s_tableName );
   mapClass< GCW::Dbo:: Commodities  ::Item >( GCW::Dbo:: Commodities  ::s_tableName );
-  mapClass< GCW::Dbo:: Entries      ::Item >( GCW::Dbo:: Entries      ::s_tableName );
-  mapClass< GCW::Dbo:: Invoices     ::Item >( GCW::Dbo:: Invoices     ::s_tableName );
   mapClass< GCW::Dbo:: Customers    ::Item >( GCW::Dbo:: Customers    ::s_tableName );
   mapClass< GCW::Dbo:: Employees    ::Item >( GCW::Dbo:: Employees    ::s_tableName );
-  mapClass< GCW::Dbo:: Transactions ::Item >( GCW::Dbo:: Transactions ::s_tableName );
+  mapClass< GCW::Dbo:: Entries      ::Item >( GCW::Dbo:: Entries      ::s_tableName );
+  mapClass< GCW::Dbo:: GncLock      ::Item >( GCW::Dbo:: GncLock      ::s_tableName );
+  mapClass< GCW::Dbo:: Invoices     ::Item >( GCW::Dbo:: Invoices     ::s_tableName );
+  mapClass< GCW::Dbo:: Jobs         ::Item >( GCW::Dbo:: Jobs         ::s_tableName );
   mapClass< GCW::Dbo:: Slots        ::Item >( GCW::Dbo:: Slots        ::s_tableName );
   mapClass< GCW::Dbo:: Splits       ::Item >( GCW::Dbo:: Splits       ::s_tableName );
+  mapClass< GCW::Dbo:: Transactions ::Item >( GCW::Dbo:: Transactions ::s_tableName );
   mapClass< GCW::Dbo:: Vars         ::Item >( GCW::Dbo:: Vars         ::s_tableName );
   mapClass< GCW::Dbo:: Versions     ::Item >( GCW::Dbo:: Versions     ::s_tableName );
 
