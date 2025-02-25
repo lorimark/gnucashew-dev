@@ -26,13 +26,27 @@ get()
 
 } // endget()
 
-GCW::Dbo::Prefrences::ReverseBalanceAccounts
+auto
 GCW::Dbo::Prefrences::Item::
-reverseBalanceAccounts() const
+reverseBalanceAccounts() const-> GCW::Dbo::Prefrences::ReverseBalanceAccounts
 {
 //  return GCW::Dbo::Prefrences::ReverseBalanceAccounts::NONE;
 //  return GCW::Dbo::Prefrences::ReverseBalanceAccounts::INCOME_EXPENSE;
   return GCW::Dbo::Prefrences::ReverseBalanceAccounts::CREDIT;
 }
+
+auto
+GCW::Dbo::Prefrences::Item::
+accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
+{
+//  if( _value == AccountRegisterHighlight::NEGVAL_EXTRA )
+//    return true;
+
+  if( _value == AccountRegisterHighlight::NORMAL )
+    return true;
+
+  return false;
+
+} // endaccountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
 
 

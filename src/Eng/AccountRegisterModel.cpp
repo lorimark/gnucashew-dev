@@ -923,7 +923,21 @@ refreshFromDisk()-> void
       */
       if( runningBalance < 0 )
       {
-        balance-> setStyleClass( "negval" );
+        if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
+        {
+          post_date   -> setStyleClass( "negval" );
+          num         -> setStyleClass( "negval" );
+          description -> setStyleClass( "negval" );
+          account     -> setStyleClass( "negval" );
+          reconcile   -> setStyleClass( "negval" );
+          debit       -> setStyleClass( "negval" );
+          credit      -> setStyleClass( "negval" );
+        }
+
+        if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
+        {
+          balance     -> setStyleClass( "negval" );
+        }
       }
 
       /*

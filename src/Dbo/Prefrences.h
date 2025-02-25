@@ -27,9 +27,33 @@ namespace GCW {
 
 enum class ReverseBalanceAccounts
 {
+  /// no account balances are reversed
   NONE           = 0x01,
+
+  /// income and expense account balances are reversed
   INCOME_EXPENSE = 0x02,
+
+  /// credit account balances are reversed
   CREDIT         = 0x03
+};
+
+/*!
+** \brief Account Register Highlighting
+**
+** This controls how some of the display features of the
+**  account-register window are handled
+**
+*/
+enum class AccountRegisterHighlight
+{
+  /// no highlight handling
+  NONE         = 0x01,
+
+  /// normal handling - neg values are red
+  NORMAL       = 0x02,
+
+  /// extra handling - neg values are gold-background-full-line
+  NEGVAL_EXTRA = 0x03,
 };
 
 /*!
@@ -43,8 +67,8 @@ class Item
 
     Item( GCW::Dbo::Vars::Item::Ptr _varItem );
 
-    ReverseBalanceAccounts reverseBalanceAccounts() const;
-
+    auto reverseBalanceAccounts()   const-> ReverseBalanceAccounts;
+    auto accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool;
 
   private:
 
