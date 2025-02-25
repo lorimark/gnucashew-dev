@@ -222,7 +222,7 @@ saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::I
   if( _role != Wt::ItemDataRole::Edit )
     return;
 
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): "
     << "\n row:" << _index.row()
     << "\n col:" << _index.column()
@@ -245,6 +245,11 @@ saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::I
   ** If we don't have a split item, then this is a new row.  It also
   **  means we don't have a transaction, either.  So, build up a whole
   **  set of items that we'll be needing to set in these new values.
+  **
+  ** Note; we got a 'split-guid' by calling "getSplitGuid()" on the row.
+  **  The row will _always_ return a guid even if it's a new row.  If it
+  **  is a new row, then the guid is also new and when trying to fetch from
+  **  the database it will return _no_ split item.
   **
   */
   if( !splitItem )
@@ -279,11 +284,11 @@ saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::I
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
   txItem    .modify()-> set_enter_date  ( GCW::Core::currentDateTime() );
-  txItem    .modify()-> set_post_date   ( getDate( _index )            );
-  txItem    .modify()-> set_description ( getDescription( _index )     );
-  splitItem .modify()-> set_value       ( getValue( _index )           );
+  txItem    .modify()-> set_post_date   ( getDate        ( _index )    );
+  txItem    .modify()-> set_description ( getDescription ( _index )    );
+  splitItem .modify()-> set_value       ( getValue       ( _index )    );
 
-#ifdef NEVER
+#ifndef NEVER
   std::cout << FUNCTION_HEADER
     << " row:"   << _index.row()
     << " col:"   << _index.column()
@@ -371,7 +376,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   */
   if( !_matchValue( _index.data( _role ), _value ) )
   {
-#ifdef NEVER
+#ifndef NEVER
     std::cout << BREAKHEADER
       << "\n row:" << _index.row()
       << "\n col:" << _index.column()
@@ -866,7 +871,7 @@ refreshFromDisk()-> void
         credit = _addColumn( columns, "" );
 
         debit -> setData( splitItem-> value(), Wt::ItemDataRole::User );
-        credit-> setData( 0, Wt::ItemDataRole::User );
+        credit-> setData( 0,                   Wt::ItemDataRole::User );
       }
 
       /*
@@ -881,7 +886,7 @@ refreshFromDisk()-> void
         debit  = _addColumn( columns, "" );
         credit = _addColumn( columns, splitItem-> valueAsString(true) );
 
-        debit -> setData( 0, Wt::ItemDataRole::User );
+        debit -> setData( 0,                   Wt::ItemDataRole::User );
         credit-> setData( splitItem-> value(), Wt::ItemDataRole::User );
       }
 

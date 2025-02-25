@@ -196,15 +196,9 @@ void
 GCW::Gui::AccountsTreeView::
 setModel()
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << m_columnCount << std::endl;
-
   m_model = std::make_shared< Model >();
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
   m_model-> load( m_columnCount );
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
   view()-> setModel( m_model );
 

@@ -114,7 +114,17 @@
   border-left: 1px solid black;
 }
 
-/* Selected Editor Widget background highlight */
+/* Selected Editor Widget padding/margin (the div right before the editor) */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   div.Wt-tv-c.selectable
+{
+  padding:0px;
+  margin:0px;
+}
+
+/* Selected Editor Widget background highlight (the editor) */
 .AccountRegister
  .Wt-tableview
   .Wt-tv-contents
@@ -122,6 +132,7 @@
     input
 {
   background-color:yellow;
+  vertical-align:top;
 }
 
 .AccountEditor

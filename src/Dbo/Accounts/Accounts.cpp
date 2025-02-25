@@ -242,7 +242,13 @@ activeAccounts()-> GCW::Dbo::Accounts::Item::Vector
     .resultList()
     ;
 
-  for( auto result : results )
+  /*
+  ** push back all accounts that are
+  **  _not_ hidden, and
+  **  _not_ placeholder
+  **
+  */
+  for( auto & result : results )
     if( !result-> hidden()
      && !result-> placeHolder()
       )

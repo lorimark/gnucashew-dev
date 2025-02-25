@@ -24,6 +24,12 @@ setText_( Wt::WText * _widget, GCW_NUMERIC _value )-> void
   _widget-> setText( "$" + toString( _value, GCW::Cfg::decimal_format() ) );
 }
 
+auto
+setText_( Wt::WText * _widget, int _value )-> void
+{
+  _widget-> setText( std::to_string( _value ) );
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class HeaderDelegate
@@ -195,15 +201,15 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const
 #ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " Wt::cpp17::any DateDelegate::editState()"
-    << " r:" << _index.row()
-    << " c:" << _index.column()
-    << " i:" << cw-> id()
-    << " n:" << cw-> objectName()
-    << " s:" << cw-> children().size()
-    << " t:" << typeid( cw-> children().at(0) ).name()
-    << " d:" << de
-    << " m:" << m_dateEdit
-    << " t:" << m_dateEdit-> text()
+    << " row:"   << _index.row()
+    << " col:"   << _index.column()
+    << " id:"    << cw-> id()
+    << " oname:" << cw-> objectName()
+    << " chlds:" << cw-> children().size()
+    << " typid:" << typeid( cw-> children().at(0) ).name()
+    << " dated:" << de
+    << " mdted:" << m_dateEdit
+    << " txt:"   << m_dateEdit-> text()
     << std::endl
     ;
 #endif
@@ -472,14 +478,10 @@ createEditor
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-
-
 class AccountDelegate
 : public Wt::WItemDelegate
 {
   public:
-
 
     std::unique_ptr< Wt::WWidget > createEditor
     (
@@ -497,13 +499,13 @@ createEditor
   Wt::WFlags< Wt::ViewItemRenderFlag > _flags
 ) const
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " AccountDelegate::" << __FUNCTION__ << "(): " << _index.row() << " " << _index.column() << std::endl;
 #endif
 
-  auto retVal = Wt::WItemDelegate::createEditor( _index, _flags );
-  auto cw = dynamic_cast< Wt::WContainerWidget* >( retVal.get() );
-  auto lineEdit = dynamic_cast< Wt::WLineEdit* >( cw-> widget(0) );
+  auto retVal   = Wt::WItemDelegate::createEditor       ( _index, _flags );
+  auto cw       = dynamic_cast< Wt::WContainerWidget* > ( retVal.get()   );
+  auto lineEdit = dynamic_cast< Wt::WLineEdit* >        ( cw-> widget(0) );
 
   // options for email address suggestions
   Wt::WSuggestionPopup::Options popupOptions =
@@ -536,7 +538,6 @@ createEditor
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 } // endnamespace {
 
 GCW::Gui::AccountRegister::StatusBar::
@@ -561,14 +562,23 @@ StatusBar()
   m_cleared    = _addWidget( "cleared"      );
   m_reconciled = _addWidget( "reconciled"   );
   m_projected  = _addWidget( "projected", 1 );
+  m_rowCount   = _addWidget( "rowCount"     );
+
+  setPresent    ();
+  setFuture     ();
+  setCleared    ();
+  setReconciled ();
+  setProjected  ();
+  setRowCount   ();
 
 } // endStatusBar()
 
-void GCW::Gui::AccountRegister::StatusBar:: setPresent    ( GCW_NUMERIC _value ) { setText_( m_present    , _value ); }
-void GCW::Gui::AccountRegister::StatusBar:: setFuture     ( GCW_NUMERIC _value ) { setText_( m_future     , _value ); }
-void GCW::Gui::AccountRegister::StatusBar:: setCleared    ( GCW_NUMERIC _value ) { setText_( m_cleared    , _value ); }
-void GCW::Gui::AccountRegister::StatusBar:: setReconciled ( GCW_NUMERIC _value ) { setText_( m_reconciled , _value ); }
-void GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value ) { setText_( m_projected  , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setPresent    ( GCW_NUMERIC _value )-> void  { setText_( m_present    , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setFuture     ( GCW_NUMERIC _value )-> void  { setText_( m_future     , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setCleared    ( GCW_NUMERIC _value )-> void  { setText_( m_cleared    , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setReconciled ( GCW_NUMERIC _value )-> void  { setText_( m_reconciled , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value )-> void  { setText_( m_projected  , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setRowCount   ( int         _value )-> void  { setText_( m_rowCount   , _value ); }
 
 GCW::Gui::AccountRegister::
 AccountRegister( const std::string & _accountGuid )
@@ -809,7 +819,9 @@ AccountRegister( const std::string & _accountGuid )
       }
 #endif
 
-      std::cout << __FILE__ << ":" << __LINE__ << " " << Wt::WApplication::instance()->theme()->activeClass() << std::endl;
+      std::cout << __FILE__ << ":" << __LINE__
+        << " " << Wt::WApplication::instance()->theme()->activeClass()
+        << std::endl;
 
 //      tableView()-> clearSelection();
 
@@ -905,6 +917,7 @@ loadData()-> void
   statusBar()-> setReconciled ( baseModel()-> reconciled () );
   statusBar()-> setFuture     ( baseModel()-> future     () );
   statusBar()-> setCleared    ( baseModel()-> cleared    () );
+  statusBar()-> setRowCount   ( baseModel()-> rowCount   () );
 
 } // endloadData()-> void
 

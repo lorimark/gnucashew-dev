@@ -372,6 +372,7 @@
   <message id="gcw.AccountRegister.StatusBar.cleared"                >Cleared</message>
   <message id="gcw.AccountRegister.StatusBar.reconciled"             >Reconciled</message>
   <message id="gcw.AccountRegister.StatusBar.projected"              >Projected Minimum</message>
+  <message id="gcw.AccountRegister.StatusBar.rowCount"               >Count</message>
 
   <message id="gcw.AccountRegister.account.multisplit"               >~~ Split Transaction ~~</message>
   <message id="gcw.AccountRegister.account.imbalanceUSD"             >Imbalance-USD</message>

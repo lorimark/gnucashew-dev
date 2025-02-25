@@ -19,11 +19,11 @@ Invoices()
 
   m_tableView-> setModel( m_model );
 
-  m_model-> setCustomerGuid( "x" );
-
   m_tableView->
     clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
     {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
+
 
     });
 

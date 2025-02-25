@@ -104,6 +104,14 @@ class AccountRegisterModel
 
     auto makeRow( const std::string & _splitGuid )-> RowItem ;
 
+    /*!
+    ** \brief Column Suggestions
+    **
+    ** This produces a unique-set of items that represent all the text-values
+    **  for that particular column.  This is used to produce a suggestion-box
+    **  for the register.
+    **
+    */
     auto suggestionsFromColumn( int _column ) const-> std::set< std::string > ;
 
     auto setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool ;

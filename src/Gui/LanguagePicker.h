@@ -8,6 +8,15 @@
 namespace GCW {
   namespace Gui {
 
+/*!
+** \brief Language Picker
+**
+** The language picker is a combo-box placed at the top of the
+**  website that allows the user to change the selected language
+**  for the website.
+**
+**
+*/
 class LanguagePicker
 : public Wt::WComboBox
 {
@@ -17,8 +26,7 @@ class LanguagePicker
 
   private:
 
-
-};
+}; // endclass LanguagePicker
 
   } // endnamespace Gui {
 } // endnamespace GCW {
