@@ -203,6 +203,7 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
   **  account, which is the one we wanted.
   **
   */
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   retVal = rootAccount();
   for( int i=0; i< split.size(); i++ )
     retVal = byChildName( retVal-> guid(), split.at(i) );

@@ -87,6 +87,7 @@ class AccountsTreeView
     auto expandTreeNodes( Wt::Json::Object & _jobj )-> bool;
     auto setSelected( const std::string & _accountGuid )-> bool;
     auto findIndex( const std::string & _accountGuid, Wt::WModelIndex _parentIndex = Wt::WModelIndex() )-> Wt::WModelIndex;
+    auto on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 
     int                          m_columnCount       = -1      ;
     Wt::WGridLayout            * m_gridLayout        = nullptr ;

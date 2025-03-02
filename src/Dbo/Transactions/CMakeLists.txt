@@ -1,5 +1,6 @@
 
 set( GCW_FILES ${GCW_FILES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Manager.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Transactions.cpp
   #  ${CMAKE_CURRENT_SOURCE_DIR}/Item.cpp
   PARENT_SCOPE

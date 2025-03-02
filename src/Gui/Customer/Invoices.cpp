@@ -15,7 +15,15 @@ Invoices()
 
   m_tableView = m_hlw-> addWidget( std::make_unique< Wt::WTableView >(), 1 );
 
-  m_model = std::make_shared< GCW::Eng::InvoicesModel >();
+  std::vector< Wt::WFormModel::Field > fields =
+  {
+    GCW::Dbo::Invoices::Field::id,
+    GCW::Dbo::Invoices::Field::date_posted,
+    GCW::Dbo::Invoices::Field::billing_id,
+    GCW::Dbo::Invoices::Field::notes
+  };
+
+  m_model = std::make_shared< GCW::Eng::InvoicesModel >( fields );
 
   m_tableView-> setModel( m_model );
 

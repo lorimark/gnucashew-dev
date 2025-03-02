@@ -75,14 +75,60 @@ class AccountRegisterModel
     **        consistent with GnuCash.
     **
     */
-    auto getDate        ( const Wt::WModelIndex & _index )-> Wt::WDateTime ;
-    auto getAction      ( const Wt::WModelIndex & _index )-> std::string   ;
-    auto getDescription ( const Wt::WModelIndex & _index )-> std::string   ;
-    auto getTransfer    ( const Wt::WModelIndex & _index )-> std::string   ;
-    auto getReconcile   ( const Wt::WModelIndex & _index )-> std::string   ;
-    auto getNumeric     ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
-    auto getDebit       ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
-    auto getCredit      ( const Wt::WModelIndex & _index )-> GCW_NUMERIC   ;
+    auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime;
+
+    /*!
+    ** \brief Get Action
+    **
+    */
+    auto getAction( const Wt::WModelIndex & _index )-> std::string;
+
+    /*!
+    ** \brief Get Description
+    **
+    */
+    auto getDescription( const Wt::WModelIndex & _index )-> std::string;
+
+    /*!
+    ** \brief Get Transfer Account Text
+    **
+    */
+    auto getTransferText( const Wt::WModelIndex & _index )-> std::string;
+
+    /*!
+    ** \brief Get Transfer Account GUID
+    **
+    */
+    auto getTransferGuid( const Wt::WModelIndex & _index )-> std::string;
+
+    /*!
+    ** \brief Get Reconciliation
+    **
+    */
+    auto getReconcile( const Wt::WModelIndex & _index )-> std::string;
+
+    /*!
+    ** \brief Get numeric value
+    **
+    ** This returns the numeric value of the line.  This is suitable
+    **  for querying either the debit or credit column values (and is really
+    **  intended for internal use).  The 'value' is pulled from the Display
+    **  value of the index and converted to a GCW_NUMERIC value.
+    **
+    */
+    auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+
+    /*!
+    ** \brief Get Debit value
+    **
+    */
+    auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+
+    /*!
+    ** \brief Get Credit value
+    **
+    */
+    auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
     /*!
     ** \brief Get Value (positive or negative)
@@ -90,10 +136,19 @@ class AccountRegisterModel
     ** The value that gets stored in the back-end database is either positive
     **  for debit, and negative for credit.  This function will read-out the
     **  debit and credit columns in the register display and figure out if
-    **  the returned value should be positive or negative.
+    **  the returned value should be returned positive or negative corrected.
+    **
+    ** This function always positive for debit, and negative for credit values.
     **
     */
-    auto getValue   ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
+    auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+
+    /*!
+    ** \brief
+    **
+    **
+    **
+    */
     auto getBalance ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     auto present    () const-> GCW_NUMERIC { return m_present;    }
@@ -140,7 +195,9 @@ balance
 
   private:
 
-    auto saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> void ;
+    auto getString( const Wt::WModelIndex & _index, int column )-> std::string;
+
+    auto saveToDisk( const Wt::WModelIndex & _index )-> void ;
 
 #ifdef NEVER
     template <typename T>

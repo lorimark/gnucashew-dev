@@ -7,6 +7,14 @@ const char * GCW::Dbo::Transactions::s_tableName = "transactions";
 
 auto
 GCW::Dbo::Transactions::Item::
+set_num( const std::string & _value )-> void
+{
+  m_num = _value;
+
+}
+
+auto
+GCW::Dbo::Transactions::Item::
 set_enter_date ( const std::string & _value )-> void
 {
   m_enter_date = _value;

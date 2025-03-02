@@ -52,6 +52,8 @@ init()-> void
   view()-> setSelectionMode(     Wt::SelectionMode::Single   );
   view()-> setAlternatingRowColors( true );
   view()-> doubleClicked().connect( this, &AccountsTreeView::on_doubleClicked );
+  view()-> setAttributeValue( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
+  view()-> mouseWentUp().connect( this, &AccountsTreeView::on_showPopup_triggered );
 
   std::vector< std::string > cols =
   {
@@ -97,6 +99,62 @@ init()-> void
   view()-> selectionChanged ().connect( this, &AccountsTreeView::saveConfig    );
 
 } // endinit()-> void
+
+auto
+GCW::Gui::AccountsTreeView::
+on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
+{
+  if( _event.button() == Wt::MouseButton::Right )
+  {
+    std::cout << __FILE__ << ":" << __LINE__ << " right-click pop-up menu" << std::endl;
+
+#ifdef NEVER
+    /*
+    ** Set up the items in the pop-up menu
+    **
+    */
+    while( m_popup.count() )
+      m_popup.removeItem( m_popup.itemAt(0) );
+
+    m_popup.addItem("icons/folder_new.gif", "Create a New Folder", this, &WEB::FolderTableView::on_pbAddFolder_triggered );
+    m_popup.addItem("Rename", this, &WEB::FolderTableView::on_pbRenameItem_triggered ); //->setCheckable(true);
+
+    std::string fileName = Wt::asString(m_tableView.model()-> data( index.row(), 0 )).toUTF8();
+    COUT_( fileName );
+
+    if( isFolder(fileName) )
+      m_popup.addItem("Delete this Folder", this, &WEB::FolderTableView::on_pbDeleteItem_triggered );
+    else
+      m_popup.addItem("Delete this File", this, &WEB::FolderTableView::on_pbDeleteItem_triggered );
+
+    m_popup.addSeparator();
+    m_popup.addItem("Upload a file", this, &WEB::FolderTableView::on_pbUploadFile_triggered );
+    m_popup.addItem("Refresh", this, &WEB::FolderTableView::refresh );
+    m_popup.addSeparator();
+    m_popup.addItem("Properties", this, &WEB::FolderTableView::on_pbProperties_triggered );
+
+    // Select the item, if it was not yet selected.
+    if( !m_tableView.isSelected(index) )
+    {
+      m_tableView.clearSelection();
+      m_tableView.select(index);
+    }
+
+    if( m_popup.isHidden() )
+    {
+      m_popup.popup(event);
+    }
+    else
+    {
+      m_popup.hide();
+    }
+
+#endif
+
+  }
+
+} // endon_showPopup_triggered( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+
 
 /*!
 ** \return GUID String

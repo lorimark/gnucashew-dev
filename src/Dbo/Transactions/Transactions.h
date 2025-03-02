@@ -96,6 +96,8 @@ class Item
     auto set_enter_date ( const std::string & _value )-> void;
     auto set_enter_date ( const Wt::WDateTime & _value )-> void;
 
+    auto set_num        ( const std::string & _value )-> void;
+
     /*!
     ** \brief Post Date as String
     **

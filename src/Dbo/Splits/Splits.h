@@ -137,6 +137,12 @@ class Item
     auto action() const-> const std::string & { return m_action; }
 
     /*!
+    ** Set Action
+    **
+    */
+    auto set_action( const std::string & _value )-> void { m_action = _value; }
+
+    /*!
     ** Reconcile State field
     */
     auto reconcile_state() const-> const std::string & { return m_reconcile_state; }
@@ -190,7 +196,7 @@ class Item
     **  the sign of the value for the purpose of displaying
     **  (otherwise negative) numbers with positive values only.
     */
-    GCW_NUMERIC value( bool invert = false ) const
+    auto value( bool invert = false ) const-> GCW_NUMERIC
     {
       auto inv = invert? -1:1;
       GCW_NUMERIC retVal( value_num()*inv );

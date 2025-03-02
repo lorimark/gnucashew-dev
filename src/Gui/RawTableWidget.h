@@ -5,6 +5,9 @@
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/Dbo/QueryModel.h>
+#include <Wt/WPushButton.h>
+#include <Wt/WLineEdit.h>
+#include <Wt/WToolBar.h>
 
 //#include "../GnuCashew.h"
 #include "TableView.h"
@@ -31,7 +34,7 @@ class RawTableWidget
     /*!
     ** \brief Model
     **
-    ** An alias for the Model in case this interface changes.
+    ** An alias for the Model.
     **
     */
     using Model = Wt::Dbo::QueryModel< typename C::Ptr >;
@@ -40,7 +43,7 @@ class RawTableWidget
     ** \brief Constructor
     **
     */
-    RawTableWidget();
+    RawTableWidget( const std::string & _viewName );
 
     /*!
     ** \brief Table View
@@ -61,7 +64,7 @@ class RawTableWidget
     auto loadData()-> void;
 
     std::shared_ptr< Model >   m_model;
-    Wt::WContainerWidget     * m_toolBar   = nullptr;
+    Wt::WToolBar             * m_toolBar   = nullptr;
     GCW::Gui::TableView      * m_tableView = nullptr;
     Wt::WContainerWidget     * m_statusBar = nullptr;
 

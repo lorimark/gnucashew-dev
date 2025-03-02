@@ -4,7 +4,7 @@
 #include "../Dbo/SessionGnuCash.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Prefrences.h"
-#include "../Dbo/Transactions/Transactions.h"
+#include "../Dbo/Transactions/Manager.h"
 #include "../Dbo/Vars/Vars.h"
 #include "../Glb/Core.h"
 #include "AccountRegisterModel.h"
@@ -22,14 +22,14 @@
 ** 1,2 - notes       : split       -> memo
 **
 */
-#define COL_DATE        0
-#define COL_ACTION      1
-#define COL_DESCRIPTION 2
-#define COL_TRANSFER    3
-#define COL_RECONCILE   4
-#define COL_DEBIT       5
-#define COL_CREDIT      6
-#define COL_NOTES       7
+#define COL_DATE        (0)
+#define COL_ACTION      (1)
+#define COL_DESCRIPTION (2)
+#define COL_TRANSFER    (3)
+#define COL_RECONCILE   (4)
+#define COL_DEBIT       (5)
+#define COL_CREDIT      (6)
+#define COL_NOTES       (7)
 
 GCW::Eng::AccountRegisterModel::
 AccountRegisterModel( const std::string & _accountGuid, bool _editable )
@@ -110,16 +110,26 @@ saveToDisk()-> void
 
 auto
 GCW::Eng::AccountRegisterModel::
+getString( const Wt::WModelIndex & _index, int column )-> std::string
+{
+  return
+    Wt::asString                            // convert the index.data() to a WString
+    (
+     index( _index.row(), column )          // get the index of the ACTION column
+     .data( Wt::ItemDataRole::Display )     // get the (string/display) data from it
+    )
+    .toUTF8();                              // convert the WString to a std::string
+                                            //
+} // endgetString( const Wt::WModelIndex & _index, int column )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
 getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
 {
   auto retVal =
     Wt::WDateTime::fromString             // convert the WString to a WDateTime
     (
-      Wt::asString                        // convert the index.data() to a WString
-      (
-       index( _index.row(), COL_DATE )    // get the index of the DATE column
-       .data( Wt::ItemDataRole::Display ) // get the (string/display) data from it
-      ),
+      getString( _index, COL_DATE ),
       GCW_DATE_FORMAT_DISPLAY             // use this DATE format for the conversion
     );
 
@@ -134,15 +144,42 @@ getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
 
 auto
 GCW::Eng::AccountRegisterModel::
+getAction( const Wt::WModelIndex & _index )-> std::string
+{
+  return getString( _index, COL_ACTION );
+
+} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
 getDescription( const Wt::WModelIndex & _index )-> std::string
 {
+  return getString( _index, COL_DESCRIPTION );
+
+} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
+getTransferText( const Wt::WModelIndex & _index )-> std::string
+{
+  return getString( _index, COL_TRANSFER );
+
+} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
+getTransferGuid( const Wt::WModelIndex & _index )-> std::string
+{
   return
-    Wt::asString                            // convert the index.data() to a WString
-    (
-     index( _index.row(), COL_DESCRIPTION ) // get the index of the DESCRIPTION column
-     .data( Wt::ItemDataRole::Display )     // get the (string/display) data from it
-    )
-    .toUTF8();                              // convert the WString to a std::string
+    GCW::Dbo::Accounts::byFullName( getTransferText( _index ) )-> guid();
+
+} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
+getReconcile( const Wt::WModelIndex & _index )-> std::string
+{
+  return getString( _index, COL_RECONCILE );
 
 } // endgetDescription( const Wt::WModelIndex & _index )-> std::string
 
@@ -152,8 +189,8 @@ getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   GCW_NUMERIC retVal( 0 );
 
-  if( Wt::asString( _index.data( Wt::ItemDataRole::Display ) ) != "" )
-    retVal = Wt::asNumber( _index.data( Wt::ItemDataRole::Display ) );
+  if( !_index.data( Wt::ItemDataRole::Display ).empty() )
+    retVal = GCW_NUMERIC( Wt::asString( _index.data( Wt::ItemDataRole::Display ) ).toUTF8() );
 
   return retVal;
 
@@ -183,15 +220,10 @@ getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   GCW_NUMERIC retVal( 0 );
 
-  // get both values so we can determing (+) or (-)
+  // get both values so we can determine (+) or (-)
   auto debit  = getDebit(  _index );
   auto credit = getCredit( _index );
-
-  if( debit > 0 && credit == 0 )
-    retVal = debit;
-
-  if( debit == 0 && credit > 0 )
-    retVal = credit * -1;
+       retVal = debit - credit;
 
   return retVal;
 
@@ -213,91 +245,104 @@ getSplitGuid( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
-saveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> void
+saveToDisk( const Wt::WModelIndex & _index )-> void
 {
-  /*
-  ** This is not an edit role - fast quit!
-  **
-  */
-  if( _role != Wt::ItemDataRole::Edit )
-    return;
-
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): "
     << "\n row:" << _index.row()
     << "\n col:" << _index.column()
-    << "\n rol:" << (_role == Wt::ItemDataRole::Edit? true:false)
-    << "\n cur:" << Wt::asString( _index.data( _role ) )
-    << "\n new:" << Wt::asString( _value )
     << "\n gui:" << getSplitGuid( _index )
     << std::endl;
 #endif
 
   /*
-  ** Get the split item loaded so we can update its values.
+  ** Prepare to update everything
   **
   */
-  auto accountItem = GCW::Dbo:: Accounts     ::load( m_accountGuid          );
-  auto splitItem   = GCW::Dbo:: Splits       ::find( getSplitGuid( _index ) );
-  auto txItem      = GCW::Dbo:: Transactions ::Item::Ptr();
+  GCW::Dbo::Transactions::Manager transMan;
 
   /*
-  ** If we don't have a split item, then this is a new row.  It also
+  ** If we don't have a split guid, then this is a new row.  It also
   **  means we don't have a transaction, either.  So, build up a whole
   **  set of items that we'll be needing to set in these new values.
   **
-  ** Note; we got a 'split-guid' by calling "getSplitGuid()" on the row.
-  **  The row will _always_ return a guid even if it's a new row.  If it
-  **  is a new row, then the guid is also new and when trying to fetch from
-  **  the database it will return _no_ split item.
-  **
   */
-  if( !splitItem )
+  auto splitGuid = getSplitGuid( _index );
+  if( splitGuid == "" )
   {
     /*
-    ** add a split item and a transaction item
+    ** Create a new transaction
+    **
     */
-    splitItem = GCW::Dbo:: Splits       ::add( getSplitGuid( _index ) );
-    txItem    = GCW::Dbo:: Transactions ::add( GCW::Core::newGuid()   );
+    transMan.newTransaction( m_accountGuid, getTransferGuid( _index ) );
 
-    /*
-    ** hook everything together
-    */
-    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-    txItem   .modify()-> set_currency_guid   ( accountItem-> commodity_guid() );
-    splitItem.modify()-> set_tx_guid         ( txItem-> guid()                );
-    splitItem.modify()-> set_account_guid    ( m_accountGuid                  );
-    splitItem.modify()-> set_reconcile_state ( GCW_RECONCILE_NO               );
-    splitItem.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE               );
-
-  } // endif( !splitItem )
+  } // endif( ..no split.. )
 
   /*
-  ** We have a split item, so load up the transaction associated with it, we
-  **  will poke changes in to it accordingly below.
+  ** We have a split item, so load up the transaction associated with it as
+  **  well as the split-pair item, we will poke changes in to it accordingly below.
   */
   else
   {
-    txItem = GCW::Dbo::Transactions::load( splitItem-> tx_guid() );
+    transMan.setSplit( splitGuid );
   }
 
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  /*
+  ** write out the data that changed
+  */
+  switch( _index.column() )
+  {
+    case COL_DATE:
+    {
+      transMan.setDate( getDate( _index ) );
+      break;
+    }
 
-  txItem    .modify()-> set_enter_date  ( GCW::Core::currentDateTime() );
-  txItem    .modify()-> set_post_date   ( getDate        ( _index )    );
-  txItem    .modify()-> set_description ( getDescription ( _index )    );
-  splitItem .modify()-> set_value       ( getValue       ( _index )    );
+    case COL_ACTION:
+    {
+      transMan.setAction( getAction( _index ) );
+      break;
+    }
 
-#ifndef NEVER
-  std::cout << FUNCTION_HEADER
-    << " row:"   << _index.row()
-    << " col:"   << _index.column()
-    << "\n  sp:" << splitItem
-    << "\n  ac:" << accountItem
-    << "\n  tx:" << txItem
-    << "\n  dt:" << getDate( _index ).toString()
-    << std::endl;
+    case COL_DESCRIPTION:
+    {
+      transMan.setDescription( getDescription( _index ) );
+      break;
+    }
+
+    case COL_TRANSFER:
+    {
+      transMan.setTransferGuid( getTransferGuid( _index ) );
+      break;
+    }
+
+    case COL_RECONCILE:
+    {
+      transMan.setReconcile( getReconcile( _index ) );
+      break;
+    }
+
+    case COL_DEBIT:
+    {
+      transMan.setValue( getValue( _index ) );
+      break;
+    }
+
+    case COL_CREDIT:
+    {
+      transMan.setValue( getValue( _index ) );
+      break;
+    }
+
+#ifdef NEVER
+    case COL_NOTES:
+    {
+      transMan.setNotes( getNotes( _index ) );
+      break;
+    }
 #endif
+
+  } // endswitch( index.column() )
 
 } // endsaveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> void
 
@@ -305,6 +350,13 @@ auto
 GCW::Eng::AccountRegisterModel::
 setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool
 {
+  /*
+  ** This is not an edit role - fast quit!
+  **
+  */
+  if( _role != Wt::ItemDataRole::Edit )
+    return false;
+
   /*
   ** Nothing happening constitutes a success
   **
@@ -315,7 +367,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   ** This compare function compares two _any_ values
   **
   */
-  auto _matchValue = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
+  auto _valuesMatch = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
   {
     /*
     ** In any case, the two values must be of the same type.
@@ -368,15 +420,15 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     */
     return false;
 
-  }; // endauto _matchValue = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
+  }; // endauto _valuesMatch = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
 
   /*
   ** Only updating if the data actually changed
   **
   */
-  if( !_matchValue( _index.data( _role ), _value ) )
+  if( !_valuesMatch( _index.data( _role ), _value ) )
   {
-#ifndef NEVER
+#ifdef NEVER
     std::cout << BREAKHEADER
       << "\n row:" << _index.row()
       << "\n col:" << _index.column()
@@ -390,7 +442,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     */
     retVal = Wt::WStandardItemModel::setData( _index, _value, _role );
 
-    saveToDisk( _index, _value, _role );
+    saveToDisk( _index );
 
 //    m_dirtyRows.insert( _index.row() );
 
@@ -577,13 +629,26 @@ refreshFromDisk()-> void
       **  view.  The guid can be accessed by;
       **
       ** \code
-      ** Wt::WString splitRowGuid = Wt::asString( standardItem.data( Wt::ItemRole::User ) )
+      ** Wt::WString splitRowGuid = Wt::asString( standardItem.data( Wt::ItemDataRole::User ) )
       ** \endcode
+      **
+      ** \sa getSplitGuid
       **
       */
       post_date = _addColumn( columns, transactionItem-> post_date_as_date().toString( GCW::Cfg::date_format() ) );
       post_date-> setData( splitItem-> guid(), Wt::ItemDataRole::User );
-      post_date-> setToolTip( splitItem-> guid() );
+      post_date-> setData( splitItem , Wt::ItemDataRole::User + 1 );
+
+      auto tip =
+        Wt::WString
+        (
+         "acg: {1}\n"
+         "spg: {2}\n"
+        )
+        .arg( m_accountGuid      )
+        .arg( splitItem-> guid() )
+        ;
+      post_date-> setToolTip( tip );
 
       /*!
       ** The 'num' column is a simple text-column.
@@ -602,7 +667,7 @@ refreshFromDisk()-> void
       **  target account defined in the split.  There are three
       **  possibilities here;
       **
-      **   -# no splits... this shows up as an <b>'imbalance'</b>
+      **   -# no splits... this shows up as an <b>'imbalance'</b> (this is an error condition)
       **   -# 1 split...   this just shows the split account on the same single line
       **   -# >1 split...  this is more than one target account, so just indicate 'split'
       **
@@ -642,6 +707,17 @@ refreshFromDisk()-> void
           if( splitAccountItem )
           {
             account = _addColumn( columns, GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
+
+            auto tip =
+              Wt::WString
+              (
+               "spa:{1}\n"
+               "txi:{2}\n"
+              )
+              .arg( splitAccountItem-> guid() )
+              .arg( txSplitItem-> guid() )
+              ;
+            account-> setToolTip( tip );
           }
 
           // no, we don't have an account item
@@ -729,19 +805,27 @@ refreshFromDisk()-> void
       **
       **  >>>>>>>>>>>>>>>
       **  Debit/Credit is just Left/Right.
-      **  Maybe this will help...
+      **  Maybe this will help
       **
-      **  The Accounting Equation:
+      ** \par The Accounting Equation:
+      ** \code
       **  Assets - Liabilities = Equity
+      ** \endcode
       **
-      **      (let's make all terms 'positive')
+      ** \par let's make all terms 'positive'
+      ** \code
       **  Assets = Liabilities + Equity
+      ** \endcode
       **
-      **      (now, we'll split off a subset of Equity)
+      ** \par now, we'll split off a subset of Equity
+      ** \code
       **  Assets = Liabilities + Equity + Retained Earnings
+      ** \endcode
       **
-      **      (now, we'll substitute temporary accounts for Retained Earnings)
+      ** \par now, we'll substitute temporary accounts for Retained Earnings)
+      ** \code
       **  Assets = Liabilities + Equity + (Income - Expenses)
+      ** \endcode
       **
       **      (now, we'll once again, make all terms 'positive')
       **  Assets + Expenses = Liabilities + Equity + Income
@@ -852,8 +936,8 @@ refreshFromDisk()-> void
       */
       runningBalance += splitItem-> value( invert );
 
-      /* FIXME
-      ** Add up the static running accumulators
+      /*!
+      ** \todo Add up the static running accumulators
       **
       */
       m_present += splitItem-> value( invert );
@@ -870,8 +954,9 @@ refreshFromDisk()-> void
         debit  = _addColumn( columns, splitItem-> valueAsString() );
         credit = _addColumn( columns, "" );
 
+        /// \bug may not need to store GCW_NUMERIC on the AccountRegisterModel items.  it is redundant and we're not using the values and updates from the delegates don't update these values.
         debit -> setData( splitItem-> value(), Wt::ItemDataRole::User );
-        credit-> setData( 0,                   Wt::ItemDataRole::User );
+        credit-> setData( GCW_NUMERIC(0)     , Wt::ItemDataRole::User );
       }
 
       /*
@@ -886,7 +971,7 @@ refreshFromDisk()-> void
         debit  = _addColumn( columns, "" );
         credit = _addColumn( columns, splitItem-> valueAsString(true) );
 
-        debit -> setData( 0,                   Wt::ItemDataRole::User );
+        debit -> setData( GCW_NUMERIC(0)     , Wt::ItemDataRole::User );
         credit-> setData( splitItem-> value(), Wt::ItemDataRole::User );
       }
 
@@ -899,8 +984,8 @@ refreshFromDisk()-> void
         debit  = _addColumn( columns, "" );
         credit = _addColumn( columns, "" );
 
-        debit -> setData( 0, Wt::ItemDataRole::User );
-        credit-> setData( 0, Wt::ItemDataRole::User );
+        debit -> setData( GCW_NUMERIC(0), Wt::ItemDataRole::User );
+        credit-> setData( GCW_NUMERIC(0), Wt::ItemDataRole::User );
       }
 
       /*
@@ -1042,17 +1127,11 @@ refreshFromDisk()-> void
   if( m_editable )
   {
     /*
-    ** When creating the blank edit row, set in a
-    **  new GUID value for the row.  When 'Model::saveToDisk'
-    **  is called, it will try to find the split matching
-    **  the GUID and it will not find it, so it will add
-    **  a new split to the backend-db.
-    **
+    ** Create a row with blank values
     */
     RowItem columns;
     auto post_date = _addColumn( columns, m_lastDate  );                    // Date
          post_date-> setFlags( Wt::ItemFlag::Editable );
-         post_date-> setData( GCW::Core::newGuid(), Wt::ItemDataRole::User );
 
     _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Num
     _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Memo

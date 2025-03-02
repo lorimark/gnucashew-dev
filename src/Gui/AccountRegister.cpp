@@ -198,7 +198,7 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const
 
   auto de = dynamic_cast< Wt::WDateEdit* >( cw-> children().at(0) );
 
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " Wt::cpp17::any DateDelegate::editState()"
     << " row:"   << _index.row()
@@ -239,7 +239,7 @@ void
 DateDelegate::
 setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " setModelData()"
     << " " << _index.row()
@@ -499,7 +499,7 @@ createEditor
   Wt::WFlags< Wt::ViewItemRenderFlag > _flags
 ) const
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " AccountDelegate::" << __FUNCTION__ << "(): " << _index.row() << " " << _index.column() << std::endl;
 #endif
 
@@ -510,18 +510,18 @@ createEditor
   // options for email address suggestions
   Wt::WSuggestionPopup::Options popupOptions =
   {
-    "<b>",         // highlightBeginTag
-    "</b>",        // highlightEndTag
-    ',',           // listSeparator      (for multiple addresses)
-    " \n",         // whitespace
+    "<b>",                 // highlightBeginTag
+    "</b>",                // highlightEndTag
+    ',',                   // listSeparator      (for multiple addresses)
+    " \n",                 // whitespace
       "()[]{}-., \"@\n;:", // wordSeparators     (within an address)
-//    "-., \"@\n;:", // wordSeparators     (within an address)
-    ""             // appendReplacedText (prepare next email address)
+//    "-., \"@\n;:",         // wordSeparators     (within an address)
+    ""                     // appendReplacedText (prepare next email address)
    };
 
   auto popup = retVal-> addChild( std::make_unique< Wt::WSuggestionPopup >( popupOptions ) );
-  popup-> forEdit( lineEdit, Wt::PopupTrigger::Editing | Wt::PopupTrigger::DropDownIcon );
-  popup-> setAttributeValue( "style", "height:400px;overflow:scroll" );
+  popup-> forEdit( lineEdit, Wt::PopupTrigger::Editing /* | Wt::PopupTrigger::DropDownIcon */ );
+  popup-> setAttributeValue( "style", "height:250px;overflow:scroll" );
 //  popup-> setJavaScriptMember( "wtNoReparent", "true" );
 
   std::set< std::string > items;
@@ -619,6 +619,7 @@ AccountRegister( const std::string & _accountGuid )
 //  tableView()-> setEditOptions          ( Wt::EditOption::SingleEditor | Wt::EditOption::SaveWhenClosed );
   tableView()-> setEditOptions          ( Wt::EditOption::MultipleEditors | Wt::EditOption::LeaveEditorsOpen );
   tableView()-> setHeaderItemDelegate   ( std::make_shared< HeaderDelegate >()                          );
+  tableView()-> setAttributeValue       ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
 
   {
     auto dateDelegate = std::make_shared< DateDelegate >();
@@ -770,11 +771,13 @@ AccountRegister( const std::string & _accountGuid )
   tableView()->
     clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
     {
+#ifdef NEVER
       std::cout << __FILE__ << ":" << __LINE__ << " clicked"
         << " row:" << _index.row()
         << " col:" << _index.column()
         << std::endl
         ;
+#endif
 
 #ifdef NEVER
       if( m_clickedRow != -1

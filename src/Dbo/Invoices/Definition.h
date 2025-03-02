@@ -14,12 +14,12 @@ extern const char * s_tableName;
       namespace Field {
 
 extern const Wt::WFormModel::Field guid             ; // text(32) PRIMARY KEY NOT NULL,
-extern const Wt::WFormModel::Field id               ; // text(2048) NOT NULL,
+extern const Wt::WFormModel::Field id               ; // text(2048)           NOT NULL,
 extern const Wt::WFormModel::Field date_opened      ; // text(19),
 extern const Wt::WFormModel::Field date_posted      ; // text(19),
-extern const Wt::WFormModel::Field notes            ; // text(2048) NOT NULL,
-extern const Wt::WFormModel::Field active           ; // integer NOT NULL,
-extern const Wt::WFormModel::Field currency         ; // text(32) NOT NULL,
+extern const Wt::WFormModel::Field notes            ; // text(2048)           NOT NULL,
+extern const Wt::WFormModel::Field active           ; // integer              NOT NULL,
+extern const Wt::WFormModel::Field currency         ; // text(32)             NOT NULL,
 extern const Wt::WFormModel::Field owner_type       ; // integer,
 extern const Wt::WFormModel::Field owner_guid       ; // text(32),
 extern const Wt::WFormModel::Field terms            ; // text(32),

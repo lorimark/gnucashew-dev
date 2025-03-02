@@ -62,85 +62,85 @@
     (press &lt;esc&gt; to continue)
   </message>
 
-  <message id="gcw.MainWidget.mu.file"                             >File</message>
-  <message id="gcw.MainWidget.mu.file.new"                         >New File</message>
-  <message id="gcw.MainWidget.mu.file.open"                        >Open...</message>
-  <message id="gcw.MainWidget.mu.file.import"                      >Import</message>
-  <message id="gcw.MainWidget.mu.file.save"                        >Save</message>
-  <message id="gcw.MainWidget.mu.file.saveas"                      >Save As...</message>
-  <message id="gcw.MainWidget.mu.file.revert"                      >Revert</message>
-  <message id="gcw.MainWidget.mu.file.print"                       >Print</message>
-  <message id="gcw.MainWidget.mu.file.pagesetup"                   >Page Setup</message>
-  <message id="gcw.MainWidget.mu.file.export"                      >Export</message>
-  <message id="gcw.MainWidget.mu.file.properties"                  >Properties</message>
-  <message id="gcw.MainWidget.mu.file.close"                       >Close</message>
-  <message id="gcw.MainWidget.mu.file.quit"                        >Quit</message>
+  <message id="gcw.MainWidget.mu.file"                               >File</message>
+  <message id="gcw.MainWidget.mu.file.new"                           >New File</message>
+  <message id="gcw.MainWidget.mu.file.open"                          >Open...</message>
+  <message id="gcw.MainWidget.mu.file.import"                        >Import</message>
+  <message id="gcw.MainWidget.mu.file.save"                          >Save</message>
+  <message id="gcw.MainWidget.mu.file.saveas"                        >Save As...</message>
+  <message id="gcw.MainWidget.mu.file.revert"                        >Revert</message>
+  <message id="gcw.MainWidget.mu.file.print"                         >Print</message>
+  <message id="gcw.MainWidget.mu.file.pagesetup"                     >Page Setup</message>
+  <message id="gcw.MainWidget.mu.file.export"                        >Export</message>
+  <message id="gcw.MainWidget.mu.file.properties"                    >Properties</message>
+  <message id="gcw.MainWidget.mu.file.close"                         >Close</message>
+  <message id="gcw.MainWidget.mu.file.quit"                          >Quit</message>
 
-  <message id="gcw.MainWidget.mu.edit"                             >Edit</message>
-  <message id="gcw.MainWidget.mu.edit.cut"                         >Cut</message>
-  <message id="gcw.MainWidget.mu.edit.copy"                        >Copy</message>
-  <message id="gcw.MainWidget.mu.edit.paste"                       >Paste</message>
-  <message id="gcw.MainWidget.mu.edit.edit"                        >Edit Account</message>
-  <message id="gcw.MainWidget.mu.edit.delete"                      >Delete Account</message>
-  <message id="gcw.MainWidget.mu.edit.find"                        >Find Account</message>
-  <message id="gcw.MainWidget.mu.edit.cascade"                     >Cascade Account Properties</message>
-  <message id="gcw.MainWidget.mu.edit.renumber"                    >Renumber Subaccounts</message>
-  <message id="gcw.MainWidget.mu.edit.openaccount"                 >Open Account</message>
-  <message id="gcw.MainWidget.mu.edit.opensubaccounts"             >Open SubAccounts</message>
+  <message id="gcw.MainWidget.mu.edit"                               >Edit</message>
+  <message id="gcw.MainWidget.mu.edit.cut"                           >Cut</message>
+  <message id="gcw.MainWidget.mu.edit.copy"                          >Copy</message>
+  <message id="gcw.MainWidget.mu.edit.paste"                         >Paste</message>
+  <message id="gcw.MainWidget.mu.edit.edit"                          >Edit Account</message>
+  <message id="gcw.MainWidget.mu.edit.delete"                        >Delete Account</message>
+  <message id="gcw.MainWidget.mu.edit.find"                          >Find Account</message>
+  <message id="gcw.MainWidget.mu.edit.cascade"                       >Cascade Account Properties</message>
+  <message id="gcw.MainWidget.mu.edit.renumber"                      >Renumber Subaccounts</message>
+  <message id="gcw.MainWidget.mu.edit.openaccount"                   >Open Account</message>
+  <message id="gcw.MainWidget.mu.edit.opensubaccounts"               >Open SubAccounts</message>
 
-  <message id="gcw.MainWidget.mu.view"                             >View</message>
-  <message id="gcw.MainWidget.mu.view.toolbar"                     >Toolbar</message>
-  <message id="gcw.MainWidget.mu.view.summarybar"                  >Summary Bar</message>
-  <message id="gcw.MainWidget.mu.view.statusbar"                   >Status Bar</message>
-  <message id="gcw.MainWidget.mu.view.tabposition"                 >Tab Position</message>
-  <message id="gcw.MainWidget.mu.view.filterby"                    >Filter by...</message>
-  <message id="gcw.MainWidget.mu.view.refresh"                     >Refresh</message>
-  <message id="gcw.MainWidget.mu.view.newaccounts"                 >New Accounts Page</message>
+  <message id="gcw.MainWidget.mu.view"                               >View</message>
+  <message id="gcw.MainWidget.mu.view.toolbar"                       >Toolbar</message>
+  <message id="gcw.MainWidget.mu.view.summarybar"                    >Summary Bar</message>
+  <message id="gcw.MainWidget.mu.view.statusbar"                     >Status Bar</message>
+  <message id="gcw.MainWidget.mu.view.tabposition"                   >Tab Position</message>
+  <message id="gcw.MainWidget.mu.view.filterby"                      >Filter by...</message>
+  <message id="gcw.MainWidget.mu.view.refresh"                       >Refresh</message>
+  <message id="gcw.MainWidget.mu.view.newaccounts"                   >New Accounts Page</message>
 
-  <message id="gcw.MainWidget.mu.actions"                          >Actions</message>
-  <message id="gcw.MainWidget.mu.actions.online"                   >Online Actions</message>
-  <message id="gcw.MainWidget.mu.actions.scheduled"                >Scheduled Transactions</message>
-  <message id="gcw.MainWidget.mu.actions.budget"                   >Budget</message>
-  <message id="gcw.MainWidget.mu.actions.billpay"                  >Bill Pay</message>
-  <message id="gcw.MainWidget.mu.actions.resetwarnings"            >Reset Warnings...</message>
-  <message id="gcw.MainWidget.mu.actions.renamepage"               >Rename Page</message>
+  <message id="gcw.MainWidget.mu.actions"                            >Actions</message>
+  <message id="gcw.MainWidget.mu.actions.online"                     >Online Actions</message>
+  <message id="gcw.MainWidget.mu.actions.scheduled"                  >Scheduled Transactions</message>
+  <message id="gcw.MainWidget.mu.actions.budget"                     >Budget</message>
+  <message id="gcw.MainWidget.mu.actions.billpay"                    >Bill Pay</message>
+  <message id="gcw.MainWidget.mu.actions.resetwarnings"              >Reset Warnings...</message>
+  <message id="gcw.MainWidget.mu.actions.renamepage"                 >Rename Page</message>
 
-  <message id="gcw.MainWidget.mu.business"                         >Business</message>
-  <message id="gcw.MainWidget.mu.business.customer"                >Customer</message>
-  <message id="gcw.MainWidget.mu.business.vendor"                  >Vendor</message>
-  <message id="gcw.MainWidget.mu.business.employee"                >Employee</message>
-  <message id="gcw.MainWidget.mu.business.linked"                  >Linked Documents</message>
-  <message id="gcw.MainWidget.mu.business.salestax"                >Sales Tax Table</message>
-  <message id="gcw.MainWidget.mu.business.billingterms"            >Billing Terms Editor</message>
+  <message id="gcw.MainWidget.mu.business"                           >Business</message>
+  <message id="gcw.MainWidget.mu.business.customer"                  >Customer</message>
+  <message id="gcw.MainWidget.mu.business.vendor"                    >Vendor</message>
+  <message id="gcw.MainWidget.mu.business.employee"                  >Employee</message>
+  <message id="gcw.MainWidget.mu.business.linked"                    >Linked Documents</message>
+  <message id="gcw.MainWidget.mu.business.salestax"                  >Sales Tax Table</message>
+  <message id="gcw.MainWidget.mu.business.billingterms"              >Billing Terms Editor</message>
 
-  <message id="gcw.MainWidget.mu.business.customer.overview"       >Customers Overview</message>
-  <message id="gcw.MainWidget.mu.business.customer.newCustomer"    >New Customer...</message>
-  <message id="gcw.MainWidget.mu.business.customer.findCustomer"   >Find Customer...</message>
-  <message id="gcw.MainWidget.mu.business.customer.newInvoice"     >New Invoice...</message>
-  <message id="gcw.MainWidget.mu.business.customer.findInvoice"    >Find Invoice...</message>
-  <message id="gcw.MainWidget.mu.business.customer.newJob"         >New Job...</message>
-  <message id="gcw.MainWidget.mu.business.customer.findJob"        >Find Job...</message>
-  <message id="gcw.MainWidget.mu.business.customer.processPayment" >Process Payment...</message>
-  <message id="gcw.MainWidget.mu.business.customer.invoicesDue"    >Invoices Due Reminder</message>
+  <message id="gcw.MainWidget.mu.business.customer.overview"         >Customers Overview</message>
+  <message id="gcw.MainWidget.mu.business.customer.newCustomer"      >New Customer...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findCustomer"     >Find Customer...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newInvoice"       >New Invoice...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findInvoice"      >Find Invoice...</message>
+  <message id="gcw.MainWidget.mu.business.customer.newJob"           >New Job...</message>
+  <message id="gcw.MainWidget.mu.business.customer.findJob"          >Find Job...</message>
+  <message id="gcw.MainWidget.mu.business.customer.processPayment"   >Process Payment...</message>
+  <message id="gcw.MainWidget.mu.business.customer.invoicesDue"      >Invoices Due Reminder</message>
 
-  <message id="gcw.MainWidget.mu.business.vendor.overview"       >Vendors Overview</message>
-  <message id="gcw.MainWidget.mu.business.vendor.newVendor"      >New Vendor...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.findVendor"     >Find Vendor...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.newBill"        >New Bill...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.findBill"       >Find Bill...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.newJob"         >New Job...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.findJob"        >Find Job...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.processPayment" >Process Payment...</message>
-  <message id="gcw.MainWidget.mu.business.vendor.invoicesDue"    >Invoices Due Reminder</message>
+  <message id="gcw.MainWidget.mu.business.vendor.overview"           >Vendors Overview</message>
+  <message id="gcw.MainWidget.mu.business.vendor.newVendor"          >New Vendor...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.findVendor"         >Find Vendor...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.newBill"            >New Bill...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.findBill"           >Find Bill...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.newJob"             >New Job...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.findJob"            >Find Job...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.processPayment"     >Process Payment...</message>
+  <message id="gcw.MainWidget.mu.business.vendor.invoicesDue"        >Invoices Due Reminder</message>
 
-  <message id="gcw.MainWidget.mu.business.employee.overview"       >Employees Overview</message>
-  <message id="gcw.MainWidget.mu.business.employee.new"            >New Employee...</message>
-  <message id="gcw.MainWidget.mu.business.employee.find"           >Find Employee...</message>
-  <message id="gcw.MainWidget.mu.business.employee.newExpense"     >New Expense Voucher...</message>
-  <message id="gcw.MainWidget.mu.business.employee.findExpense"    >Find Expense Voucher...</message>
-  <message id="gcw.MainWidget.mu.business.employee.processPayment" >Process Payment...</message>
+  <message id="gcw.MainWidget.mu.business.employee.overview"         >Employees Overview</message>
+  <message id="gcw.MainWidget.mu.business.employee.new"              >New Employee...</message>
+  <message id="gcw.MainWidget.mu.business.employee.find"             >Find Employee...</message>
+  <message id="gcw.MainWidget.mu.business.employee.newExpense"       >New Expense Voucher...</message>
+  <message id="gcw.MainWidget.mu.business.employee.findExpense"      >Find Expense Voucher...</message>
+  <message id="gcw.MainWidget.mu.business.employee.processPayment"   >Process Payment...</message>
 
-  <message id="gcw.MainWidget.mu.reports"                          >Reports</message>
+  <message id="gcw.MainWidget.mu.reports"                            >Reports</message>
 
   <message id="gcw.MainWidget.mu.reports.assets"                     >Assets</message>
   <message id="gcw.MainWidget.mu.reports.assets.advancedportfolio"   >Advanced Portfolio</message>
@@ -376,7 +376,7 @@
 
   <message id="gcw.AccountRegister.account.multisplit"               >~~ Split Transaction ~~</message>
   <message id="gcw.AccountRegister.account.imbalanceUSD"             >Imbalance-USD</message>
-  <message id="gcw.AccountRegister.account.imbalanceUSD.toolTip"     >This transaction is incomplete without a complete split.  Assign a split account to this transaction to clear this message.</message>
+  <message id="gcw.AccountRegister.account.imbalanceUSD.toolTip"     >This transaction is incomplete without a complete split.  Assign a split account to this transaction to clear this message. This is a result of missing the account/split on the other side of this transaction</message>
   <message id="gcw.AccountRegister.account.invalidTarget.toolTip"    >This transaction is split, but the target account does not exist.</message>
   <message id="gcw.AccountRegister.account.tooltip">
     Split: {1}
@@ -386,50 +386,52 @@
     Account: {5}
   </message>
 
-  <message id="gcw.cw.tabName.Customer"         >Customer</message>
-  <message id="gcw.cw.tabName.Customers"        >Customers</message>
-  <message id="gcw.cw.tabName.Employees"        >Employees</message>
-  <message id="gcw.cw.tabName.BillPay"          >Bill Pay</message>
+  <message id="gcw.cw.tabName.Customer"                              >Customer</message>
+  <message id="gcw.cw.tabName.Customers"                             >Customers</message>
+  <message id="gcw.cw.tabName.Employees"                             >Employees</message>
+  <message id="gcw.cw.tabName.BillPay"                               >Bill Pay</message>
 
-  <message id="gcw.billPay.account.label"        >Account</message>
-  <message id="gcw.billPay.dueDay.label"         >Due Day</message>
-  <message id="gcw.billPay.minimum.label"        >Minimum</message>
-  <message id="gcw.billPay.budget.label"         >Budget</message>
-  <message id="gcw.billPay.nickname.label"       >Nickname</message>
-  <message id="gcw.billPay.group.label"          >Group</message>
-  <message id="gcw.billPay.limit.label"          >Limit</message>
-  <message id="gcw.billPay.actual.label"         >Actual</message>
+  <message id="gcw.billPay.account.label"                            >Account</message>
+  <message id="gcw.billPay.dueDay.label"                             >Due Day</message>
+  <message id="gcw.billPay.minimum.label"                            >Minimum</message>
+  <message id="gcw.billPay.budget.label"                             >Budget</message>
+  <message id="gcw.billPay.nickname.label"                           >Nickname</message>
+  <message id="gcw.billPay.group.label"                              >Group</message>
+  <message id="gcw.billPay.limit.label"                              >Limit</message>
+  <message id="gcw.billPay.actual.label"                             >Actual</message>
 
-  <message id="gcw.billPay.account.toolTip"      >Account Reference</message>
-  <message id="gcw.billPay.dueDay.toolTip"       >Specific 'day' within the calendar month that the payment is due.</message>
-  <message id="gcw.billPay.minimum.toolTip"      ></message>
-  <message id="gcw.billPay.budget.toolTip"       ></message>
-  <message id="gcw.billPay.nickname.toolTip"     ></message>
-  <message id="gcw.billPay.group.toolTip"        >Sorting/Group value - put all similar accounts in the same group to have them organized and sorted within the table view so similar accounts that are paid together are grouped together.  For instance, a 'group' might be '10' which could mean that all bills in group "10" are bills that generally get paid on the 10th of the month.  Be sure, then, to set the 'Due Day' to the exact date due, that will help guide your bill-pay schedule.</message>
-  <message id="gcw.billPay.limit.toolTip"        ></message>
-  <message id="gcw.billPay.actual.toolTip"       ></message>
-  <message id="gcw.billPay.pb.ap.toolTip"        ></message>
-  <message id="gcw.billPay.pb.isActive.toolTip"  ></message>
-  <message id="gcw.billPay.pb.isVisible.toolTip" ></message>
-  <message id="gcw.billPay.pb.autoPay.toolTip"   >Indicates that this bill is on a auto-payment schedule.</message>
-  <message id="gcw.billPay.pb.payNow.toolTIp"    ></message>
-  <message id="gcw.billPay.pb.clear.toolTip"    >Clear all the payment check-boxes.</message>
+  <message id="gcw.billPay.account.toolTip"                          >Account Reference</message>
+  <message id="gcw.billPay.dueDay.toolTip"                           >Specific 'day' within the calendar month that the payment is due.</message>
+  <message id="gcw.billPay.minimum.toolTip"                          ></message>
+  <message id="gcw.billPay.budget.toolTip"                           ></message>
+  <message id="gcw.billPay.nickname.toolTip"                         ></message>
+  <message id="gcw.billPay.group.toolTip"                            >Sorting/Group value - put all similar accounts in the same group to have them organized and sorted within the table view so similar accounts that are paid together are grouped together.  For instance, a 'group' might be '10' which could mean that all bills in group "10" are bills that generally get paid on the 10th of the month.  Be sure, then, to set the 'Due Day' to the exact date due, that will help guide your bill-pay schedule.</message>
+  <message id="gcw.billPay.limit.toolTip"                            ></message>
+  <message id="gcw.billPay.actual.toolTip"                           ></message>
+  <message id="gcw.billPay.pb.ap.toolTip"                            ></message>
+  <message id="gcw.billPay.pb.isActive.toolTip"                      ></message>
+  <message id="gcw.billPay.pb.isVisible.toolTip"                     ></message>
+  <message id="gcw.billPay.pb.autoPay.toolTip"                       >Indicates that this bill is on a auto-payment schedule.</message>
+  <message id="gcw.billPay.pb.payNow.toolTIp"                        ></message>
+  <message id="gcw.billPay.pb.clear.toolTip"                         >Clear all the payment check-boxes.</message>
 
-  <message id="gcw.billPay.tableName.Paid"      >Paid</message>
-  <message id="gcw.billPay.tableName.Unpaid"    >Unpaid</message>
-  <message id="gcw.billPay.tableName.Disabled"  >Disabled</message>
-  <message id="gcw.billPay.pb.save"             >save</message>
-  <message id="gcw.billPay.pb.cancel"           >cancel</message>
-  <message id="gcw.billPay.pb.delete"           >delete</message>
-  <message id="gcw.billPay.pb.ap"               >AP</message>
-  <message id="gcw.billPay.pb.isActive"         >is Active</message>
-  <message id="gcw.billPay.pb.isVisible"        >is Visible</message>
-  <message id="gcw.billPay.pb.autoPay"          >Auto Pay</message>
-  <message id="gcw.billPay.pb.payNow"           >Pay Now</message>
-  <message id="gcw.billPay.pb.clear"            >clear</message>
-  <message id="gcw.billPay.pb.go"               >go</message>
-  <message id="gcw.billPay.tabName.payment"     >Payment</message>
-  <message id="gcw.billPay.tabName.history"     >History</message>
+  <message id="gcw.billPay.tableName.Paid"                           >Paid</message>
+  <message id="gcw.billPay.tableName.Unpaid"                         >Unpaid</message>
+  <message id="gcw.billPay.tableName.Disabled"                       >Disabled</message>
+  <message id="gcw.billPay.pb.save"                                  >save</message>
+  <message id="gcw.billPay.pb.cancel"                                >cancel</message>
+  <message id="gcw.billPay.pb.delete"                                >delete</message>
+  <message id="gcw.billPay.pb.ap"                                    >AP</message>
+  <message id="gcw.billPay.pb.isActive"                              >is Active</message>
+  <message id="gcw.billPay.pb.isVisible"                             >is Visible</message>
+  <message id="gcw.billPay.pb.autoPay"                               >Auto Pay</message>
+  <message id="gcw.billPay.pb.payNow"                                >Pay Now</message>
+  <message id="gcw.billPay.pb.clear"                                 >clear</message>
+  <message id="gcw.billPay.pb.go"                                    >go</message>
+  <message id="gcw.billPay.tabName.payment"                          >Payment</message>
+  <message id="gcw.billPay.tabName.history"                          >History</message>
 
 </messages>
+
+
 

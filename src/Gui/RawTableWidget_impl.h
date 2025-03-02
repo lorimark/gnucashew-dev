@@ -7,13 +7,13 @@
 
 template <class C>
 GCW::Gui::RawTableWidget<C>::
-RawTableWidget()
+RawTableWidget( const std::string & _viewName )
 {
   /*
   ** Look in gcw.css for styling.
   **
   */
-  addStyleClass( "SlotsWidget" );
+  addStyleClass( "RawTableWidget_" + _viewName );
 
   /*
   ** use a layout manager to install the table view into, so
@@ -22,10 +22,13 @@ RawTableWidget()
   */
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
 
-  auto tb = std::make_unique< Wt::WContainerWidget >();
+  auto tb = std::make_unique< Wt::WToolBar >();
   m_toolBar = tb.get();
 
-  m_toolBar-> addNew< Wt::WText >( "tool bar" );
+  auto w_ = std::make_unique< Wt::WLineEdit   >();
+  auto lineEdit = w_.get();
+  m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
+  lineEdit-> setPlaceholderText( "Search" );
 
   /*
   ** Configure the table view.
