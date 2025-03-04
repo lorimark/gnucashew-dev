@@ -69,6 +69,7 @@ class Item
 
     auto reverseBalanceAccounts()   const-> ReverseBalanceAccounts;
     auto accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool;
+    auto askOnDelete() const-> bool;
 
   private:
 
@@ -76,7 +77,7 @@ class Item
 
 }; // endclass Item
 
-GCW::Dbo::Prefrences::Item get();
+auto get()-> GCW::Dbo::Prefrences::Item;
 
     } // endnamespace Prefrences {
   } // endnamespace Dbo {

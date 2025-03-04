@@ -245,6 +245,14 @@ getSplitGuid( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
+getSplitGuid( int _row )-> std::string
+{
+  return getSplitGuid( index( _row, COL_DATE ) );
+
+} // endgetSplitGuid( int _row )-> std::string
+
+auto
+GCW::Eng::AccountRegisterModel::
 saveToDisk( const Wt::WModelIndex & _index )-> void
 {
 #ifdef NEVER
@@ -284,7 +292,7 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   */
   else
   {
-    transMan.setSplit( splitGuid );
+    transMan.loadSplit( splitGuid );
   }
 
   /*

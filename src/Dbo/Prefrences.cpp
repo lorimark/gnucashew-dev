@@ -14,9 +14,9 @@ Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 }
 
 
-GCW::Dbo::Prefrences::Item
+auto
 GCW::Dbo::Prefrences::
-get()
+get()-> GCW::Dbo::Prefrences::Item
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
@@ -48,5 +48,15 @@ accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
   return false;
 
 } // endaccountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
+
+auto
+GCW::Dbo::Prefrences::Item::
+askOnDelete() const-> bool
+{
+  return false;
+
+} // endaskOnDelete() const-> bool
+
+
 
 

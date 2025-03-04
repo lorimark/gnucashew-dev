@@ -4,11 +4,12 @@
 #define __GUI_ACCOUNTREGISTER_H___
 
 #include <Wt/Json/Object.h>
-#include <Wt/WContainerWidget.h>
 #include <Wt/WBatchEditProxyModel.h>
+#include <Wt/WContainerWidget.h>
 #include <Wt/WSortFilterProxyModel.h>
 #include <Wt/WStandardItem.h>
 #include <Wt/WStandardItemModel.h>
+#include <Wt/WPopupMenu.h>
 
 #include "../GnuCashew.h"
 #include "../Eng/AccountRegisterModel.h"
@@ -142,17 +143,23 @@ class AccountRegister
 
     auto loadData()-> void;
     auto editRow( int _row )-> void;
-    auto editRow( Wt::WModelIndex _index )-> void;
+    auto deleteRow( int _row )-> void;
+//    auto editRow( Wt::WModelIndex _index )-> void;
     auto lastIndex()-> Wt::WModelIndex;
+    auto on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
+    auto on_delete_triggered()-> void;
 
-    std::string                                    m_accountGuid           ;
-    std::shared_ptr< BaseModel                 >   m_baseModel             ;
-    std::shared_ptr< Wt::WSortFilterProxyModel >   m_sortFilterModel       ;
-    std::shared_ptr< Wt::WBatchEditProxyModel  >   m_batchEditModel        ;
-    GCW::Gui::TableView                          * m_tableView   = nullptr ;
-    StatusBar                                    * m_statusBar   = nullptr ;
-    int                                            m_clickedRow  = -1      ;
-    int                                            m_clickedCol  = -1      ;
+    Wt::WPopupMenu                                 m_popupMenu               ;
+    std::string                                    m_accountGuid             ;
+    std::shared_ptr< BaseModel                 >   m_baseModel               ;
+    std::shared_ptr< Wt::WSortFilterProxyModel >   m_sortFilterModel         ;
+    std::shared_ptr< Wt::WBatchEditProxyModel  >   m_batchEditModel          ;
+    GCW::Gui::TableView                          * m_tableView     = nullptr ;
+    StatusBar                                    * m_statusBar     = nullptr ;
+    int                                            m_clickedRow    = -1      ;
+    int                                            m_clickedCol    = -1      ;
+    int                                            m_rightClickRow = -1      ;
+    int                                            m_rightClickCol = -1      ;
 
 };  // endclass AccountRegister
 

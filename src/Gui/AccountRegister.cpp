@@ -2,6 +2,7 @@
 
 #include <Wt/WDateEdit.h>
 #include <Wt/WItemDelegate.h>
+#include <Wt/WPushButton.h>
 #include <Wt/WSuggestionPopup.h>
 #include <Wt/WText.h>
 #include <Wt/WTableView.h>
@@ -12,8 +13,9 @@
 #include "../define.h"
 #include "../App.h"
 #include "../Dbo/Accounts/Accounts.h"
+#include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
-#include "../Dbo/Transactions/Transactions.h"
+#include "../Dbo/Transactions/Manager.h"
 #include "AccountRegister.h"
 
 namespace {
@@ -620,6 +622,7 @@ AccountRegister( const std::string & _accountGuid )
   tableView()-> setEditOptions          ( Wt::EditOption::MultipleEditors | Wt::EditOption::LeaveEditorsOpen );
   tableView()-> setHeaderItemDelegate   ( std::make_shared< HeaderDelegate >()                          );
   tableView()-> setAttributeValue       ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
+  tableView()-> mouseWentUp().connect   ( this, &AccountRegister::on_showPopup_triggered );
 
   {
     auto dateDelegate = std::make_shared< DateDelegate >();
@@ -771,7 +774,7 @@ AccountRegister( const std::string & _accountGuid )
   tableView()->
     clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
     {
-#ifdef NEVER
+#ifndef NEVER
       std::cout << __FILE__ << ":" << __LINE__ << " clicked"
         << " row:" << _index.row()
         << " col:" << _index.column()
@@ -809,7 +812,7 @@ AccountRegister( const std::string & _accountGuid )
       {
         m_clickedRow = _index.row();
         m_clickedCol = _index.column();
-        editRow( _index );
+        editRow( _index.row() );
       }
 
 #ifdef NEVER
@@ -822,9 +825,11 @@ AccountRegister( const std::string & _accountGuid )
       }
 #endif
 
+#ifdef NEVER
       std::cout << __FILE__ << ":" << __LINE__
-        << " " << Wt::WApplication::instance()->theme()->activeClass()
+        << " " << Wt::WApplication::instance()-> theme()-> activeClass()
         << std::endl;
+#endif
 
 //      tableView()-> clearSelection();
 
@@ -842,6 +847,154 @@ AccountRegister( const std::string & _accountGuid )
   m_batchEditModel -> setSourceModel( m_baseModel );
 
 } // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+
+auto
+GCW::Gui::AccountRegister::
+deleteRow( int _row )-> void
+{
+  auto splitGuid = baseModel()-> getSplitGuid( _row );
+  auto transMan = GCW::Dbo::Transactions::Manager();
+  transMan.loadSplit( splitGuid );
+  transMan.deleteTransaction();
+
+} // enddeleteRow( int _row )-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_delete_triggered()-> void
+{
+  static bool askThisSession = true;
+         bool askForever     = GCW::Dbo::Prefrences::get().askOnDelete();
+
+  /*
+  ** ask sometimes
+  */
+  if( askThisSession || askForever )
+  {
+    /*
+    ** build out a dialog box to prompt the user to delete or not
+    **
+    */
+    auto msgBox = addChild( std::make_unique< Wt::WDialog >( TR("gcw.AccountRegister.delete.title") ) );
+    auto templt = msgBox-> contents()-> addNew< Wt::WTemplate >( TR("gcw.AccountRegister.delete.contents") );
+    msgBox-> setClosable( true );
+    msgBox-> setMovable ( true );
+    msgBox-> show();
+
+    auto rememberAlways  = templt-> bindNew< Wt::WCheckBox   >( "rememberAlways" , TR("gcw.AccountRegister.delete.rem1"  ) );
+    auto rememberSession = templt-> bindNew< Wt::WCheckBox   >( "rememberSession", TR("gcw.AccountRegister.delete.rem2"  ) );
+    auto pbCancel        = templt-> bindNew< Wt::WPushButton >( "cancel"         , TR("gcw.AccountRegister.delete.cancel") );
+    auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
+
+    auto splitGuid = baseModel()-> getSplitGuid( m_rightClickRow );
+    auto transMan = GCW::Dbo::Transactions::Manager();
+    transMan.loadSplit( splitGuid );
+
+    templt-> bindString( "date"  , transMan.getDate().toString( GCW_DATE_FORMAT_DISPLAY ) );
+    templt-> bindString( "desc"  , transMan.getDescription  () );
+    templt-> bindString( "amount", transMan.getValueAsString() );
+
+    pbCancel-> clicked().connect( msgBox, &Wt::WDialog::reject );
+    pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );
+
+    /*
+    ** When the dialog finishes, it is either accepted or rejected.
+    **  In either case, the dialog will be removed from the addChild
+    **  from earlier.
+    **
+    */
+    msgBox->
+      finished().connect( [&]( Wt::DialogCode _code )
+      {
+        if( _code == Wt::DialogCode::Accepted )
+        {
+          askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
+          deleteRow( m_rightClickRow );
+        }
+        removeChild( msgBox );
+      });
+
+  } // endif( ..askFirst.. )
+
+  /*
+  ** don't ask, just delete
+  */
+  else
+  {
+    deleteRow( m_rightClickRow );
+  }
+
+} // endon_delete_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
+{
+  if( _event.button() == Wt::MouseButton::Right )
+  {
+    m_rightClickRow = _index.row();
+    m_rightClickCol = _index.column();
+
+    /*
+    ** Set up the items in the pop-up menu
+    **  (some of the items are dependent on which row was clicked on
+    **   so we dump everything from the popup and reload)
+    **
+    */
+    while( m_popupMenu.count() )
+      m_popupMenu.removeItem( m_popupMenu.itemAt(0) );
+
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.SortBy"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.FilterBy"   ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.RenamePage" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Duplicate"  ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+
+    // delete
+    {
+      auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Delete"), this, &AccountRegister::on_delete_triggered );
+      if( baseModel()-> getSplitGuid( _index ) == "" )
+        item-> setDisabled( true );
+    }
+
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.RemoveSplits"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Enter"            ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Cancel"           ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.ManageDocument"   ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.OpenDocument"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump"             ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.BlankTransaction" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.GoDate"           ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.SplitTransaction" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.EditExchangeRate" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Schedule"         ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump"             ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+    m_popupMenu.addSeparator();
+    m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.AssignPayment"    ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+
+    // Select the item, if it was not yet selected.
+    if( !tableView()-> isSelected( _index ) )
+    {
+      editRow( _index.row() );
+    }
+
+    if( m_popupMenu.isHidden() )
+    {
+      m_popupMenu.popup( _event );
+    }
+    else
+    {
+      m_popupMenu.hide();
+    }
+
+  } // endif( ..right-click.. )
+
+} // endon_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
+
 
 auto
 GCW::Gui::AccountRegister::
@@ -924,19 +1077,20 @@ loadData()-> void
 
 } // endloadData()-> void
 
-auto
-GCW::Gui::AccountRegister::
-editRow( Wt::WModelIndex _index )-> void
-{
-  tableView()-> closeEditors( true );
-  editRow( _index.row() );
-
-} // endeditRow( Wt::WModelIndex _index )-> void
+//auto
+//GCW::Gui::AccountRegister::
+//editRow( Wt::WModelIndex _index )-> void
+//{
+//  tableView()-> closeEditors( true );
+//  ( _index.row() );
+//
+//} // endeditRow( Wt::WModelIndex _index )-> void
 
 auto
 GCW::Gui::AccountRegister::
 editRow( int _row )-> void
 {
+  tableView()-> closeEditors( true );
   {
     auto index = baseModel()-> index( _row, 0 );
     tableView()-> scrollTo( index );

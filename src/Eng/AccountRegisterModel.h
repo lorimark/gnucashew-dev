@@ -62,6 +62,7 @@ class AccountRegisterModel
     **
     */
     auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
+    auto getSplitGuid( int _row )-> std::string ;
 
     /*!
     ** \brief Get Date from the index

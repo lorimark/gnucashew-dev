@@ -373,6 +373,50 @@
   <message id="gcw.AccountRegister.StatusBar.reconciled"             >Reconciled</message>
   <message id="gcw.AccountRegister.StatusBar.projected"              >Projected Minimum</message>
   <message id="gcw.AccountRegister.StatusBar.rowCount"               >Count</message>
+  <message id="gcw.AccountRegister.Popup.SortBy"                     >Sort By...</message>
+  <message id="gcw.AccountRegister.Popup.FilterBy"                   >Filter By...</message>
+  <message id="gcw.AccountRegister.Popup.RenamePage"                 >Rename Page</message>
+  <message id="gcw.AccountRegister.Popup.Duplicate"                  >Duplicate Transaction</message>
+  <message id="gcw.AccountRegister.Popup.Delete"                     >Delete Transaction</message>
+  <message id="gcw.AccountRegister.Popup.RemoveSplits"               >Remove Other Splits</message>
+  <message id="gcw.AccountRegister.Popup.Enter"                      >Enter Transaction</message>
+  <message id="gcw.AccountRegister.Popup.Cancel"                     >Cancel Transaction</message>
+  <message id="gcw.AccountRegister.Popup.ManageDocument"             >Manage Document Link...</message>
+  <message id="gcw.AccountRegister.Popup.OpenDocument"               >Open Linked Document</message>
+  <message id="gcw.AccountRegister.Popup.JumpInvoice"                >Jump to Invoice</message>
+  <message id="gcw.AccountRegister.Popup.BlankTransaction"           >Blank Transaction</message>
+  <message id="gcw.AccountRegister.Popup.GoDate"                     >Go to Date</message>
+  <message id="gcw.AccountRegister.Popup.SplitTransaction"           >Split Transaction</message>
+  <message id="gcw.AccountRegister.Popup.EditExchangeRate"           >Edit Exchange Rate</message>
+  <message id="gcw.AccountRegister.Popup.Schedule"                   >Schedule...</message>
+  <message id="gcw.AccountRegister.Popup.Jump"                       >Jump to other account</message>
+  <message id="gcw.AccountRegister.Popup.AssignPayment"              >Assign as Payment...</message>
+  <message id="gcw.AccountRegister.delete.title"                     >Delete Transaction</message>
+  <message id="gcw.AccountRegister.delete.rem1"                      >Remember and don't ask me again.</message>
+  <message id="gcw.AccountRegister.delete.rem2"                      >Remember and don't ask me this session.</message>
+  <message id="gcw.AccountRegister.delete.cancel"                    >cancel</message>
+  <message id="gcw.AccountRegister.delete.delete"                    >delete</message>
+  <message id="gcw.AccountRegister.delete.contents"                  >
+    <p>
+      Delete this transaction?
+    </p>
+    <p>
+      <table>
+        <tr><td> date:        </td><td><b>&nbsp;   ${date}   </b></td></tr>
+        <tr><td> description: </td><td><b>&nbsp;   ${desc}   </b></td></tr>
+        <tr><td> amount:      </td><td><b>&nbsp; $ ${amount} </b></td></tr>
+      </table>
+    </p>
+    <p>
+    ${rememberAlways} <br />
+    ${rememberSession}
+    </p>
+    <p>
+      <center>
+        ${cancel} ${delete}
+      </center>
+    </p>
+  </message>
 
   <message id="gcw.AccountRegister.account.multisplit"               >~~ Split Transaction ~~</message>
   <message id="gcw.AccountRegister.account.imbalanceUSD"             >Imbalance-USD</message>

@@ -9,6 +9,12 @@ Manager()
 
 } // endManager()
 
+GCW::Dbo::Transactions::Manager::
+Manager( GCW::Dbo::Splits::Item::Ptr _splitItem )
+{
+
+} // endManager()
+
 auto
 GCW::Dbo::Transactions::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void
@@ -55,7 +61,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
 
 auto
 GCW::Dbo::Transactions::Manager::
-setTransaction( const std::string & _transactionGuid )-> void
+loadTransaction( const std::string & _transactionGuid )-> void
 {
   /*
   ** set the transaction
@@ -67,11 +73,23 @@ setTransaction( const std::string & _transactionGuid )-> void
   */
   m_splitItems = GCW::Dbo::Splits::byTransaction( m_transaction-> guid() );
 
-} // endsetTransaction( const std::string & _transactionGuid )-> void
+} // endloadTransaction( const std::string & _transactionGuid )-> void
 
 auto
 GCW::Dbo::Transactions::Manager::
-setSplit( const std::string & _splitGuid )-> void
+deleteTransaction()-> void
+{
+
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  m_transaction.remove();
+  for( auto & splitItem : m_splitItems )
+    splitItem.remove();
+
+} // enddeleteTransaction()-> void
+
+auto
+GCW::Dbo::Transactions::Manager::
+loadSplit( const std::string & _splitGuid )-> void
 {
   /*
   ** in the words of spock: 'remember'
@@ -86,9 +104,9 @@ setSplit( const std::string & _splitGuid )-> void
   /*
   ** set the transaction
   */
-  setTransaction( splitItem-> tx_guid() );
+  loadTransaction( splitItem-> tx_guid() );
 
-} // endsetSplit( const std::string & _splitGuid )-> void
+} // endloadSplit( const std::string & _splitGuid )-> void
 
 auto
 GCW::Dbo::Transactions::Manager::
@@ -132,6 +150,14 @@ thatSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
 GCW::Dbo::Transactions::Manager::
+getDate() const-> Wt::WDateTime
+{
+  return m_transaction-> post_date_as_date();
+
+} // endgetDate() const-> Wt::WDateTime &;
+
+auto
+GCW::Dbo::Transactions::Manager::
 setDate( const Wt::WDateTime & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -147,6 +173,14 @@ setAction( const std::string & _value )-> void
   m_transaction.modify()-> set_num( _value );
 
 } // endsetAction( const std::string & _value )-> void
+
+auto
+GCW::Dbo::Transactions::Manager::
+getDescription() const-> std::string
+{
+  return m_transaction-> description();
+
+} // endgetDescription() const-> std::string &
 
 auto
 GCW::Dbo::Transactions::Manager::
@@ -177,8 +211,29 @@ setReconcile( const std::string & _value  )-> void
 
 auto
 GCW::Dbo::Transactions::Manager::
+getValue() const-> GCW_NUMERIC
+{
+  return thisSplit()-> value();
+
+} // endgetValue() const-> GCW_NUMERIC
+
+auto
+GCW::Dbo::Transactions::Manager::
+getValueAsString() const-> std::string
+{
+  return thisSplit()-> valueAsString();
+
+} // endgetValue() const-> GCW_NUMERIC
+
+auto
+GCW::Dbo::Transactions::Manager::
 setValue( GCW_NUMERIC _value )-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__
+    << " this:" << thisSplit()
+    << " that:" << thatSplit()
+    << std::endl;
+
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   thisSplit().modify()-> set_value( _value );
   thatSplit().modify()-> set_value( _value * -1 );
