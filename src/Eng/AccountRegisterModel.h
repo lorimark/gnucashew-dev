@@ -56,6 +56,17 @@ class AccountRegisterModel
     auto setDoubleLine( bool _doubleLine )-> void;
 
     /*!
+    ** \brief Is Read Only
+    **
+    ** This returns .true. if the item can be deleted.
+    **
+    */
+    auto isDeletable( const Wt::WModelIndex & _index )-> bool ;
+
+    auto isEditable( int _row )-> bool ;
+    auto isEditable( const Wt::WModelIndex & _index )-> bool ;
+
+    /*!
     ** \brief Get GUID from row
     **
     ** This will retrieve the GUID value from the row.
@@ -172,6 +183,7 @@ class AccountRegisterModel
 
     auto setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool ;
 
+    auto goneDirty()-> Wt::Signal< Wt::WModelIndex > & { return m_goneDirty; }
 /*
 
    these are additional values that need to be available

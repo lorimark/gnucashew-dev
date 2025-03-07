@@ -147,12 +147,12 @@ class Manager
     */
     auto setNotes( const std::string & _value )-> void;
 
-  private:
-
     auto split( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr;
 
     auto thisSplit() const-> GCW::Dbo::Splits::Item::Ptr;
     auto thatSplit() const-> GCW::Dbo::Splits::Item::Ptr;
+
+  private:
 
     std::string                            m_splitGuid   ;
     GCW::Dbo:: Transactions ::Item::Ptr    m_transaction ;

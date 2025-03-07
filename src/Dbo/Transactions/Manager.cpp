@@ -229,13 +229,8 @@ auto
 GCW::Dbo::Transactions::Manager::
 setValue( GCW_NUMERIC _value )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__
-    << " this:" << thisSplit()
-    << " that:" << thatSplit()
-    << std::endl;
-
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  thisSplit().modify()-> set_value( _value );
+  thisSplit().modify()-> set_value( _value      );
   thatSplit().modify()-> set_value( _value * -1 );
 
 } // endsetDebit( GCW_NUMERIC _value )-> void

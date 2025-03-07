@@ -153,6 +153,11 @@ class Item
     auto set_reconcile_state( const std::string & _state )-> void { m_reconcile_state = _state; }
 
     /*!
+    ** Return true/false if the split is reconciled or not
+    */
+    auto isReconciled() const-> bool { return m_reconcile_state == GCW_RECONCILE_YES ; }
+
+    /*!
     ** Reconcile Date field
     */
     auto reconcile_date() const-> const std::string & { return m_reconcile_date; }

@@ -56,7 +56,7 @@ public:
     ** (percentage) widths. Percentages are interpretted as the percentage of
     ** non-allocated width remaining.  i.e. if a table is 100px, and one column
     ** has an absolute width of 20px, then the two following relative columns
-    ** should both use 50%, which would yeild 40px each (minux padding.)
+    ** should both use 50%, which would yeild 40px each (minus padding.)
     **
     */
     auto setColumnWidth(int column, const Wt::WLength& width)-> void override;

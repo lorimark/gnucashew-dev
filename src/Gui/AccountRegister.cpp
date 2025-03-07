@@ -414,6 +414,77 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 } // endvoid ReconciledDelegate::setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+class ValueDelegate
+: public Wt::WItemDelegate
+{
+  public:
+
+    std::unique_ptr< Wt::WWidget > createEditor
+    (
+     const Wt::WModelIndex & _index,
+     Wt::WFlags< Wt::ViewItemRenderFlag > _flags
+    ) const;
+
+};
+
+std::unique_ptr< Wt::WWidget >
+ValueDelegate::
+createEditor
+(
+  const Wt::WModelIndex & _index,
+  Wt::WFlags< Wt::ViewItemRenderFlag > _flags
+) const
+{
+  auto retVal = Wt::WItemDelegate::createEditor( _index, _flags );
+  auto cw = dynamic_cast< Wt::WContainerWidget* >( retVal.get() );
+  auto lineEdit = dynamic_cast< Wt::WLineEdit* >( cw-> widget(0) );
+
+  return retVal;
+
+} // endstd::unique_ptr< Wt::WWidget > ValueDelegate::createEditor
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*
+** Balance delegate works just like the ValueDelegate but
+**  also adds a read-only attribute to the input, so it
+**  displays the same, but cannot be edited.
+**
+*/
+class BalanceDelegate
+: public Wt::WItemDelegate
+{
+  public:
+
+    std::unique_ptr< Wt::WWidget > createEditor
+    (
+     const Wt::WModelIndex & _index,
+     Wt::WFlags< Wt::ViewItemRenderFlag > _flags
+    ) const;
+
+};
+
+std::unique_ptr< Wt::WWidget >
+BalanceDelegate::
+createEditor
+(
+  const Wt::WModelIndex & _index,
+  Wt::WFlags< Wt::ViewItemRenderFlag > _flags
+) const
+{
+  auto retVal = Wt::WItemDelegate::createEditor( _index, _flags );
+  auto cw = dynamic_cast< Wt::WContainerWidget* >( retVal.get() );
+  auto lineEdit = dynamic_cast< Wt::WLineEdit* >( cw-> widget(0) );
+  lineEdit-> setReadOnly( true );
+  lineEdit-> setAttributeValue( "style", "text-align:right;" );
+
+  return retVal;
+
+} // endstd::unique_ptr< Wt::WWidget > ValueDelegate::createEditor
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -624,10 +695,21 @@ AccountRegister( const std::string & _accountGuid )
   tableView()-> setAttributeValue       ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
   tableView()-> mouseWentUp().connect   ( this, &AccountRegister::on_showPopup_triggered );
 
-  {
-    auto dateDelegate = std::make_shared< DateDelegate >();
-    tableView()-> setItemDelegateForColumn( 0, dateDelegate  );
+  /*
+  ** set column delegates so the editors have assistance with list pickers and
+  **  whatnot
+  **
+  */
+  tableView()-> setItemDelegateForColumn ( 0, std::make_shared< DateDelegate       >() );
+  tableView()-> setItemDelegateForColumn ( 1, std::make_shared< SuggestionDelegate >() );
+  tableView()-> setItemDelegateForColumn ( 2, std::make_shared< SuggestionDelegate >() );
+  tableView()-> setItemDelegateForColumn ( 3, std::make_shared< AccountDelegate    >() );
+  tableView()-> setItemDelegateForColumn ( 4, std::make_shared< ReconcileDelegate  >() );
+  tableView()-> setItemDelegateForColumn ( 5, std::make_shared< ValueDelegate      >() );
+  tableView()-> setItemDelegateForColumn ( 6, std::make_shared< ValueDelegate      >() );
+  tableView()-> setItemDelegateForColumn ( 7, std::make_shared< BalanceDelegate    >() );
 
+  {
 //    dateDelegate->
 //      closeEditor().connect( [&]( Wt::WWidget* _widget, bool _save )
 //      {
@@ -680,23 +762,17 @@ AccountRegister( const std::string & _accountGuid )
 
   }
 
-  {
-    auto reconcileDelegate = std::make_shared< ReconcileDelegate >();
-    tableView()-> setItemDelegateForColumn( 4, reconcileDelegate );
-  }
-
-  /*
-  ** set column delegates so the editors have assistance with list pickers and
-  **  whatnot
-  **
-  */
-  tableView()-> setItemDelegateForColumn ( 1, std::make_shared< SuggestionDelegate >() );
-  tableView()-> setItemDelegateForColumn ( 2, std::make_shared< SuggestionDelegate >() );
-  tableView()-> setItemDelegateForColumn ( 3, std::make_shared< AccountDelegate    >() );
 
   tableView()-> headerClicked().connect( [=]( int col, Wt::WMouseEvent event )
   {
+#ifdef NEVER
+    if( tableView()-> selectedIndexes().size() == 0 )
+      tableView()-> select( baseModel()-> index( 893, 0 ) );
+    else
+      tableView()-> clearSelection();
+#endif
     std::cout << __FILE__ << ":" << __LINE__ << " " << col << std::endl;
+
   });
 
 #ifdef NEVER
@@ -774,7 +850,7 @@ AccountRegister( const std::string & _accountGuid )
   tableView()->
     clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
     {
-#ifndef NEVER
+#ifdef NEVER
       std::cout << __FILE__ << ":" << __LINE__ << " clicked"
         << " row:" << _index.row()
         << " col:" << _index.column()
@@ -838,13 +914,23 @@ AccountRegister( const std::string & _accountGuid )
 #endif
 
   m_baseModel       = std::make_shared< BaseModel                 >();
-  m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
+//  m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
   m_batchEditModel  = std::make_shared< Wt::WBatchEditProxyModel  >();
-
-  m_sortFilterModel-> setSourceModel( m_baseModel       );
-  m_sortFilterModel-> sort(0);
-  m_batchEditModel -> setSourceModel( m_sortFilterModel );
+//
+//  m_sortFilterModel-> setSourceModel( m_baseModel       );
+//  m_sortFilterModel-> sort(0);
+//  m_batchEditModel -> setSourceModel( m_sortFilterModel );
   m_batchEditModel -> setSourceModel( m_baseModel );
+
+  baseModel()->
+    goneDirty().connect( [&]( Wt::WModelIndex _index )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
+      baseModel()-> refreshFromDisk();
+//      m_batchEditModel -> setSourceModel( m_baseModel );
+      std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
+    });
+
 
 } // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
 
@@ -857,12 +943,53 @@ deleteRow( int _row )-> void
   transMan.loadSplit( splitGuid );
   transMan.deleteTransaction();
 
+  baseModel()-> refreshFromDisk();
+
 } // enddeleteRow( int _row )-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_sortBy_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_sortBy_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_filterBy_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_filterBy_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_renamePage_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_renamePage_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_duplicate_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_duplicate_triggered()-> void
 
 auto
 GCW::Gui::AccountRegister::
 on_delete_triggered()-> void
 {
+  /*!
+  ** by default, the user will be asked to delete
+  **  an item from the register, unless they
+  **  have chosen to never be asked.
+  **
+  ** \bug the logic here is not correct
+  */
   static bool askThisSession = true;
          bool askForever     = GCW::Dbo::Prefrences::get().askOnDelete();
 
@@ -898,18 +1025,29 @@ on_delete_triggered()-> void
     pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );
 
     /*
+    ** when this option is selected, disable the other one
+    */
+    rememberAlways->
+      clicked().connect( [rememberSession,rememberAlways]()
+      {
+        rememberSession-> setDisabled( rememberAlways-> checkState() == Wt::CheckState::Checked );
+      });
+
+    /*
     ** When the dialog finishes, it is either accepted or rejected.
     **  In either case, the dialog will be removed from the addChild
-    **  from earlier.
+    **  from earlier so we don't have no memory leaks.
     **
     */
     msgBox->
-      finished().connect( [&]( Wt::DialogCode _code )
+      finished().connect( [this,rememberSession,msgBox]( Wt::DialogCode _code )
       {
         if( _code == Wt::DialogCode::Accepted )
         {
           askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
+
           deleteRow( m_rightClickRow );
+
         }
         removeChild( msgBox );
       });
@@ -925,6 +1063,103 @@ on_delete_triggered()-> void
   }
 
 } // endon_delete_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_removeSplits_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_removeSplits_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_enter_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_enter_triggered()-> void;
+
+auto
+GCW::Gui::AccountRegister::
+on_cancel_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_cancel_triggered()-> void;
+
+auto
+GCW::Gui::AccountRegister::
+on_manageDocument_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+
+} // endon_manageDocument_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_openDocument_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_openDocument_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_blankTransaction_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_blankTransaction_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_goDate_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_goDate_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_splitTransaction_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_splitTransaction_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_editExchangeRate_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_editExchangeRate_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_schedule_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_schedule_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_jump_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_jump_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_assignPayment_triggered()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endon_assignPayment_triggered()-> void
 
 auto
 GCW::Gui::AccountRegister::
@@ -944,19 +1179,26 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
     while( m_popupMenu.count() )
       m_popupMenu.removeItem( m_popupMenu.itemAt(0) );
 
+#ifdef NEVER
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.SortBy"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.FilterBy"   ), std::make_unique< Wt::WText >() )-> setDisabled( true );
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.RenamePage" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
     m_popupMenu.addSeparator();
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Duplicate"  ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+#endif
 
     // delete
     {
       auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Delete"), this, &AccountRegister::on_delete_triggered );
-      if( baseModel()-> getSplitGuid( _index ) == "" )
+
+      /*
+      ** delete doesn't work on the 'new' line (need a split guid)
+      */
+      if( !(baseModel()-> isDeletable( _index )) )
         item-> setDisabled( true );
     }
 
+#ifdef NEVER
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.RemoveSplits"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
     m_popupMenu.addSeparator();
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Enter"            ), std::make_unique< Wt::WText >() )-> setDisabled( true );
@@ -975,6 +1217,7 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump"             ), std::make_unique< Wt::WText >() )-> setDisabled( true );
     m_popupMenu.addSeparator();
     m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.AssignPayment"    ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+#endif
 
     // Select the item, if it was not yet selected.
     if( !tableView()-> isSelected( _index ) )
@@ -1090,14 +1333,28 @@ auto
 GCW::Gui::AccountRegister::
 editRow( int _row )-> void
 {
+  /*
+  ** If the row we're editing ~can~ be edited, then
+  **  we want to make sure we un-select any other rows
+  **  that may still be selected
+  **
+  */
+  if( baseModel()-> isEditable( _row ) )
+    tableView()-> clearSelection();
+
+  /*
+  ** Close all the editor then scroll down
+  **  to that 0-col index row and make sure
+  **  it is in view.
+  **
+  */
   tableView()-> closeEditors( true );
   {
     auto index = baseModel()-> index( _row, 0 );
     tableView()-> scrollTo( index );
-    tableView()-> edit( index );
   }
 
-  for( int column=1; column< baseModel()-> columnCount(); column++ )
+  for( int column=0; column< baseModel()-> columnCount(); column++ )
   {
     auto index = baseModel()-> index( _row, column );
     tableView()-> edit( index );

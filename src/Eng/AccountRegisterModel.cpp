@@ -29,7 +29,8 @@
 #define COL_RECONCILE   (4)
 #define COL_DEBIT       (5)
 #define COL_CREDIT      (6)
-#define COL_NOTES       (7)
+#define COL_BALANCE     (7)
+#define COL_NOTES       (2)
 
 GCW::Eng::AccountRegisterModel::
 AccountRegisterModel( const std::string & _accountGuid, bool _editable )
@@ -98,6 +99,67 @@ GCW::Eng::AccountRegisterModel::
 setDoubleLine( bool _doubleLine )-> void
 {
   m_doubleLine = _doubleLine;
+}
+
+auto
+GCW::Eng::AccountRegisterModel::
+isDeletable( const Wt::WModelIndex & _index )-> bool
+{
+  /*!
+  ** If this transaction split has no guid
+  **  then it's a new row, and cannot be deleted
+  */
+  if( getSplitGuid( _index ) == "" )
+    return false;
+
+  /*!
+  ** If this transaction split is reconciled, then it is
+  **  considered not deletable
+  */
+  GCW::Dbo::Transactions::Manager transMan;
+  transMan.loadSplit( getSplitGuid( _index ) );
+  if( transMan.thisSplit()-> isReconciled() )
+    return false;
+
+  /*
+  ** deletable
+  */
+  return true;
+
+} // endisDeletable( const Wt::WModelIndex & _index )-> bool
+
+auto
+GCW::Eng::AccountRegisterModel::
+isEditable( const Wt::WModelIndex & _index )-> bool
+{
+  /*!
+  ** If this transaction split has no guid
+  **  then it's a new row, and cannot be deleted
+  */
+  if( getSplitGuid( _index ) == "" )
+    return true;
+
+  /*!
+  ** If this transaction split is reconciled, then it is
+  **  considered not deletable
+  */
+  GCW::Dbo::Transactions::Manager transMan;
+  transMan.loadSplit( getSplitGuid( _index ) );
+  if( transMan.thisSplit()-> isReconciled() )
+    return false;
+
+  /*
+  ** editable
+  */
+  return true;
+
+} // endisEditable( const Wt::WModelIndex & _index )-> bool
+
+auto
+GCW::Eng::AccountRegisterModel::
+isEditable( int _row )-> bool
+{
+  return isEditable( index( _row, 0 ) );
 }
 
 auto
@@ -272,7 +334,8 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   /*
   ** If we don't have a split guid, then this is a new row.  It also
   **  means we don't have a transaction, either.  So, build up a whole
-  **  set of items that we'll be needing to set in these new values.
+  **  set of transaction-items that we'll be needing to set in these
+  **  new values.
   **
   */
   auto splitGuid = getSplitGuid( _index );
@@ -455,6 +518,8 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 //    m_dirtyRows.insert( _index.row() );
 
     m_goneDirty.emit( _index );
+
+    dataChanged().emit( index( _index.row(), COL_DATE ), index( _index.row(), COL_BALANCE ) );
 
 #ifdef NEVER
     std::cout << BREAKFOOTER
@@ -650,9 +715,11 @@ refreshFromDisk()-> void
       auto tip =
         Wt::WString
         (
-         "acg: {1}\n"
-         "spg: {2}\n"
+         "row: {1}\n"
+         "acg: {2}\n"
+         "spg: {3}\n"
         )
+        .arg( rowCount()         )
         .arg( m_accountGuid      )
         .arg( splitItem-> guid() )
         ;
@@ -1070,6 +1137,7 @@ refreshFromDisk()-> void
         reconcile   -> setFlags( Wt::ItemFlag::Editable );
         debit       -> setFlags( Wt::ItemFlag::Editable );
         credit      -> setFlags( Wt::ItemFlag::Editable );
+        balance     -> setFlags( Wt::ItemFlag::Editable );
       }
 
       /*
@@ -1147,23 +1215,24 @@ refreshFromDisk()-> void
     _addColumn( columns, "n"        )-> setFlags( Wt::ItemFlag::Editable ); // R
     _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Deposit
     _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Withdrawal
-    _addColumn( columns, ""         )                                     ; // Balance
+    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Balance
     appendRow( std::move( columns ) )                                     ;
 
   } // endif( m_editable )
 
-  /*
+  /*!
   ** poke all the header labels in.  Note that some of the labels change
   **  depending on the account debit/credit type.  We get those from the
   **  accountDef.
   **
-  ** FIXME: this is modified a bit to allow for a default account def.
-  **        this is necessary since it is possible to ask for an account
-  **        register that is not (yet) associated to an account... this
-  **        can happen in the BillPay module when setting up a new
-  **        account for bill-pay functions. (kind of sloppy doing it here)
-  **        The first item at(0) represents the default-register settings,
-  **        suitable for any register view.
+  ** \bug Needs work
+  **   this is modified a bit to allow for a default account def.
+  **    this is necessary since it is possible to ask for an account
+  **    register that is not (yet) associated to an account... this
+  **    can happen in the BillPay module when setting up a new
+  **    account for bill-pay functions. (kind of sloppy doing it here)
+  **    The first item at(0) represents the default-register settings,
+  **    suitable for any register view.
   **
   */
   GCW::Dbo::Accounts::AccountDef_t accountDef = GCW::Dbo::Accounts::s_accountDefs.at(0);

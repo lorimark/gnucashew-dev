@@ -147,7 +147,32 @@ class AccountRegister
 //    auto editRow( Wt::WModelIndex _index )-> void;
     auto lastIndex()-> Wt::WModelIndex;
     auto on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
+
+    auto on_sortBy_triggered()-> void;
+    auto on_filterBy_triggered()-> void;
+    auto on_renamePage_triggered()-> void;
+    auto on_duplicate_triggered()-> void;
+
+    /*!
+    ** \brief Delete a Row
+    **
+    ** This will delete a row from the register
+    **
+    */
     auto on_delete_triggered()-> void;
+
+    auto on_removeSplits_triggered()-> void;
+    auto on_enter_triggered()-> void;
+    auto on_cancel_triggered()-> void;
+    auto on_manageDocument_triggered()-> void;
+    auto on_openDocument_triggered()-> void;
+    auto on_blankTransaction_triggered()-> void;
+    auto on_goDate_triggered()-> void;
+    auto on_splitTransaction_triggered()-> void;
+    auto on_editExchangeRate_triggered()-> void;
+    auto on_schedule_triggered()-> void;
+    auto on_jump_triggered()-> void;
+    auto on_assignPayment_triggered()-> void;
 
     Wt::WPopupMenu                                 m_popupMenu               ;
     std::string                                    m_accountGuid             ;
