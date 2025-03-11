@@ -115,6 +115,24 @@
   border-left: 1px solid black;
 }
 
+/* Extra padding on the right for scroll bar */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .Wt-tv-c8
+{
+  padding-right: 15px;
+}
+
+/* Extra padding on the right for scroll bar */
+.AccountRegister
+ .Wt-tableview
+  .Wt-headerdiv
+   .Wt-tv-c8
+{
+  padding-right: 15px;
+}
+
 /* Selected Editor Widget padding/margin (the div right before the editor) */
 .AccountRegister
  .Wt-tableview

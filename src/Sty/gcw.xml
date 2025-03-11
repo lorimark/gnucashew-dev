@@ -468,6 +468,7 @@
   <message id="gcw.billPay.pb.save"                                  >save</message>
   <message id="gcw.billPay.pb.cancel"                                >cancel</message>
   <message id="gcw.billPay.pb.delete"                                >delete</message>
+  <message id="gcw.billPay.pb.process"                               >process payment</message>
   <message id="gcw.billPay.pb.ap"                                    >AP</message>
   <message id="gcw.billPay.pb.isActive"                              >is Active</message>
   <message id="gcw.billPay.pb.isVisible"                             >is Visible</message>

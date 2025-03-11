@@ -452,7 +452,9 @@ createEditor
 /*
 ** Balance delegate works just like the ValueDelegate but
 **  also adds a read-only attribute to the input, so it
-**  displays the same, but cannot be edited.
+**  displays the same, but cannot be edited.  This is done
+**  so that the entire line is highlighted fully when
+**  selected.
 **
 */
 class BalanceDelegate
@@ -460,21 +462,17 @@ class BalanceDelegate
 {
   public:
 
-    std::unique_ptr< Wt::WWidget > createEditor
-    (
-     const Wt::WModelIndex & _index,
-     Wt::WFlags< Wt::ViewItemRenderFlag > _flags
-    ) const;
+    auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
 
-};
+}; // endclass BalanceDelegate
 
-std::unique_ptr< Wt::WWidget >
+auto
 BalanceDelegate::
 createEditor
 (
   const Wt::WModelIndex & _index,
   Wt::WFlags< Wt::ViewItemRenderFlag > _flags
-) const
+) const-> std::unique_ptr< Wt::WWidget >
 {
   auto retVal = Wt::WItemDelegate::createEditor( _index, _flags );
   auto cw = dynamic_cast< Wt::WContainerWidget* >( retVal.get() );

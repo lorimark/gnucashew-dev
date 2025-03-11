@@ -52,9 +52,12 @@ class EditWidget
         auto valueGuid()-> std::string ;
     };
 
+    auto processPayment()-> void;
+
     Wt::Signal<> m_save;
     Wt::Signal<> m_cancel;
     Wt::Signal<> m_delete;
+    Wt::Signal<> m_process;
 
     std::string m_bpGuid;
 
@@ -62,6 +65,7 @@ class EditWidget
     Wt::WPushButton           * m_pbSave    = nullptr ;
     Wt::WPushButton           * m_pbCancel  = nullptr ;
     Wt::WPushButton           * m_pbDelete  = nullptr ;
+    Wt::WPushButton           * m_pbProcess = nullptr ;
     ComboBox                  * m_account   = nullptr ;
     Wt::WSpinBox              * m_dueDay    = nullptr ;
     Wt::WLineEdit             * m_minimum   = nullptr ;
@@ -97,7 +101,7 @@ class EditWidgetDialog
 {
   public:
 
-    EditWidgetDialog( const std::string & _accountGuid );
+    EditWidgetDialog( const std::string & _bpGuid );
 
   private:
 

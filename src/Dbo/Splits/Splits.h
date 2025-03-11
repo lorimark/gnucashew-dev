@@ -282,6 +282,9 @@ class Item
 
   private:
 
+    /*
+    ** local storage
+    */
     std::string m_guid                               ; // text(32) PRIMARY KEY NOT NULL,
     std::string m_tx_guid                            ; // text(32) NOT NULL,
     std::string m_account_guid                       ; // text(32) NOT NULL,

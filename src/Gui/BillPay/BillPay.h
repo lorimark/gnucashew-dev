@@ -7,6 +7,7 @@
 #include "../../Dbo/Vars/Vars.h"
 
 #include "EditWidget.h"
+#include "PaymentWidget.h"
 #include "MainWidget.h"
 #include "Item.h"
 #include "Model.h"

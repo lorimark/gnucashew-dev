@@ -134,14 +134,14 @@ isEditable( const Wt::WModelIndex & _index )-> bool
 {
   /*!
   ** If this transaction split has no guid
-  **  then it's a new row, and cannot be deleted
+  **  then it's a new row, and can be edited
   */
   if( getSplitGuid( _index ) == "" )
     return true;
 
   /*!
   ** If this transaction split is reconciled, then it is
-  **  considered not deletable
+  **  considered not editable
   */
   GCW::Dbo::Transactions::Manager transMan;
   transMan.loadSplit( getSplitGuid( _index ) );
@@ -1108,7 +1108,7 @@ refreshFromDisk()-> void
       */
       if( m_editable )
       {
-        if( splitItem-> reconcile_state() == "y" )
+        if( splitItem-> reconcile_state() == GCW_RECONCILE_YES )
         {
           editable = false;
         }

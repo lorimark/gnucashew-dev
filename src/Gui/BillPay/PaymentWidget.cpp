@@ -1,4 +1,4 @@
-#line 2 "src/Gui/BillPay/EditWidget.cpp"
+#line 2 "src/Gui/BillPay/PaymentWidget.cpp"
 
 #include <Wt/WMenuItem.h>
 #include <Wt/WVBoxLayout.h>
@@ -7,30 +7,12 @@
 #include "../../Glb/Core.h"
 #include "BillPay.h"
 
-GCW::Gui::BillPay::EditWidget::ComboBox::
-ComboBox()
-{
-  setModel( std::make_shared< GCW::Eng::AccountComboModel >() );
-  setModelColumn( 1 );
-
-} // endComboBox()
-
-auto
-GCW::Gui::BillPay::EditWidget::ComboBox::
-valueGuid()-> std::string
-{
-  return
-    Wt::asString( model()-> data( currentIndex(), 0 ) ).toUTF8() ;
-
-} // endselectedGuid()-> std::string
-
-
-GCW::Gui::BillPay::EditWidget::
-EditWidget( const std::string & _bpGuid )
+GCW::Gui::BillPay::PaymentWidget::
+PaymentWidget( const std::string & _bpGuid )
 : Wt::WContainerWidget(),
   m_bpGuid( _bpGuid )
 {
-  addStyleClass( "EditWidget" );
+  addStyleClass( "PaymentWidget" );
 
   /*
   ** use a layout.
@@ -47,9 +29,10 @@ EditWidget( const std::string & _bpGuid )
     lw->
     addWidget
     (
-     std::make_unique< Wt::WTemplate >( TR("gcw_gui.billpay.editwidget.form.main") )
+     std::make_unique< Wt::WTemplate >( TR("gcw_gui.billpay.paymentwidget.form.main") )
     );
 
+#ifdef NEVER
   /*
   ** add all the widgets
   **
@@ -174,6 +157,7 @@ EditWidget( const std::string & _bpGuid )
   m_pbCancel -> clicked().connect( [&](){ m_cancel.emit();  });
   m_pbDelete -> clicked().connect( [&](){ m_delete.emit();  });
   m_pbProcess-> clicked().connect( [&](){ processPayment(); });
+#endif
 
   /*
   ** get all the data loaded
@@ -183,7 +167,7 @@ EditWidget( const std::string & _bpGuid )
 } // endEditWidget( const std::string & _accountGuid )
 
 auto
-GCW::Gui::BillPay::EditWidget::
+GCW::Gui::BillPay::PaymentWidget::
 loadData()-> void
 {
   /*
@@ -197,6 +181,7 @@ loadData()-> void
   */
   auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
+#ifdef NEVER
   /*
   ** format the 'name' to be something readable
   */
@@ -236,26 +221,21 @@ loadData()-> void
     cb-> setValueText( bpItem.cb( i++ ) );
 
   m_register-> setAccountGuid( bpItem.accountGuid() );
+#endif
 
 } // endloadData()-> void
 
 auto
-GCW::Gui::BillPay::EditWidget::
+GCW::Gui::BillPay::PaymentWidget::
 saveData()-> void
 {
   /*
-  ** little bit of housekeeping before we begin
-  */
-  if( m_bpGuid == "" )
-      m_bpGuid = GCW::Core::newGuid();
-
-  /*
-  ** load the bpItem, if we had to create a new guid above,
-  **  then we'll end up with a 'new' bpItem.
+  ** load the bpItem
   **
   */
   auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
+#ifdef NEVER
   /*
   ** save everything
   */
@@ -282,34 +262,24 @@ saveData()-> void
     bpItem.set_cb( i++, cb-> valueText() );
 
   m_save.emit();
+#endif
 
 } // endsaveData()-> void
 
-
-auto
-GCW::Gui::BillPay::EditWidget::
-processPayment()-> void
+GCW::Gui::BillPay::PaymentWidgetDialog::
+PaymentWidgetDialog( const std::string & _bpGuid )
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
-} // endprocessPayment()-> void
-
-
-
-GCW::Gui::BillPay::EditWidgetDialog::
-EditWidgetDialog( const std::string & _bpGuid )
-{
-  addStyleClass( "EditWidgetDialog" );
-  setWindowTitle( "Bill Pay Account" );
+  addStyleClass( "PaymentWidgetDialog" );
+  setWindowTitle( "Bill Pay Make Payment" );
 
   setClosable( true );
   rejectWhenEscapePressed( true );
 
-  auto editWidget = contents()-> addNew< EditWidget >( _bpGuid );
+  auto editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );
 
-  editWidget-> save   ().connect( [&](){ accept(); });
-  editWidget-> cancel ().connect( [&](){ reject(); });
+//  editWidget-> save   ().connect( [&](){ accept(); });
+//  editWidget-> cancel ().connect( [&](){ reject(); });
 
-} // endEditWidgetDialog( const std::string & _accountGuid )
+} // endPaymentWidgetDialog( const std::string & _bpGuid )
 
 
