@@ -34,7 +34,8 @@ buildContent()-> void
     m_toolBar = u_.get();
     cw-> addWidget( std::move( u_ ) );
 
-    m_toolBar-> addClicked().connect( this, &GCW::Gui::BillPay::MainWidget::addClicked );
+    m_toolBar-> addClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::addClicked  );
+//    m_toolBar-> editClicked().connect( this, &GCW::Gui::BillPay::MainWidget::editClicked );
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
     m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::disabledClicked );
 

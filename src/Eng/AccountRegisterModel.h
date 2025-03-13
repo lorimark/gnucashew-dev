@@ -44,7 +44,7 @@ class AccountRegisterModel
     ** This opens the model associated with a specific account.
     **
     */
-    AccountRegisterModel( const std::string & _accountGuid = "", bool _editable = true );
+    AccountRegisterModel( const std::string & _accountGuid = "", bool _readOnly = false );
 
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
     auto refreshFromDisk()-> void ;
@@ -63,8 +63,11 @@ class AccountRegisterModel
     */
     auto isDeletable( const Wt::WModelIndex & _index )-> bool ;
 
-    auto isEditable( int _row )-> bool ;
-    auto isEditable( const Wt::WModelIndex & _index )-> bool ;
+    auto isReadOnly()-> bool ;
+    auto isReadOnly( int _row )-> bool ;
+    auto isReadOnly( const Wt::WModelIndex & _index )-> bool ;
+
+    auto setReadOnly( bool _state ) { m_readOnly = _state; }
 
     /*!
     ** \brief Get GUID from row
@@ -241,7 +244,7 @@ balance
     ** The model can be either R/W (read-write) or R/O (read-only).
     **
     */
-    bool m_editable = false;
+    bool m_readOnly = false;
 
     ViewMode m_viewMode   = ViewMode::BASIC_LEDGER;
     bool     m_doubleLine = false;

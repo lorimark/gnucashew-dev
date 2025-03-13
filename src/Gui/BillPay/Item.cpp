@@ -64,6 +64,15 @@ accountGuid () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
+accountFullName () const-> std::string
+{
+  return
+    GCW::Dbo::Accounts::fullName( accountGuid() );
+
+} // endaccountGuid () const-> std::string
+
+auto
+GCW::Gui::BillPay::Item::
 dueDay () const-> std::string
 {
   return

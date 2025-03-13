@@ -96,19 +96,15 @@ open_properties()-> void
   if( !GCW::app()-> gnucashew_session().isOpen() )
     return;
 
-  auto u_ = std::make_unique< Wt::WDialog >( TR( "gcw.PropertiesWidget.titleBar" ) );
-  auto dialog = u_.get();
-  addChild( std::move( u_ ) );
-
+  static auto dialog = std::make_unique< Wt::WDialog >( TR( "gcw.PropertiesWidget.titleBar" ) );
   dialog-> rejectWhenEscapePressed( true );
   dialog-> contents()-> addNew< GCW::Gui::FilePropertiesWidget >();
-
-  /*
-  ** Clean up after the dialog is closed.
-  **
-  */
-  dialog-> finished().connect( [&]( Wt::DialogCode _code ) { removeChild( dialog ); });
   dialog-> show();
+  dialog->
+    finished().connect( []()
+    {
+      dialog.reset(nullptr);
+    });
 
 } // endopen_properties()
 

@@ -38,6 +38,7 @@ ToolBar()
   auto pbEdit = table-> elementAt( 0, 1 )-> addWidget( std::make_unique< Wt::WPushButton >( "edit" ) );
 
   pbEdit-> setStyleClass( "btn-xs" );
+  pbEdit-> clicked().connect( [=](){ m_editClicked.emit(); } );
 
   /*
   ** hide and show disabled items

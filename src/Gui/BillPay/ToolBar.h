@@ -30,6 +30,9 @@ class ToolBar
     Wt::Signal<> & addClicked() { return m_addClicked; }
     Wt::Signal<> m_addClicked;
 
+    Wt::Signal<> & editClicked() { return m_editClicked; }
+    Wt::Signal<> m_editClicked;
+
 //    int selectedMonth() const;
 
 //    std::shared_ptr< Wt::WButtonGroup > buttonGroup    () const { return m_group;    }

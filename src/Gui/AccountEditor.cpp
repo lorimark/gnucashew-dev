@@ -102,9 +102,6 @@ Tab1( const std::string & _accountGuid )
   t1-> bindString( "color-label"       , TR( "gcw.AccountEditor.color"       ) );
   t1-> bindString( "notes-label"       , TR( "gcw.AccountEditor.notes"       ) );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " this:" << accountItem-> guid()        << std::endl;
-  std::cout << __FILE__ << ":" << __LINE__ << " parn:" << accountItem-> parent_guid() << std::endl;
-
   auto name           = t1-> bindNew< Wt::WLineEdit              >( "name"           , accountItem-> name()                     );
   auto code           = t1-> bindNew< Wt::WLineEdit              >( "code"           , accountItem-> code()                     );
   auto desc           = t1-> bindNew< Wt::WLineEdit              >( "desc"           , accountItem-> description()              );

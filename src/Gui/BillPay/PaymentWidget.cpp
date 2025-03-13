@@ -1,11 +1,33 @@
 #line 2 "src/Gui/BillPay/PaymentWidget.cpp"
 
-#include <Wt/WMenuItem.h>
 #include <Wt/WVBoxLayout.h>
 
 #include "../../Eng/AccountComboModel.h"
 #include "../../Glb/Core.h"
 #include "BillPay.h"
+
+GCW::Gui::BillPay::PaymentWidget::PaymentTable::
+PaymentTable()
+: Wt::WContainerWidget()
+{
+  m_table = addNew< Wt::WTable >();
+  m_table-> setWidth( "100%" );
+  int col = 0;
+  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.account" ) );
+  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.debit"   ) );
+  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.credit"  ) );
+
+  for( int row=1; row< 3; row++ )
+  {
+    int col = 0;
+    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
+    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
+    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
+
+  }
+
+
+} // endPaymentTable()
 
 GCW::Gui::BillPay::PaymentWidget::
 PaymentWidget( const std::string & _bpGuid )
@@ -32,132 +54,32 @@ PaymentWidget( const std::string & _bpGuid )
      std::make_unique< Wt::WTemplate >( TR("gcw_gui.billpay.paymentwidget.form.main") )
     );
 
-#ifdef NEVER
   /*
   ** add all the widgets
   **
   */
-  m_pbSave    = templtMain-> bindNew< Wt::WPushButton >( "save"      , TR("gcw.billPay.pb.save")      );
-  m_pbCancel  = templtMain-> bindNew< Wt::WPushButton >( "cancel"    , TR("gcw.billPay.pb.cancel")    );
-  m_pbDelete  = templtMain-> bindNew< Wt::WPushButton >( "delete"    , TR("gcw.billPay.pb.delete")    );
-  m_pbProcess = templtMain-> bindNew< Wt::WPushButton >( "process"   , TR("gcw.billPay.pb.process")   );
-  m_account   = templtMain-> bindNew< ComboBox        >( "account"                                    );
-  m_dueDay    = templtMain-> bindNew< Wt::WSpinBox    >( "dueDay"                                     );
-  m_minimum   = templtMain-> bindNew< Wt::WLineEdit   >( "minimum"                                    );
-  m_budget    = templtMain-> bindNew< Wt::WLineEdit   >( "budget"                                     );
-  m_nickname  = templtMain-> bindNew< Wt::WLineEdit   >( "nickname"                                   );
-  m_group     = templtMain-> bindNew< Wt::WSpinBox    >( "group"                                      );
-  m_limit     = templtMain-> bindNew< Wt::WLineEdit   >( "limit"                                      );
-  m_actual    = templtMain-> bindNew< Wt::WLineEdit   >( "actual"                                     );
-  m_ap        = templtMain-> bindNew< Wt::WCheckBox   >( "ap"        , TR("gcw.billPay.pb.ap")        );
-  m_isActive  = templtMain-> bindNew< Wt::WCheckBox   >( "isActive"  , TR("gcw.billPay.pb.isActive")  );
-  m_isVisible = templtMain-> bindNew< Wt::WCheckBox   >( "isVisible" , TR("gcw.billPay.pb.isVisible") );
-  m_autoPay   = templtMain-> bindNew< Wt::WCheckBox   >( "autoPay"   , TR("gcw.billPay.pb.autoPay")   );
-  m_payNow    = templtMain-> bindNew< Wt::WCheckBox   >( "payNow"    , TR("gcw.billPay.pb.payNow")    );
+//  m_pbSave     = templtMain-> bindNew< Wt::WPushButton >( "save"      , TR("gcw.billPay.label.save")   );
+//  m_pbCancel   = templtMain-> bindNew< Wt::WPushButton >( "cancel"    , TR("gcw.billPay.label.cancel") );
+  m_payTable   = templtMain-> bindNew< PaymentTable    >( "paymentTable"                               );
+  m_trans      = templtMain-> bindNew< Wt::WLineEdit   >( "trans"                                      );
+  m_date       = templtMain-> bindNew< Wt::WLineEdit   >( "date"                                       );
+  m_memo       = templtMain-> bindNew< Wt::WLineEdit   >( "memo"                                       );
+  m_confirm    = templtMain-> bindNew< Wt::WTextArea   >( "confirm"                                    );
 
-  m_pbSave    -> setStyleClass( "btn-xs" );
-  m_pbCancel  -> setStyleClass( "btn-xs" );
-  m_pbDelete  -> setStyleClass( "btn-xs" );
-  m_pbProcess -> setStyleClass( "btn-xs" );
+//  m_pbSave    -> setStyleClass( "btn-xs" );
+//  m_pbCancel  -> setStyleClass( "btn-xs" );
 
-  m_account   -> setToolTip( TR("gcw.billPay.account.toolTip"        ) );
-  m_dueDay    -> setToolTip( TR("gcw.billPay.dueDay.toolTip"         ) );
-  m_minimum   -> setToolTip( TR("gcw.billPay.minimum.toolTip"        ) );
-  m_budget    -> setToolTip( TR("gcw.billPay.budget.toolTip"         ) );
-  m_nickname  -> setToolTip( TR("gcw.billPay.nickname.toolTip"       ) );
-  m_group     -> setToolTip( TR("gcw.billPay.group.toolTip"          ) );
-  m_limit     -> setToolTip( TR("gcw.billPay.limit.toolTip"          ) );
-  m_actual    -> setToolTip( TR("gcw.billPay.actual.toolTip"         ) );
-  m_ap        -> setToolTip( TR("gcw.billPay.pb.ap.toolTip"          ) );
-  m_isActive  -> setToolTip( TR("gcw.billPay.pb.isActive.toolTip"    ) );
-  m_isVisible -> setToolTip( TR("gcw.billPay.pb.isVisible.toolTip"   ) );
-  m_autoPay   -> setToolTip( TR("gcw.billPay.pb.autoPay.toolTip"     ) );
-  m_payNow    -> setToolTip( TR("gcw.billPay.pb.payNow.toolTIp"      ) );
+  m_trans     -> setToolTip( TR("gcw.billPay.toolTip.trans"       ) );
+  m_date      -> setToolTip( TR("gcw.billPay.toolTip.date"        ) );
+  m_memo      -> setToolTip( TR("gcw.billPay.toolTip.memo"        ) );
+  m_confirm   -> setToolTip( TR("gcw.billPay.toolTip.confirm"     ) );
 
-  m_dueDay -> setRange( 1, 31 );
-  m_group  -> setRange( 0, 30 );
-  m_group  -> setSingleStep( 5 );
+  templtMain-> bindString( "transLabel"    , TR("gcw.billPay.label.trans"    ) );
+  templtMain-> bindString( "dateLabel"     , TR("gcw.billPay.label.date"     ) );
+  templtMain-> bindString( "memoLabel"     , TR("gcw.billPay.label.memo"     ) );
 
-  templtMain-> bindString( "accountLabel"  , TR("gcw.billPay.account.label"  ) );
-  templtMain-> bindString( "dueDayLabel"   , TR("gcw.billPay.dueDay.label"   ) );
-  templtMain-> bindString( "minimumLabel"  , TR("gcw.billPay.minimum.label"  ) );
-  templtMain-> bindString( "budgetLabel"   , TR("gcw.billPay.budget.label"   ) );
-  templtMain-> bindString( "nicknameLabel" , TR("gcw.billPay.nickname.label" ) );
-  templtMain-> bindString( "groupLabel"    , TR("gcw.billPay.group.label"    ) );
-  templtMain-> bindString( "limitLabel"    , TR("gcw.billPay.limit.label"    ) );
-  templtMain-> bindString( "actualLabel"   , TR("gcw.billPay.actual.label"   ) );
-
-  /*
-  ** this is the tab widget.  It takes up the remaining bottom space
-  **  on the form.
-  */
-  m_tabWidget = lw-> addWidget( std::make_unique< Wt::WTabWidget >(), 1 );
-
-  /*
-  ** This is the payment template.  It will get added to
-  **  the first page of the tab widget.
-  **
-  */
-  Wt::WTemplate * templtPayment;
-  {
-    auto u_ = std::make_unique< Wt::WTemplate >( TR( "gcw_gui.billpayeditor.form.tab1" ) );
-    templtPayment = u_.get();
-    m_tabWidget-> addTab( std::move( u_ ), TR("gcw.billPay.tabName.payment")  );
-
-    for( int cb = 0; cb < 12; cb++ )
-      m_cbx.push_back( templtPayment-> bindNew< Wt::WCheckBox >( "cb" + toString( cb+1 ), toString( cb+1 ) ) );
-
-    auto pbgo = templtPayment-> bindNew< Wt::WPushButton >( "go", TR("gcw.billPay.pb.go") );
-    pbgo-> setStyleClass( "btn-xs" );
-
-    m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
-    m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
-    m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
-//    m_note  = templtPayment-> bindNew< Wt::WTextEdit >( "note"           );
-    m_label = templtPayment-> bindNew< Wt::WLabel    >( "image", "image" );
-    m_label-> setMinimumSize( "160px", "160px" );
-    m_label-> resize( "160px", "160px" );
-
-    m_note-> setRows( 10 );
-//    m_note-> resize( Wt::WLength::Auto, Wt::WLength( 200 ) );
-
-    auto pbClear = templtPayment-> bindNew< Wt::WPushButton >( "clear", TR("gcw.billPay.pb.clear") );
-    pbClear-> setStyleClass( "btn-xs" );
-    pbClear-> setToolTip( TR("gcw.billPay.pb.clear.toolTip") );
-    pbClear->
-      clicked().connect( [&]()
-      {
-        for( auto cb : m_cbx )
-          cb-> setValueText( "no" );
-      });
-
-  } // endWt::WTemplate * templtPayment;
-
-  /*
-  ** This is the history widget.  It contains
-  **  a registry table for this widget.  It gets added to
-  **  the second page of the tab widget.
-  **
-  */
-  Wt::WTemplate * templtHistory;
-  {
-    /*
-    ** This does a better job of honoring the layout, but we still have
-    **  to set the widget height.
-    **
-    */
-    auto w_ = std::make_unique< GCW::Gui::AccountRegister >();
-    m_register = w_.get();
-    auto tab = m_tabWidget-> addTab( std::move( w_ ), TR("gcw.billPay.tabName.history") );
-//    tab-> contents()-> setMaximumSize( Wt::WLength::Auto, "300px" );
-
-  } // endWt::WTemplate * templtHistory;
-
-  m_pbSave   -> clicked().connect( [&](){ saveData();       });
-  m_pbCancel -> clicked().connect( [&](){ m_cancel.emit();  });
-  m_pbDelete -> clicked().connect( [&](){ m_delete.emit();  });
-  m_pbProcess-> clicked().connect( [&](){ processPayment(); });
-#endif
+//  m_pbSave   -> clicked().connect( [&](){ saveData();       });
+//  m_pbCancel -> clicked().connect( [&](){ m_cancel.emit();  });
 
   /*
   ** get all the data loaded
@@ -185,7 +107,7 @@ loadData()-> void
   /*
   ** format the 'name' to be something readable
   */
-  auto fullName = GCW::Dbo::Accounts::fullName( bpItem.accountGuid() );
+  auto fullName = bpItem.accountFullName();
 
   /*
   ** populate the form
@@ -261,7 +183,6 @@ saveData()-> void
   for( auto cb : m_cbx )
     bpItem.set_cb( i++, cb-> valueText() );
 
-  m_save.emit();
 #endif
 
 } // endsaveData()-> void
@@ -269,17 +190,24 @@ saveData()-> void
 GCW::Gui::BillPay::PaymentWidgetDialog::
 PaymentWidgetDialog( const std::string & _bpGuid )
 {
-  addStyleClass( "PaymentWidgetDialog" );
-  setWindowTitle( "Bill Pay Make Payment" );
-
-  setClosable( true );
   rejectWhenEscapePressed( true );
+  setClosable( true );
+
+  addStyleClass( "PaymentWidgetDialog" );
+  setWindowTitle( TR( "gcw.billPay.dialog.title" ) );
 
   auto editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );
 
-//  editWidget-> save   ().connect( [&](){ accept(); });
-//  editWidget-> cancel ().connect( [&](){ reject(); });
+  auto pbSave   = titleBar()-> addNew< Wt::WPushButton >( TR("gcw.billPay.label.save")   );
+  auto pbCancel = titleBar()-> addNew< Wt::WPushButton >( TR("gcw.billPay.label.cancel") );
+
+  pbSave    -> setStyleClass( "btn-xs" );
+  pbCancel  -> setStyleClass( "btn-xs" );
+
+  pbSave   -> clicked().connect( [this,editWidget](){ editWidget-> saveData(); accept(); } );
+  pbCancel -> clicked().connect( this, &Wt::WDialog::reject );
 
 } // endPaymentWidgetDialog( const std::string & _bpGuid )
+
 
 

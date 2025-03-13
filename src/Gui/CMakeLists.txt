@@ -3,6 +3,7 @@ add_subdirectory( BillPay  )
 add_subdirectory( Customer )
 
 set( GCW_FILES ${GCW_FILES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/AccountComboBox.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountEditor.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountRegister.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountsTreeView.cpp

@@ -118,6 +118,8 @@ class AccountRegister
 
     auto test()-> void;
 
+    auto setReadOnly( bool _state = true )-> void ;
+
     /*!
     ** \brief Create View Properties JSON Object
     **

@@ -18,6 +18,8 @@
 #include <Wt/WTextArea.h>
 #include <Wt/WTextEdit.h>
 
+#include "../AccountComboBox.h"
+
 namespace GCW {
   namespace Gui {
     namespace BillPay {
@@ -43,15 +45,6 @@ class EditWidget
 
   private:
 
-    class ComboBox
-    : public Wt::WComboBox
-    {
-      public:
-        ComboBox();
-
-        auto valueGuid()-> std::string ;
-    };
-
     auto processPayment()-> void;
 
     Wt::Signal<> m_save;
@@ -66,7 +59,7 @@ class EditWidget
     Wt::WPushButton           * m_pbCancel  = nullptr ;
     Wt::WPushButton           * m_pbDelete  = nullptr ;
     Wt::WPushButton           * m_pbProcess = nullptr ;
-    ComboBox                  * m_account   = nullptr ;
+    GCW::Gui::AccountComboBox * m_account   = nullptr ;
     Wt::WSpinBox              * m_dueDay    = nullptr ;
     Wt::WLineEdit             * m_minimum   = nullptr ;
     Wt::WLineEdit             * m_budget    = nullptr ;

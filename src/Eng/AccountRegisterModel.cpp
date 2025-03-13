@@ -33,10 +33,10 @@
 #define COL_NOTES       (2)
 
 GCW::Eng::AccountRegisterModel::
-AccountRegisterModel( const std::string & _accountGuid, bool _editable )
+AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
 : Wt::WStandardItemModel( 0, 8 ), // 8-columns
   m_accountGuid( _accountGuid ),
-  m_editable( _editable )
+  m_readOnly( _readOnly )
 {
   /*
   ** set the lastDate to match the todays date, so when first
@@ -130,14 +130,24 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
 
 auto
 GCW::Eng::AccountRegisterModel::
-isEditable( const Wt::WModelIndex & _index )-> bool
+isReadOnly()-> bool
 {
+  return m_readOnly;
+}
+
+auto
+GCW::Eng::AccountRegisterModel::
+isReadOnly( const Wt::WModelIndex & _index )-> bool
+{
+  if( isReadOnly() )
+    return true;
+
   /*!
   ** If this transaction split has no guid
   **  then it's a new row, and can be edited
   */
   if( getSplitGuid( _index ) == "" )
-    return true;
+    return false;
 
   /*!
   ** If this transaction split is reconciled, then it is
@@ -146,20 +156,23 @@ isEditable( const Wt::WModelIndex & _index )-> bool
   GCW::Dbo::Transactions::Manager transMan;
   transMan.loadSplit( getSplitGuid( _index ) );
   if( transMan.thisSplit()-> isReconciled() )
-    return false;
+    return true;
 
   /*
-  ** editable
+  ** readOnly == false == editable
   */
-  return true;
+  return false;
 
-} // endisEditable( const Wt::WModelIndex & _index )-> bool
+} // endReadOnly( const Wt::WModelIndex & _index )-> bool
 
 auto
 GCW::Eng::AccountRegisterModel::
-isEditable( int _row )-> bool
+isReadOnly( int _row )-> bool
 {
-  return isEditable( index( _row, 0 ) );
+  if( isReadOnly() )
+    return true;
+
+  return isReadOnly( index( _row, 0 ) );
 }
 
 auto
@@ -652,7 +665,7 @@ refreshFromDisk()-> void
     ** Start out read-only.
     **
     */
-    bool editable = false;
+    bool readOnly = true;
 
     /*!
     ** From the initial split item, we get a handle on the transaction,
@@ -1106,15 +1119,15 @@ refreshFromDisk()-> void
       **  we really don't want the user messing around with it.
       **
       */
-      if( m_editable )
+      if( !readOnly )
       {
         if( splitItem-> reconcile_state() == GCW_RECONCILE_YES )
         {
-          editable = false;
+          readOnly = true;
         }
         else
         {
-          editable = true;
+          readOnly = false;
         }
       }
 
@@ -1128,17 +1141,14 @@ refreshFromDisk()-> void
       **        be handy.
       **
       */
-      if( editable )
-      {
-        post_date   -> setFlags( Wt::ItemFlag::Editable );
-        num         -> setFlags( Wt::ItemFlag::Editable );
-        description -> setFlags( Wt::ItemFlag::Editable );
-        account     -> setFlags( Wt::ItemFlag::Editable );
-        reconcile   -> setFlags( Wt::ItemFlag::Editable );
-        debit       -> setFlags( Wt::ItemFlag::Editable );
-        credit      -> setFlags( Wt::ItemFlag::Editable );
-        balance     -> setFlags( Wt::ItemFlag::Editable );
-      }
+      post_date   -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      num         -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      description -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      account     -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      reconcile   -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      debit       -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      credit      -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
+      balance     -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
 
       /*
       ** Add the row to the model
@@ -1176,7 +1186,7 @@ refreshFromDisk()-> void
       /*
       ** If this item can be edited then unlock everything.
       */
-      if( editable )
+      if( readOnly )
       {
         memo -> setFlags( Wt::ItemFlag::Editable );
       }
@@ -1200,7 +1210,7 @@ refreshFromDisk()-> void
   **  is included at the end of the vector, for coding new entries.
   **
   */
-  if( m_editable )
+  if( !isReadOnly() )
   {
     /*
     ** Create a row with blank values

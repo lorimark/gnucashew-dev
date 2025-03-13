@@ -172,5 +172,17 @@
     ${accountRegister}
   </message>
 
+  <message id="gcw_gui.billpay.paymentwidget.form.main">
+    <div class="billpayment">
+      <table class="t1" style="width:100%;">
+        <tr><td> ${transLabel}:    </td><td> ${trans}    </td></tr>
+        <tr><td> ${dateLabel}:     </td><td> ${date}     </td></tr>
+        <tr><td> ${memoLabel}:     </td><td> ${memo}     </td></tr>
+      </table>
+      ${paymentTable}
+      ${confirm}
+    </div>
+  </message>
+
 </messages>
 

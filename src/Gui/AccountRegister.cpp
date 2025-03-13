@@ -934,6 +934,14 @@ AccountRegister( const std::string & _accountGuid )
 
 auto
 GCW::Gui::AccountRegister::
+setReadOnly( bool _state )-> void
+{
+  baseModel()-> setReadOnly( _state );
+
+} // endsetReadOnly( bool _state = true )
+
+auto
+GCW::Gui::AccountRegister::
 deleteRow( int _row )-> void
 {
   auto splitGuid = baseModel()-> getSplitGuid( _row );
@@ -1034,7 +1042,7 @@ on_delete_triggered()-> void
     /*
     ** When the dialog finishes, it is either accepted or rejected.
     **  In either case, the dialog will be removed from the addChild
-    **  from earlier so we don't have no memory leaks.
+    **  from earlier so we don't got no memory leaks.
     **
     */
     msgBox->
@@ -1337,7 +1345,7 @@ editRow( int _row )-> void
   **  that may still be selected
   **
   */
-  if( baseModel()-> isEditable( _row ) )
+  if( !baseModel()-> isReadOnly( _row ) )
     tableView()-> clearSelection();
 
   /*

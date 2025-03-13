@@ -15,23 +15,24 @@ class Item
 
     Item( GCW::Dbo::Vars::Item::Ptr _varItem ) ;
 
-    auto guid        () const-> std::string ;
-    auto accountGuid () const-> std::string ;
-    auto dueDay      () const-> std::string ;
-    auto minimum     () const-> std::string ;
-    auto budget      () const-> std::string ;
-    auto nickname    () const-> std::string ;
-    auto group       () const-> std::string ;
-    auto limit       () const-> std::string ;
-    auto actual      () const-> std::string ;
-    auto url         () const-> std::string ;
-    auto ap          () const-> std::string ;
-    auto isActive    () const-> std::string ;
-    auto isVisible   () const-> std::string ;
-    auto autoPay     () const-> std::string ;
-    auto payNow      () const-> std::string ;
-    auto last4       () const-> std::string ;
-    auto note        () const-> std::string ;
+    auto guid            () const-> std::string ;
+    auto accountGuid     () const-> std::string ;
+    auto accountFullName () const-> std::string ;
+    auto dueDay          () const-> std::string ;
+    auto minimum         () const-> std::string ;
+    auto budget          () const-> std::string ;
+    auto nickname        () const-> std::string ;
+    auto group           () const-> std::string ;
+    auto limit           () const-> std::string ;
+    auto actual          () const-> std::string ;
+    auto url             () const-> std::string ;
+    auto ap              () const-> std::string ;
+    auto isActive        () const-> std::string ;
+    auto isVisible       () const-> std::string ;
+    auto autoPay         () const-> std::string ;
+    auto payNow          () const-> std::string ;
+    auto last4           () const-> std::string ;
+    auto note            () const-> std::string ;
     auto cb(int _index) const-> std::string ;
 
     auto set_accountGuid ( const Wt::WString & _value )-> void ;
