@@ -2,32 +2,9 @@
 
 #include <Wt/WVBoxLayout.h>
 
-#include "../../Eng/AccountComboModel.h"
 #include "../../Glb/Core.h"
+#include "../AccountSuggestionEdit.h"
 #include "BillPay.h"
-
-GCW::Gui::BillPay::PaymentWidget::PaymentTable::
-PaymentTable()
-: Wt::WContainerWidget()
-{
-  m_table = addNew< Wt::WTable >();
-  m_table-> setWidth( "100%" );
-  int col = 0;
-  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.account" ) );
-  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.debit"   ) );
-  m_table-> elementAt( 0, col++ )-> addNew< Wt::WText >( TR( "gcw.billPay.label.credit"  ) );
-
-  for( int row=1; row< 3; row++ )
-  {
-    int col = 0;
-    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
-    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
-    m_table-> elementAt( row, col++ )-> addNew< Wt::WLineEdit >( );
-
-  }
-
-
-} // endPaymentTable()
 
 GCW::Gui::BillPay::PaymentWidget::
 PaymentWidget( const std::string & _bpGuid )
@@ -43,8 +20,7 @@ PaymentWidget( const std::string & _bpGuid )
 
   /*
   ** This is a complex widget, with a header area with a
-  **  handful of fields, then a tab widget with a couple
-  **  pages.
+  **  handful of fields, and some controls and whatnot.
   **
   */
   auto templtMain =
@@ -58,28 +34,60 @@ PaymentWidget( const std::string & _bpGuid )
   ** add all the widgets
   **
   */
-//  m_pbSave     = templtMain-> bindNew< Wt::WPushButton >( "save"      , TR("gcw.billPay.label.save")   );
-//  m_pbCancel   = templtMain-> bindNew< Wt::WPushButton >( "cancel"    , TR("gcw.billPay.label.cancel") );
-  m_payTable   = templtMain-> bindNew< PaymentTable    >( "paymentTable"                               );
-  m_trans      = templtMain-> bindNew< Wt::WLineEdit   >( "trans"                                      );
-  m_date       = templtMain-> bindNew< Wt::WLineEdit   >( "date"                                       );
-  m_memo       = templtMain-> bindNew< Wt::WLineEdit   >( "memo"                                       );
-  m_confirm    = templtMain-> bindNew< Wt::WTextArea   >( "confirm"                                    );
+  m_table      = templtMain-> bindNew< Wt::WTable      >( "table"         );
+  m_table-> addStyleClass( "MakePaymentTable" );
 
-//  m_pbSave    -> setStyleClass( "btn-xs" );
-//  m_pbCancel  -> setStyleClass( "btn-xs" );
+  m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit >( );
+  m_num        = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit >( );
+  m_desc       = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit >( );
+  auto acct    = table()-> elementAt( 0, 3 )-> addNew< Wt::WLineEdit >( );
+  m_recon      = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit >( );
+  m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit >( );
+  m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit >( );
 
-  m_trans     -> setToolTip( TR("gcw.billPay.toolTip.trans"       ) );
-  m_date      -> setToolTip( TR("gcw.billPay.toolTip.date"        ) );
-  m_memo      -> setToolTip( TR("gcw.billPay.toolTip.memo"        ) );
-  m_confirm   -> setToolTip( TR("gcw.billPay.toolTip.confirm"     ) );
+  table()-> elementAt( 1, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
+  table()-> elementAt( 1, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
+  table()-> elementAt( 1, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
+  table()-> elementAt( 1, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
+  table()-> elementAt( 1, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
+  table()-> elementAt( 1, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
 
-  templtMain-> bindString( "transLabel"    , TR("gcw.billPay.label.trans"    ) );
-  templtMain-> bindString( "dateLabel"     , TR("gcw.billPay.label.date"     ) );
-  templtMain-> bindString( "memoLabel"     , TR("gcw.billPay.label.memo"     ) );
+  table()-> elementAt( 2, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
+  table()-> elementAt( 2, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
+  table()-> elementAt( 2, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
+  table()-> elementAt( 2, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
+  table()-> elementAt( 2, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
+  table()-> elementAt( 2, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
 
-//  m_pbSave   -> clicked().connect( [&](){ saveData();       });
-//  m_pbCancel -> clicked().connect( [&](){ m_cancel.emit();  });
+  table()-> elementAt( 3, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
+  table()-> elementAt( 3, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
+  table()-> elementAt( 3, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
+  table()-> elementAt( 3, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
+  table()-> elementAt( 3, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
+  table()-> elementAt( 3, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
+
+  m_date   -> addStyleClass      ( "date"        );
+  m_num    -> addStyleClass      ( "num"         );
+  m_desc   -> addStyleClass      ( "desc"        );
+    acct   -> addStyleClass      ( "acct"        );
+  m_recon  -> addStyleClass      ( "recon"       );
+  m_debit  -> addStyleClass      ( "debit"       );
+  m_credit -> addStyleClass      ( "credit"      );
+
+  m_date   -> setPlaceholderText ( "Date"        );
+  m_num    -> setPlaceholderText ( "Num"         );
+  m_desc   -> setPlaceholderText ( "Description" );
+  m_recon  -> setPlaceholderText ( "R"           );
+  m_debit  -> setPlaceholderText ( "Debit"       );
+  m_credit -> setPlaceholderText ( "Credit"      );
+
+//  m_trans1    -> setToolTip( TR("gcw.billPay.toolTip.trans"       ) );
+//  m_date1     -> setToolTip( TR("gcw.billPay.toolTip.date"        ) );
+//  m_memo1     -> setToolTip( TR("gcw.billPay.toolTip.memo"        ) );
+//  m_confirm   -> setToolTip( TR("gcw.billPay.toolTip.confirm"     ) );
+
+  m_confirm = templtMain-> bindNew< Wt::WTextArea >( "confirm" );
+  m_confirm-> setPlaceholderText( "Confirmation" );
 
   /*
   ** get all the data loaded

@@ -10,7 +10,7 @@ AccountComboBox()
   setModel( std::make_shared< GCW::Eng::AccountComboModel >() );
   setModelColumn( 1 );
 
-} // endComboBox()
+} // endAccountComboBox()
 
 auto
 GCW::Gui::AccountComboBox::
@@ -19,7 +19,7 @@ valueGuid()-> std::string
   return
     Wt::asString( model()-> data( currentIndex(), 0 ) ).toUTF8() ;
 
-} // endselectedGuid()-> std::string
+} // endvalueGuid()-> std::string
 
 
 

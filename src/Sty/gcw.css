@@ -217,5 +217,59 @@
   text-align: left;
 }
 
+.PaymentWidget
+{
+  background-color: aquamarine;
+}
+
+.MakePaymentTable .date
+{
+  width:125px;
+}
+
+.MakePaymentTable .num
+{
+  width:35px;
+  text-align:center;
+}
+
+.MakePaymentTable .desc
+{
+  width:175px;
+}
+
+.MakePaymentTable .acct
+{
+  width:175px;
+  text-align:right;
+}
+
+.MakePaymentTable .recon
+{
+  width:35px;
+  text-align:center;
+}
+
+.MakePaymentTable .debit
+{
+  width:75px;
+  text-align:right;
+}
+
+.MakePaymentTable .credit
+{
+  width:75px;
+  text-align:right;
+}
+
+.MakePaymentTable .form-control
+{
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:0px;
+  padding-bottom:0px;
+  height:23px;
+}
+
 
 

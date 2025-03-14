@@ -6,6 +6,7 @@
 #include <Wt/WCheckBox.h>
 #include <Wt/WComboBox.h>
 #include <Wt/WContainerWidget.h>
+#include <Wt/WDateEdit.h>
 #include <Wt/WDialog.h>
 #include <Wt/WImage.h>
 #include <Wt/WLabel.h>
@@ -34,18 +35,6 @@ namespace GCW {
 class PaymentWidget
 : public Wt::WContainerWidget
 {
-
-    class PaymentTable
-    : public Wt::WContainerWidget
-    {
-      public:
-
-        PaymentTable();
-
-        Wt::WTable * m_table = nullptr ;
-
-    }; // endclass PaymentTable
-
   public:
 
     PaymentWidget( const std::string & _bpGuid );
@@ -57,13 +46,15 @@ class PaymentWidget
 
     std::string m_bpGuid;
 
-    Wt::WPushButton  * m_pbSave    = nullptr ;
-    Wt::WPushButton  * m_pbCancel  = nullptr ;
-    PaymentTable     * m_payTable  = nullptr ;
-    Wt::WLineEdit    * m_trans     = nullptr ;
-    Wt::WLineEdit    * m_date      = nullptr ;
-    Wt::WLineEdit    * m_memo      = nullptr ;
-    Wt::WLineEdit    * m_amount    = nullptr ;
+    auto table()-> Wt::WTable * { return m_table; }
+
+    Wt::WTable       * m_table     = nullptr ;
+    Wt::WDateEdit    * m_date      = nullptr ;
+    Wt::WLineEdit    * m_num       = nullptr ;
+    Wt::WLineEdit    * m_desc      = nullptr ;
+    Wt::WLineEdit    * m_recon     = nullptr ;
+    Wt::WLineEdit    * m_debit     = nullptr ;
+    Wt::WLineEdit    * m_credit    = nullptr ;
     Wt::WTextArea    * m_confirm   = nullptr ;
 
 }; // endclass PaymentWidget

@@ -16,6 +16,7 @@
 #include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Transactions/Manager.h"
+#include "AccountSuggestionPopup.h"
 #include "AccountRegister.h"
 
 namespace {
@@ -578,30 +579,8 @@ createEditor
   auto cw       = dynamic_cast< Wt::WContainerWidget* > ( retVal.get()   );
   auto lineEdit = dynamic_cast< Wt::WLineEdit* >        ( cw-> widget(0) );
 
-  // options for email address suggestions
-  Wt::WSuggestionPopup::Options popupOptions =
-  {
-    "<b>",                 // highlightBeginTag
-    "</b>",                // highlightEndTag
-    ',',                   // listSeparator      (for multiple addresses)
-    " \n",                 // whitespace
-      "()[]{}-., \"@\n;:", // wordSeparators     (within an address)
-//    "-., \"@\n;:",         // wordSeparators     (within an address)
-    ""                     // appendReplacedText (prepare next email address)
-   };
-
-  auto popup = retVal-> addChild( std::make_unique< Wt::WSuggestionPopup >( popupOptions ) );
+  auto popup = retVal-> addChild( std::make_unique< GCW::Gui::AccountSuggestionPopup >() );
   popup-> forEdit( lineEdit, Wt::PopupTrigger::Editing /* | Wt::PopupTrigger::DropDownIcon */ );
-  popup-> setAttributeValue( "style", "height:250px;overflow:scroll" );
-//  popup-> setJavaScriptMember( "wtNoReparent", "true" );
-
-  std::set< std::string > items;
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  for( auto accountItem : GCW::Dbo::Accounts::activeAccounts() )
-    items.insert( GCW::Dbo::Accounts::fullName( accountItem-> guid() ) );
-
-  for( auto item : items )
-    popup-> addSuggestion( item );
 
   return retVal;
 
