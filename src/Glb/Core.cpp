@@ -267,12 +267,6 @@ currentDateTime()-> Wt::WDateTime
 
 
 /*
-** note about this date time:
-**  WLocalDateTime will produce the local-time
-**  WDateTime will product a GMT time
-**
-** This was tested, and gnucash seems to want the GMT time-stamp
-**  rather than the local time (makes sense really)
 **
 */
 auto
@@ -281,6 +275,19 @@ currentDateTimeStorageString()-> std::string
 {
   return
     currentDateTime().toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+
+} // endcurrentDateTime()-> std::string
+
+
+/*
+**
+*/
+auto
+GCW::Core::
+currentDateTimeDisplayString()-> std::string
+{
+  return
+    currentDateTime().toString( GCW_DATE_FORMAT_DISPLAY ).toUTF8();
 
 } // endcurrentDateTime()-> std::string
 

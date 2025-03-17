@@ -17,6 +17,7 @@ class Item
 
     auto guid            () const-> std::string ;
     auto accountGuid     () const-> std::string ;
+    auto payToGuid       () const-> std::vector< std::string > ;
     auto accountFullName () const-> std::string ;
     auto dueDay          () const-> std::string ;
     auto minimum         () const-> std::string ;

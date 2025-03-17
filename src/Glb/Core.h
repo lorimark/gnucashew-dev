@@ -54,6 +54,7 @@ auto newGuid()-> std::string ;
 */
 auto currentDateTime()-> Wt::WDateTime ;
 auto currentDateTimeStorageString()-> std::string ;
+auto currentDateTimeDisplayString()-> std::string ;
 
   } // endnamespace Core
 } // endnamespace GCW

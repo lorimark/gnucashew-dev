@@ -21,6 +21,7 @@
 #include <Wt/WTextEdit.h>
 
 #include "../AccountComboBox.h"
+#include "Item.h"
 
 namespace GCW {
   namespace Gui {
@@ -39,15 +40,16 @@ class PaymentWidget
 
     PaymentWidget( const std::string & _bpGuid );
 
+    auto bpGuid() const-> const std::string & { return m_bpGuid; }
+
     auto loadData()-> void ;
     auto saveData()-> void ;
 
   private:
 
-    std::string m_bpGuid;
-
     auto table()-> Wt::WTable * { return m_table; }
 
+    std::string        m_bpGuid              ;
     Wt::WTable       * m_table     = nullptr ;
     Wt::WDateEdit    * m_date      = nullptr ;
     Wt::WLineEdit    * m_num       = nullptr ;

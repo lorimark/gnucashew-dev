@@ -2,6 +2,7 @@
 
 #include <Wt/WVBoxLayout.h>
 
+#include "../../Dbo/Transactions/Manager.h"
 #include "../../Glb/Core.h"
 #include "../AccountSuggestionEdit.h"
 #include "BillPay.h"
@@ -34,7 +35,7 @@ PaymentWidget( const std::string & _bpGuid )
   ** add all the widgets
   **
   */
-  m_table      = templtMain-> bindNew< Wt::WTable      >( "table"         );
+  m_table = templtMain-> bindNew< Wt::WTable >( "table" );
   m_table-> addStyleClass( "MakePaymentTable" );
 
   m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit >( );
@@ -94,7 +95,7 @@ PaymentWidget( const std::string & _bpGuid )
   */
   loadData();
 
-} // endEditWidget( const std::string & _accountGuid )
+} // endPaymentWidget( const std::string & _bpGuid )
 
 auto
 GCW::Gui::BillPay::PaymentWidget::
@@ -106,10 +107,14 @@ loadData()-> void
   if( m_bpGuid == "" )
     return;
 
-  /*
-  ** Get the item that carries the bill-pay info
-  */
-  auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
+  auto bpItem = GCW::Gui::BillPay::bpItem( bpGuid() );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " bpItem:"  << bpItem.guid()        << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " account:" << bpItem.accountGuid() << std::endl;
+
+  GCW::Dbo::Transactions::Manager transactionManager;
+
+  m_date-> setValueText( GCW::Core::currentDateTimeDisplayString() );
 
 #ifdef NEVER
   /*

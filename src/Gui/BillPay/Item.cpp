@@ -22,7 +22,7 @@
 #define FN_CB          "cb"
 
 GCW::Gui::BillPay::Item::
-Item( GCW::Dbo::Vars::Item::Ptr _varItem )
+Item ( GCW::Dbo::Vars::Item::Ptr _varItem )
 : m_varItem( _varItem )
 {
 
@@ -30,7 +30,7 @@ Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 
 auto
 GCW::Gui::BillPay::Item::
-sortValue() const -> float
+sortValue () const -> float
 {
   std::string sortvalue = "0";
 
@@ -61,6 +61,22 @@ accountGuid () const-> std::string
     m_varItem-> getVarString( FN_ACCOUNTGUID );
 
 } // endaccountGuid () const-> std::string
+
+auto
+GCW::Gui::BillPay::Item::
+payToGuid () const-> std::vector< std::string >
+{
+  std::vector< std::string > retVal;
+
+  /*
+  ** this should find the previous bill-pay and collect
+  **  all the other GUID used in the event
+  */
+
+  return retVal;
+
+} // endpayToGuid () const-> std::vector< std::string >
+
 
 auto
 GCW::Gui::BillPay::Item::
@@ -209,7 +225,7 @@ note () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
-cb( int _index ) const-> std::string
+cb ( int _index ) const-> std::string
 {
   return
     m_varItem-> getVarString( FN_CB + toString( _index ) );
@@ -218,7 +234,7 @@ cb( int _index ) const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
-setVar( const std::string & _key, const Wt::WString & _value )-> void
+setVar ( const std::string & _key, const Wt::WString & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   m_varItem.modify()-> setVar( _key, _value );
@@ -227,7 +243,7 @@ setVar( const std::string & _key, const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_accountGuid( const Wt::WString & _value )-> void
+set_accountGuid ( const Wt::WString & _value )-> void
 {
   setVar( FN_ACCOUNTGUID, _value );
 
@@ -235,7 +251,7 @@ set_accountGuid( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_dueDay( const Wt::WString & _value )-> void
+set_dueDay ( const Wt::WString & _value )-> void
 {
   setVar( FN_DUEDAY, _value );
 
@@ -243,7 +259,7 @@ set_dueDay( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_minimum( const Wt::WString & _value )-> void
+set_minimum ( const Wt::WString & _value )-> void
 {
   setVar( FN_MINIMUM, _value );
 
@@ -251,7 +267,7 @@ set_minimum( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_budget( const Wt::WString & _value )-> void
+set_budget ( const Wt::WString & _value )-> void
 {
   setVar( FN_BUDGET, _value );
 
@@ -259,7 +275,7 @@ set_budget( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_nickname( const Wt::WString & _value )-> void
+set_nickname ( const Wt::WString & _value )-> void
 {
   setVar( FN_NICKNAME, _value );
 
@@ -267,7 +283,7 @@ set_nickname( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_group( const Wt::WString & _value )-> void
+set_group ( const Wt::WString & _value )-> void
 {
   setVar( FN_GROUP, _value );
 
@@ -275,7 +291,7 @@ set_group( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_limit( const Wt::WString & _value )-> void
+set_limit ( const Wt::WString & _value )-> void
 {
   setVar( FN_LIMIT, _value );
 
@@ -283,7 +299,7 @@ set_limit( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_actual( const Wt::WString & _value )-> void
+set_actual ( const Wt::WString & _value )-> void
 {
   setVar( FN_ACTUAL, _value );
 
@@ -291,7 +307,7 @@ set_actual( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_url( const Wt::WString & _value )-> void
+set_url ( const Wt::WString & _value )-> void
 {
   setVar( FN_URL, _value );
 
@@ -299,7 +315,7 @@ set_url( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_ap( const Wt::WString & _value )-> void
+set_ap ( const Wt::WString & _value )-> void
 {
   setVar( FN_AP, _value );
 
@@ -307,7 +323,7 @@ set_ap( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_isActive( const Wt::WString & _value )-> void
+set_isActive ( const Wt::WString & _value )-> void
 {
   setVar( FN_ISACTIVE, _value );
 
@@ -315,7 +331,7 @@ set_isActive( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_isVisible( const Wt::WString & _value )-> void
+set_isVisible ( const Wt::WString & _value )-> void
 {
   setVar( FN_ISVISIBLE, _value );
 
@@ -323,7 +339,7 @@ set_isVisible( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_autoPay( const Wt::WString & _value )-> void
+set_autoPay ( const Wt::WString & _value )-> void
 {
   setVar( FN_AUTOPAY, _value );
 
@@ -331,7 +347,7 @@ set_autoPay( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_payNow( const Wt::WString & _value )-> void
+set_payNow ( const Wt::WString & _value )-> void
 {
   setVar( FN_PAYNOW, _value );
 
@@ -339,7 +355,7 @@ set_payNow( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_last4( const Wt::WString & _value )-> void
+set_last4 ( const Wt::WString & _value )-> void
 {
   setVar( FN_LAST4, _value );
 
@@ -347,7 +363,7 @@ set_last4( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_note( const Wt::WString & _value )-> void
+set_note ( const Wt::WString & _value )-> void
 {
   setVar( FN_NOTE, _value );
 
@@ -355,7 +371,7 @@ set_note( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
-set_cb(int _index, const Wt::WString & _value)-> void
+set_cb ( int _index, const Wt::WString & _value )-> void
 {
   setVar( FN_CB + toString( _index ), _value );
 

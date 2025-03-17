@@ -59,6 +59,9 @@ EditWidget( const std::string & _bpGuid )
   m_pbDelete  -> setStyleClass( "btn-xs" );
   m_pbProcess -> setStyleClass( "btn-xs" );
 
+  m_pbDelete  -> setDisabled( true );
+  m_pbProcess -> setDisabled( true );
+
   m_account   -> setToolTip( TR("gcw.billPay.toolTip.account"     ) );
   m_dueDay    -> setToolTip( TR("gcw.billPay.toolTip.dueDay"      ) );
   m_minimum   -> setToolTip( TR("gcw.billPay.toolTip.minimum"     ) );
@@ -175,6 +178,9 @@ loadData()-> void
   if( m_bpGuid == "" )
     return;
 
+  m_pbProcess -> setDisabled( false );
+  m_pbDelete  -> setDisabled( false );
+
   /*
   ** Get the item that carries the bill-pay info
   */
@@ -212,7 +218,6 @@ loadData()-> void
   */
   if( fullName != "" )
     m_account-> setDisabled( true );
-
 
   int i = 1;
   for( auto cb : m_cbx )
