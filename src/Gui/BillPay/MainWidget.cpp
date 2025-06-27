@@ -68,6 +68,11 @@ buildContent()-> void
     m_unpaidView = u_.get();
     cw-> addWidget( std::move( u_ ) );
     m_unpaidView->
+      clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        m_selectedIndex = _index;
+      });
+    m_unpaidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
         editClicked( m_unpaidView, _index );
@@ -87,6 +92,11 @@ buildContent()-> void
     m_paidView = u_.get();
     cw-> addWidget( std::move( u_ ) );
     m_paidView->
+      clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        m_selectedIndex = _index;
+      });
+    m_paidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
         editClicked( m_paidView, _index );
@@ -99,6 +109,11 @@ buildContent()-> void
     auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Disabled );
     m_disabledView = u_.get();
     cw-> addWidget( std::move( u_ ) );
+    m_disabledView->
+      clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        m_selectedIndex = _index;
+      });
     m_disabledView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -163,13 +178,18 @@ GCW::Gui::BillPay::MainWidget::
 do_addClicked()-> void
 {
   addClicked();
-}
+
+} // enddo_addClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
 do_editClicked()-> void
 {
-}
+  auto zcolIndex = m_selectedIndex.model()-> index( m_selectedIndex.row(), 0 );
+  auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
+  openEditor( bpGuid );
+
+} // enddo_editClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::

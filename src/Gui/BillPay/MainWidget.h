@@ -59,6 +59,7 @@ class MainWidget
 
     auto on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void ;
 
+    Wt::WModelIndex m_selectedIndex;
     int m_selectedMonth = -1;
 
 //    Wt::WGridLayout * m_gridLayout = nullptr;
