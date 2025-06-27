@@ -147,11 +147,21 @@ load( const std::string & _guid )-> GCW::Dbo::Accounts::Item::Ptr
         GCW::app()-> gnucashew_session().load< GCW::Dbo::Accounts::Item >( _guid )
         ;
     }
+
+    /*
+    ** It is possible to provide a guid that doesn't exist.  This can happen
+    **  in the bill-pay modules, since the bill-pay is somewhat loosely linked
+    **  to the actual gnucash items, if a gnucash account gets deleted and the
+    **  bill pay doesn't know about it, it can have a bad guid.
+    **
+    ** We don't care, we just return an .empty. item.
+    */
     catch( std::exception & e )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << e.what() << std::endl;
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << e.what() << std::endl;
     }
-  }
+
+  } // endif( _guid != "" )
 
   return retVal;
 
@@ -289,41 +299,47 @@ fullName( const std::string & _accountGuid )-> std::string
   if( _accountGuid == "" )
     return "";
 
+  std::string retVal;
+
   /*
   ** Fetch the account by Guid
   **
   */
   auto accountItem = byGuid( _accountGuid );
 
-  /*!
-  ** During the building process, even though the "root account"
-  **  is a valid account, it is ignored and not included in the
-  **  results.
-  **
-  */
-  if( accountItem == rootAccount() )
-    return "";
+  if( accountItem )
+  {
+    /*!
+    ** During the building process, even though the "root account"
+    **  is a valid account, it is ignored and not included in the
+    **  results.
+    **
+    */
+    if( accountItem == rootAccount() )
+      return "";
 
-  /*
-  ** This is a recursive function that extracts the portions of
-  **  the account names and assembles them in to a contiguous
-  **  string with ':' color separator.
-  **
-  */
-  std::string retVal = fullName( accountItem-> parent_guid() );
+    /*
+    ** This is a recursive function that extracts the portions of
+    **  the account names and assembles them in to a contiguous
+    **  string with ':' color separator.
+    **
+    */
+    retVal = fullName( accountItem-> parent_guid() );
 
-  /*
-  ** If we got anything then we need a separator
-  **
-  */
-  if( retVal != "" )
-      retVal += ":";
+    /*
+    ** If we got anything then we need a separator
+    **
+    */
+    if( retVal != "" )
+        retVal += ":";
 
-  /*
-  ** And, finally the name of our account.
-  **
-  */
-  retVal += accountItem-> name();
+    /*
+    ** And, finally the name of our account.
+    **
+    */
+    retVal += accountItem-> name();
+
+  } // endif( accountItem )
 
   /*!
   ** Recursively, this should generate a name such as;

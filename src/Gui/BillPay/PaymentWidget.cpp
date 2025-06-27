@@ -46,26 +46,40 @@ PaymentWidget( const std::string & _bpGuid )
   m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit >( );
   m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit >( );
 
-  table()-> elementAt( 1, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
-  table()-> elementAt( 1, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
-  table()-> elementAt( 1, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
-  table()-> elementAt( 1, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
-  table()-> elementAt( 1, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
-  table()-> elementAt( 1, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
+  auto _addElement = [&]( size_t _row, size_t _col, const char * styleClass, Wt::WFormWidget * _element )
+  {
+    _element-> addStyleClass( styleClass );
 
-  table()-> elementAt( 2, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
-  table()-> elementAt( 2, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
-  table()-> elementAt( 2, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
-  table()-> elementAt( 2, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
-  table()-> elementAt( 2, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
-  table()-> elementAt( 2, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
+    if( m_tableWidgets.size() <= _row )
+        m_tableWidgets.resize( _row + 1 );
 
-  table()-> elementAt( 3, 1 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "num"    );
-  table()-> elementAt( 3, 2 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "desc"   );
-  table()-> elementAt( 3, 3 )-> addNew< AccountSuggestionEdit >( )-> addStyleClass( "acct"   );
-  table()-> elementAt( 3, 4 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "recon"  );
-  table()-> elementAt( 3, 5 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "debit"  );
-  table()-> elementAt( 3, 6 )-> addNew< Wt::WLineEdit         >( )-> addStyleClass( "credit" );
+    if( m_tableWidgets[_row].size() <= _col )
+        m_tableWidgets[_row].resize( _col + 1 );
+
+    m_tableWidgets[_row][_col] = _element;
+  };
+
+  auto _addLineEdit = [&]( size_t _row, size_t _col, const char * _styleClass )
+  {
+    auto element = table()-> elementAt( _row, _col )-> addNew< Wt::WLineEdit >();
+    _addElement( _row, _col, _styleClass, element );
+  };
+
+  auto _addAcctEdit = [&]( size_t _row, size_t _col, const char * _styleClass )
+  {
+    auto element = table()-> elementAt( _row, _col )-> addNew< AccountSuggestionEdit >();
+    _addElement( _row, _col, _styleClass, element );
+  };
+
+  for( int row=1; row<= 3; row++ )
+  {
+    _addLineEdit( row, 1, "num"    );
+    _addLineEdit( row, 2, "desc"   );
+    _addAcctEdit( row, 3, "acct"   );
+    _addLineEdit( row, 4, "recon"  );
+    _addLineEdit( row, 5, "debit"  );
+    _addLineEdit( row, 6, "credit" );
+  }
 
   m_date   -> addStyleClass      ( "date"        );
   m_num    -> addStyleClass      ( "num"         );

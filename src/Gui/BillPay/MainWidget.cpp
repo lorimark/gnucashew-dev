@@ -34,8 +34,8 @@ buildContent()-> void
     m_toolBar = u_.get();
     cw-> addWidget( std::move( u_ ) );
 
-    m_toolBar-> addClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::addClicked  );
-//    m_toolBar-> editClicked().connect( this, &GCW::Gui::BillPay::MainWidget::editClicked );
+    m_toolBar-> addClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
+    m_toolBar-> editClicked().connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
     m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::disabledClicked );
 
@@ -60,6 +60,7 @@ buildContent()-> void
 //    lw2 = cw-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
 //    lw2-> setSpacing( 0 );
 //  }
+
 
   // unpaid items
   {
@@ -151,11 +152,24 @@ openEditor( const std::string & _bpGuid )-> void
   m_editWidget->
     cancel().connect( [=]()
     {
-      refreshViews();
+//      refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );
     });
 
 } // endopenEditor( const std::string & _nickname )-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
+do_addClicked()-> void
+{
+  addClicked();
+}
+
+auto
+GCW::Gui::BillPay::MainWidget::
+do_editClicked()-> void
+{
+}
 
 auto
 GCW::Gui::BillPay::MainWidget::

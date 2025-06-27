@@ -6,13 +6,11 @@
 #include "../Dbo/Vars/Vars.h"
 #include "BillPay.h"
 
-//#define NO_HEADER_ON_SUBSEQUENT_TABLES
-#define HEADER_COL0_HAS_TABLE_TYPE_NAME
-
 namespace {
 
 GCW::Gui::BillPay::ColumnDef_t columns[] =
 {
+//  name,          width,   alignment,                 toolTip
   { "accountKey" , "120px", Wt::AlignmentFlag::Left,   "Primary Account Identifier"        },
   { "last4"      ,  "60px", Wt::AlignmentFlag::Center, "Last 4 digits of account number"   },
   { "Nickname"   , "100px", Wt::AlignmentFlag::Left,   "Friendly Nickname for the account" },
@@ -55,7 +53,6 @@ Model( int _selectedMonth, const Status _status )
   **  that includes the header.  If the other two remaining
   **  views (Paid, Disabled) also had a header the gui would
   **  get too cluttered, so those headers are left blank.
-  **
   */
   if( m_status == GCW::Gui::BillPay::Status::Unpaid )
   {
@@ -99,7 +96,6 @@ loadData( int _selectedMonth )-> void
 
   /*!
   ** On load, all existing data in the model is first dumped.
-  **
   */
   while( rowCount() > 0 )
     takeRow( 0 );
@@ -127,7 +123,6 @@ loadData( int _selectedMonth )-> void
   ** Run the resultList collection through an analyzer that will
   **  extract billpay items that match the selection criteria of
   **  paid/unpaid/disabled/yes/no accordingly.
-  **
   */
   std::vector< GCW::Gui::BillPay::Item > bpItems;
   for( auto item : items )
@@ -136,14 +131,12 @@ loadData( int _selectedMonth )-> void
 
     /*
     ** Calculate these boolean.
-    **
     */
     auto isActive  = bpItem.isActive () == "yes";
     auto isVisible = bpItem.isVisible() == "yes";
 
     /*
     ** This is for Paid and Unpaid (not Disabled).
-    **
     */
     if( m_status == GCW::Gui::BillPay::Status::Paid
      || m_status == GCW::Gui::BillPay::Status::Unpaid
@@ -151,7 +144,6 @@ loadData( int _selectedMonth )-> void
     {
       /*
       ** The item ~must~ be active ~and~ visible.
-      **
       */
       if( isActive && isVisible )
       {
@@ -160,7 +152,6 @@ loadData( int _selectedMonth )-> void
         **  indicators of what has been paid and what has not.  Depending on the
         **  value of that payment status, it must therefore match the yes/no clause
         **  we calculated above.  If it's a match, we grab it.
-        **
         */
         if( bpItem.cb( _selectedMonth ) == yesNo )
 //        if( i-> getVarString( "cb" + GCW::Gui::BillPay::toString( _selectedMonth ) ) == yesNo )
@@ -172,19 +163,17 @@ loadData( int _selectedMonth )-> void
 
     /*
     ** This is for Disabled.
-    **
     */
     else
     if( m_status == GCW::Gui::BillPay::Status::Disabled ) // capture disabled items here
     {
       /*
       ** Disabled items are either notActive ~or~ notVisible.
-      **
       */
       if( !isActive || !isVisible )
           bpItems.push_back( bpItem );
 
-    } // endelse( .disabled. )
+    } // endelseif( .disabled. )
 
   } // endfor( auto i : items )
 
@@ -192,7 +181,6 @@ loadData( int _selectedMonth )-> void
   ** Sort all the items by the account group.dueDay.  (The
   **  user is not allowed to sort these views so we do it)  This sorts the items
   **  with the items that are due first, above those that are due next.
-  **
   */
   sort( bpItems );
 
@@ -204,7 +192,6 @@ loadData( int _selectedMonth )-> void
   {
     /*
     ** Grab a few handles.
-    **
     */
     auto accountName = std::make_unique< Wt::WStandardItem >();
     auto accountGuid = bpItem.accountGuid();
@@ -214,20 +201,30 @@ loadData( int _selectedMonth )-> void
       auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
 
       /*
-      ** build the account column to;
-      **  display the account name
-      **  carry the account-full-name as a toolTip,
-      **  carry the guid of the originating bpItem
+      ** set the bpItem.guid so we can edit this row
       */
-      accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
-      accountName-> setData( bpItem.guid()        , Wt::ItemDataRole::User    );
-      accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
+      accountName-> setData( bpItem.guid(), Wt::ItemDataRole::User  );
+
+      /*
+      ** sometimes the 'account' can get lost, so check first the
+      **  account still exists.
+      */
+      if( accountItem )
+      {
+        /*
+        ** build the account column to;
+        **  display the account name
+        **  carry the account-full-name as a toolTip,
+        **  carry the guid of the originating bpItem
+        */
+        accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
+        accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
+      }
 
     } // endif( accountGuid != "" )
 
     /*
-    ** The columns are pushed in to this.
-    **
+    ** The columns are pushed in to .columns. variable.
     */
     std::vector< std::unique_ptr< Wt::WStandardItem > > columns;
     columns.push_back( std::move( accountName ) );
@@ -240,6 +237,9 @@ loadData( int _selectedMonth )-> void
     columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.actual   () ) );
     columns.push_back( std::make_unique< Wt::WStandardItem >( bpItem.autoPay  () ) );
 
+    /*
+    ** Load 12-columns, one for each month.
+    */
     for( int month=1; month<= 12; month++ )
     {
       auto cb = std::make_unique< Wt::WStandardItem >( bpItem.cb( month ) );
@@ -251,7 +251,6 @@ loadData( int _selectedMonth )-> void
       **  view in the browser.
       **
       ** \image html BillPayColumnSelector.png
-      **
       */
       if( _selectedMonth == month )
         cb-> setStyleClass( "colsel" );
@@ -262,7 +261,6 @@ loadData( int _selectedMonth )-> void
 
     /*
     ** Push everything in to the model.
-    **
     */
     appendRow( std::move( columns ) );
 
@@ -283,7 +281,6 @@ sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
 {
   /*!
   ** Sort the vector of bpItems by group.dueDay
-  **
   */
   std::sort
   (
@@ -303,7 +300,6 @@ sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
 
        /*
        ** return .bool. of the comparison
-       **
        */
        return item1.sortValue()
             < item2.sortValue()

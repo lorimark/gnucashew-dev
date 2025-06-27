@@ -59,6 +59,8 @@ class PaymentWidget
     Wt::WLineEdit    * m_credit    = nullptr ;
     Wt::WTextArea    * m_confirm   = nullptr ;
 
+    std::vector< std::vector< Wt::WFormWidget * > > m_tableWidgets ;
+
 }; // endclass PaymentWidget
 
 /*!

@@ -2,6 +2,7 @@
 
 #include <Wt/WMenuItem.h>
 #include <Wt/WVBoxLayout.h>
+#include <Wt/WMessageBox.h>
 
 #include "../../Eng/AccountComboModel.h"
 #include "../../Glb/Core.h"
@@ -173,7 +174,7 @@ GCW::Gui::BillPay::EditWidget::
 loadData()-> void
 {
   /*
-  ** be safe
+  ** beware of safety
   */
   if( m_bpGuid == "" )
     return;
@@ -232,6 +233,15 @@ GCW::Gui::BillPay::EditWidget::
 saveData()-> void
 {
   /*
+  ** This needs to be set before we can save
+  */
+  if( m_account-> valueText() == "" )
+  {
+    Wt::WMessageBox::show( "Bill Pay", "Please choose an account.", Wt::StandardButton::Ok );
+    return;
+  }
+
+  /*
   ** little bit of housekeeping before we begin
   */
   if( m_bpGuid == "" )
@@ -247,23 +257,23 @@ saveData()-> void
   /*
   ** save everything
   */
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  bpItem.set_accountGuid ( m_account   -> valueGuid() );
-  bpItem.set_dueDay      ( m_dueDay    -> valueText() );
-  bpItem.set_minimum     ( m_minimum   -> valueText() );
-  bpItem.set_budget      ( m_budget    -> valueText() );
-  bpItem.set_nickname    ( m_nickname  -> valueText() );
-  bpItem.set_group       ( m_group     -> valueText() );
-  bpItem.set_limit       ( m_limit     -> valueText() );
-  bpItem.set_actual      ( m_actual    -> valueText() );
-  bpItem.set_url         ( m_url       -> valueText() );
-  bpItem.set_ap          ( m_ap        -> valueText() );
-  bpItem.set_isActive    ( m_isActive  -> valueText() );
-  bpItem.set_isVisible   ( m_isVisible -> valueText() );
-  bpItem.set_autoPay     ( m_autoPay   -> valueText() );
-  bpItem.set_payNow      ( m_payNow    -> valueText() );
-  bpItem.set_last4       ( m_last4     -> valueText() );
-  bpItem.set_note        ( m_note      -> valueText() );
+  Wt::Dbo::Transaction t ( GCW::app()  -> gnucashew_session() );
+  bpItem.set_accountGuid ( m_account   -> valueGuid()         );
+  bpItem.set_dueDay      ( m_dueDay    -> valueText()         );
+  bpItem.set_minimum     ( m_minimum   -> valueText()         );
+  bpItem.set_budget      ( m_budget    -> valueText()         );
+  bpItem.set_nickname    ( m_nickname  -> valueText()         );
+  bpItem.set_group       ( m_group     -> valueText()         );
+  bpItem.set_limit       ( m_limit     -> valueText()         );
+  bpItem.set_actual      ( m_actual    -> valueText()         );
+  bpItem.set_url         ( m_url       -> valueText()         );
+  bpItem.set_ap          ( m_ap        -> valueText()         );
+  bpItem.set_isActive    ( m_isActive  -> valueText()         );
+  bpItem.set_isVisible   ( m_isVisible -> valueText()         );
+  bpItem.set_autoPay     ( m_autoPay   -> valueText()         );
+  bpItem.set_payNow      ( m_payNow    -> valueText()         );
+  bpItem.set_last4       ( m_last4     -> valueText()         );
+  bpItem.set_note        ( m_note      -> valueText()         );
 
   int i = 1;
   for( auto cb : m_cbx )

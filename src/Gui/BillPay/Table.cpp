@@ -23,6 +23,7 @@ Table( int _selectedMonth, const Status _status )
   setSortingEnabled       ( false                       );
   setSelectionBehavior    ( Wt::SelectionBehavior::Rows );
   setSelectionMode        ( Wt::SelectionMode::Single   );
+  setColumnResizeEnabled  ( false                       );
   setAlternatingRowColors ( true                        );
 
   /*

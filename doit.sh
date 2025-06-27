@@ -12,4 +12,5 @@ make -j 4 && \
 cp gnucashew-bin gnucashew-live && \
 ../run.sh
 
+../doit.sh
 

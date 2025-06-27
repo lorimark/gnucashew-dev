@@ -10,6 +10,8 @@
 GCW::Gui::MainMenu::
 MainMenu( MainWidget * _mainWidget )
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
 
   /*
   ** FILE
@@ -337,6 +339,8 @@ MainMenu( MainWidget * _mainWidget )
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.about"         ) )-> setDisabled( true );
     m_uHelp-> setMenu( std::move( popHelp ) );
   }
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 } // endMainMenu();
 

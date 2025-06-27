@@ -29,6 +29,8 @@ class MainWidget
   private:
 
     auto buildContent()-> void ;
+    auto do_addClicked()-> void ;
+    auto do_editClicked()-> void ;
     auto addClicked()-> void ;
     auto editClicked( Table * _table, Wt::WModelIndex _index )-> void ;
     auto openEditor( const std::string & _bpGuid )-> void ;

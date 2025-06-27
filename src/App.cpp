@@ -97,7 +97,6 @@ GCW::App::App( const Wt::WEnvironment & env )
   //  note: that the wthttp back-end does not regard the X-Forwarded-For value
   //         and therefore will report the incorrect IP address to the console
   //
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
   std::cout << __FILE__ << ":" << __LINE__ << " " << environment().headerValue( "X-Forwarded-For" ) << std::endl;
   for( const auto & kvp : environment().getParameterMap() )
     for( const auto vvv : kvp.second )
@@ -105,7 +104,15 @@ GCW::App::App( const Wt::WEnvironment & env )
 #endif
 
 #ifndef NEVER
-  std::cout << __FILE__ << ":" << __LINE__ << std::endl << __FILE__ << ":" << __LINE__ << " [" << Wt::WDateTime::currentDateTime().toString() << "] " << environment().clientAddress() << " " << sessionId() << " " << url() << std::endl << __FILE__ << ":" << __LINE__ << std::endl;
+  std::cout
+    << __FILE__ << ":" << __LINE__ << std::endl
+    << __FILE__ << ":" << __LINE__
+    << " [" << Wt::WDateTime::currentDateTime().toString()
+    << "] " << environment().clientAddress()
+    << " "  << sessionId()
+    << " "  << url() << std::endl
+    << __FILE__ << ":" << __LINE__
+    << std::endl;
 #endif
 
 #ifdef USE_GNUCASH_ENGINE
@@ -182,6 +189,17 @@ GCW::App::App( const Wt::WEnvironment & env )
   buildSite();
 
 #ifdef NEVER
+  std::cout << __FILE__ << ":" << __LINE__
+    << " \tcommodity.isocode"
+    << " \tcommodity.unitname"
+    << " \tcommodity.partname"
+    << " \tcommodity.nameSpace"
+    << " \tcommodity.exchangeCode"
+    << " \tcommodity.partsPerUnit"
+    << " \tcommodity.smallestFraction"
+    << " \tcommodity.localSymbol"
+    << " \tcommodity.fullname"
+    << std::endl;
   for( auto & commodity : GCW::Dbo::Commodities::getIso4217Commodities() )
   {
     std::cout << __FILE__ << ":" << __LINE__
@@ -196,6 +214,17 @@ GCW::App::App( const Wt::WEnvironment & env )
       << " \t" << commodity.fullname
       << std::endl;
   }
+#endif
+
+#ifdef SIMPLE_REPEATING_TIMER_FOR_TESTING_THINGS
+  m_timer = std::make_unique< Wt::WTimer >();
+  m_timer-> setInterval( std::chrono::seconds(1) );
+  m_timer-> start();
+  m_timer->
+    timeout().connect( [&]( Wt::WMouseEvent _event )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " testing something..." << std::endl;
+    });
 #endif
 
 } // endGCW::App::App( const Wt::WEnvironment & env )
