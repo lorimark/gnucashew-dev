@@ -25,6 +25,8 @@ AccountSuggestionPopup()
   for( auto accountItem : GCW::Dbo::Accounts::activeAccounts() )
     items.insert( GCW::Dbo::Accounts::fullName( accountItem-> guid() ) );
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << items.size() << std::endl;
+
   for( auto item : items )
     addSuggestion( item );
 

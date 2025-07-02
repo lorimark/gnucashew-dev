@@ -1,5 +1,9 @@
 
-add_subdirectory( BillPay  )
+
+if( ENABLE_BILLPAY )
+  add_subdirectory( BillPay  )
+endif()
+
 add_subdirectory( Customer )
 
 set( GCW_FILES ${GCW_FILES}

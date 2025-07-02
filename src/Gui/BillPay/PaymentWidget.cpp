@@ -41,11 +41,12 @@ PaymentWidget( const std::string & _bpGuid )
   m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit >( );
   m_num        = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit >( );
   m_desc       = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit >( );
-  auto acct    = table()-> elementAt( 0, 3 )-> addNew< Wt::WLineEdit >( );
+  auto acct    = table()-> elementAt( 0, 3 )-> addNew< AccountSuggestionEdit >( );
   m_recon      = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit >( );
   m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit >( );
   m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit >( );
 
+#ifdef INCLUDE_TABLE_WITH_MULTIPLE_INPUT_ROWS
   /*
   ** add the edit widget to the tableWidgets vector set
   */
@@ -92,6 +93,7 @@ PaymentWidget( const std::string & _bpGuid )
     _addLineEdit( row, 5, "debit"  );
     _addLineEdit( row, 6, "credit" );
   }
+#endif
 
   /*
   ** apply styling
@@ -198,8 +200,8 @@ PaymentWidgetDialog( const std::string & _bpGuid )
 
   auto editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );
 
-  auto pbSave   = titleBar()-> addNew< Wt::WPushButton >( TR("gcw.billPay.label.save")   );
-  auto pbCancel = titleBar()-> addNew< Wt::WPushButton >( TR("gcw.billPay.label.cancel") );
+  auto pbSave   = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.label.save"   ) );
+  auto pbCancel = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.label.cancel" ) );
 
   pbSave    -> setStyleClass( "btn-xs" );
   pbCancel  -> setStyleClass( "btn-xs" );

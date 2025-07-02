@@ -18,7 +18,11 @@
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Transactions/Transactions.h"
 #include "../Dbo/Versions/Versions.h"
+
+#ifdef ENABLE_BILLPAY
 #include "BillPay/MainWidget.h"
+#endif
+
 #include "Customer/MainWidget.h"
 #include "CentralWidget.h"
 #include "EmployeesWidget.h"
@@ -312,6 +316,7 @@ open_EmployeesWidget()-> void
 
 } // endopen_CustomersWidget()-> void
 
+#ifdef ENABLE_BILLPAY
 auto
 GCW::Gui::CentralWidget::
 open_BillPayWidget()-> void
@@ -350,6 +355,7 @@ open_BillPayWidget()-> void
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
 } // endopen_BillPayWidget()-> void
+#endif
 
 auto
 GCW::Gui::CentralWidget::

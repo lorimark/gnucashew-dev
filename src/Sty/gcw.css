@@ -222,6 +222,11 @@
   background-color: aquamarine;
 }
 
+.MakePaymentTable
+{
+  margin-bottom: 5px;
+}
+
 .MakePaymentTable .date
 {
   width:125px;

@@ -1,1 +1,2 @@
-cmake ../src
+cmake ../src -DENABLE_BILLPAY=ON
+

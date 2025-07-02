@@ -87,8 +87,10 @@ MainMenu( MainWidget * _mainWidget )
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.scheduled"     ) )-> setDisabled( true );
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.budget"        ) )-> setDisabled( true );
 
+#ifdef ENABLE_BILLPAY
     if( GCW::app()-> gnucashew_session().hasGnuCashewExtensions() )
       popActions-> addItem( TR( "gcw.MainWidget.mu.actions.billpay"       ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_BillPayWidget );
+#endif
 
     popActions-> addSeparator();
     popActions-> addItem( TR( "gcw.MainWidget.mu.actions.resetwarnings" ) )-> setDisabled( true );

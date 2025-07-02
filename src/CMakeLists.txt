@@ -9,11 +9,17 @@ project (gnucashew-bin
     VERSION 1.0
 )
 
+option( ENABLE_BILLPAY "Enable BillPay modules" OFF )
+
 #
 # this library is used in the file guid.cpp for generating
 #  UUID values for the back-end database.
 #
 add_compile_definitions( GUID_LIBUUID )
+
+if( ENABLE_BILLPAY )
+  add_compile_definitions(ENABLE_BILLPAY)
+endif()
 
 set ( CMAKE_CXX_FLAGS "-std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g" )
 
