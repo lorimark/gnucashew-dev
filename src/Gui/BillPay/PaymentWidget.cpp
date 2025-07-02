@@ -26,18 +26,18 @@ PaymentWidget( const std::string & _bpGuid )
   */
   auto templtMain =
     lw->
-    addWidget
-    (
-     std::make_unique< Wt::WTemplate >( TR("gcw_gui.billpay.paymentwidget.form.main") )
-    );
+      addWidget( std::make_unique< Wt::WTemplate >( TR("gcw_gui.billpay.paymentwidget.form.main") ) );
 
   /*
-  ** add all the widgets
+  ** insert the table
   **
   */
   m_table = templtMain-> bindNew< Wt::WTable >( "table" );
   m_table-> addStyleClass( "MakePaymentTable" );
 
+  /*
+  ** add the first row of widgets
+  */
   m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit >( );
   m_num        = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit >( );
   m_desc       = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit >( );
@@ -46,6 +46,9 @@ PaymentWidget( const std::string & _bpGuid )
   m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit >( );
   m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit >( );
 
+  /*
+  ** add the edit widget to the tableWidgets vector set
+  */
   auto _addElement = [&]( size_t _row, size_t _col, const char * styleClass, Wt::WFormWidget * _element )
   {
     _element-> addStyleClass( styleClass );
@@ -59,18 +62,27 @@ PaymentWidget( const std::string & _bpGuid )
     m_tableWidgets[_row][_col] = _element;
   };
 
+  /*
+  ** add a LineEdit to the table
+  */
   auto _addLineEdit = [&]( size_t _row, size_t _col, const char * _styleClass )
   {
     auto element = table()-> elementAt( _row, _col )-> addNew< Wt::WLineEdit >();
     _addElement( _row, _col, _styleClass, element );
   };
 
+  /*
+  ** add the AccountSeggestionEdit to the table
+  */
   auto _addAcctEdit = [&]( size_t _row, size_t _col, const char * _styleClass )
   {
     auto element = table()-> elementAt( _row, _col )-> addNew< AccountSuggestionEdit >();
     _addElement( _row, _col, _styleClass, element );
   };
 
+  /*
+  ** build the table
+  */
   for( int row=1; row<= 3; row++ )
   {
     _addLineEdit( row, 1, "num"    );
@@ -81,6 +93,9 @@ PaymentWidget( const std::string & _bpGuid )
     _addLineEdit( row, 6, "credit" );
   }
 
+  /*
+  ** apply styling
+  */
   m_date   -> addStyleClass      ( "date"        );
   m_num    -> addStyleClass      ( "num"         );
   m_desc   -> addStyleClass      ( "desc"        );
@@ -129,48 +144,6 @@ loadData()-> void
   GCW::Dbo::Transactions::Manager transactionManager;
 
   m_date-> setValueText( GCW::Core::currentDateTimeDisplayString() );
-
-#ifdef NEVER
-  /*
-  ** format the 'name' to be something readable
-  */
-  auto fullName = bpItem.accountFullName();
-
-  /*
-  ** populate the form
-  */
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_account   -> setValueText( fullName            );
-  m_dueDay    -> setValueText( bpItem.dueDay    () );
-  m_minimum   -> setValueText( bpItem.minimum   () );
-  m_budget    -> setValueText( bpItem.budget    () );
-  m_nickname  -> setValueText( bpItem.nickname  () );
-  m_group     -> setValueText( bpItem.group     () );
-  m_limit     -> setValueText( bpItem.limit     () );
-  m_actual    -> setValueText( bpItem.actual    () );
-  m_url       -> setValueText( bpItem.url       () );
-  m_ap        -> setValueText( bpItem.ap        () );
-  m_isActive  -> setValueText( bpItem.isActive  () );
-  m_isVisible -> setValueText( bpItem.isVisible () );
-  m_autoPay   -> setValueText( bpItem.autoPay   () );
-  m_payNow    -> setValueText( bpItem.payNow    () );
-  m_last4     -> setValueText( bpItem.last4     () );
-  m_note      -> setValueText( bpItem.note      () );
-
-  /*
-  ** If the account-name has been assigned, then don't allow it to
-  **  be re-assigned.
-  */
-  if( fullName != "" )
-    m_account-> setDisabled( true );
-
-
-  int i = 1;
-  for( auto cb : m_cbx )
-    cb-> setValueText( bpItem.cb( i++ ) );
-
-  m_register-> setAccountGuid( bpItem.accountGuid() );
-#endif
 
 } // endloadData()-> void
 

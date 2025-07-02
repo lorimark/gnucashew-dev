@@ -25,6 +25,11 @@ buildContent()-> void
 
   // layout
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
+
+  m_summaryView = m_hlw-> addWidget( std::make_unique< SummaryWidget >() );
+  m_summaryView-> setHidden( true );
+  m_hlw-> setResizable( 0, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
+
   auto cw  = m_hlw-> addWidget( std::make_unique< Wt::WContainerWidget >() );
 //  auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout      >() );
 
@@ -37,7 +42,8 @@ buildContent()-> void
     m_toolBar-> addClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
     m_toolBar-> editClicked().connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
 //    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
-    m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::disabledClicked );
+    m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::do_disabledClicked );
+    m_toolBar-> summaryButton()-> clicked().connect( this, &MainWidget::do_summaryClicked );
 
     m_toolBar-> importClicked().connect( this, &MainWidget::importClicked );
     m_toolBar-> exportClicked().connect( this, &MainWidget::exportClicked );
@@ -70,6 +76,9 @@ buildContent()-> void
     m_unpaidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        /*
+        ** remember the clicked index
+        */
         m_selectedIndex = _index;
       });
     m_unpaidView->
@@ -94,6 +103,9 @@ buildContent()-> void
     m_paidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        /*
+        ** remember the clicked index
+        */
         m_selectedIndex = _index;
       });
     m_paidView->
@@ -112,6 +124,9 @@ buildContent()-> void
     m_disabledView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        /*
+        ** remember the clicked index
+        */
         m_selectedIndex = _index;
       });
     m_disabledView->
@@ -124,6 +139,11 @@ buildContent()-> void
 
   // fill-up remaining space
 //  vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
+
+  /*
+  ** This activates the summary widget and causes it to show or not
+  */
+  do_summaryClicked();
 
 } // endbuildContent()-> void
 
@@ -155,13 +175,14 @@ openEditor( const std::string & _bpGuid )-> void
   **
   */
   m_hlw-> addWidget( std::move( u_ ) );
-  m_hlw-> setResizable( 0, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
+  m_hlw-> setResizable( 1, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
   m_editWidget->
     save().connect( [=]()
     {
       refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );
+      m_hlw-> setResizable( 1, true, Wt::WLength::Auto );
     });
 
   m_editWidget->
@@ -169,6 +190,7 @@ openEditor( const std::string & _bpGuid )-> void
     {
 //      refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );
+      m_hlw-> setResizable( 1, true, Wt::WLength::Auto );
     });
 
 } // endopenEditor( const std::string & _nickname )-> void
@@ -242,7 +264,7 @@ buttonChanged( Wt::WRadioButton * _button )-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
-disabledClicked()-> void
+do_disabledClicked()-> void
 {
   buildContent();
 
@@ -250,13 +272,27 @@ disabledClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
+do_summaryClicked()-> void
+{
+  if( m_toolBar-> showSummary() )
+    m_summaryView-> setHidden( false );
+  else
+    m_summaryView-> setHidden( true );
+
+  m_summaryView-> setMonth( m_selectedMonth );
+
+} // enddisabledClicked()-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
 setMonth( int _month )-> void
 {
+  m_selectedMonth = _month;
+
   if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
   if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_disabledView ) m_disabledView -> setMonth( _month );
-
-  m_selectedMonth = _month;
+  if( m_summaryView  ) m_summaryView  -> setMonth( _month );
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );

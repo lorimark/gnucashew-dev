@@ -399,9 +399,9 @@
   <message id="gcw.AccountRegister.delete.contents"                  >
     <p>
       Delete this transaction?
-      <div style="color:red;">
+      <span style="color:red;">
         (this cannot be undone)
-      </div>
+      </span>
     </p>
     <p>
       <table>

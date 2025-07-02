@@ -53,7 +53,7 @@ auto
 GCW::Dbo::Prefrences::Item::
 askOnDelete() const-> bool
 {
-  return false;
+  return true;
 
 } // endaskOnDelete() const-> bool
 

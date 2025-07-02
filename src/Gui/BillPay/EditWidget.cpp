@@ -24,7 +24,6 @@ EditWidget( const std::string & _bpGuid )
   ** This is a complex widget, with a header area with a
   **  handful of fields, then a tab widget with a couple
   **  pages.
-  **
   */
   auto templtMain =
     lw->
@@ -35,7 +34,6 @@ EditWidget( const std::string & _bpGuid )
 
   /*
   ** add all the widgets
-  **
   */
   m_pbSave    = templtMain-> bindNew< Wt::WPushButton           >( "save"      , TR("gcw.billPay.label.save")      );
   m_pbCancel  = templtMain-> bindNew< Wt::WPushButton           >( "cancel"    , TR("gcw.billPay.label.cancel")    );
@@ -99,7 +97,6 @@ EditWidget( const std::string & _bpGuid )
   /*
   ** This is the payment template.  It will get added to
   **  the first page of the tab widget.
-  **
   */
   Wt::WTemplate * templtPayment;
   {
@@ -157,10 +154,10 @@ EditWidget( const std::string & _bpGuid )
 
   } // endWt::WTemplate * templtHistory;
 
-  m_pbSave   -> clicked().connect( [&](){ saveData();       });
-  m_pbCancel -> clicked().connect( [&](){ m_cancel.emit();  });
-  m_pbDelete -> clicked().connect( [&](){ m_delete.emit();  });
-  m_pbProcess-> clicked().connect( [&](){ processPayment(); });
+  m_pbSave    -> clicked().connect( [&](){ saveData();       });
+  m_pbCancel  -> clicked().connect( [&](){ m_cancel.emit();  });
+  m_pbDelete  -> clicked().connect( [&](){ m_delete.emit();  });
+  m_pbProcess -> clicked().connect( [&](){ processPayment(); });
 
   /*
   ** get all the data loaded
@@ -193,6 +190,13 @@ loadData()-> void
   auto fullName = GCW::Dbo::Accounts::fullName( bpItem.accountGuid() );
 
   /*
+  ** If the account-name has been assigned, then don't allow it to
+  **  be re-assigned.
+  */
+  if( fullName != "" )
+    m_account -> setDisabled( true );
+
+  /*
   ** populate the form
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -213,18 +217,11 @@ loadData()-> void
   m_last4     -> setValueText( bpItem.last4     () );
   m_note      -> setValueText( bpItem.note      () );
 
-  /*
-  ** If the account-name has been assigned, then don't allow it to
-  **  be re-assigned.
-  */
-  if( fullName != "" )
-    m_account-> setDisabled( true );
-
   int i = 1;
   for( auto cb : m_cbx )
     cb-> setValueText( bpItem.cb( i++ ) );
 
-  m_register-> setAccountGuid( bpItem.accountGuid() );
+  m_register -> setAccountGuid( bpItem.accountGuid() );
 
 } // endloadData()-> void
 

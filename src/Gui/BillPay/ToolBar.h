@@ -39,6 +39,9 @@ class ToolBar
     auto disabledButton () const-> Wt::WCheckBox * { return m_disabled; }
     auto showDisabled   () const-> bool            ;
 
+    auto summaryButton  () const-> Wt::WCheckBox * { return m_summary; }
+    auto showSummary    () const-> bool            ;
+
     auto importClicked()-> Wt::Signal<> & { return m_importClicked; }
     auto exportClicked()-> Wt::Signal<> & { return m_exportClicked; }
 

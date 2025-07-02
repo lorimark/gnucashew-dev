@@ -12,6 +12,20 @@
 #include "FilePropertiesWidget.h"
 #include "LanguagePicker.h"
 
+class PushButton
+: public Wt::WPushButton
+{
+  public:
+
+    PushButton( const Wt::WString & _text )
+    : Wt::WPushButton( _text )
+    {
+      setStyleClass( "btn-xs" );
+      setAttributeValue( "style", "margin-left:3px;margin-right:3px" );
+    }
+
+};
+
 GCW::Gui::MainWidget::
 MainWidget()
 {
@@ -41,7 +55,6 @@ load()-> void
 
   /*
   ** Set up the navbar
-  **
   */
   auto link = Wt::WLink( TR8("gcw_gui.doxygen_link") );
   link.setTarget( Wt::LinkTarget::NewWindow );
@@ -63,23 +76,26 @@ load()-> void
   */
   navBar()-> addWidget( std::make_unique< LanguagePicker >(), Wt::AlignmentFlag::Right );
 
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.save"       ) ) );
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.close"      ) ) );
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.newInvoice" ) ) );
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.open"       ) ) );
+  /*
+  ** plop all the buttons down
+  */
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.save"       ) ) );
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.close"      ) ) );
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.newInvoice" ) ) );
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.open"       ) ) );
 
   {
-    auto b = std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.edit" ) );
+    auto b = std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.edit" ) );
     auto e = b.get();
     toolBar()-> addButton( std::move(b) );
     e-> clicked().connect( [=](){ openSelectedAccount(); });
   }
 
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.new"    ) ) );
-  toolBar()-> addButton( std::make_unique< Wt::WPushButton >( TR( "gcw.MainWidget.tb.delete" ) ) );
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.new"    ) ) );
+  toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.delete" ) ) );
 
   {
-    auto b = std::make_unique< Wt::WPushButton >( "devtest" );
+    auto b = std::make_unique< PushButton >( "devtest" );
     auto e = b.get();
     toolBar()-> addButton( std::move(b) );
     e-> clicked().connect( [=](){ test(); });

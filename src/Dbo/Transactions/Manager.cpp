@@ -19,12 +19,11 @@ auto
 GCW::Dbo::Transactions::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void
 {
-  /*
-  ** Load up the two accounts
+  /*!
+  ** The process begins by loading up the two accounts.  The two account
   **
   */
   auto accountItem1 = GCW::Dbo::Accounts::load( _accountGuid1 );
-  auto accountItem2 = GCW::Dbo::Accounts::load( _accountGuid2 );
 
   /*
   ** create a new transaction with two splits
