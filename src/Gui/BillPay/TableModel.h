@@ -1,7 +1,7 @@
-#line 2 "src/Gui/BillPay/Model.h"
+#line 2 "src/Gui/BillPay/TableModel.h"
 
-#ifndef __GUI_BILLPAY_MODEL_H___
-#define __GUI_BILLPAY_MODEL_H___
+#ifndef __GUI_BILLPAY_TABLEMODEL_H___
+#define __GUI_BILLPAY_TABLEMODEL_H___
 
 #include <Wt/WLength.h>
 #include <Wt/WStandardItemModel.h>
@@ -49,7 +49,7 @@ typedef struct COLUMNDEF
 **  the month selected.
 **
 */
-class Model
+class TableModel
 : public Wt::WStandardItemModel
 {
   public:
@@ -70,7 +70,7 @@ class Model
     ** \endcode
     **
     */
-    Model
+    TableModel
     (
       /// Select a 'calendar month' to compare status
       int _selectedMonth,
@@ -122,12 +122,12 @@ class Model
     */
     Status m_status;
 
-}; // endclass Model
+}; // endclass TableModel
 
     } // endnamespace BillPay {
   } // endnamespace Gui {
 } // endnamespace GCW {
 
-#endif // __GUI_BILLPAY_MODEL_H___
+#endif // __GUI_BILLPAY_TABLEMODEL_H___
 
 

@@ -444,6 +444,10 @@
   <message id="gcw.billPay.tabName.payment"                          >Payment</message>
   <message id="gcw.billPay.tabName.history"                          >History</message>
 
+  <message id="gcw.billPay.label.add"                                >Add</message>
+  <message id="gcw.billPay.label.edit"                               >Edit</message>
+  <message id="gcw.billPay.label.disabled"                           >disabled</message>
+  <message id="gcw.billPay.label.summary"                            >summary</message>
   <message id="gcw.billPay.label.account"                            >Account</message>
   <message id="gcw.billPay.label.taccount"                           >Target Account</message>
   <message id="gcw.billPay.label.paccount"                           >Payment Source</message>

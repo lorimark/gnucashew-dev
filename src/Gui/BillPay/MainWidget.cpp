@@ -70,7 +70,7 @@ buildContent()-> void
 
   // unpaid items
   {
-    auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Unpaid );
+    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Unpaid );
     m_unpaidView = u_.get();
     cw-> addWidget( std::move( u_ ) );
     m_unpaidView->
@@ -97,7 +97,7 @@ buildContent()-> void
 
   // paid items
   {
-    auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Paid );
+    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Paid );
     m_paidView = u_.get();
     cw-> addWidget( std::move( u_ ) );
     m_paidView->
@@ -118,7 +118,7 @@ buildContent()-> void
   // disabled items
   if( m_toolBar-> showDisabled() )
   {
-    auto u_ = std::make_unique< Table >( m_selectedMonth, Status::Disabled );
+    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Disabled );
     m_disabledView = u_.get();
     cw-> addWidget( std::move( u_ ) );
     m_disabledView->
@@ -230,7 +230,7 @@ addClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
-editClicked( Table * _table, Wt::WModelIndex _index )-> void
+editClicked( TableView * _table, Wt::WModelIndex _index )-> void
 {
   /*
   ** Get the 0-col index and use that to get the guid of this
@@ -242,7 +242,7 @@ editClicked( Table * _table, Wt::WModelIndex _index )-> void
   auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
   openEditor( bpGuid );
 
-} // endeditClicked( Table * _table, Wt::WModelIndex _index )-> void
+} // endeditClicked( TableView * _table, Wt::WModelIndex _index )-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::

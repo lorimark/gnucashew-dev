@@ -10,9 +10,9 @@
 #include "PaymentWidget.h"
 #include "MainWidget.h"
 #include "Item.h"
-#include "Model.h"
+#include "TableModel.h"
 #include "Status.h"
-#include "Table.h"
+#include "TableView.h"
 #include "ToolBar.h"
 
 namespace GCW {

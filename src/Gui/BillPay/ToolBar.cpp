@@ -23,21 +23,21 @@ ToolBar()
   /*
   ** click to add
   */
-  auto pbAdd  = table-> elementAt( 0, 0 )-> addWidget( std::make_unique< Wt::WPushButton >( "add"  ) );
+  auto pbAdd  = table-> elementAt( 0, 0 )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.label.add") ) );
   pbAdd-> setStyleClass( "btn-xs" );
   pbAdd-> clicked().connect( [=](){ m_addClicked.emit(); } );
 
   /*
   ** click to edit
   */
-  auto pbEdit = table-> elementAt( 0, 1 )-> addWidget( std::make_unique< Wt::WPushButton >( "edit" ) );
+  auto pbEdit = table-> elementAt( 0, 1 )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.label.edit") ) );
   pbEdit-> setStyleClass( "btn-xs" );
   pbEdit-> clicked().connect( [=](){ m_editClicked.emit(); } );
 
   /*
   ** hide and show disabled items
   */
-  m_disabled = table-> elementAt( 0, 2 )-> addWidget( std::make_unique< Wt::WCheckBox >( "disabled" ) );
+  m_disabled = table-> elementAt( 0, 2 )-> addWidget( std::make_unique< Wt::WCheckBox >( TR("gcw.billPay.label.disabled") ) );
   m_disabled-> setValueText( configItem()-> getVarString( "showDisabled" ) );
   m_disabled->
     clicked().connect( [&]( Wt::WMouseEvent _event )
@@ -52,7 +52,7 @@ ToolBar()
   /*
   ** hide and show the summary view
   */
-  m_summary = table-> elementAt( 0, 3 )-> addWidget( std::make_unique< Wt::WCheckBox >( "summary" ) );
+  m_summary = table-> elementAt( 0, 3 )-> addWidget( std::make_unique< Wt::WCheckBox >( TR("gcw.billPay.label.summary") ) );
   m_summary-> setValueText( configItem()-> getVarString( "showSummary" ) );
   m_summary->
     clicked().connect( [&]( Wt::WMouseEvent _event )

@@ -1,4 +1,4 @@
-#line 2 "src/Gui/BillPay/Table.cpp"
+#line 2 "src/Gui/BillPay/TableView.cpp"
 
 #include <Wt/WModelIndex.h>
 #include <Wt/WStandardItem.h>
@@ -6,8 +6,8 @@
 #include "../../Dbo/Accounts/Accounts.h"
 #include "BillPay.h"
 
-GCW::Gui::BillPay::Table::
-Table( int _selectedMonth, const Status _status )
+GCW::Gui::BillPay::TableView::
+TableView( int _selectedMonth, const Status _status )
 {
   /*
   ** Add 'Unpaid', 'Paid', 'Disabled' to the style class of this
@@ -30,7 +30,7 @@ Table( int _selectedMonth, const Status _status )
   ** Make a data model
   **
   */
-  m_model = std::make_shared< Model >( _selectedMonth, _status );
+  m_model = std::make_shared< TableModel >( _selectedMonth, _status );
 
   /*
   ** Set the model in to the table
@@ -48,11 +48,11 @@ Table( int _selectedMonth, const Status _status )
     setColumnAlignment( col, m_model-> columnDef(col).alignment );
   }
 
-} // endTable()
+} // endTableView()
 
 
 void
-GCW::Gui::BillPay::Table::
+GCW::Gui::BillPay::TableView::
 setMonth( int _month )
 {
   int selected_row = -1;

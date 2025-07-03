@@ -8,7 +8,7 @@
 
 #include "EditWidget.h"
 #include "SummaryWidget.h"
-#include "Table.h"
+#include "TableView.h"
 #include "ToolBar.h"
 
 namespace GCW {
@@ -35,7 +35,7 @@ class MainWidget
     auto do_disabledClicked()-> void ;
     auto do_summaryClicked()-> void ;
     auto addClicked()-> void ;
-    auto editClicked( Table * _table, Wt::WModelIndex _index )-> void ;
+    auto editClicked( TableView * _table, Wt::WModelIndex _index )-> void ;
     auto openEditor( const std::string & _bpGuid )-> void ;
     auto buttonChanged( Wt::WRadioButton * _button )-> void ;
     auto setMonth( int _month )-> void ;
@@ -55,9 +55,9 @@ class MainWidget
     Wt::Core::observing_ptr< EditWidget > m_editWidget ;
 
     ToolBar       * m_toolBar      = nullptr ;
-    Table         * m_paidView     = nullptr ;
-    Table         * m_unpaidView   = nullptr ;
-    Table         * m_disabledView = nullptr ;
+    TableView     * m_paidView     = nullptr ;
+    TableView     * m_unpaidView   = nullptr ;
+    TableView     * m_disabledView = nullptr ;
     SummaryWidget * m_summaryView  = nullptr ;
 
     auto on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void ;

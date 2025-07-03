@@ -1,4 +1,4 @@
-#line 2 "src/Gui/BillPay/Model.cpp"
+#line 2 "src/Gui/BillPay/TableModel.cpp"
 
 #include <Wt/WStandardItem.h>
 
@@ -38,8 +38,8 @@ GCW::Gui::BillPay::ColumnDef_t columns[] =
 
 } // endnamespace {
 
-GCW::Gui::BillPay::Model::
-Model( int _selectedMonth, const Status _status )
+GCW::Gui::BillPay::TableModel::
+TableModel( int _selectedMonth, const Status _status )
 : Wt::WStandardItemModel( 0, COLUMN_COUNT ),
   m_status( _status )
 {
@@ -68,10 +68,10 @@ Model( int _selectedMonth, const Status _status )
   */
   loadData( _selectedMonth );
 
-} // endModel( const Status _status )
+} // endTableModel( const Status _status )
 
 auto
-GCW::Gui::BillPay::Model::
+GCW::Gui::BillPay::TableModel::
 loadData( int _selectedMonth )-> void
 {
   /*!
@@ -265,14 +265,14 @@ loadData( int _selectedMonth )-> void
 } // endloadData( int _selectedMonth )-> void
 
 auto
-GCW::Gui::BillPay::Model::
+GCW::Gui::BillPay::TableModel::
 columnDef( int col )-> GCW::Gui::BillPay::ColumnDef_t
 {
   return columns[col];
 }
 
 auto
-GCW::Gui::BillPay::Model::
+GCW::Gui::BillPay::TableModel::
 sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
 {
   /*!
