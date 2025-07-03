@@ -440,6 +440,7 @@
 
 
   <message id="gcw.billPay.dialog.title"                             >Bill Pay ~ Record Payment</message>
+  <message id="gcw.billPay.save.duplicate"                           >This account is already assigned to a Bill-Pay item. Duplicates are not supported yet.</message>
   <message id="gcw.billPay.tabName.payment"                          >Payment</message>
   <message id="gcw.billPay.tabName.history"                          >History</message>
 

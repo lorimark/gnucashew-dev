@@ -35,10 +35,10 @@ EditWidget( const std::string & _bpGuid )
   /*
   ** add all the widgets
   */
-  m_pbSave    = templtMain-> bindNew< Wt::WPushButton           >( "save"      , TR("gcw.billPay.label.save")      );
-  m_pbCancel  = templtMain-> bindNew< Wt::WPushButton           >( "cancel"    , TR("gcw.billPay.label.cancel")    );
-  m_pbDelete  = templtMain-> bindNew< Wt::WPushButton           >( "delete"    , TR("gcw.billPay.label.delete")    );
-  m_pbProcess = templtMain-> bindNew< Wt::WPushButton           >( "process"   , TR("gcw.billPay.label.process")   );
+  m_pbSave    = templtMain-> bindNew< Wt::WPushButton           >( "save"      , TR("gcw.billPay.label.save")    );
+  m_pbCancel  = templtMain-> bindNew< Wt::WPushButton           >( "cancel"    , TR("gcw.billPay.label.cancel")  );
+  m_pbDelete  = templtMain-> bindNew< Wt::WPushButton           >( "delete"    , TR("gcw.billPay.label.delete")  );
+  m_pbProcess = templtMain-> bindNew< Wt::WPushButton           >( "process"   , TR("gcw.billPay.label.process") );
   m_account   = templtMain-> bindNew< GCW::Gui::AccountComboBox >( "account"                                       );
   m_dueDay    = templtMain-> bindNew< Wt::WSpinBox              >( "dueDay"                                        );
   m_minimum   = templtMain-> bindNew< Wt::WLineEdit             >( "minimum"                                       );
@@ -57,9 +57,6 @@ EditWidget( const std::string & _bpGuid )
   m_pbCancel  -> setStyleClass( "btn-xs" );
   m_pbDelete  -> setStyleClass( "btn-xs" );
   m_pbProcess -> setStyleClass( "btn-xs" );
-
-  m_pbDelete  -> setDisabled( true );
-  m_pbProcess -> setDisabled( true );
 
   m_account   -> setToolTip( TR("gcw.billPay.toolTip.account"     ) );
   m_dueDay    -> setToolTip( TR("gcw.billPay.toolTip.dueDay"      ) );
@@ -105,7 +102,15 @@ EditWidget( const std::string & _bpGuid )
     m_tabWidget-> addTab( std::move( u_ ), TR("gcw.billPay.tabName.payment")  );
 
     for( int cb = 0; cb < 12; cb++ )
-      m_cbx.push_back( templtPayment-> bindNew< Wt::WCheckBox >( "cb" + toString( cb+1 ), toString( cb+1 ) ) );
+    {
+      auto cbx = std::make_unique< Wt::WCheckBox >( toString( cb+1 ) );
+      cbx-> setTristate( true );
+      cbx-> setPartialStateSelectable( true );
+
+      m_cbx.push_back( cbx.get() );
+
+      templtPayment-> bindWidget( "cb" + toString( cb+1 ), std::move( cbx ) );
+    }
 
     auto pbgo = templtPayment-> bindNew< Wt::WPushButton >( "go", TR("gcw.billPay.label.go") );
     pbgo-> setStyleClass( "btn-xs" );
@@ -154,10 +159,10 @@ EditWidget( const std::string & _bpGuid )
 
   } // endWt::WTemplate * templtHistory;
 
-  m_pbSave    -> clicked().connect( [&](){ saveData();       });
-  m_pbCancel  -> clicked().connect( [&](){ m_cancel.emit();  });
-  m_pbDelete  -> clicked().connect( [&](){ m_delete.emit();  });
-  m_pbProcess -> clicked().connect( [&](){ processPayment(); });
+  m_pbSave    -> clicked().connect( [&](){ saveData();        });
+  m_pbCancel  -> clicked().connect( [&](){ m_canceled.emit(); });
+  m_pbDelete  -> clicked().connect( [&](){ m_deleted.emit();  });
+  m_pbProcess -> clicked().connect( [&](){ processPayment();  });
 
   /*
   ** get all the data loaded
@@ -219,11 +224,46 @@ loadData()-> void
 
   int i = 1;
   for( auto cb : m_cbx )
-    cb-> setValueText( bpItem.cb( i++ ) );
+  {
+    std::cout << __FILE__ << ":" << __LINE__ << " " << bpItem.cb(i) << std::endl;
+
+//    if( bpItem.cb(i) == "yes" )
+//      cb-> setCheckState
+//    cb-> setValueText( bpItem.cb( i++ ) );
+  }
 
   m_register -> setAccountGuid( bpItem.accountGuid() );
 
 } // endloadData()-> void
+
+auto
+GCW::Gui::BillPay::EditWidget::
+accountIsDuplicated()-> bool
+{
+  auto accountGuid = m_account-> valueGuid();
+
+  auto items = GCW::Dbo::Vars::getByCfy( GCW_GUI_BILLPAY_ITEM_CFY );
+
+  for( auto & item : items )
+  {
+    Item i(item);
+
+    /*
+    ** if the account is the same but the bpItem is different
+    **  then this must be a duplicate.  The accountGuid and
+    **  bpItemGuid must match in order for this to not be a
+    **  duplicate.  When they match, it means we're saving
+    **  the same (correct) bp item.
+    */
+    if( i.accountGuid() == accountGuid
+     && i.guid()        != m_bpGuid
+      )
+      return true;
+  }
+
+  return false;
+
+} // endduplicateAccount()-> bool
 
 auto
 GCW::Gui::BillPay::EditWidget::
@@ -235,6 +275,16 @@ saveData()-> void
   if( m_account-> valueText() == "" )
   {
     Wt::WMessageBox::show( "Bill Pay", "Please choose an account.", Wt::StandardButton::Ok );
+    return;
+  }
+
+  /*
+  ** If the account is already in a bill-pay, then disallow
+  **  another duplicate
+  */
+  if( accountIsDuplicated() )
+  {
+    Wt::WMessageBox::show( "Bill Pay", TR("gcw.billPay.save.duplicate"), Wt::StandardButton::Ok );
     return;
   }
 
@@ -276,7 +326,7 @@ saveData()-> void
   for( auto cb : m_cbx )
     bpItem.set_cb( i++, cb-> valueText() );
 
-  m_save.emit();
+  m_saved.emit();
 
 } // endsaveData()-> void
 
@@ -310,8 +360,8 @@ EditWidgetDialog( const std::string & _bpGuid )
 
   auto editWidget = contents()-> addNew< EditWidget >( _bpGuid );
 
-  editWidget-> save   ().connect( [&](){ accept(); });
-  editWidget-> cancel ().connect( [&](){ reject(); });
+  editWidget-> saved    ().connect( [&](){ accept(); });
+  editWidget-> canceled ().connect( [&](){ reject(); });
 
 } // endEditWidgetDialog( const std::string & _accountGuid )
 

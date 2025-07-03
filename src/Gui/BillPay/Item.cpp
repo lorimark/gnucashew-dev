@@ -3,6 +3,14 @@
 #include "BillPay.h"
 #include "Item.h"
 
+/*
+** BP item info is stored in
+**  a var-like json structure
+**  with field-names and field-values.
+**  The following are the field-names
+**  used in the KVP (key value pair) set;
+**
+*/
 #define FN_ACCOUNTGUID "accountGuid"
 #define FN_DUEDAY      "dueDay"
 #define FN_MINIMUM     "minimum"
@@ -64,9 +72,9 @@ accountGuid () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
-payToGuid () const-> std::vector< std::string >
+payFromGuid () const-> std::string
 {
-  std::vector< std::string > retVal;
+  std::string retVal;
 
   /*
   ** this should find the previous bill-pay and collect

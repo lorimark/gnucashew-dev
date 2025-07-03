@@ -178,7 +178,13 @@ openEditor( const std::string & _bpGuid )-> void
   m_hlw-> setResizable( 1, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
   m_editWidget->
-    save().connect( [=]()
+    deleted().connect( [=]()
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+    });
+
+  m_editWidget->
+    saved().connect( [=]()
     {
       refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );
@@ -186,7 +192,7 @@ openEditor( const std::string & _bpGuid )-> void
     });
 
   m_editWidget->
-    cancel().connect( [=]()
+    canceled().connect( [=]()
     {
 //      refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );

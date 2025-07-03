@@ -66,7 +66,8 @@ class Item
 
 }; // endclass Item
 
-GCW::Dbo::Vars::Item::Ptr get( const std::string & _keyValue, const std::string & _cfyValue = "*", bool _add = true );
+auto get( const std::string & _keyValue, const std::string & _cfyValue = "*", bool _add = true )-> GCW::Dbo::Vars::Item::Ptr ;
+auto getByCfy( const std::string & _cfyValue )-> GCW::Dbo::Vars::Item::Vector ;
 
 extern const char * s_tableName;
 

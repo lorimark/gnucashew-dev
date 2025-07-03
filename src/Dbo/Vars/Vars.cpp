@@ -71,6 +71,26 @@ get( const std::string & _keyValue, const std::string & _cfyValue, bool _add )->
 } // endget( const std::string & _keyValue, const std::string & _cfyValue )-> GCW::Dbo::Vars::Item::Ptr
 
 auto
+GCW::Dbo::Vars::
+getByCfy( const std::string & _cfyValue )-> GCW::Dbo::Vars::Item::Vector
+{
+  GCW::Dbo::Vars::Item::Vector retVal;
+
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  auto items =
+    GCW::app()-> gnucashew_session().find< GCW::Dbo::Vars::Item >()
+      .where( "\"cfyField\" = '" + _cfyValue + "'" )
+      .resultList()
+      ;
+
+  for( auto item : items )
+    retVal.push_back( item );
+
+  return retVal;
+
+} // endget( const std::string & _keyValue, const std::string & _cfyValue )-> GCW::Dbo::Vars::Item::Ptr
+
+auto
 GCW::Dbo::Vars::Item::
 getVarString( const std::string & _field ) const-> std::string
 {

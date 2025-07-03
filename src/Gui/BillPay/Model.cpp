@@ -106,11 +106,7 @@ loadData( int _selectedMonth )-> void
   **  resulting model.
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  auto items =
-    GCW::app()-> gnucashew_session().find< GCW::Dbo::Vars::Item >()
-      .where( "\"cfyField\" = '" GCW_GUI_BILLPAY_ITEM_CFY "'" )
-      .resultList()
-      ;
+  auto items = GCW::Dbo::Vars::getByCfy( GCW_GUI_BILLPAY_ITEM_CFY );
 
   /*
   ** Calculate our yes/no status for grabbing items.

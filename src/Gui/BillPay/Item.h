@@ -9,15 +9,48 @@ namespace GCW {
   namespace Gui {
     namespace BillPay {
 
+/*!
+** \brief Bill Pay Item
+**
+** This item contains all the bits of the bill-pay
+**  tool.  This object is a controller for a single
+**  bill-pay-item.  It is used to receive payments
+**  and assist with the process of paying bills and
+**  recording the confirmation codes and so on.
+**
+*/
 class Item
 {
   public:
 
     Item( GCW::Dbo::Vars::Item::Ptr _varItem ) ;
 
-    auto guid              () const-> std::string ;
-    auto accountGuid       () const-> std::string ;
-    auto payToGuid         () const-> std::vector< std::string > ;
+    /*!
+    ** \brief Item GUID
+    **
+    */
+    auto guid() const-> std::string ;
+
+    /*!
+    ** \brief Account GUID
+    **
+    ** This is the account that this bill-pay item is
+    **  tied to.  When a payment is made, from some
+    **  other account, it is posted to .this. account.
+    **
+    */
+    auto accountGuid() const-> std::string ;
+
+    /*!
+    ** \brief Pay-From Account
+    **
+    ** This holds the GUID of the account that last made
+    **  the payment.  This ID will get recalled on subsequent
+    **  payments, to faciliate rapid payment processing
+    **  functions.
+    **
+    */
+    auto payFromGuid       () const-> std::string ;
     auto accountFullName   () const-> std::string ;
     auto dueDay            () const-> std::string ;
     auto minimum           () const-> std::string ;

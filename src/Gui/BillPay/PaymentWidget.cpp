@@ -159,6 +159,11 @@ saveData()-> void
   */
   auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << bpItem.accountFullName()
+    << " " << bpItem.nickname()
+    << std::endl;
+
 #ifdef NEVER
   /*
   ** save everything

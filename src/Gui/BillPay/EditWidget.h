@@ -40,17 +40,20 @@ class EditWidget
     auto loadData()-> void ;
     auto saveData()-> void ;
 
-    auto save   ()-> Wt::Signal<> & { return m_save;   }
-    auto cancel ()-> Wt::Signal<> & { return m_cancel; }
+    auto saved     ()-> Wt::Signal<> & { return m_saved;     }
+    auto canceled  ()-> Wt::Signal<> & { return m_canceled;  }
+    auto deleted   ()-> Wt::Signal<> & { return m_deleted;   }
+    auto processed ()-> Wt::Signal<> & { return m_processed; }
 
   private:
 
-    auto processPayment()-> void;
+    auto processPayment()-> void ;
+    auto accountIsDuplicated()-> bool ;
 
-    Wt::Signal<> m_save;
-    Wt::Signal<> m_cancel;
-    Wt::Signal<> m_delete;
-    Wt::Signal<> m_process;
+    Wt::Signal<> m_saved;
+    Wt::Signal<> m_canceled;
+    Wt::Signal<> m_deleted;
+    Wt::Signal<> m_processed;
 
     std::string m_bpGuid;
 
