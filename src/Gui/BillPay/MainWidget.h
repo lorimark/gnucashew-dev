@@ -55,6 +55,7 @@ class MainWidget
     Wt::Core::observing_ptr< EditWidget > m_editWidget ;
 
     ToolBar       * m_toolBar      = nullptr ;
+    TableView     * m_pendingView  = nullptr ;
     TableView     * m_paidView     = nullptr ;
     TableView     * m_unpaidView   = nullptr ;
     TableView     * m_disabledView = nullptr ;

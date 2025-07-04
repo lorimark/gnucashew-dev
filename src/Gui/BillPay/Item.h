@@ -68,6 +68,7 @@ class Item
     auto last4             () const-> std::string ;
     auto note              () const-> std::string ;
     auto cb( int _index     ) const-> std::string ;
+    auto cbtr( int _index   ) const-> std::string ;
 
     auto set_accountGuid   ( const Wt::WString & _value )-> void ;
     auto set_dueDay        ( const Wt::WString & _value )-> void ;

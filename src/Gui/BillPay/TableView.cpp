@@ -12,13 +12,11 @@ TableView( int _selectedMonth, const Status _status )
   /*
   ** Add 'Unpaid', 'Paid', 'Disabled' to the style class of this
   **  table for styling and such as.
-  **
   */
   addStyleClass( asStyleClass( _status ) );
 
   /*
   ** Set up some controls
-  **
   */
   setSortingEnabled       ( false                       );
   setSelectionBehavior    ( Wt::SelectionBehavior::Rows );
@@ -28,19 +26,16 @@ TableView( int _selectedMonth, const Status _status )
 
   /*
   ** Make a data model
-  **
   */
   m_model = std::make_shared< TableModel >( _selectedMonth, _status );
 
   /*
   ** Set the model in to the table
-  **
   */
   setModel( m_model );
 
   /*
   ** Apply the column widths and alignments
-  **
   */
   for( int col=0; col< m_model-> columnCount(); col++ )
   {

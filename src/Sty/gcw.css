@@ -183,6 +183,11 @@
   background-color:#ffb6c194;
 }
 
+.billpay.pending.Wt-tableview .Wt-header
+{
+  background-color:#ffe6b694;
+}
+
 .billpay.paid.Wt-tableview .Wt-header
 {
   background-color:#90ee909e;

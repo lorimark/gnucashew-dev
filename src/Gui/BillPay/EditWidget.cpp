@@ -224,13 +224,7 @@ loadData()-> void
 
   int i = 1;
   for( auto cb : m_cbx )
-  {
-    std::cout << __FILE__ << ":" << __LINE__ << " " << bpItem.cb(i) << std::endl;
-
-//    if( bpItem.cb(i) == "yes" )
-//      cb-> setCheckState
-//    cb-> setValueText( bpItem.cb( i++ ) );
-  }
+    cb-> setValueText( bpItem.cb( i++ ) );
 
   m_register -> setAccountGuid( bpItem.accountGuid() );
 
@@ -244,9 +238,9 @@ accountIsDuplicated()-> bool
 
   auto items = GCW::Dbo::Vars::getByCfy( GCW_GUI_BILLPAY_ITEM_CFY );
 
-  for( auto & item : items )
+  for( auto & itm : items )
   {
-    Item i(item);
+    Item item(itm);
 
     /*
     ** if the account is the same but the bpItem is different
@@ -255,8 +249,8 @@ accountIsDuplicated()-> bool
     **  duplicate.  When they match, it means we're saving
     **  the same (correct) bp item.
     */
-    if( i.accountGuid() == accountGuid
-     && i.guid()        != m_bpGuid
+    if( item.accountGuid() == accountGuid
+     && item.guid()        != m_bpGuid
       )
       return true;
   }

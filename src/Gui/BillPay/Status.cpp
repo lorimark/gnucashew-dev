@@ -9,6 +9,7 @@ asString( Status _status )
   std::string values[] =
   {
     TR8( "gcw.billPay.tableName.Paid"     ),
+    TR8( "gcw.billPay.tableName.Pending"  ),
     TR8( "gcw.billPay.tableName.Unpaid"   ),
     TR8( "gcw.billPay.tableName.Disabled" )
   };
@@ -23,6 +24,7 @@ asStyleClass( Status _status )
   std::string values[] =
   {
     "billpay paid"     ,
+    "billpay pending"  ,
     "billpay unpaid"   ,
     "billpay disabled"
   };

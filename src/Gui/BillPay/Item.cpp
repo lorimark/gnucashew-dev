@@ -1,5 +1,6 @@
 
 
+#include "../../define.h"
 #include "BillPay.h"
 #include "Item.h"
 
@@ -237,6 +238,15 @@ cb ( int _index ) const-> std::string
 {
   return
     m_varItem-> getVarString( FN_CB + toString( _index ) );
+
+} // endcb(int _index) const-> std::string
+
+auto
+GCW::Gui::BillPay::Item::
+cbtr ( int _index ) const-> std::string
+{
+  return
+    TR8( "gcw.billPay.tableView." + cb( _index ) );
 
 } // endcb(int _index) const-> std::string
 

@@ -22,6 +22,9 @@ enum class Status
   /// Paid Status
   Paid,
 
+  /// Pending Status
+  Pending,
+
   /// Unpaid Status
   Unpaid,
 

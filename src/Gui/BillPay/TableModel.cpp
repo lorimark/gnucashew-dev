@@ -112,6 +112,8 @@ loadData( int _selectedMonth )-> void
   ** Calculate our yes/no status for grabbing items.
   */
   std::string yesNo = "yes";
+  if( m_status == GCW::Gui::BillPay::Status::Pending )
+    yesNo = "maybe";
   if( m_status == GCW::Gui::BillPay::Status::Unpaid )
     yesNo = "no";
 
@@ -135,6 +137,7 @@ loadData( int _selectedMonth )-> void
     ** This is for Paid and Unpaid (not Disabled).
     */
     if( m_status == GCW::Gui::BillPay::Status::Paid
+     || m_status == GCW::Gui::BillPay::Status::Pending
      || m_status == GCW::Gui::BillPay::Status::Unpaid
       )
     {
@@ -238,7 +241,7 @@ loadData( int _selectedMonth )-> void
     */
     for( int month=1; month<= 12; month++ )
     {
-      auto cb = std::make_unique< Wt::WStandardItem >( bpItem.cb( month ) );
+      auto cb = std::make_unique< Wt::WStandardItem >( bpItem.cbtr( month ) );
 
       /*!
       ** While building the 'month columns', apply a style class to the

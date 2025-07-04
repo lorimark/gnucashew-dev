@@ -498,8 +498,13 @@
   <message id="gcw.billPay.toolTip.clear"                            >Clear all the payment check-boxes.</message>
 
   <message id="gcw.billPay.tableName.Paid"                           >Paid</message>
+  <message id="gcw.billPay.tableName.Pending"                        >Pending</message>
   <message id="gcw.billPay.tableName.Unpaid"                         >Unpaid</message>
   <message id="gcw.billPay.tableName.Disabled"                       >Disabled</message>
+
+  <message id="gcw.billPay.tableView.yes"                            >yes</message>
+  <message id="gcw.billPay.tableView.maybe"                          >pen</message>
+  <message id="gcw.billPay.tableView.no"                             >no</message>
 
 </messages>
 

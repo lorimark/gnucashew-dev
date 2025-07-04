@@ -95,6 +95,26 @@ buildContent()-> void
       headerClicked().connect( this, &MainWidget::on_headerClicked );
   }
 
+  // pending items
+  {
+    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Pending );
+    m_pendingView = u_.get();
+    cw-> addWidget( std::move( u_ ) );
+    m_pendingView->
+      clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        /*
+        ** remember the clicked index
+        */
+        m_selectedIndex = _index;
+      });
+    m_pendingView->
+      doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+      {
+        editClicked( m_pendingView, _index );
+      });
+  }
+
   // paid items
   {
     auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Paid );
@@ -296,6 +316,7 @@ setMonth( int _month )-> void
   m_selectedMonth = _month;
 
   if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
+  if( m_pendingView  ) m_pendingView  -> setMonth( _month );
   if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_disabledView ) m_disabledView -> setMonth( _month );
   if( m_summaryView  ) m_summaryView  -> setMonth( _month );
