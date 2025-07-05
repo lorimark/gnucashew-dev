@@ -272,6 +272,7 @@ saveData()-> void
     return;
   }
 
+#ifdef DUPLICATES_ARE_ALLOWED_SINCE_INTERNET_GOES_TO_FRONTIER_AND_HOSTGATOR_AND_SO_ON
   /*
   ** If the account is already in a bill-pay, then disallow
   **  another duplicate
@@ -281,6 +282,7 @@ saveData()-> void
     Wt::WMessageBox::show( "Bill Pay", TR("gcw.billPay.save.duplicate"), Wt::StandardButton::Ok );
     return;
   }
+#endif
 
   /*
   ** little bit of housekeeping before we begin

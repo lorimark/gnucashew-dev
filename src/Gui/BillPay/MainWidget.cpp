@@ -10,6 +10,10 @@
 GCW::Gui::BillPay::MainWidget::
 MainWidget()
 {
+  // identify
+  addStyleClass( "BillPay"    );
+  addStyleClass( "MainWidget" );
+
   buildContent();
 
 } // endMainWidget()
@@ -20,18 +24,13 @@ buildContent()-> void
 {
   clear();
 
-  // identify
-  addStyleClass( "BillPay" );
-
   // layout
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
 
   m_summaryView = m_hlw-> addWidget( std::make_unique< SummaryWidget >() );
-  m_summaryView-> setHidden( true );
   m_hlw-> setResizable( 0, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
   auto cw  = m_hlw-> addWidget( std::make_unique< Wt::WContainerWidget >() );
-//  auto vlw = m_hlw-> addLayout( std::make_unique< Wt::WVBoxLayout      >() );
 
   // toolbar
   {
@@ -39,34 +38,19 @@ buildContent()-> void
     m_toolBar = u_.get();
     cw-> addWidget( std::move( u_ ) );
 
-    m_toolBar-> addClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
-    m_toolBar-> editClicked().connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
-//    m_toolBar-> buttonGroup()-> checkedChanged().connect( this, &MainWidget::buttonChanged );
-    m_toolBar-> disabledButton()-> clicked().connect( this, &MainWidget::do_disabledClicked );
-    m_toolBar-> summaryButton()-> clicked().connect( this, &MainWidget::do_summaryClicked );
-
-    m_toolBar-> importClicked().connect( this, &MainWidget::importClicked );
-    m_toolBar-> exportClicked().connect( this, &MainWidget::exportClicked );
+    m_toolBar                    -> addClicked()  .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
+    m_toolBar                    -> editClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
+    m_toolBar-> disabledButton() -> clicked()     .connect( this, &MainWidget::do_disabledClicked                );
+    m_toolBar-> summaryButton()  -> clicked()     .connect( this, &MainWidget::do_summaryClicked                 );
+    m_toolBar-> importClicked()                   .connect( this, &MainWidget::importClicked                     );
+    m_toolBar-> exportClicked()                   .connect( this, &MainWidget::exportClicked                     );
 
   } // toolbar
 
-  // recall
+  // recall selected month
   m_selectedMonth = configItem()-> getVarInt( "selectedMonth" );
   if( m_selectedMonth < 1 )
       m_selectedMonth = 1;
-
-//  Wt::WVBoxLayout      * lw2;
-//  Wt::WContainerWidget * cw;
-//  {
-//    auto u_ = std::make_unique< Wt::WContainerWidget >();
-//    cw = u_.get();
-//    m_gridLayout-> addWidget( std::move( u_ ), 1, 0 );
-//    m_gridLayout-> setRowStretch( 1, 1 );
-//
-//    lw2 = cw-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
-//    lw2-> setSpacing( 0 );
-//  }
-
 
   // unpaid items
   {
@@ -93,7 +77,8 @@ buildContent()-> void
     */
     m_unpaidView->
       headerClicked().connect( this, &MainWidget::on_headerClicked );
-  }
+
+  } // endunpaid items
 
   // pending items
   {
@@ -113,7 +98,8 @@ buildContent()-> void
       {
         editClicked( m_pendingView, _index );
       });
-  }
+
+  } // endpending items
 
   // paid items
   {
@@ -133,7 +119,8 @@ buildContent()-> void
       {
         editClicked( m_paidView, _index );
       });
-  }
+
+  } // endpaid items
 
   // disabled items
   if( m_toolBar-> showDisabled() )
@@ -155,13 +142,11 @@ buildContent()-> void
         editClicked( m_disabledView, _index );
       });
 
-  }
-
-  // fill-up remaining space
-//  vlw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
+  } // enddisabled items
 
   /*
-  ** This activates the summary widget and causes it to show or not
+  ** This activates the summary widget and causes it to show
+  **   or not show depending on the chosen option.
   */
   do_summaryClicked();
 
@@ -187,20 +172,13 @@ openEditor( const std::string & _bpGuid )-> void
 //  m_gridLayout-> addWidget( std::move( u_), 1, 1 );
 //  m_gridLayout-> setColumnResizable( 0, true, "30%" );
 
-  /*
-  ** This splits the page, and sets the first side to 20% width, and the second
-  **  side to 75%.  The edit form occupies the 80% width side.  The split also
-  **  has a slider, so if the user wants to temporarily slide the detail form
-  **  out of the way, he can do that.
-  **
-  */
   m_hlw-> addWidget( std::move( u_ ) );
   m_hlw-> setResizable( 1, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
   m_editWidget->
     deleted().connect( [=]()
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+      Wt::WMessageBox::show( "Bill Pay", TR("gcw.not-yet-implemented"), Wt::StandardButton::Ok );
     });
 
   m_editWidget->
@@ -214,7 +192,6 @@ openEditor( const std::string & _bpGuid )-> void
   m_editWidget->
     canceled().connect( [=]()
     {
-//      refreshViews();
       m_hlw-> removeWidget( m_editWidget.get() );
       m_hlw-> setResizable( 1, true, Wt::WLength::Auto );
     });

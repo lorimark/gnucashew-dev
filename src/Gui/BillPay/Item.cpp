@@ -5,11 +5,10 @@
 #include "Item.h"
 
 /*
-** BP item info is stored in
-**  a var-like json structure
-**  with field-names and field-values.
-**  The following are the field-names
-**  used in the KVP (key value pair) set;
+** BP item info is stored in a var-like json structure
+**  with field-names and field-values.  The following
+**  are the field-names used in the KVP (key value
+**  pair) set;
 **
 */
 #define FN_ACCOUNTGUID "accountGuid"
@@ -35,7 +34,7 @@ Item ( GCW::Dbo::Vars::Item::Ptr _varItem )
 : m_varItem( _varItem )
 {
 
-} // endBillPayItem( GCW::Dbo::Vars::Item::Ptr _varItem )
+} // endItem ( GCW::Dbo::Vars::Item::Ptr _varItem )
 
 auto
 GCW::Gui::BillPay::Item::
@@ -51,7 +50,7 @@ sortValue () const -> float
 
   return std::stof( sortvalue );
 
-} // endsortValue() const -> float
+} // endsortValue () const -> float
 
 auto
 GCW::Gui::BillPay::Item::
@@ -84,7 +83,7 @@ payFromGuid () const-> std::string
 
   return retVal;
 
-} // endpayToGuid () const-> std::vector< std::string >
+} // endpayFromGuid () const-> std::string
 
 
 auto
@@ -94,7 +93,7 @@ accountFullName () const-> std::string
   return
     GCW::Dbo::Accounts::fullName( accountGuid() );
 
-} // endaccountGuid () const-> std::string
+} // endaccountFullName () const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
@@ -239,7 +238,7 @@ cb ( int _index ) const-> std::string
   return
     m_varItem-> getVarString( FN_CB + toString( _index ) );
 
-} // endcb(int _index) const-> std::string
+} // endcb ( int _index) const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
@@ -248,7 +247,7 @@ cbtr ( int _index ) const-> std::string
   return
     TR8( "gcw.billPay.tableView." + cb( _index ) );
 
-} // endcb(int _index) const-> std::string
+} // endcbtr ( int _index ) const-> std::string
 
 auto
 GCW::Gui::BillPay::Item::
@@ -257,7 +256,7 @@ setVar ( const std::string & _key, const Wt::WString & _value )-> void
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   m_varItem.modify()-> setVar( _key, _value );
 
-} // endset_var( const std::string & _key, const Wt::WString & _value )-> void
+} // endsetVar ( const std::string & _key, const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -265,7 +264,7 @@ set_accountGuid ( const Wt::WString & _value )-> void
 {
   setVar( FN_ACCOUNTGUID, _value );
 
-} // endset_accountGuid( const Wt::WString & _value )-> void
+} // endset_accountGuid ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -273,7 +272,7 @@ set_dueDay ( const Wt::WString & _value )-> void
 {
   setVar( FN_DUEDAY, _value );
 
-} // endset_dueDay( const Wt::WString & _value )-> void
+} // endset_dueDay ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -281,7 +280,7 @@ set_minimum ( const Wt::WString & _value )-> void
 {
   setVar( FN_MINIMUM, _value );
 
-} // endset_minimum( const Wt::WString & _value )-> void
+} // endset_minimum ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -289,7 +288,7 @@ set_budget ( const Wt::WString & _value )-> void
 {
   setVar( FN_BUDGET, _value );
 
-} // endset_budget( const Wt::WString & _value )-> void
+} // endset_budget ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -297,7 +296,7 @@ set_nickname ( const Wt::WString & _value )-> void
 {
   setVar( FN_NICKNAME, _value );
 
-} // endset_nickname( const Wt::WString & _value )-> void
+} // endset_nickname ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -305,7 +304,7 @@ set_group ( const Wt::WString & _value )-> void
 {
   setVar( FN_GROUP, _value );
 
-} // endset_group( const Wt::WString & _value )-> void
+} // endset_group ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -321,7 +320,7 @@ set_actual ( const Wt::WString & _value )-> void
 {
   setVar( FN_ACTUAL, _value );
 
-} // endset_actual( const Wt::WString & _value )-> void
+} // endset_actual ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -329,7 +328,7 @@ set_url ( const Wt::WString & _value )-> void
 {
   setVar( FN_URL, _value );
 
-} // endset_url( const Wt::WString & _value )-> void
+} // endset_url ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -337,7 +336,7 @@ set_ap ( const Wt::WString & _value )-> void
 {
   setVar( FN_AP, _value );
 
-} // endset_ap( const Wt::WString & _value )-> void
+} // endset_ap ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -345,7 +344,7 @@ set_isActive ( const Wt::WString & _value )-> void
 {
   setVar( FN_ISACTIVE, _value );
 
-} // endset_isActive( const Wt::WString & _value )-> void
+} // endset_isActive ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -353,7 +352,7 @@ set_isVisible ( const Wt::WString & _value )-> void
 {
   setVar( FN_ISVISIBLE, _value );
 
-} // endset_isVisible( const Wt::WString & _value )-> void
+} // endset_isVisible ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -361,7 +360,7 @@ set_autoPay ( const Wt::WString & _value )-> void
 {
   setVar( FN_AUTOPAY, _value );
 
-} // endset_autoPay( const Wt::WString & _value )-> void
+} // endset_autoPay ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -369,7 +368,7 @@ set_payNow ( const Wt::WString & _value )-> void
 {
   setVar( FN_PAYNOW, _value );
 
-} // endset_payNow( const Wt::WString & _value )-> void
+} // endset_payNow ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -377,7 +376,7 @@ set_last4 ( const Wt::WString & _value )-> void
 {
   setVar( FN_LAST4, _value );
 
-} // endset_last4( const Wt::WString & _value )-> void
+} // endset_last4 ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -385,7 +384,7 @@ set_note ( const Wt::WString & _value )-> void
 {
   setVar( FN_NOTE, _value );
 
-} // endset_note( const Wt::WString & _value )-> void
+} // endset_note ( const Wt::WString & _value )-> void
 
 auto
 GCW::Gui::BillPay::Item::
@@ -393,7 +392,7 @@ set_cb ( int _index, const Wt::WString & _value )-> void
 {
   setVar( FN_CB + toString( _index ), _value );
 
-} // endset_cb(int _index, const Wt::WString & _value)-> void
+} // endset_cb ( int _index, const Wt::WString & _value )-> void
 
 
 

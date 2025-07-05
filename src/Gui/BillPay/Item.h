@@ -67,8 +67,26 @@ class Item
     auto payNow            () const-> std::string ;
     auto last4             () const-> std::string ;
     auto note              () const-> std::string ;
-    auto cb( int _index     ) const-> std::string ;
-    auto cbtr( int _index   ) const-> std::string ;
+
+    /*!
+    ** \brief Check Box Value as text
+    **
+    ** This will return 'yes', 'no', 'maybe' depending on the
+    **  value of the check box.  These are consistent with 
+    **  the tri-state capable check boxes.
+    **
+    */
+    auto cb( int _index ) const-> std::string ;
+
+    /*!
+    ** \brief Check Box Value as Translated text
+    **
+    ** This will return the 'translated' yes, no, maybe of the
+    **  check-box values.  For English this can translate to
+    **  'yes', 'no', and 'pen' for pending payments.
+    **
+    */
+    auto cbtr( int _index ) const-> std::string ;
 
     auto set_accountGuid   ( const Wt::WString & _value )-> void ;
     auto set_dueDay        ( const Wt::WString & _value )-> void ;
@@ -101,6 +119,8 @@ class Item
     auto sortValue() const -> float ;
 
     auto setVar( const std::string & _key, const Wt::WString & _value )-> void ;
+
+  private:
 
     GCW::Dbo::Vars::Item::Ptr m_varItem ;
 

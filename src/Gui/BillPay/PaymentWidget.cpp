@@ -22,7 +22,6 @@ PaymentWidget( const std::string & _bpGuid )
   /*
   ** This is a complex widget, with a header area with a
   **  handful of fields, and some controls and whatnot.
-  **
   */
   auto templtMain =
     lw->
@@ -30,7 +29,6 @@ PaymentWidget( const std::string & _bpGuid )
 
   /*
   ** insert the table
-  **
   */
   m_table = templtMain-> bindNew< Wt::WTable >( "table" );
   m_table-> addStyleClass( "MakePaymentTable" );
@@ -38,13 +36,13 @@ PaymentWidget( const std::string & _bpGuid )
   /*
   ** add the first row of widgets
   */
-  m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit >( );
-  m_num        = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit >( );
-  m_desc       = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit >( );
+  m_date       = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit         >( );
+  m_num        = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit         >( );
+  m_desc       = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit         >( );
   auto acct    = table()-> elementAt( 0, 3 )-> addNew< AccountSuggestionEdit >( );
-  m_recon      = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit >( );
-  m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit >( );
-  m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit >( );
+  m_recon      = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit         >( );
+  m_debit      = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit         >( );
+  m_credit     = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
 
 #ifdef INCLUDE_TABLE_WITH_MULTIPLE_INPUT_ROWS
   /*
@@ -155,7 +153,6 @@ saveData()-> void
 {
   /*
   ** load the bpItem
-  **
   */
   auto bpItem = GCW::Gui::BillPay::bpItem( m_bpGuid );
 
@@ -165,9 +162,6 @@ saveData()-> void
     << std::endl;
 
 #ifdef NEVER
-  /*
-  ** save everything
-  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   bpItem.set_accountGuid ( m_account   -> valueGuid() );
   bpItem.set_dueDay      ( m_dueDay    -> valueText() );
@@ -208,8 +202,8 @@ PaymentWidgetDialog( const std::string & _bpGuid )
   auto pbSave   = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.label.save"   ) );
   auto pbCancel = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.label.cancel" ) );
 
-  pbSave    -> setStyleClass( "btn-xs" );
-  pbCancel  -> setStyleClass( "btn-xs" );
+  pbSave   -> setStyleClass( "btn-xs" );
+  pbCancel -> setStyleClass( "btn-xs" );
 
   pbSave   -> clicked().connect( [this,editWidget](){ editWidget-> saveData(); accept(); } );
   pbCancel -> clicked().connect( this, &Wt::WDialog::reject );
