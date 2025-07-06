@@ -67,3 +67,11 @@ setMonth( int _month )
 } // endsetMonth( int _month )
 
 
+auto
+GCW::Gui::BillPay::TableView::
+rowCount()-> int
+{
+  return m_model-> rowCount();
+
+} // endrowCount()-> int
+

@@ -20,15 +20,12 @@ AccountSuggestionPopup()
 {
   setAttributeValue( "style", "height:250px;overflow:scroll" );
 
-  std::set< std::string > items;
+  /*
+  ** load all active accounts
+  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   for( auto accountItem : GCW::Dbo::Accounts::activeAccounts() )
-    items.insert( GCW::Dbo::Accounts::fullName( accountItem-> guid() ) );
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << items.size() << std::endl;
-
-  for( auto item : items )
-    addSuggestion( item );
+    addSuggestion( GCW::Dbo::Accounts::fullName( accountItem-> guid() ) );
 
 } // endAccountSuggestionPopup()
 

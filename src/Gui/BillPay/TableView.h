@@ -25,9 +25,11 @@ class TableView
 
     TableView( int _selectedMonth, const Status _status );
 
-    void setMonth( int _month );
+    auto setMonth( int _month )-> void ;
 
-    std::shared_ptr< TableModel > model() const
+    auto rowCount()-> int ;
+
+    auto model() const-> std::shared_ptr< TableModel >
     {
       return m_model;
     }

@@ -83,7 +83,17 @@ class Item
     **
     ** This will return the 'translated' yes, no, maybe of the
     **  check-box values.  For English this can translate to
-    **  'yes', 'no', and 'pen' for pending payments.
+    **  'yes' (paid), 'no' (not paid), and 'pen' (pending)
+    **  payments.
+    **
+    ** \code
+    **  <message id="gcw.billPay.tableView.yes"   >yes</message>
+    **  <message id="gcw.billPay.tableView.maybe" >pen</message>
+    **  <message id="gcw.billPay.tableView.no"    >no</message>
+    ** \endcode
+    **
+    ** This will also satisfy the requirements for multi-language
+    **  translations.
     **
     */
     auto cbtr( int _index ) const-> std::string ;

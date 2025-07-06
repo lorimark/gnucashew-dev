@@ -138,9 +138,6 @@ loadData()-> void
 
   auto bpItem = GCW::Gui::BillPay::bpItem( bpGuid() );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " bpItem:"  << bpItem.guid()        << std::endl;
-  std::cout << __FILE__ << ":" << __LINE__ << " account:" << bpItem.accountGuid() << std::endl;
-
   GCW::Dbo::Transactions::Manager transactionManager;
 
   m_date-> setValueText( GCW::Core::currentDateTimeDisplayString() );

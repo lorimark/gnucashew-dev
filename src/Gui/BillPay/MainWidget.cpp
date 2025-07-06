@@ -123,7 +123,6 @@ buildContent()-> void
   } // endpaid items
 
   // disabled items
-  if( m_toolBar-> showDisabled() )
   {
     auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Disabled );
     m_disabledView = u_.get();
@@ -149,6 +148,8 @@ buildContent()-> void
   **   or not show depending on the chosen option.
   */
   do_summaryClicked();
+
+  refreshViews();
 
 } // endbuildContent()-> void
 
@@ -210,6 +211,9 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_editClicked()-> void
 {
+  if( !m_selectedIndex.isValid() )
+    return;
+
   auto zcolIndex = m_selectedIndex.model()-> index( m_selectedIndex.row(), 0 );
   auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
   openEditor( bpGuid );
@@ -269,7 +273,10 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_disabledClicked()-> void
 {
-  buildContent();
+  if( m_toolBar-> showDisabled() )
+      m_disabledView-> setHidden( false );
+  else
+      m_disabledView-> setHidden( true );
 
 } // enddisabledClicked()-> void
 
@@ -284,7 +291,7 @@ do_summaryClicked()-> void
 
   m_summaryView-> setMonth( m_selectedMonth );
 
-} // enddisabledClicked()-> void
+} // enddo_summaryClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
@@ -297,6 +304,21 @@ setMonth( int _month )-> void
   if( m_paidView     ) m_paidView     -> setMonth( _month );
   if( m_disabledView ) m_disabledView -> setMonth( _month );
   if( m_summaryView  ) m_summaryView  -> setMonth( _month );
+
+  if( m_pendingView-> rowCount() > 0 )
+      m_pendingView-> setHidden( false );
+  else
+      m_pendingView-> setHidden( true );
+
+  if( m_paidView-> rowCount() > 0 )
+      m_paidView-> setHidden( false );
+  else
+      m_paidView-> setHidden( true );
+
+  if( m_disabledView-> rowCount() > 0 )
+      do_disabledClicked();
+  else
+      do_disabledClicked();
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );
