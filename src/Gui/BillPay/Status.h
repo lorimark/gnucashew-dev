@@ -29,7 +29,7 @@ enum class Status
   Unpaid,
 
   /// Disabled Status
-  Disabled
+  Inactive
 };
 
 /*!

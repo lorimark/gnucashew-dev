@@ -164,7 +164,7 @@ loadData( int _selectedMonth )-> void
     ** This is for Disabled.
     */
     else
-    if( m_status == GCW::Gui::BillPay::Status::Disabled ) // capture disabled items here
+    if( m_status == GCW::Gui::BillPay::Status::Inactive ) // capture disabled items here
     {
       /*
       ** Disabled items are either notActive ~or~ notVisible.

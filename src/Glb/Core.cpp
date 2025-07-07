@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <cstdint>
 
 #include <Wt/WModelIndex.h>
 #include <Wt/WDateTime.h>

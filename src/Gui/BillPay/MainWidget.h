@@ -32,7 +32,7 @@ class MainWidget
     auto buildContent()-> void ;
     auto do_addClicked()-> void ;
     auto do_editClicked()-> void ;
-    auto do_disabledClicked()-> void ;
+    auto do_inactiveClicked()-> void ;
     auto do_summaryClicked()-> void ;
     auto addClicked()-> void ;
     auto editClicked( TableView * _table, Wt::WModelIndex _index )-> void ;
@@ -58,7 +58,7 @@ class MainWidget
     TableView     * m_pendingView  = nullptr ;
     TableView     * m_paidView     = nullptr ;
     TableView     * m_unpaidView   = nullptr ;
-    TableView     * m_disabledView = nullptr ;
+    TableView     * m_inactiveView = nullptr ;
     SummaryWidget * m_summaryView  = nullptr ;
 
     auto on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void ;

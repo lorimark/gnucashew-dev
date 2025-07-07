@@ -40,7 +40,7 @@ buildContent()-> void
 
     m_toolBar                    -> addClicked()  .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
     m_toolBar                    -> editClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
-    m_toolBar-> disabledButton() -> clicked()     .connect( this, &MainWidget::do_disabledClicked                );
+    m_toolBar-> inactiveButton() -> clicked()     .connect( this, &MainWidget::do_inactiveClicked                );
     m_toolBar-> summaryButton()  -> clicked()     .connect( this, &MainWidget::do_summaryClicked                 );
     m_toolBar-> importClicked()                   .connect( this, &MainWidget::importClicked                     );
     m_toolBar-> exportClicked()                   .connect( this, &MainWidget::exportClicked                     );
@@ -122,12 +122,12 @@ buildContent()-> void
 
   } // endpaid items
 
-  // disabled items
+  // inactive items
   {
-    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Disabled );
-    m_disabledView = u_.get();
+    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Inactive );
+    m_inactiveView = u_.get();
     cw-> addWidget( std::move( u_ ) );
-    m_disabledView->
+    m_inactiveView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
         /*
@@ -135,13 +135,13 @@ buildContent()-> void
         */
         m_selectedIndex = _index;
       });
-    m_disabledView->
+    m_inactiveView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
-        editClicked( m_disabledView, _index );
+        editClicked( m_inactiveView, _index );
       });
 
-  } // enddisabled items
+  } // endinactive items
 
   /*
   ** This activates the summary widget and causes it to show
@@ -271,14 +271,14 @@ buttonChanged( Wt::WRadioButton * _button )-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
-do_disabledClicked()-> void
+do_inactiveClicked()-> void
 {
-  if( m_toolBar-> showDisabled() )
-      m_disabledView-> setHidden( false );
+  if( m_toolBar-> showInactive() )
+      m_inactiveView-> setHidden( false );
   else
-      m_disabledView-> setHidden( true );
+      m_inactiveView-> setHidden( true );
 
-} // enddisabledClicked()-> void
+} // endinactiveClicked()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
@@ -302,7 +302,7 @@ setMonth( int _month )-> void
   if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
   if( m_pendingView  ) m_pendingView  -> setMonth( _month );
   if( m_paidView     ) m_paidView     -> setMonth( _month );
-  if( m_disabledView ) m_disabledView -> setMonth( _month );
+  if( m_inactiveView ) m_inactiveView -> setMonth( _month );
   if( m_summaryView  ) m_summaryView  -> setMonth( _month );
 
   if( m_pendingView-> rowCount() > 0 )
@@ -315,10 +315,10 @@ setMonth( int _month )-> void
   else
       m_paidView-> setHidden( true );
 
-  if( m_disabledView-> rowCount() > 0 )
-      do_disabledClicked();
+  if( m_inactiveView-> rowCount() > 0 )
+      do_inactiveClicked();
   else
-      do_disabledClicked();
+      do_inactiveClicked();
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );

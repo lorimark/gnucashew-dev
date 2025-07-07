@@ -37,14 +37,14 @@ ToolBar()
   /*
   ** hide and show disabled items
   */
-  m_disabled = table-> elementAt( 0, 2 )-> addWidget( std::make_unique< Wt::WCheckBox >( TR("gcw.billPay.label.disabled") ) );
-  m_disabled-> setValueText( configItem()-> getVarString( "showDisabled" ) );
-  m_disabled->
+  m_inactive = table-> elementAt( 0, 2 )-> addWidget( std::make_unique< Wt::WCheckBox >( TR("gcw.billPay.label.inactive") ) );
+  m_inactive-> setValueText( configItem()-> getVarString( "showInactive" ) );
+  m_inactive->
     clicked().connect( [&]( Wt::WMouseEvent _event )
     {
       auto item = configItem();
       Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-      item.modify()-> setVar( "showDisabled", m_disabled-> valueText() );
+      item.modify()-> setVar( "showInactive", m_inactive-> valueText() );
       item.flush();
 
     });
@@ -85,9 +85,9 @@ ToolBar()
 
 bool
 GCW::Gui::BillPay::ToolBar::
-showDisabled() const
+showInactive() const
 {
-  return disabledButton()-> checkState() == Wt::CheckState::Checked? true:false;
+  return inactiveButton()-> checkState() == Wt::CheckState::Checked? true:false;
 }
 
 bool

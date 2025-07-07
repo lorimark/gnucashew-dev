@@ -11,7 +11,7 @@ asString( Status _status )
     TR8( "gcw.billPay.tableName.Paid"     ),
     TR8( "gcw.billPay.tableName.Pending"  ),
     TR8( "gcw.billPay.tableName.Unpaid"   ),
-    TR8( "gcw.billPay.tableName.Disabled" )
+    TR8( "gcw.billPay.tableName.Inactive" )
   };
 
   return values[ static_cast<int>( _status ) ];
@@ -26,7 +26,7 @@ asStyleClass( Status _status )
     "billpay paid"     ,
     "billpay pending"  ,
     "billpay unpaid"   ,
-    "billpay disabled"
+    "billpay inactive"
   };
 
   return values[ static_cast<int>( _status ) ];

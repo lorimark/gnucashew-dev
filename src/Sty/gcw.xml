@@ -448,7 +448,7 @@
 
   <message id="gcw.billPay.label.add"                                >Add</message>
   <message id="gcw.billPay.label.edit"                               >Edit</message>
-  <message id="gcw.billPay.label.disabled"                           >disabled</message>
+  <message id="gcw.billPay.label.inactive"                           >inactive</message>
   <message id="gcw.billPay.label.summary"                            >summary</message>
   <message id="gcw.billPay.label.account"                            >Account</message>
   <message id="gcw.billPay.label.taccount"                           >Target Account</message>
@@ -502,7 +502,7 @@
   <message id="gcw.billPay.tableName.Paid"                           >Paid</message>
   <message id="gcw.billPay.tableName.Pending"                        >Pending</message>
   <message id="gcw.billPay.tableName.Unpaid"                         >Unpaid</message>
-  <message id="gcw.billPay.tableName.Disabled"                       >Disabled</message>
+  <message id="gcw.billPay.tableName.Inactive"                       >Inactive</message>
 
   <message id="gcw.billPay.tableView.yes"                            >yes</message>
   <message id="gcw.billPay.tableView.maybe"                          >pen</message>
