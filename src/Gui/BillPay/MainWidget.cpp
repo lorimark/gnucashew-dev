@@ -239,9 +239,12 @@ editClicked( TableView * _table, Wt::WModelIndex _index )-> void
   **  guid.
   **
   */
-  auto zcolIndex = _index.model()-> index( _index.row(), 0 );
-  auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
-  openEditor( bpGuid );
+  if( _index.isValid() )
+  {
+    auto zcolIndex = _index.model()-> index( _index.row(), 0 );
+    auto bpGuid = Wt::asString( zcolIndex.data( Wt::ItemDataRole::User ) ).toUTF8();
+    openEditor( bpGuid );
+  }
 
 } // endeditClicked( TableView * _table, Wt::WModelIndex _index )-> void
 
