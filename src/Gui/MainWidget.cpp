@@ -134,16 +134,43 @@ openSelectedAccount()-> void
 
 
 auto
-test_gnucash()-> void
+test_tableview()-> void
 {
+  auto model = std::make_shared< Wt::WStandardItemModel >();
+  for( int row = 0; row< 3; row++ )
+  {
+    std::vector< std::unique_ptr< Wt::WStandardItem > > rowset;
+    for( int col = 0; col< 3; col++ )
+    {
+      auto item = std::make_unique< Wt::WStandardItem >( Wt::WString("row{1} col{2}").arg( row ).arg( col) );
+      rowset.push_back( std::move( item ) );
+    }
 
-} // endvoid test_gnucash()
+    model-> appendRow( std::move( rowset ) );
+  }
+
+  auto tableView = std::make_unique< Wt::WTableView >();
+  tableView-> setSelectionBehavior    ( Wt::SelectionBehavior::Items );
+//  tableView-> setSelectionBehavior    ( Wt::SelectionBehavior::Rows  );
+//  tableView-> setSelectionMode        ( Wt::SelectionMode::Single    );
+  tableView-> setSelectionMode        ( Wt::SelectionMode::Extended  );
+  tableView-> setColumnResizeEnabled  ( false                        );
+  tableView-> setAlternatingRowColors ( true                         );
+  tableView-> setModel                ( model                        );
+
+  Wt::WDialog dialog( "test" );
+  dialog.contents()-> addWidget( std::move( tableView ) );
+  dialog.rejectWhenEscapePressed( true );
+  dialog.setClosable( true );
+  dialog.exec();
+
+} // endtest_tableview()-> void
 
 auto
 GCW::Gui::MainWidget::
 test()-> void
 {
-  test_gnucash();
+  test_tableview();
 
 } // endtest()
 

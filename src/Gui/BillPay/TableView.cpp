@@ -43,6 +43,15 @@ TableView( int _selectedMonth, const Status _status )
     setColumnAlignment( col, m_model-> columnDef(col).alignment );
   }
 
+  clicked()
+    .connect( [&]()
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << (int)selectionBehavior() << std::endl;
+      std::cout << __FILE__ << ":" << __LINE__ << " " << (int)selectionMode()     << std::endl;
+      std::cout << __FILE__ << ":" << __LINE__ << " " << selectedIndexes().size() << std::endl;
+
+    });
+
 } // endTableView()
 
 
