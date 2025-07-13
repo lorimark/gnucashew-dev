@@ -3,3 +3,4 @@ rsync.sh
 build
 dox
 *.swp
+docroot/resources*
