@@ -64,6 +64,9 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
+        m_pendingView-> clearSelection();
+        m_paidView-> clearSelection();
+        m_inactiveView-> clearSelection();
       });
     m_unpaidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
@@ -92,6 +95,9 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
+        m_unpaidView-> clearSelection();
+        m_paidView-> clearSelection();
+        m_inactiveView-> clearSelection();
       });
     m_pendingView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
@@ -113,6 +119,9 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
+        m_unpaidView-> clearSelection();
+        m_pendingView-> clearSelection();
+        m_inactiveView-> clearSelection();
       });
     m_paidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
@@ -134,6 +143,9 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
+        m_unpaidView-> clearSelection();
+        m_pendingView-> clearSelection();
+        m_paidView-> clearSelection();
       });
     m_inactiveView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
