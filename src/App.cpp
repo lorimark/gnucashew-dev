@@ -12,6 +12,7 @@
 #include <Wt/Auth/AuthWidget.h>
 #include <Wt/WDate.h>
 #include <Wt/WDialog.h>
+#include <Wt/WCheckBox.h>
 #include <Wt/WEnvironment.h>
 #include <Wt/WHBoxLayout.h>
 #include <Wt/WVBoxLayout.h>
@@ -233,11 +234,27 @@ auto
 GCW::App::
 showWelcome()-> void
 {
-  Wt::WDialog dialog( TR( "gcw.welcome.title" )  );
-  dialog.rejectWhenEscapePressed( true );
-  dialog.setClosable( true );
-  dialog.contents()-> addNew< Wt::WText >( TR( "gcw.welcome.body" ) );
-  dialog.exec();
+  auto _configItem = [&]()
+  {
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+    auto retVal = GCW::Dbo::Vars::get( "config", "welcome" );
+
+    return retVal;
+  };
+
+  if( _configItem()-> getVarString( "suppress" ) != "yes" )
+  {
+    Wt::WDialog dialog( TR( "gcw.welcome.title" )  );
+    dialog.rejectWhenEscapePressed( true );
+    dialog.setClosable( true );
+    dialog.contents()-> addNew< Wt::WText >( TR( "gcw.welcome.body" ) );
+    auto cbxSuppress = dialog.contents()-> addNew< Wt::WCheckBox >( "do not show this message again" );
+    dialog.exec();
+
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+    _configItem().modify()-> setVar( "suppress", cbxSuppress-> valueText().toUTF8() );
+  }
 
 } // endshowWelcome()-> void
 

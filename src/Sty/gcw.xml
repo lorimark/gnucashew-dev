@@ -59,7 +59,9 @@
       Have fun! Let me know what you think!<br />
       mark@lorimarksolutions.com
     </p>
-    (press &lt;esc&gt; to continue)
+    <p>
+      (press &lt;esc&gt; to continue)
+    </p>
   </message>
 
   <message id="gcw.not-yet-implemented">This feature is not yet implemented.</message>
