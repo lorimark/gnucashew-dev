@@ -64,13 +64,12 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
-        m_pendingView-> clearSelection();
-        m_paidView-> clearSelection();
-        m_inactiveView-> clearSelection();
+        clearSelectionExcept( m_unpaidView );
       });
     m_unpaidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        clearSelectionExcept( m_unpaidView );
         editClicked( m_unpaidView, _index );
       });
 
@@ -95,13 +94,12 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
-        m_unpaidView-> clearSelection();
-        m_paidView-> clearSelection();
-        m_inactiveView-> clearSelection();
+        clearSelectionExcept( m_pendingView );
       });
     m_pendingView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        clearSelectionExcept( m_pendingView );
         editClicked( m_pendingView, _index );
       });
 
@@ -119,13 +117,12 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
-        m_unpaidView-> clearSelection();
-        m_pendingView-> clearSelection();
-        m_inactiveView-> clearSelection();
+        clearSelectionExcept( m_paidView );
       });
     m_paidView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        clearSelectionExcept( m_paidView );
         editClicked( m_paidView, _index );
       });
 
@@ -143,13 +140,12 @@ buildContent()-> void
         ** remember the clicked index
         */
         m_selectedIndex = _index;
-        m_unpaidView-> clearSelection();
-        m_pendingView-> clearSelection();
-        m_paidView-> clearSelection();
+        clearSelectionExcept( m_inactiveView );
       });
     m_inactiveView->
       doubleClicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
+        clearSelectionExcept( m_inactiveView );
         editClicked( m_inactiveView, _index );
       });
 
@@ -164,6 +160,21 @@ buildContent()-> void
   refreshViews();
 
 } // endbuildContent()-> void
+
+
+auto
+GCW::Gui::BillPay::MainWidget::
+clearSelectionExcept( TableView * _view )-> void
+{
+  if( _view != m_unpaidView   ) m_unpaidView   -> clearSelection();
+  if( _view != m_pendingView  ) m_pendingView  -> clearSelection();
+  if( _view != m_paidView     ) m_paidView     -> clearSelection();
+  if( _view != m_inactiveView ) m_inactiveView -> clearSelection();
+
+  wApp-> processEvents();
+
+} // endclearSelectionExcept( TableView * )-> void
+
 
 auto
 GCW::Gui::BillPay::MainWidget::

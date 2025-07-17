@@ -42,6 +42,7 @@ class MainWidget
     auto refreshViews()-> void ;
     auto importClicked()-> void ;
     auto exportClicked()-> void ;
+    auto clearSelectionExcept( TableView * )-> void ;
 
     std::unique_ptr< EditWidgetDialog > m_dialog ;
 
