@@ -235,6 +235,7 @@
   <message id="gcw.MainWidget.mu.tools.importmap"                    >Import Map Editor</message>
   <message id="gcw.MainWidget.mu.tools.translinkdoc"                 >Transaction Linked Documents</message>
   <message id="gcw.MainWidget.mu.tools.generaljourn"                 >General Journal</message>
+  <message id="gcw.MainWidget.mu.tools.rawTables"                    >Raw Tables</message>
 
   <message id="gcw.MainWidget.mu.help"                               >Help</message>
   <message id="gcw.MainWidget.mu.help.tutorial"                      >Tutorial and Concepts Guide</message>
@@ -311,6 +312,8 @@
   <message id="gcw.AccountsType.CREDITLINE"                          >Credit Line</message>
 
   <message id="gcw.PropertiesWidget.titleBar"                        >Properties</message>
+
+  <message id="gcw.AboutWidget.titleBar"                             >About</message>
 
   <message id="gcw.AccountRegisterModel.orphan"                      >Orphan (USD)</message>
 

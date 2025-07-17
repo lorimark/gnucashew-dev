@@ -126,6 +126,22 @@ open_properties()-> void
 
 auto
 GCW::Gui::MainWidget::
+open_aboutWidget()-> void
+{
+  static auto dialog = std::make_unique< Wt::WDialog >( TR( "gcw.AboutWidget.titleBar" ) );
+  dialog-> rejectWhenEscapePressed( true );
+  dialog-> contents()-> addNew< Wt::WText >( "about" );
+  dialog-> show();
+  dialog->
+    finished().connect( []()
+    {
+      dialog.reset(nullptr);
+    });
+
+} // endopen_properties()
+
+auto
+GCW::Gui::MainWidget::
 openSelectedAccount()-> void
 {
   centralWidget()-> accountsTreeView()-> editSelectedAccount();

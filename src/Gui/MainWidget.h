@@ -42,6 +42,7 @@ class MainWidget
     auto load()                   -> void ;
     auto open_customersOverview() -> void ;
     auto open_properties()        -> void ;
+    auto open_aboutWidget()       -> void ;
     auto openSelectedAccount()    -> void ;
     auto test()                   -> void ;
 

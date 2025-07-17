@@ -321,7 +321,7 @@ MainMenu( MainWidget * _mainWidget )
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.importmap"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.translinkdoc"  ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ) )-> setDisabled( true );
-    popTools-> addItem( "Raw Tables", _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
+    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.rawTables"     ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
 
     m_uTools-> setMenu( std::move( popTools ) );
   }
@@ -335,7 +335,7 @@ MainMenu( MainWidget * _mainWidget )
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.tutorial"      ) )-> setDisabled( true );
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.tip"           ) )-> setDisabled( true );
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.contents"      ) )-> setDisabled( true );
-    popHelp-> addItem( TR( "gcw.MainWidget.mu.help.about"         ) )-> setDisabled( true );
+    popHelp-> addItem( TR( "gcw.MainWidget.mu.help.about"         ), _mainWidget, &GCW::Gui::MainWidget::open_aboutWidget );
     m_uHelp-> setMenu( std::move( popHelp ) );
   }
 
