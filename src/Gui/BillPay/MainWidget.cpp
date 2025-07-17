@@ -257,10 +257,14 @@ GCW::Gui::BillPay::MainWidget::
 editClicked( TableView * _table, Wt::WModelIndex _index )-> void
 {
   /*
+  ** remember the index
+  */
+  m_selectedIndex = _index;
+
+  /*
   ** Get the 0-col index and use that to get the guid of this
   **  row, and use that to get the Edit dialog open on that
   **  guid.
-  **
   */
   if( _index.isValid() )
   {
@@ -286,7 +290,6 @@ buttonChanged( Wt::WRadioButton * _button )-> void
   **  is going to get defaulted to 1, to help mitigate the issue, but
   **  it's still a problem if we pass a nullptr for the button.  So,
   **  to be safe, just deal with it.
-  **
   */
   if( !_button )
     return;
@@ -341,11 +344,17 @@ setMonth( int _month )-> void
   else
       m_paidView-> setHidden( true );
 
-  if( m_inactiveView-> rowCount() > 0 )
-      do_inactiveClicked();
-  else
+  /*
+  ** BUGBUG: not sure why i tested all of this just to make the same call... weird!
+  */
+//  if( m_inactiveView-> rowCount() > 0 )
+//      do_inactiveClicked();
+//  else
       do_inactiveClicked();
 
+  /*
+  ** in the words of Spock; "remember"
+  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );
 
