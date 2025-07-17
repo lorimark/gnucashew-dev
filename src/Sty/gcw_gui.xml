@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages xmlns:if="Wt.WTemplate.conditions">
 
-  <message id="gcw_gui.doxygen_link">/dox/html/index.html</message>
+  <message id="gcw_gui.doxygen_link">/dox/html/help_overview.html</message>
 
   <message id="gcw_gui.accounteditor.form.tab1">
     <table width="100%">
