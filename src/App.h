@@ -11,6 +11,7 @@
 #include "Config.h"
 #include "Dbo/SessionGnuCash.h"
 #include "Dbo/SessionGnuCashew.h"
+#include "Dbo/Vars/Vars.h"
 #include "Eng/Engine.h"
 #include "Gui/MainWidget.h"
 
@@ -28,18 +29,18 @@ class App
 
     App( const Wt::WEnvironment & env );
 
-    GCW::Eng::Engine        & engine  () { return m_engine;             }
-    Dbo::AbstractSession    & session ();
+    GCW::Eng::Engine & engine() { return m_engine; }
+    Dbo::AbstractSession & session();
 
 #ifdef USE_GNUCASH_ENGINE
-    Dbo::GnuCash::Session   & gnucash_session   () { return m_gnucash_session;    }
+    Dbo::GnuCash::Session & gnucash_session () { return m_gnucash_session; }
 #endif
 
 #ifdef USE_GNUCASHEW_SESSION
-    Dbo::GnuCashew::Session & gnucashew_session () { return m_gnucashew_session;  }
+    Dbo::GnuCashew::Session & gnucashew_session () { return m_gnucashew_session; }
 #endif
 
-    GCW::Gui::MainWidget    * mainWidget        () { return m_mainWidget;         }
+    GCW::Gui::MainWidget * mainWidget() { return m_mainWidget; }
 
   private:
 
@@ -48,6 +49,7 @@ class App
     auto buildLogin       ()-> void ;
     auto buildLoggedIn    ()-> void ;
     auto createAuthWidget ()-> std::unique_ptr< Wt::Auth::AuthWidget >;
+    auto configItem( const std::string & _cfy )-> GCW::Dbo::Vars::Item::Ptr ;
 
 #ifdef USE_GNUCASH_ENGINE
     Dbo::GnuCash::Session         m_gnucash_session;

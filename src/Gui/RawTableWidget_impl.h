@@ -11,14 +11,12 @@ RawTableWidget( const std::string & _viewName )
 {
   /*
   ** Look in gcw.css for styling.
-  **
   */
   addStyleClass( "RawTableWidget_" + _viewName );
 
   /*
   ** use a layout manager to install the table view into, so
   **  that the widget will fit and scroll properly.
-  **
   */
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
 
@@ -32,16 +30,15 @@ RawTableWidget( const std::string & _viewName )
 
   /*
   ** Configure the table view.
-  **
   */
   auto tv = std::make_unique< GCW::Gui::TableView >();
   m_tableView = tv.get();
   tableView()-> setSortingEnabled       ( true                                                          );
   tableView()-> setAlternatingRowColors ( true                                                          );
-  tableView()-> setSelectionBehavior    ( Wt::SelectionBehavior::Rows                                   );
+  tableView()-> setSelectionBehavior    ( Wt::SelectionBehavior::Items                                  );
   tableView()-> setSelectionMode        ( Wt::SelectionMode::Single                                     );
-  tableView()-> setEditTriggers         ( Wt::EditTrigger::None /* SingleClicked */                     );
-//  tableView()-> setEditOptions          ( Wt::EditOption::SingleEditor | Wt::EditOption::SaveWhenClosed ); // FIXME: this should probably be: MultipleEditor | LeaveEditorsOpen so we can open all editors on a single entry
+  tableView()-> setEditTriggers         ( Wt::EditTrigger::SingleClicked                                );
+  tableView()-> setEditOptions          ( Wt::EditOption::SingleEditor | Wt::EditOption::SaveWhenClosed );
 
   auto sb = std::make_unique< Wt::WContainerWidget >();
   m_statusBar = sb.get();

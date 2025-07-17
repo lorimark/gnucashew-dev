@@ -232,18 +232,21 @@ GCW::App::App( const Wt::WEnvironment & env )
 
 auto
 GCW::App::
+configItem( const std::string & _cfy )-> GCW::Dbo::Vars::Item::Ptr
+{
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+  auto retVal = GCW::Dbo::Vars::get( "config", _cfy );
+
+  return retVal;
+}
+
+auto
+GCW::App::
 showWelcome()-> void
 {
-  auto _configItem = [&]()
-  {
-    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-
-    auto retVal = GCW::Dbo::Vars::get( "config", "welcome" );
-
-    return retVal;
-  };
-
-  if( _configItem()-> getVarString( "suppress" ) != "yes" )
+  auto config = configItem( "welcome" );
+  if( config-> getVarString( "suppress" ) != "yes" )
   {
     Wt::WDialog dialog( TR( "gcw.welcome.title" )  );
     dialog.rejectWhenEscapePressed( true );
@@ -253,7 +256,7 @@ showWelcome()-> void
     dialog.exec();
 
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-    _configItem().modify()-> setVar( "suppress", cbxSuppress-> valueText().toUTF8() );
+    config.modify()-> setVar( "suppress", cbxSuppress-> valueText().toUTF8() );
   }
 
 } // endshowWelcome()-> void
