@@ -128,9 +128,14 @@ auto
 GCW::Gui::MainWidget::
 open_aboutWidget()-> void
 {
+  auto templt = std::make_unique< Wt::WTemplate >( TR( "gcw.AboutWidget.about" ) );
+  templt-> bindString( "version", "none" );
+  templt-> bindString( "buildid", "none" );
+  templt-> bindString( "finance", "none (yet)" );
+
   static auto dialog = std::make_unique< Wt::WDialog >( TR( "gcw.AboutWidget.titleBar" ) );
   dialog-> rejectWhenEscapePressed( true );
-  dialog-> contents()-> addNew< Wt::WText >( "about" );
+  dialog-> contents()-> addWidget( std::move( templt ) );
   dialog-> show();
   dialog->
     finished().connect( []()

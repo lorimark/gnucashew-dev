@@ -314,6 +314,20 @@
   <message id="gcw.PropertiesWidget.titleBar"                        >Properties</message>
 
   <message id="gcw.AboutWidget.titleBar"                             >About</message>
+  <message id="gcw.AboutWidget.about"                                >
+    <p>
+      <center>
+        <h2>GnuCashew</h2>
+        <p> Version: ${version}  </p>
+        <p> Build ID: ${buildid} </p>
+        <p> Finance: ${finance}  </p>
+        <p> :) </p>
+        <p> Accounting for personal and small business finance. </p>
+        <p> <a href="https://github.com/lorimark/gnucashew-dev" target="_blank"> Visit the GnuCashew website. </a> </p>
+        <p> <small> Copyright &#169; 2024-2025 The GnuCashew contributors. </small> </p>
+      </center>
+    </p>
+  </message>
 
   <message id="gcw.AccountRegisterModel.orphan"                      >Orphan (USD)</message>
 
