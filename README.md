@@ -1,10 +1,10 @@
 # GnuCashew
-Web based version of GnuCash
+Web based Accounting System compatible with GnuCash data files.
 
 <small><b>(this is NOT gnucash ~ no gnucash code is in use here)</b></small>
 
 This is an attempt to produce a web-based interface for the
- GnuCash program.  Knowing that there have been several other
+ GnuCash data files.  Knowing that there have been many other
  attempts, this is based on my interest of hacking on GnuCash
  and also adding additional features, such as managed-bill-pay
  and so forth.  My preference is to hook directly in to the
