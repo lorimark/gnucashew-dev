@@ -26,6 +26,7 @@ RawTableWidget( const std::string & _viewName )
   auto w_ = std::make_unique< Wt::WLineEdit   >();
   auto lineEdit = w_.get();
   m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
+  m_toolBar-> addWidget( std::make_unique< Wt::WText >( "use caution!  modifying data here can destroy your database" ) );
   lineEdit-> setPlaceholderText( "Search" );
 
   /*
