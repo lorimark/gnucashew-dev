@@ -133,14 +133,14 @@ open_aboutWidget()-> void
   templt-> bindString( "buildid", "none" );
   templt-> bindString( "finance", "none (yet)" );
 
-  static auto dialog = std::make_unique< Wt::WDialog >( TR( "gcw.AboutWidget.titleBar" ) );
+  auto dialog = addChild( std::make_unique< Wt::WDialog >( TR( "gcw.AboutWidget.titleBar" ) ) );
   dialog-> rejectWhenEscapePressed( true );
   dialog-> contents()-> addWidget( std::move( templt ) );
   dialog-> show();
   dialog->
-    finished().connect( []()
+    finished().connect( [=]()
     {
-      dialog.reset(nullptr);
+      removeChild( dialog );
     });
 
 } // endopen_properties()
