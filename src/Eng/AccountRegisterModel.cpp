@@ -20,7 +20,6 @@
 ** 0,5 - debit       : split       -> value_num, value_denom (+positive value)
 ** 0,6 - credit      : split       -> value_num, value_denom (-negative value)
 ** 1,2 - notes       : split       -> memo
-**
 */
 #define COL_DATE        (0)
 #define COL_ACTION      (1)
@@ -41,7 +40,6 @@ AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
   /*
   ** set the lastDate to match the todays date, so when first
   **  opening the register, the date is automatically set.
-  **
   */
   m_lastDate = Wt::WDate::currentDate().toString( GCW::Cfg::date_format() ).toUTF8();
 
@@ -340,7 +338,6 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
 
   /*
   ** Prepare to update everything
-  **
   */
   GCW::Dbo::Transactions::Manager transMan;
 
@@ -349,7 +346,6 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   **  means we don't have a transaction, either.  So, build up a whole
   **  set of transaction-items that we'll be needing to set in these
   **  new values.
-  **
   */
   auto splitGuid = getSplitGuid( _index );
   if( splitGuid == "" )
@@ -436,26 +432,22 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 {
   /*
   ** This is not an edit role - fast quit!
-  **
   */
   if( _role != Wt::ItemDataRole::Edit )
     return false;
 
   /*
   ** Nothing happening constitutes a success
-  **
   */
   bool retVal = true;
 
   /*
   ** This compare function compares two _any_ values
-  **
   */
   auto _valuesMatch = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
   {
     /*
     ** In any case, the two values must be of the same type.
-    **
     */
     if( _any1.type() == _any2.type() )
     {
@@ -500,7 +492,6 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 
     /*
     ** not a match!
-    **
     */
     return false;
 
@@ -508,7 +499,6 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 
   /*
   ** Only updating if the data actually changed
-  **
   */
   if( !_valuesMatch( _index.data( _role ), _value ) )
   {
@@ -543,7 +533,6 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 
   /*
   ** Return success fail
-  **
   */
   return retVal;
 
@@ -557,7 +546,6 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 **  transactions and their associated splits in to the
 **  model suitable for editing within an automatic
 **  table view.
-**
 */
 auto
 GCW::Eng::AccountRegisterModel::
@@ -568,7 +556,6 @@ refreshFromDisk()-> void
 
   /*
   ** Signal the model is about to be reset.
-  **
   */
   layoutAboutToBeChanged().emit();
 
@@ -586,7 +573,6 @@ refreshFromDisk()-> void
   **    6   credit
   **    7   balance r/o (computed)
   ** \endcode
-  **
   */
   auto _addColumn = [&]( RowItem & columns, auto _value )
   {
@@ -603,21 +589,18 @@ refreshFromDisk()-> void
   ** Before refreshing from disk, the entire contents of the
   **  model are cleared, so it is important to make sure anything
   **  to be saved from the model should be done first.
-  **
   */
   clear();
 
   /*
   ** Get the prefrence item that can inform us about prefrences
   **  to be applied to this model.
-  **
   */
   auto prefrenceItem = GCW::Dbo::Prefrences::get();
 
   /*
   ** Get an account item loaded.  This is the account that _is_ this
   **  register.
-  **
   */
   auto registerAccountItem = GCW::Dbo::Accounts::byGuid( m_accountGuid );
 
@@ -643,7 +626,6 @@ refreshFromDisk()-> void
   **  item is pulled from the vector in a sorted order, and the running
   **  balance is included in the model row.  The user can sort the user
   **  interface later and still have the line-item-balance remain accurate.
-  **
   */
   auto splitItems = GCW::Dbo::Splits::byAccount( m_accountGuid );
 
@@ -656,7 +638,6 @@ refreshFromDisk()-> void
   **  item that is added to the model.  This allows the model to be
   **  subsequently re-sorted or subset-extracted without affecting
   **  the running balances and so forth.
-  **
   */
   GCW_NUMERIC runningBalance( 0 );
   for( auto splitItem : splitItems )
@@ -671,7 +652,6 @@ refreshFromDisk()-> void
     ** From the initial split item, we get a handle on the transaction,
     **  and then load all of the other splits associated with this
     **  transaction.
-    **
     */
     auto transactionItem   = GCW::Dbo::Transactions ::byGuid  ( splitItem-> tx_guid () );
     auto transactionSplits = GCW::Dbo::Splits       ::bySplit ( splitItem-> guid    () );
@@ -680,7 +660,6 @@ refreshFromDisk()-> void
     ** The first row comprises all of the basic account register information, such
     **  as the transaction date, and target account and amounts and so forth.  It is
     **  the first line in the basic one-line ledger.
-    **
     */
     auto _append1stRow = [&]()
     {
@@ -697,7 +676,6 @@ refreshFromDisk()-> void
       **  to appear in the correct chronological order.  It also makes clear that
       **  if the 'view' is re-sorted on anything other than the date column, the
       **  balance column will ~not~ be recomputed.
-      **
       */
       RowItem columns;
       ColItem post_date   = nullptr;
@@ -719,7 +697,6 @@ refreshFromDisk()-> void
       ** \endcode
       **
       ** \sa getSplitGuid
-      **
       */
       post_date = _addColumn( columns, transactionItem-> post_date_as_date().toString( GCW::Cfg::date_format() ) );
       post_date-> setData( splitItem-> guid(), Wt::ItemDataRole::User );
@@ -740,13 +717,11 @@ refreshFromDisk()-> void
 
       /*!
       ** The 'num' column is a simple text-column.
-      **
       */
       num = _addColumn( columns, transactionItem-> num() );
 
       /*!
       ** The 'description' column is a simple text-column.
-      **
       */
       description = _addColumn( columns, transactionItem-> description() );
 
@@ -758,7 +733,6 @@ refreshFromDisk()-> void
       **   -# no splits... this shows up as an <b>'imbalance'</b> (this is an error condition)
       **   -# 1 split...   this just shows the split account on the same single line
       **   -# >1 split...  this is more than one target account, so just indicate 'split'
-      **
       */
       switch( transactionSplits.size() )
       {
@@ -769,7 +743,6 @@ refreshFromDisk()-> void
         **  should!  So, just  plop an 'imbalance' indicator in the view.
         **  A style-class is also applied to the item to allow the rendering
         **  in the view to highlight this problem.
-        **
         */
         case 0:
         {
@@ -784,7 +757,6 @@ refreshFromDisk()-> void
         ** This is a straight and simple 1:1 split transaction, so we can pull
         **  the account name from the other side of the split and pop that in
         **  to the model directly.
-        **
         */
         case 1:
         {
@@ -818,7 +790,6 @@ refreshFromDisk()-> void
             **  happen and represents an error in the database.  This means the
             **  account containing this guid nolonger exists.  That should never
             **  happen.
-            **
             */
             account = _addColumn( columns, TR("gcw.AccountRegister.account.imbalanceUSD") );
             account-> setStyleClass( "errval" );
@@ -844,7 +815,6 @@ refreshFromDisk()-> void
         **  all of the split accounts on just one line, so just pop
         **  a message that indicates that we're in a multisplit
         **  transaction.
-        **
         */
         default:
         {
@@ -855,7 +825,6 @@ refreshFromDisk()-> void
 
       /*!
       ** The reconcile column is a simple text-column.
-      **
       */
       reconcile = _addColumn( columns, splitItem-> reconcile_state() ); // Reconciled
 
@@ -987,7 +956,6 @@ refreshFromDisk()-> void
       ** \par Accounting Basics
       ** \ref https://www.gnucash.org/docs/v5/C/gnucash-guide/basics-accounting1.html
       **  >>>>>>>>>>>>>>>
-      **
       */
       bool invert = false;
       switch( prefrenceItem.reverseBalanceAccounts() )
@@ -1020,7 +988,6 @@ refreshFromDisk()-> void
 
       /*
       ** Compute the running balance.
-      **
       */
       runningBalance += splitItem-> value( invert );
 
@@ -1078,7 +1045,6 @@ refreshFromDisk()-> void
 
       /*
       ** Poke the balance in
-      **
       */
       balance =
         _addColumn
@@ -1092,7 +1058,6 @@ refreshFromDisk()-> void
       /*
       ** If the balance hit negative, highlight the number with a bit
       **  of bad-news-red.
-      **
       */
       if( runningBalance < 0 )
       {
@@ -1117,7 +1082,6 @@ refreshFromDisk()-> void
       ** If this model is editable, then check the reconciliation
       **  state.  If the split has already been reconciled then
       **  we really don't want the user messing around with it.
-      **
       */
       if( !readOnly )
       {
@@ -1139,7 +1103,6 @@ refreshFromDisk()-> void
       **        allow for the description to be edited, but
       **        perhaps not the date or amounts... that could
       **        be handy.
-      **
       */
       post_date   -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
       num         -> setFlags( readOnly? Wt::ItemFlag::Selectable : Wt::ItemFlag::Editable );
@@ -1152,7 +1115,6 @@ refreshFromDisk()-> void
 
       /*
       ** Add the row to the model
-      **
       */
       appendRow( std::move( columns ) );
 
@@ -1161,13 +1123,11 @@ refreshFromDisk()-> void
     /*
     ** The second row represents the second line in a "double-line" view
     **  of the ledger.
-    **
     */
     auto _append2ndRow = [&]()
     {
       /*
       ** Prepare a row of columns.
-      **
       */
       RowItem columns;
 
@@ -1208,7 +1168,6 @@ refreshFromDisk()-> void
   /*!
   ** After all the split items are loaded, an additional ~blank~ item
   **  is included at the end of the vector, for coding new entries.
-  **
   */
   if( !isReadOnly() )
   {
@@ -1243,7 +1202,6 @@ refreshFromDisk()-> void
   **    account for bill-pay functions. (kind of sloppy doing it here)
   **    The first item at(0) represents the default-register settings,
   **    suitable for any register view.
-  **
   */
   GCW::Dbo::Accounts::AccountDef_t accountDef = GCW::Dbo::Accounts::s_accountDefs.at(0);
 #ifdef NO_DRCR_YET
@@ -1266,7 +1224,6 @@ refreshFromDisk()-> void
 
   /*
   ** Let the rest of the world know the model changed.
-  **
   */
   layoutChanged().emit();
 
@@ -1288,7 +1245,6 @@ suggestionsFromColumn( int _column ) const-> std::set< std::string >
 {
   /*
   ** First, make a set of unique values.
-  **
   */
   std::set< std::string > retVal;
   for( int row=0; row< rowCount(); row++ )

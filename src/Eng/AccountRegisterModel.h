@@ -16,7 +16,6 @@ namespace GCW {
 ** This model is used to present account details to the
 **  'editor register' (the spreadsheet-looing book-like-looking
 **  thing that the user posts transactions through.
-**
 */
 class AccountRegisterModel
 : public Wt::WStandardItemModel
@@ -42,7 +41,6 @@ class AccountRegisterModel
     ** \brief ctor
     **
     ** This opens the model associated with a specific account.
-    **
     */
     AccountRegisterModel( const std::string & _accountGuid = "", bool _readOnly = false );
 
@@ -59,7 +57,6 @@ class AccountRegisterModel
     ** \brief Is Read Only
     **
     ** This returns .true. if the item can be deleted.
-    **
     */
     auto isDeletable( const Wt::WModelIndex & _index )-> bool ;
 
@@ -73,7 +70,6 @@ class AccountRegisterModel
     ** \brief Get GUID from row
     **
     ** This will retrieve the GUID value from the row.
-    **
     */
     auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
     auto getSplitGuid( int _row )-> std::string ;
@@ -88,37 +84,31 @@ class AccountRegisterModel
     **        the default time of '10:59:00', since the 'date' column
     **        does not support a time component... this seems to be
     **        consistent with GnuCash.
-    **
     */
     auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime;
 
     /*!
     ** \brief Get Action
-    **
     */
     auto getAction( const Wt::WModelIndex & _index )-> std::string;
 
     /*!
     ** \brief Get Description
-    **
     */
     auto getDescription( const Wt::WModelIndex & _index )-> std::string;
 
     /*!
     ** \brief Get Transfer Account Text
-    **
     */
     auto getTransferText( const Wt::WModelIndex & _index )-> std::string;
 
     /*!
     ** \brief Get Transfer Account GUID
-    **
     */
     auto getTransferGuid( const Wt::WModelIndex & _index )-> std::string;
 
     /*!
     ** \brief Get Reconciliation
-    **
     */
     auto getReconcile( const Wt::WModelIndex & _index )-> std::string;
 
@@ -129,19 +119,16 @@ class AccountRegisterModel
     **  for querying either the debit or credit column values (and is really
     **  intended for internal use).  The 'value' is pulled from the Display
     **  value of the index and converted to a GCW_NUMERIC value.
-    **
     */
     auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
     /*!
     ** \brief Get Debit value
-    **
     */
     auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
     /*!
     ** \brief Get Credit value
-    **
     */
     auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
@@ -154,14 +141,11 @@ class AccountRegisterModel
     **  the returned value should be returned positive or negative corrected.
     **
     ** This function always positive for debit, and negative for credit values.
-    **
     */
     auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
     /*!
     ** \brief
-    **
-    **
     **
     */
     auto getBalance ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
@@ -180,7 +164,6 @@ class AccountRegisterModel
     ** This produces a unique-set of items that represent all the text-values
     **  for that particular column.  This is used to produce a suggestion-box
     **  for the register.
-    **
     */
     auto suggestionsFromColumn( int _column ) const-> std::set< std::string > ;
 
@@ -228,13 +211,11 @@ balance
     /*
     ** Send a signal when a index is being updated
     **  because it was dirty.
-    **
     */
     Wt::Signal< Wt::WModelIndex > m_goneDirty;
 
     /*
     ** keep track of rows as they go dirty.
-    **
     */
 //    std::set< int > m_dirtyRows;
 
@@ -242,7 +223,6 @@ balance
     ** \brief Editable Indicator
     **
     ** The model can be either R/W (read-write) or R/O (read-only).
-    **
     */
     bool m_readOnly = false;
 
@@ -253,14 +233,12 @@ balance
     ** \brief Account GUID
     **
     ** The model is associated with a single account.
-    **
     */
     std::string m_accountGuid;
 
     /*
     ** Keep track of the last date entered for pre-populating
     **  the next row.
-    **
     */
     std::string m_lastDate;
 

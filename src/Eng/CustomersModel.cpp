@@ -46,7 +46,6 @@ CustomersModel( const std::vector< Wt::WFormModel::Field > & _fields )
 /*!
 ** \brief Refresh From Disk
 **
-**
 */
 auto
 GCW::Eng::CustomersModel::

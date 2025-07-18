@@ -35,7 +35,6 @@ setCustomerGuid( const std::string & _guid )-> void
 /*!
 ** \brief Refresh From Disk
 **
-**
 */
 auto
 GCW::Eng::InvoicesModel::

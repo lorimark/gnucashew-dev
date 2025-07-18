@@ -20,7 +20,6 @@ namespace GCW {
 **
 ** This builds a tree-type model for the Accounts to allow them to be
 **  displayed and interacted with in a WTreeView type object.
-**
 */
 class AccountsTreeViewModel
 : public Wt::WStandardItemModel

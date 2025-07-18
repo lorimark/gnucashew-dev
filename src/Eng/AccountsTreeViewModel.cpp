@@ -21,14 +21,12 @@ load( int _columnCount )-> void
 
   /*
   ** If the session isn't open then there's nothing to load.
-  **
   */
   if( !GCW::app()-> gnucashew_session().isOpen() )
     return;
 
   /*
   ** load the data in to the model
-  **
   */
   auto rootAccount = GCW::Dbo::Accounts::rootAccount();
   if( rootAccount-> guid() != "" )
@@ -37,7 +35,6 @@ load( int _columnCount )-> void
 
     /*
     ** define all the columns
-    **
     */
     int col = 0;
 //    std::cout << __FILE__ << ":" << __LINE__ << " " << col << " " << m_columnCount << std::endl;
@@ -100,7 +97,6 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
   ** This 'builds' a row of account info, with the account
   **  'name' on the first column, and other bits about the account
   **  on the remaining columns.
-  **
   */
   auto _append = [=]( Wt::WStandardItem * _item, GCW::Dbo::Accounts::Item::Ptr _accountItem )
   {
@@ -121,7 +117,6 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
     /*
     ** set the 'model->data::User' element to contain the guid of the account, so
     **  we can recover it later.
-    **
     */
     accountName-> setData( _accountItem-> guid(), Wt::ItemDataRole::User );
     int col = 0;
@@ -178,7 +173,6 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
   /*
   ** Pick up all the accounts that are children to the
   **  specified account.
-  **
   */
   auto childAccounts =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
@@ -189,20 +183,17 @@ load( Wt::WStandardItem * _treeItem, GCW::Dbo::Accounts::Item::Ptr _parentAccoun
 
   /*
   ** Loop through each child-account for this parent account
-  **
   */
   for( auto account : childAccounts )
   {
     /*
     ** Append the tree-item
-    **
     */
     auto  ti = _append( _treeItem, account );
 
     /*
     ** Perform a recursive-load on this account to pick up
     **  any more child accounts
-    **
     */
     load( ti, account );
 
