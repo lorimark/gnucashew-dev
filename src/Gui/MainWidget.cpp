@@ -149,6 +149,7 @@ auto
 GCW::Gui::MainWidget::
 openSelectedAccount()-> void
 {
+  centralWidget()-> activateAccountsTreeView();
   centralWidget()-> accountsTreeView()-> editSelectedAccount();
 
 } // endopenSelectedAccount()

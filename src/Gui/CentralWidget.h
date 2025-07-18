@@ -36,6 +36,7 @@ class CentralWidget
     auto tabWidget()        -> Wt::WTabWidget                 * { return m_tabWidget;         }
     auto accountsTreeView() -> GCW::Gui::AccountsTreeView     * { return m_accountsTreeView;  }
     auto customersWidget()  -> GCW::Gui::Customer::MainWidget * { return m_customersWidget;   }
+    auto activateAccountsTreeView()-> void ;
 
     auto open_AccountRegister      ( const std::string & _accountGuid  )-> void;
     auto open_CustomersWidget      (                                   )-> void;

@@ -88,6 +88,21 @@ CentralWidget()
 
 auto
 GCW::Gui::CentralWidget::
+activateAccountsTreeView()-> void
+{
+  auto index = tabIndex( TR8( "gcw.AccountsTreeView.tabName" ) );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << index << std::endl;
+
+  if( index != -1 )
+  {
+    tabWidget()-> setCurrentIndex( index );
+  }
+
+} // endactivateAccountsTreeView() const-> void
+
+auto
+GCW::Gui::CentralWidget::
 tabIndex( const std::string & _text )-> int
 {
   for( int i=0; i< tabWidget()-> count(); i++ )
