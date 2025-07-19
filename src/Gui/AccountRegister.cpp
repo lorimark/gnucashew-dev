@@ -15,7 +15,7 @@
 #include "../Dbo/Accounts/Accounts.h"
 #include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
-#include "../Dbo/Transactions/Manager.h"
+#include "../Eng/TransactionManager.h"
 #include "AccountSuggestionPopup.h"
 #include "AccountRegister.h"
 
@@ -924,7 +924,7 @@ GCW::Gui::AccountRegister::
 deleteRow( int _row )-> void
 {
   auto splitGuid = baseModel()-> getSplitGuid( _row );
-  auto transMan = GCW::Dbo::Transactions::Manager();
+  auto transMan = GCW::Eng::Transaction::Manager();
   transMan.loadSplit( splitGuid );
   transMan.deleteTransaction();
 
@@ -999,7 +999,7 @@ on_delete_triggered()-> void
     auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
 
     auto splitGuid = baseModel()-> getSplitGuid( m_rightClickRow );
-    auto transMan = GCW::Dbo::Transactions::Manager();
+    auto transMan = GCW::Eng::Transaction::Manager();
     transMan.loadSplit( splitGuid );
 
     templt-> bindString( "date"  , transMan.getDate().toString( GCW_DATE_FORMAT_DISPLAY ) );

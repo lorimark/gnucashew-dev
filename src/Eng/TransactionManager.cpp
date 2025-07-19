@@ -1,22 +1,22 @@
-#line 2 "src/Dbo/Manager.cpp"
+#line 2 "src/Eng/TransactionManager.cpp"
 
 #include "../Glb/Core.h"
-#include "Manager.h"
+#include "TransactionManager.h"
 
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 Manager()
 {
 
 } // endManager()
 
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 Manager( GCW::Dbo::Splits::Item::Ptr _splitItem )
 {
 
 } // endManager()
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void
 {
   /*!
@@ -59,7 +59,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
 } // endnewTransaction()-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 loadTransaction( const std::string & _transactionGuid )-> void
 {
   /*
@@ -75,7 +75,7 @@ loadTransaction( const std::string & _transactionGuid )-> void
 } // endloadTransaction( const std::string & _transactionGuid )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 deleteTransaction()-> void
 {
 
@@ -87,7 +87,7 @@ deleteTransaction()-> void
 } // enddeleteTransaction()-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 loadSplit( const std::string & _splitGuid )-> void
 {
   /*
@@ -108,7 +108,7 @@ loadSplit( const std::string & _splitGuid )-> void
 } // endloadSplit( const std::string & _splitGuid )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 otherGuid() const-> std::string
 {
   for( auto & splitItem : m_splitItems )
@@ -120,7 +120,7 @@ otherGuid() const-> std::string
 } // endotherGuid()-> std::string
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 split( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 {
   for( auto & splitItem : m_splitItems )
@@ -132,7 +132,7 @@ split( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 } // endsplit( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 thisSplit() const-> GCW::Dbo::Splits::Item::Ptr
 {
   return split( m_splitGuid );
@@ -140,7 +140,7 @@ thisSplit() const-> GCW::Dbo::Splits::Item::Ptr
 } // endthisSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 thatSplit() const-> GCW::Dbo::Splits::Item::Ptr
 {
   return split( otherGuid() );
@@ -148,7 +148,7 @@ thatSplit() const-> GCW::Dbo::Splits::Item::Ptr
 } // endthatSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 getDate() const-> Wt::WDateTime
 {
   return m_transaction-> post_date_as_date();
@@ -156,7 +156,7 @@ getDate() const-> Wt::WDateTime
 } // endgetDate() const-> Wt::WDateTime &;
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setDate( const Wt::WDateTime & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -165,7 +165,7 @@ setDate( const Wt::WDateTime & _value )-> void
 } // endsetDate( const Wt::WDateTime & _value )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setAction( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -174,7 +174,7 @@ setAction( const std::string & _value )-> void
 } // endsetAction( const std::string & _value )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 getDescription() const-> std::string
 {
   return m_transaction-> description();
@@ -182,7 +182,7 @@ getDescription() const-> std::string
 } // endgetDescription() const-> std::string &
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setDescription( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -191,7 +191,7 @@ setDescription( const std::string & _value )-> void
 } // endsetDescription( const std::string & _value )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setTransferGuid( const std::string & _value  )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -200,7 +200,7 @@ setTransferGuid( const std::string & _value  )-> void
 } // endsetTransferGuid( const std::string & _value  )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setReconcile( const std::string & _value  )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -209,7 +209,7 @@ setReconcile( const std::string & _value  )-> void
 } // endsetReconcile( const std::string & _value  )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 getValue() const-> GCW_NUMERIC
 {
   return thisSplit()-> value();
@@ -217,7 +217,7 @@ getValue() const-> GCW_NUMERIC
 } // endgetValue() const-> GCW_NUMERIC
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 getValueAsString() const-> std::string
 {
   return thisSplit()-> valueAsString();
@@ -225,7 +225,7 @@ getValueAsString() const-> std::string
 } // endgetValue() const-> GCW_NUMERIC
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setValue( GCW_NUMERIC _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -235,7 +235,7 @@ setValue( GCW_NUMERIC _value )-> void
 } // endsetDebit( GCW_NUMERIC _value )-> void
 
 auto
-GCW::Dbo::Transactions::Manager::
+GCW::Eng::Transaction::Manager::
 setNotes( const std::string & _value  )-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << " " << _value << std::endl;

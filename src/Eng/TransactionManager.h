@@ -1,19 +1,19 @@
-#line 2 "src/Dbo/Transactions/Manager.h"
+#line 2 "src/Eng/TransactionManager.h"
 
-#ifndef __DBO_TRANSACTIONSMANAGER_H___
-#define __DBO_TRANSACTIONSMANAGER_H___
+#ifndef __ENG_TRANSACTIONMANAGER_H___
+#define __ENG_TRANSACTIONMANAGER_H___
 
-#include "../Accounts/Accounts.h"
-#include "../Splits/Splits.h"
-#include "Transactions.h"
+#include "../Dbo/Accounts/Accounts.h"
+#include "../Dbo/Splits/Splits.h"
+#include "../Dbo/Transactions/Transactions.h"
 
 /*
 ** Now we can start building our class!
 **
 */
 namespace GCW {
-  namespace Dbo {
-    namespace Transactions {
+  namespace Eng {
+    namespace Transaction {
 
 /*!
 ** \brief Transaction Manager
@@ -191,10 +191,10 @@ class Manager
 
 }; // endclass Manager
 
-    } // namespace Transactions {
-  } // namespace Dbo {
+    } // namespace Transaction {
+  } // namespace Eng {
 } // namespace GCW {
 
-#endif // #ifndef __DBO_TRANSACTIONSMANAGER_H___
+#endif // #ifndef __ENG_TRANSACTIONMANAGER_H___
 
 

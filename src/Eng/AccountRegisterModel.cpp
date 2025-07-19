@@ -4,9 +4,9 @@
 #include "../Dbo/SessionGnuCash.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Prefrences.h"
-#include "../Dbo/Transactions/Manager.h"
 #include "../Dbo/Vars/Vars.h"
 #include "../Glb/Core.h"
+#include "TransactionManager.h"
 #include "AccountRegisterModel.h"
 
 /*
@@ -114,7 +114,7 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
   ** If this transaction split is reconciled, then it is
   **  considered not deletable
   */
-  GCW::Dbo::Transactions::Manager transMan;
+  GCW::Eng::Transaction::Manager transMan;
   transMan.loadSplit( getSplitGuid( _index ) );
   if( transMan.thisSplit()-> isReconciled() )
     return false;
@@ -151,7 +151,7 @@ isReadOnly( const Wt::WModelIndex & _index )-> bool
   ** If this transaction split is reconciled, then it is
   **  considered not editable
   */
-  GCW::Dbo::Transactions::Manager transMan;
+  GCW::Eng::Transaction::Manager transMan;
   transMan.loadSplit( getSplitGuid( _index ) );
   if( transMan.thisSplit()-> isReconciled() )
     return true;
@@ -339,7 +339,7 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   /*
   ** Prepare to update everything
   */
-  GCW::Dbo::Transactions::Manager transMan;
+  GCW::Eng::Transaction::Manager transMan;
 
   /*
   ** If we don't have a split guid, then this is a new row.  It also

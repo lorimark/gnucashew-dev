@@ -9,6 +9,7 @@ set( GCW_FILES ${GCW_FILES}
   ${CMAKE_CURRENT_SOURCE_DIR}/EmployeesModel.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Engine.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/InvoicesModel.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/TransactionManager.cpp
   PARENT_SCOPE
 )
 

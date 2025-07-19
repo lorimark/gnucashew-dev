@@ -2,7 +2,7 @@
 
 #include <Wt/WVBoxLayout.h>
 
-#include "../../Dbo/Transactions/Manager.h"
+#include "../../Eng/TransactionManager.h"
 #include "../../Glb/Core.h"
 #include "../AccountSuggestionEdit.h"
 #include "BillPay.h"
@@ -138,7 +138,7 @@ loadData()-> void
 
   auto bpItem = GCW::Gui::BillPay::bpItem( bpGuid() );
 
-  GCW::Dbo::Transactions::Manager transactionManager;
+  GCW::Eng::Transaction::Manager transactionManager;
 
   m_date-> setValueText( GCW::Core::currentDateTimeDisplayString() );
 
