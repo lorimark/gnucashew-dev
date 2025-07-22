@@ -53,8 +53,8 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   /*
   ** record the splits
   */
-  m_splitItems.push_back( split1 );
-  m_splitItems.push_back( split2 );
+  m_splits.push_back( split1 );
+  m_splits.push_back( split2 );
 
 } // endnewTransaction()-> void
 
@@ -70,7 +70,7 @@ loadTransaction( const std::string & _transactionGuid )-> void
   /*
   ** set the splits
   */
-  m_splitItems = GCW::Dbo::Splits::byTransaction( m_transaction-> guid() );
+  m_splits = GCW::Dbo::Splits::byTransaction( m_transaction-> guid() );
 
 } // endloadTransaction( const std::string & _transactionGuid )-> void
 
@@ -81,7 +81,7 @@ deleteTransaction()-> void
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   m_transaction.remove();
-  for( auto & splitItem : m_splitItems )
+  for( auto & splitItem : m_splits )
     splitItem.remove();
 
 } // enddeleteTransaction()-> void
@@ -111,7 +111,7 @@ auto
 GCW::Eng::Transaction::Manager::
 otherGuid() const-> std::string
 {
-  for( auto & splitItem : m_splitItems )
+  for( auto & splitItem : m_splits )
     if( splitItem-> guid() != m_splitGuid )
       return splitItem-> guid();
 
@@ -123,7 +123,7 @@ auto
 GCW::Eng::Transaction::Manager::
 split( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 {
-  for( auto & splitItem : m_splitItems )
+  for( auto & splitItem : m_splits )
     if( splitItem-> guid() == _splitGuid )
       return splitItem;
 
@@ -146,6 +146,20 @@ thatSplit() const-> GCW::Dbo::Splits::Item::Ptr
   return split( otherGuid() );
 
 } // endthatSplit() const-> GCW::Dbo::Splits::Item::Ptr
+
+auto
+GCW::Eng::Transaction::Manager::
+forAccountSplit( const std::string & _accountGuid ) const-> GCW::Dbo::Splits::Item::Ptr
+{
+  GCW::Dbo::Splits::Item::Ptr retVal;
+
+  for( auto & split : m_splits )
+    if( split-> account_guid() == _accountGuid )
+      retVal = split;
+
+  return retVal;
+
+} // endforAccount( const std::string * _accountGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
 GCW::Eng::Transaction::Manager::
@@ -192,6 +206,14 @@ setDescription( const std::string & _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+setDescription( const Wt::WString & _value )-> void
+{
+  setDescription( _value.toUTF8() );
+
+} // ensetDescription( const Wt::WString & _value )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
 setTransferGuid( const std::string & _value  )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -228,17 +250,27 @@ auto
 GCW::Eng::Transaction::Manager::
 setValue( GCW_NUMERIC _value )-> void
 {
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  thisSplit().modify()-> set_value( _value      );
-  thatSplit().modify()-> set_value( _value * -1 );
+//  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+//  thisSplit().modify()-> set_value( _value      );
+//  thatSplit().modify()-> set_value( _value * -1 );
 
 } // endsetDebit( GCW_NUMERIC _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-setNotes( const std::string & _value  )-> void
+setValue( const std::string & _acctGuid, GCW_NUMERIC _value )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << " " << _value << std::endl;
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  forAccountSplit( _acctGuid ).modify()-> set_value( _value );
+
+} // endsetValue( const std::string & _acctGuid, GCW_NUMERIC _value )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+setNotes( const std::string & _acctGuid, const std::string & _value  )-> void
+{
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  forAccountSplit( _acctGuid ).modify()-> set_memo( _value );
 
 } // endsetNotes( const std::string & _value  )-> void
 

@@ -8,6 +8,8 @@
 
 #include <Wt/Json/Object.h>
 
+#include "Numeric.h"
+
 //#define COUT_FLF  __FILE__, __LINE__, __FUNCTION__
 //#define COUT_BEG  std::cout << __FILE__ << ":" << __LINE__ << "(" << __PRETTY_FUNCTION__ << ") "
 //#define COUT_END  std::endl

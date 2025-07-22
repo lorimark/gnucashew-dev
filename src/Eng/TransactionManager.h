@@ -42,6 +42,13 @@ class Manager
     */
     auto loadTransaction( const std::string & _transactionGuid )-> void ;
 
+    /*!
+    ** \brief Delete Transaction
+    **
+    ** This insures all splits and any other data associated with the
+    **  transaction is properly removed.
+    **
+    */
     auto deleteTransaction()-> void ;
 
     /*!
@@ -109,7 +116,7 @@ class Manager
     ** This returns the splits vector
     **
     */
-    auto splits() const-> GCW::Dbo::Splits::Item::Vector { return m_splitItems; }
+    auto splits() const-> GCW::Dbo::Splits::Item::Vector { return m_splits; }
 
     /*!
     ** \brief Other GUID
@@ -146,6 +153,7 @@ class Manager
     */
     auto getDescription() const-> std::string ;
     auto setDescription( const std::string & _value )-> void ;
+    auto setDescription( const Wt::WString & _value )-> void ;
 
     /*!
     ** \brief Set Transfer GUID
@@ -170,15 +178,26 @@ class Manager
     auto getValue() const-> GCW_NUMERIC ;
     auto getValueAsString() const-> std::string ;
     auto setValue( GCW_NUMERIC _value )-> void ;
+    auto setValue( const std::string & _acctGuid, GCW_NUMERIC _value )-> void ;
 
     /*!
     ** \brief 
     **
     **
     */
-    auto setNotes( const std::string & _value )-> void ;
+    auto setNotes( const std::string & _acctGuid, const std::string & _value )-> void ;
 
     auto split( const std::string & _splitGuid ) const-> GCW::Dbo::Splits::Item::Ptr ;
+
+    /*!
+    ** \brief Load Split for Account
+    **
+    ** When we know the account guid, this will fetch the associated split
+    **
+    ** \note this assumes an account only has a single split
+    **
+    */
+    auto forAccountSplit( const std::string & _accountGuid ) const-> GCW::Dbo::Splits::Item::Ptr ;
 
     auto thisSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
     auto thatSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
@@ -187,7 +206,7 @@ class Manager
 
     std::string                            m_splitGuid   ;
     GCW::Dbo:: Transactions ::Item::Ptr    m_transaction ;
-    GCW::Dbo:: Splits       ::Item::Vector m_splitItems  ;
+    GCW::Dbo:: Splits       ::Item::Vector m_splits      ;
 
 }; // endclass Manager
 

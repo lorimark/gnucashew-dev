@@ -23,7 +23,7 @@ namespace GCW {
     **
     ** This tool provides an interface for paying bills.  The intent of the interface
     **  is to present bills that are due within a specific period of time, with thier
-    **  due dates shown, and organized in to sets of "paid" and "not paid".
+    **  due dates shown, and organized in to sets of "not paid", "pending" and "paid".
     **
     ** \image html BillPayDetailForm.png
     **

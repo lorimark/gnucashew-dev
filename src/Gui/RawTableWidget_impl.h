@@ -24,10 +24,11 @@ RawTableWidget( const std::string & _viewName )
   m_toolBar = tb.get();
 
   auto w_ = std::make_unique< Wt::WLineEdit   >();
-  auto lineEdit = w_.get();
+  m_search = w_.get();
   m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
   m_toolBar-> addWidget( std::make_unique< Wt::WText >( "<span style=\"color:red;\">use caution!  modifying data here can destroy your database</span>" ) );
-  lineEdit-> setPlaceholderText( "Search" );
+  m_search -> setPlaceholderText( "Search" );
+  m_search -> textInput().connect( this, &RawTableWidget<C>::on_search );
 
   /*
   ** Configure the table view.
@@ -80,56 +81,25 @@ loadData()-> void
   m_model-> reload();
   m_model-> addAllFieldsAsColumns();
 
-  tableView()-> setModel( m_model );
+  m_proxy = std::make_shared< Wt::WSortFilterProxyModel >();
+  m_proxy-> setSourceModel( m_model );
+  m_proxy-> setDynamicSortFilter( true );
+  m_proxy-> setFilterKeyColumn( 0 );
 
-#ifdef NEVER
-  // 0 = Date
-  tableView()-> setColumnWidth    ( 0, "150px"                   );
-  tableView()-> setHeaderAlignment( 0, Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( 0, Wt::AlignmentFlag::Right  );
-
-  // 1 = Action/Num
-  tableView()-> setColumnWidth    ( 1,  "50px"                   );
-  tableView()-> setHeaderAlignment( 1, Wt::AlignmentFlag::Center );
-  tableView()-> setColumnAlignment( 1, Wt::AlignmentFlag::Center );
-
-  // 2 = Memo/Description
-  tableView()-> setColumnWidth    ( 2,   "99%"                   );
-  tableView()-> setHeaderAlignment( 2, Wt::AlignmentFlag::Left   );
-  tableView()-> setColumnAlignment( 2, Wt::AlignmentFlag::Left   );
-
-  // 3 = Account/Transfer
-  tableView()-> setColumnWidth    ( 3, "200px"                   );
-  tableView()-> setHeaderAlignment( 3, Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( 3, Wt::AlignmentFlag::Right  );
-
-  // 4 = Reconciliation
-  tableView()-> setColumnWidth    ( 4,  "25px"                   );
-  tableView()-> setHeaderAlignment( 4, Wt::AlignmentFlag::Center );
-  tableView()-> setColumnAlignment( 4, Wt::AlignmentFlag::Center );
-
-  // 5 = Debit
-  tableView()-> setColumnWidth    ( 5, "100px"                   );
-  tableView()-> setHeaderAlignment( 5, Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( 5, Wt::AlignmentFlag::Right  );
-
-  // 6 = Credit
-  tableView()-> setColumnWidth    ( 6, "100px"                   );
-  tableView()-> setHeaderAlignment( 6, Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( 6, Wt::AlignmentFlag::Right  );
-
-  // 7 = Balance
-  tableView()-> setColumnWidth    ( 7, "100px"                   );
-  tableView()-> setHeaderAlignment( 7, Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( 7, Wt::AlignmentFlag::Right  );
-
-  auto lastIndex = model()-> index( model()-> rowCount() -1, 0 );
-  tableView()-> scrollTo( lastIndex );
-  tableView()-> edit( lastIndex );
-#endif
+  tableView()-> setModel( m_proxy );
 
 } // endloadData()-> void
 
+template <class C>
+auto
+GCW::Gui::RawTableWidget<C>::
+on_search()-> void
+{
+  auto regex = std::make_unique< std::regex >( Wt::WString(".*{1}.*").arg( m_search-> valueText() ).toUTF8() );
+  m_proxy-> invalidate();
+  m_proxy-> setFilterRegExp( std::move( regex ) );
+
+} // endon_search()-> void
 
 #endif // __GUI_RAWTABLEWIDGETIMPL_H___
 

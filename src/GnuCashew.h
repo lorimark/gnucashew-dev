@@ -3,7 +3,16 @@
 #ifndef __GNUCASHEW_H___
 #define __GNUCASHEW_H___
 
-#define DEC_NAMESPACE DECIMAL
+/*
+** need to set up a namespace for the DECIMAL library, but
+**  definining the macro is somewhat problemmatic, so we
+**  moved the definition in to the CMakeLists so that the
+**  definition was made there, insuring it's global for
+**  the whole compilation process.
+**
+*/
+// #define DEC_NAMESPACE DECIMAL ... this got moved to CMakeLists so that it is totally global
+
 #include "Glb/gcwglobal.h"
 #include "3rd/decimal.h"
 #include "define.h"

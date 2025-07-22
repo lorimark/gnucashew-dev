@@ -21,7 +21,7 @@ if(ENABLE_BILLPAY)
 endif()
 
 # Set base compile flags
-set(CMAKE_CXX_FLAGS "-std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g")
+set(CMAKE_CXX_FLAGS "-DDEC_NAMESPACE=DECIMAL -std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g")
 
 # Append AddressSanitizer flags if requested
 if(ENABLE_ASAN)

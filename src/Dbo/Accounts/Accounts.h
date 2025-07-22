@@ -39,6 +39,7 @@ auto byChildName( const std::string & _parentGuid, const std::string & _childNam
 **
 */
 auto byFullName( const std::string & _fullName )-> Item::Ptr;
+auto byFullName( const Wt::WString & _fullName )-> Item::Ptr;
 
 /*!
 ** \brief Load all accounts

@@ -49,7 +49,8 @@ buildContent()-> void
 
   // recall selected month
   m_selectedMonth = configItem()-> getVarInt( "selectedMonth" );
-  if( m_selectedMonth < 1 )
+  if( m_selectedMonth < 1
+   || m_selectedMonth > 12 )
       m_selectedMonth = 1;
 
   // unpaid items

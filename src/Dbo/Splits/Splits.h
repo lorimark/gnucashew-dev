@@ -132,6 +132,11 @@ class Item
     auto memo() const-> const std::string & { return m_memo; }
 
     /*!
+    ** Set Memo field
+    */
+    auto set_memo( const std::string & _value )-> void { m_memo = _value; }
+
+    /*!
     ** Action field
     */
     auto action() const-> const std::string & { return m_action; }

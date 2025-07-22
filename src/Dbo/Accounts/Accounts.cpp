@@ -224,6 +224,13 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
 
 auto
 GCW::Dbo::Accounts::
+byFullName( const Wt::WString & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
+{
+  return byFullName( _fullName.toUTF8() );
+}
+
+auto
+GCW::Dbo::Accounts::
 allAccounts()-> GCW::Dbo::Accounts::Item::Vector
 {
   GCW::Dbo::Accounts::Item::Vector retVal;

@@ -21,6 +21,7 @@
 #include <Wt/WTextEdit.h>
 
 #include "../AccountComboBox.h"
+#include "../AccountSuggestionEdit.h"
 #include "Item.h"
 
 namespace GCW {
@@ -49,15 +50,25 @@ class PaymentWidget
 
     auto table()-> Wt::WTable * { return m_table; }
 
-    std::string        m_bpGuid              ;
-    Wt::WTable       * m_table     = nullptr ;
-    Wt::WDateEdit    * m_date      = nullptr ;
-    Wt::WLineEdit    * m_num       = nullptr ;
-    Wt::WLineEdit    * m_desc      = nullptr ;
-    Wt::WLineEdit    * m_recon     = nullptr ;
-    Wt::WLineEdit    * m_debit     = nullptr ;
-    Wt::WLineEdit    * m_credit    = nullptr ;
-    Wt::WTextArea    * m_confirm   = nullptr ;
+    /*!
+    ** \brief Value
+    **
+    ** This returns +val or -val depending on if the value
+    **  was entered in to the 'debit' 'credit' column.
+    **
+    */
+    auto value()-> GCW_NUMERIC ;
+
+    std::string             m_bpGuid            ;
+    Wt::WTable            * m_table   = nullptr ;
+    Wt::WDateEdit         * m_date    = nullptr ;
+    Wt::WLineEdit         * m_num     = nullptr ;
+    Wt::WLineEdit         * m_desc    = nullptr ;
+    AccountSuggestionEdit * m_acct    = nullptr ;
+    Wt::WLineEdit         * m_recon   = nullptr ;
+    Wt::WLineEdit         * m_debit   = nullptr ;
+    Wt::WLineEdit         * m_credit  = nullptr ;
+    Wt::WTextArea         * m_confirm = nullptr ;
 
     std::vector< std::vector< Wt::WFormWidget * > > m_tableWidgets ;
 

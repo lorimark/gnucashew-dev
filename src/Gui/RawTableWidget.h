@@ -8,6 +8,7 @@
 #include <Wt/WPushButton.h>
 #include <Wt/WLineEdit.h>
 #include <Wt/WToolBar.h>
+#include <Wt/WSortFilterProxyModel.h>
 
 //#include "../GnuCashew.h"
 #include "TableView.h"
@@ -57,16 +58,19 @@ class RawTableWidget
 
   protected:
 
-    auto load()-> void;
+    auto load()-> void ;
 
   private:
 
-    auto loadData()-> void;
+    auto loadData()-> void ;
+    auto on_search()-> void ;
 
-    std::shared_ptr< Model >   m_model;
-    Wt::WToolBar             * m_toolBar   = nullptr;
-    GCW::Gui::TableView      * m_tableView = nullptr;
-    Wt::WContainerWidget     * m_statusBar = nullptr;
+    std::shared_ptr< Model >   m_model ;
+    std::shared_ptr< Wt::WSortFilterProxyModel > m_proxy ;
+    Wt::WToolBar             * m_toolBar   = nullptr ;
+    Wt::WLineEdit            * m_search    = nullptr ;
+    GCW::Gui::TableView      * m_tableView = nullptr ;
+    Wt::WContainerWidget     * m_statusBar = nullptr ;
 
 };  // endclass RawTableWidget
 
