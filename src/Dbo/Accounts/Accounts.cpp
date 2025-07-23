@@ -8,7 +8,7 @@ const char * GCW::Dbo::Accounts::s_tableName = "accounts";
 
 /*!
 ** \code
-** ;   type                                   drcr                                name           colAccount   colDr        colCr           parentType
+** ;   type               drcr            name           colAccount   colDr        colCr           parentType
 ** \endcode
 **
 ** These are the account-types, debit/credit types, and register column labels for said accounts.
@@ -18,30 +18,30 @@ const char * GCW::Dbo::Accounts::s_tableName = "accounts";
 ** \sa \ref account_type_labels Account Type Labels
 */
 const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_accountDefs =
-{// type                                   drcr                                backendName    colAccount   colDr        colCr           parentType
-  { GCW::Dbo::Accounts::Type::INVALID    , GCW::Dbo::Accounts::DrCr::NONE   ,  "INVALID"    , "account"  , "fundsin"  , "fundsout"    ,                 },
-  { GCW::Dbo::Accounts::Type::NONE       , GCW::Dbo::Accounts::DrCr::NONE   ,  "NONE"       , "account"  , "fundsin"  , "fundsout"    ,                 },
-  { GCW::Dbo::Accounts::Type::BANK       , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "BANK"       , "transfer" , "deposit"  , "withdrawal"  , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::CASH       , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "CASH"       , "transfer" , "receive"  , "spend"       , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::CREDIT     , GCW::Dbo::Accounts::DrCr::CREDIT ,  "CREDIT"     , "blank"    , "payment"  , "charge"      , Type::LIABILITY },
-  { GCW::Dbo::Accounts::Type::ASSET      , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "ASSET"      , "transfer" , "increase" , "decrease"    , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::LIABILITY  , GCW::Dbo::Accounts::DrCr::CREDIT ,  "LIABILITY"  , "account"  , "decrease" , "increase"    , Type::LIABILITY },
-  { GCW::Dbo::Accounts::Type::STOCK      , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "STOCK"      , "account"  , "buy"      , "sell"        ,                 },
-  { GCW::Dbo::Accounts::Type::MUTUAL     , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "MUTUAL"     , "account"  , "buy"      , "sell"        ,                 },
-  { GCW::Dbo::Accounts::Type::CURRENCY   , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "CURRENCY"   , "account"  , "buy"      , "sell"        , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::INCOME     , GCW::Dbo::Accounts::DrCr::CREDIT ,  "INCOME"     , "account"  , "charge"   , "income"      , Type::INCOME    },
-  { GCW::Dbo::Accounts::Type::EXPENSE    , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "EXPENSE"    , "transfer" , "expense"  , "rebate"      , Type::EXPENSE   },
-  { GCW::Dbo::Accounts::Type::EQUITY     , GCW::Dbo::Accounts::DrCr::CREDIT ,  "EQUITY"     , "transfer" , "decrease" , "increase"    , Type::EQUITY    },
-  { GCW::Dbo::Accounts::Type::RECEIVABLE , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "RECEIVABLE" , "transfer" , "invoice"  , "payment"     ,                 },
-  { GCW::Dbo::Accounts::Type::PAYABLE    , GCW::Dbo::Accounts::DrCr::CREDIT ,  "PAYABLE"    , "account"  , "payment"  , "bill"        , Type::LIABILITY },
-  { GCW::Dbo::Accounts::Type::ROOT       , GCW::Dbo::Accounts::DrCr::NONE   ,  "ROOT"       , "account"  , "debit"    , "credit"      ,                 },
-  { GCW::Dbo::Accounts::Type::TRADING    , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "TRADING"    , "account"  , "decrease" , "increase"    ,                 },
-  { GCW::Dbo::Accounts::Type::CHECKING   , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "CHECKING"   , "account"  , "debit"    , "credit"      , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::SAVINGS    , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "SAVINGS"    , "account"  , "debit"    , "credit"      , Type::ASSET     },
-  { GCW::Dbo::Accounts::Type::MONEYMRKT  , GCW::Dbo::Accounts::DrCr::DEBIT  ,  "MONEYMRKT"  , "account"  , "debit"    , "credit"      ,                 },
-  { GCW::Dbo::Accounts::Type::CREDITLINE , GCW::Dbo::Accounts::DrCr::CREDIT ,  "CREDITLINE" , "account"  , "decrease" , "increase"    , Type::LIABILITY },
+{// type               drcr            backendName    colAccount   colDr        colCr           parentType
+  { Type::INVALID    , DrCr::NONE   ,  "INVALID"    , "account"  , "fundsin"  , "fundsout"    ,                 },
+  { Type::NONE       , DrCr::NONE   ,  "NONE"       , "account"  , "fundsin"  , "fundsout"    ,                 },
+  { Type::ROOT       , DrCr::NONE   ,  "ROOT"       , "account"  , "debit"    , "credit"      ,                 },
+  { Type::BANK       , DrCr::DEBIT  ,  "BANK"       , "transfer" , "deposit"  , "withdrawal"  , Type::ASSET     },
+  { Type::CASH       , DrCr::DEBIT  ,  "CASH"       , "transfer" , "receive"  , "spend"       , Type::ASSET     },
+  { Type::CREDIT     , DrCr::CREDIT ,  "CREDIT"     , "blank"    , "payment"  , "charge"      , Type::LIABILITY },
+  { Type::ASSET      , DrCr::DEBIT  ,  "ASSET"      , "transfer" , "increase" , "decrease"    , Type::ASSET     },
+  { Type::LIABILITY  , DrCr::CREDIT ,  "LIABILITY"  , "account"  , "decrease" , "increase"    , Type::LIABILITY },
+  { Type::STOCK      , DrCr::DEBIT  ,  "STOCK"      , "account"  , "buy"      , "sell"        , Type::ASSET     },
+  { Type::MUTUAL     , DrCr::DEBIT  ,  "MUTUAL"     , "account"  , "buy"      , "sell"        , Type::ASSET     },
+  { Type::CURRENCY   , DrCr::DEBIT  ,  "CURRENCY"   , "account"  , "buy"      , "sell"        , Type::ASSET     },
+  { Type::INCOME     , DrCr::CREDIT ,  "INCOME"     , "account"  , "charge"   , "income"      , Type::INCOME    },
+  { Type::EXPENSE    , DrCr::DEBIT  ,  "EXPENSE"    , "transfer" , "expense"  , "rebate"      , Type::EXPENSE   },
+  { Type::EQUITY     , DrCr::CREDIT ,  "EQUITY"     , "transfer" , "decrease" , "increase"    , Type::EQUITY    },
+  { Type::RECEIVABLE , DrCr::DEBIT  ,  "RECEIVABLE" , "transfer" , "invoice"  , "payment"     , Type::ASSET     },
+  { Type::PAYABLE    , DrCr::CREDIT ,  "PAYABLE"    , "account"  , "payment"  , "bill"        , Type::LIABILITY },
+  { Type::TRADING    , DrCr::DEBIT  ,  "TRADING"    , "account"  , "decrease" , "increase"    , Type::ASSET     },
+  { Type::CHECKING   , DrCr::DEBIT  ,  "CHECKING"   , "account"  , "debit"    , "credit"      , Type::ASSET     },
+  { Type::SAVINGS    , DrCr::DEBIT  ,  "SAVINGS"    , "account"  , "debit"    , "credit"      , Type::ASSET     },
+  { Type::MONEYMRKT  , DrCr::DEBIT  ,  "MONEYMRKT"  , "account"  , "debit"    , "credit"      , Type::ASSET     },
+  { Type::CREDITLINE , DrCr::CREDIT ,  "CREDITLINE" , "account"  , "decrease" , "increase"    , Type::LIABILITY },
 
-}; // endGCW::Dbo::Accounts::s_accountDefs
+}; /// endGCW::Dbo::Accounts::s_accountDefs
 
 const Wt::WFormModel::Field GCW::Dbo::Accounts::Field::guid             = "guid"           ; // text(32) PRIMARY KEY NOT NULL
 const Wt::WFormModel::Field GCW::Dbo::Accounts::Field::name             = "name"           ; // text(2048) NOT NULL
