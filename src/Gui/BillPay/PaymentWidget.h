@@ -44,7 +44,7 @@ class PaymentWidget
     auto bpGuid() const-> const std::string & { return m_bpGuid; }
 
     auto loadData()-> void ;
-    auto saveData()-> void ;
+    auto saveData()-> bool ;
 
   private:
 
@@ -66,8 +66,8 @@ class PaymentWidget
     Wt::WLineEdit         * m_desc    = nullptr ;
     AccountSuggestionEdit * m_acct    = nullptr ;
     Wt::WLineEdit         * m_recon   = nullptr ;
-    Wt::WLineEdit         * m_debit   = nullptr ;
-//    Wt::WLineEdit         * m_credit  = nullptr ;
+//    Wt::WLineEdit         * m_debit   = nullptr ;
+    Wt::WLineEdit         * m_credit  = nullptr ;
     Wt::WTextArea         * m_confirm = nullptr ;
 
     std::vector< std::vector< Wt::WFormWidget * > > m_tableWidgets ;
@@ -88,6 +88,10 @@ class PaymentWidgetDialog
     PaymentWidgetDialog( const std::string & _bpGuid );
 
   private:
+
+    auto saveData()-> void ;
+
+    PaymentWidget * m_editWidget = nullptr ;
 
 }; // endclass PaymentWidgetDialog
 

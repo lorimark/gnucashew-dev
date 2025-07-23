@@ -214,6 +214,31 @@ setDescription( const Wt::WString & _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+getNum() const-> std::string
+{
+  return m_transaction-> num();
+
+} // endgetDescription() const-> std::string &
+
+auto
+GCW::Eng::Transaction::Manager::
+setNum( const std::string & _value )-> void
+{
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  m_transaction.modify()-> set_num( _value );
+
+} // endsetDescription( const std::string & _value )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+setNum( const Wt::WString & _value )-> void
+{
+  setNum( _value.toUTF8() );
+
+} // ensetDescription( const Wt::WString & _value )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
 setTransferGuid( const std::string & _value  )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );

@@ -156,6 +156,18 @@ class Manager
     auto setDescription( const Wt::WString & _value )-> void ;
 
     /*!
+    ** \brief Set Num
+    **
+    ** On the Transaction, the 'num' is the action field, on the splits
+    **  it is the action value.  So, in transaction it's called 'num' and
+    **  in the splits it's called 'action'.
+    **
+    */
+    auto getNum() const-> std::string ;
+    auto setNum( const std::string & _value )-> void ;
+    auto setNum( const Wt::WString & _value )-> void ;
+
+    /*!
     ** \brief Set Transfer GUID
     **
     ** This sets the (other) split (identified by guid) to the account

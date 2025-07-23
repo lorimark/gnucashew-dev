@@ -40,8 +40,8 @@ PaymentWidget( const std::string & _bpGuid )
   m_desc   = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit         >( );
   m_acct   = table()-> elementAt( 0, 3 )-> addNew< AccountSuggestionEdit >( );
   m_recon  = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit         >( );
-  m_debit  = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit         >( );
-//  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
+//  m_debit  = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit         >( );
+  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
 
 #ifdef INCLUDE_TABLE_WITH_MULTIPLE_INPUT_ROWS
   /*
@@ -100,16 +100,16 @@ PaymentWidget( const std::string & _bpGuid )
   m_desc   -> addStyleClass( "desc"   );
   m_acct   -> addStyleClass( "acct"   );
   m_recon  -> addStyleClass( "recon"  );
-  m_debit  -> addStyleClass( "debit"  );
-//  m_credit -> addStyleClass( "credit" );
+//  m_debit  -> addStyleClass( "debit"  );
+  m_credit -> addStyleClass( "credit" );
 
   m_date   -> setPlaceholderText( TR("gcw.billPay.pht.date"  ) );
   m_num    -> setPlaceholderText( TR("gcw.billPay.pht.num"   ) );
   m_desc   -> setPlaceholderText( TR("gcw.billPay.pht.desc"  ) );
   m_acct   -> setPlaceholderText( TR("gcw.billPay.pht.acct"  ) );
   m_recon  -> setPlaceholderText( TR("gcw.billPay.pht.recon" ) );
-  m_debit  -> setPlaceholderText( TR("gcw.billPay.pht.debit" ) );
-//  m_credit -> setPlaceholderText( TR("gcw.billPay.pht.credit") );
+//  m_debit  -> setPlaceholderText( TR("gcw.billPay.pht.debit" ) );
+  m_credit -> setPlaceholderText( TR("gcw.billPay.pht.credit") );
 
 //  m_trans1    -> setToolTip( TR("gcw.billPay.toolTip.trans"       ) );
 //  m_date1     -> setToolTip( TR("gcw.billPay.toolTip.date"        ) );
@@ -125,6 +125,27 @@ PaymentWidget( const std::string & _bpGuid )
   loadData();
 
 } // endPaymentWidget( const std::string & _bpGuid )
+
+auto
+GCW::Gui::BillPay::PaymentWidget::
+value()-> GCW_NUMERIC
+{
+  GCW_NUMERIC retVal(0);
+
+  /*
+  ** this adds the two values together using GAAP...
+  **  the debit is 'added' and the credit is 'subtracted'
+  **  from the value
+  **
+  */
+//  GCW_NUMERIC dVal( m_debit -> valueText().toUTF8() );
+  GCW_NUMERIC cVal( m_credit-> valueText().toUTF8() );
+
+  retVal = /* dVal - */ cVal;
+
+  return retVal;
+
+} // endvalue()-> GCW_NUMERIC
 
 auto
 GCW::Gui::BillPay::PaymentWidget::
@@ -149,7 +170,7 @@ loadData()-> void
 
 auto
 GCW::Gui::BillPay::PaymentWidget::
-saveData()-> void
+saveData()-> bool
 {
   /*
   ** make sure the account is assigned
@@ -157,7 +178,16 @@ saveData()-> void
   if( m_acct-> valueText() == "" )
   {
     Wt::WMessageBox::show( TR("gcw.billPay.lbl.billPay"), TR("gcw.billPay.save.needaccount"), Wt::StandardButton::Ok );
-    return;
+    return false;
+  }
+
+  /*
+  ** make sure there is a (+) positive value
+  */
+  if( value() < 1 )
+  {
+    Wt::WMessageBox::show( TR("gcw.billPay.lbl.billPay"), TR("gcw.billPay.save.positive"), Wt::StandardButton::Ok );
+    return false;
   }
 
   /*
@@ -183,7 +213,7 @@ saveData()-> void
   /*
   ** now build up a new transaction
   **
-  ** BUGBUG: note, this procedure will save 'confirm' which is the confirmation notes
+  ** BUGBUG: note, this procedure will save 'm_confirm' which is the confirmation notes
   **          to the split item memo field.  This can cause gnucash to improperly display
   **          the value of that memo field if that value that was set there is multi-line.
   **          If the value is multi-line, it is able to store properly in the sql database,
@@ -196,11 +226,17 @@ saveData()-> void
   transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
   transMan.setDescription( m_desc-> valueText() );
   transMan.setDate       ( Wt::WDateTime::fromString( m_date-> valueText(), GCW_DATE_FORMAT_DISPLAY ) );
-  transMan.setValue      ( acctItem-> guid()   ,  value() );
-  transMan.setValue      ( bpItem.accountGuid(), -value() );
+  transMan.setValue      ( acctItem-> guid()   , -value() );
+  transMan.setValue      ( bpItem.accountGuid(),  value() );
   transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
+  transMan.setNum        ( m_num-> valueText().toUTF8() );
 
-} // endsaveData()-> void
+  /*
+  ** good save
+  */
+  return true;
+
+} // endsaveData()-> bool
 
 GCW::Gui::BillPay::PaymentWidgetDialog::
 PaymentWidgetDialog( const std::string & _bpGuid )
@@ -211,7 +247,7 @@ PaymentWidgetDialog( const std::string & _bpGuid )
   addStyleClass( "PaymentWidgetDialog" );
   setWindowTitle( TR( "gcw.billPay.dialog.title" ) );
 
-  auto editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );
+  m_editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );
 
   auto pbSave   = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.lbl.save"   ) );
   auto pbCancel = titleBar()-> addNew< Wt::WPushButton >( TR( "gcw.billPay.lbl.cancel" ) );
@@ -219,32 +255,18 @@ PaymentWidgetDialog( const std::string & _bpGuid )
   pbSave   -> setStyleClass( "btn-xs" );
   pbCancel -> setStyleClass( "btn-xs" );
 
-  pbSave   -> clicked().connect( [this,editWidget](){ editWidget-> saveData(); accept(); } );
+  pbSave   -> clicked().connect( this, &PaymentWidgetDialog::saveData );
   pbCancel -> clicked().connect( this, &Wt::WDialog::reject );
 
 } // endPaymentWidgetDialog( const std::string & _bpGuid )
 
-
 auto
-GCW::Gui::BillPay::PaymentWidget::
-value()-> GCW_NUMERIC
+GCW::Gui::BillPay::PaymentWidgetDialog::
+saveData()-> void
 {
-  GCW_NUMERIC retVal(0);
+  if( m_editWidget-> saveData() )
+    accept();
 
-  /*
-  ** this adds the two values together using GAAP...
-  **  the debit is 'added' and the credit is 'subtracted'
-  **  from the value
-  **
-  */
-  GCW_NUMERIC dVal( m_debit -> valueText().toUTF8() );
-//  GCW_NUMERIC cVal( m_credit-> valueText().toUTF8() );
-
-  retVal = dVal; // - cVal;
-
-  return retVal;
-
-} // endvalue()-> GCW_NUMERIC
-
+} // endsaveData()-> void
 
 
