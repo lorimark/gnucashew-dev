@@ -1,6 +1,6 @@
 
 
-\mainpage GnuCashew ~ Web Based Version of GnuCash
+\mainpage GnuCashew ~ Web Application compatible with GnuCash data files
 
 First off... I love <a href="https://www.gnucash.org" target="_blank">GnuCash!</a>
 
@@ -42,7 +42,7 @@ This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library
   millions of rows of data seamlessly with no visible degradation in performance.
   This provides nearly the same fluidity that GnuCash offers.  It makes working
   with GnuCashew an easy transition for folks that are already familiar with GnuCash.
-  The view-object is lightening fast and really quite impressive to work with.
+  The table-view object is lightening fast and really quite impressive to work with.
 
 \par Mult-User Integration
  GnuCashew supports multiple users.  It accomplishes this by adding some user-management
