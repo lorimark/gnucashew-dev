@@ -21,6 +21,11 @@ if(ENABLE_BILLPAY)
 endif()
 
 # Set base compile flags
+#
+# DEC_NAMESPACE is for the decimal.h library.  It needs a namespace
+#  directive, and the best place to do it is in the compiler flags
+#  rather than somewhere in the source code
+#
 set(CMAKE_CXX_FLAGS "-DDEC_NAMESPACE=DECIMAL -std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g")
 
 # Append AddressSanitizer flags if requested

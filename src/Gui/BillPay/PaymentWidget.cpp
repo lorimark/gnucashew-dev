@@ -41,7 +41,7 @@ PaymentWidget( const std::string & _bpGuid )
   m_acct   = table()-> elementAt( 0, 3 )-> addNew< AccountSuggestionEdit >( );
   m_recon  = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit         >( );
   m_debit  = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit         >( );
-  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
+//  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
 
 #ifdef INCLUDE_TABLE_WITH_MULTIPLE_INPUT_ROWS
   /*
@@ -101,7 +101,7 @@ PaymentWidget( const std::string & _bpGuid )
   m_acct   -> addStyleClass( "acct"   );
   m_recon  -> addStyleClass( "recon"  );
   m_debit  -> addStyleClass( "debit"  );
-  m_credit -> addStyleClass( "credit" );
+//  m_credit -> addStyleClass( "credit" );
 
   m_date   -> setPlaceholderText( TR("gcw.billPay.pht.date"  ) );
   m_num    -> setPlaceholderText( TR("gcw.billPay.pht.num"   ) );
@@ -109,7 +109,7 @@ PaymentWidget( const std::string & _bpGuid )
   m_acct   -> setPlaceholderText( TR("gcw.billPay.pht.acct"  ) );
   m_recon  -> setPlaceholderText( TR("gcw.billPay.pht.recon" ) );
   m_debit  -> setPlaceholderText( TR("gcw.billPay.pht.debit" ) );
-  m_credit -> setPlaceholderText( TR("gcw.billPay.pht.credit") );
+//  m_credit -> setPlaceholderText( TR("gcw.billPay.pht.credit") );
 
 //  m_trans1    -> setToolTip( TR("gcw.billPay.toolTip.trans"       ) );
 //  m_date1     -> setToolTip( TR("gcw.billPay.toolTip.date"        ) );
@@ -142,6 +142,8 @@ loadData()-> void
 
   m_date  -> setValueText( GCW::Core::currentDateTimeDisplayString() );
   m_recon -> setValueText( "n" );
+  m_num   -> setValueText( "bp" );
+  m_desc  -> setValueText( bpItem.nickname() );
 
 } // endloadData()-> void
 
@@ -236,9 +238,9 @@ value()-> GCW_NUMERIC
   **
   */
   GCW_NUMERIC dVal( m_debit -> valueText().toUTF8() );
-  GCW_NUMERIC cVal( m_credit-> valueText().toUTF8() );
+//  GCW_NUMERIC cVal( m_credit-> valueText().toUTF8() );
 
-  retVal = dVal - cVal;
+  retVal = dVal; // - cVal;
 
   return retVal;
 
