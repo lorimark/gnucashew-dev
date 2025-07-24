@@ -163,7 +163,7 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
 
 auto
 GCW::Dbo::Splits::
-bySplit( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
+bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 

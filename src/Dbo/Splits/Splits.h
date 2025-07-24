@@ -355,7 +355,7 @@ auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 **
 ** \return Vector of Items sorted by Transction Date
 */
-auto bySplit( const std::string & _splitGuid )-> Item::Vector ;
+auto bySplitExcept( const std::string & _splitGuid )-> Item::Vector ;
 
 /*!
 ** \brief Load Splits by Transaction

@@ -653,8 +653,8 @@ refreshFromDisk()-> void
     **  and then load all of the other splits associated with this
     **  transaction.
     */
-    auto transactionItem   = GCW::Dbo::Transactions ::byGuid  ( splitItem-> tx_guid () );
-    auto transactionSplits = GCW::Dbo::Splits       ::bySplit ( splitItem-> guid    () );
+    auto transactionItem   = GCW::Dbo::Transactions ::byGuid        ( splitItem-> tx_guid () );
+    auto transactionSplits = GCW::Dbo::Splits       ::bySplitExcept ( splitItem-> guid    () );
 
     /*
     ** The first row comprises all of the basic account register information, such

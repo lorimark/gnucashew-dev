@@ -149,6 +149,46 @@ value()-> GCW_NUMERIC
 
 auto
 GCW::Gui::BillPay::PaymentWidget::
+lastTx()-> GCW::Dbo::Transactions::Item::Ptr
+{
+  auto splitItems = GCW::Dbo::Splits::byAccount( GCW::Gui::BillPay::bpItem( bpGuid() ).accountGuid() );
+  for( auto si = splitItems.rbegin(); si != splitItems.rend(); si++ )
+  {
+    auto splitItem = *si;
+    auto txItem    = GCW::Dbo::Transactions::byGuid( splitItem-> tx_guid() );
+
+    if( txItem-> num() == "bp" )
+      return txItem;
+
+  } // endfor( ..all splits in reverse.. )
+
+  return GCW::Dbo::Transactions::Item::Ptr() ;
+
+} // endlastTx()-> GCW::Dbo::Transactions::Item::Ptr
+
+auto
+GCW::Gui::BillPay::PaymentWidget::
+lastSplit()-> GCW::Dbo::Splits::Item::Ptr
+{
+  auto bpItem = GCW::Gui::BillPay::bpItem( bpGuid() );
+
+  if( auto txItem = lastTx() )
+  {
+    for( auto splitItem: GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
+    {
+      if( splitItem-> account_guid() != bpItem.accountGuid() )
+        return splitItem ;
+
+    } // endfor( ..all splits.. )
+
+  } // endif( auto txItem = lastTx() )
+
+  return GCW::Dbo::Splits::Item::Ptr() ;
+
+} // endlastSplit()-> GCW::Dbo::Splits::Item::Ptr
+
+auto
+GCW::Gui::BillPay::PaymentWidget::
 loadData()-> void
 {
   /*
@@ -165,6 +205,9 @@ loadData()-> void
   m_recon -> setValueText( "n" );
   m_num   -> setValueText( "bp" );
   m_desc  -> setValueText( bpItem.nickname() );
+
+  if( auto splitItem = lastSplit() )
+    m_acct-> setValueText( GCW::Dbo::Accounts::fullName( splitItem-> account_guid() ) );
 
 } // endloadData()-> void
 

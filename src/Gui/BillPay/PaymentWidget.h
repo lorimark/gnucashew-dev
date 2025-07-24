@@ -22,6 +22,7 @@
 
 #include "../AccountComboBox.h"
 #include "../AccountSuggestionEdit.h"
+#include "../../Dbo/Transactions/Transactions.h"
 #include "Item.h"
 
 namespace GCW {
@@ -49,6 +50,25 @@ class PaymentWidget
   private:
 
     auto table()-> Wt::WTable * { return m_table; }
+
+    /*!
+    ** \brief Last Transaction
+    **
+    */
+    auto lastTx()-> GCW::Dbo::Transactions::Item::Ptr ;
+
+    /*!
+    ** \brief Last Split
+    **
+    ** This returns the last split that was used on a bill
+    **  pay for this account.  This returns the split that
+    **  contains the 'other' account number used in the
+    **  bill pay.  That allows us to post the account number
+    **  as a memory-recall function for setting up a new
+    **  payment.
+    **
+    */
+    auto lastSplit()-> GCW::Dbo::Splits::Item::Ptr ;
 
     /*!
     ** \brief Value

@@ -13,9 +13,9 @@ const char * GCW::Dbo::Accounts::s_tableName = "accounts";
 **
 ** These are the account-types, debit/credit types, and register column labels for said accounts.
 **
-** \ref GCW::Eng::AccountRegisterModel::refreshFromDisk() "refreshFromDisk()"
+** \sa \ref GCW::Eng::AccountRegisterModel::refreshFromDisk() "refreshFromDisk()"
 **
-** \sa \ref account_type_labels Account Type Labels
+** \sa \ref account_type_labels "Account Type Labels"
 */
 const std::vector< GCW::Dbo::Accounts::AccountDef_t > GCW::Dbo::Accounts::s_accountDefs =
 {// type               drcr            backendName    colAccount   colDr        colCr           parentType
