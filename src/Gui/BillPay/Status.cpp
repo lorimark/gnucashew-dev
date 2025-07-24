@@ -2,33 +2,35 @@
 
 #include "BillPay.h"
 
-std::string
+auto
 GCW::Gui::BillPay::
-asString( Status _status )
+asString( Status _status )-> std::string
 {
-  std::string values[] =
+  switch( _status )
   {
-    TR8( "gcw.billPay.tableName.Paid"     ),
-    TR8( "gcw.billPay.tableName.Pending"  ),
-    TR8( "gcw.billPay.tableName.Unpaid"   ),
-    TR8( "gcw.billPay.tableName.Inactive" )
-  };
+    case Status::Paid     : return TR8( "gcw.billPay.tableName.Paid"     );
+    case Status::Pending  : return TR8( "gcw.billPay.tableName.Pending"  );
+    case Status::Unpaid   : return TR8( "gcw.billPay.tableName.Unpaid"   );
+    case Status::Inactive : return TR8( "gcw.billPay.tableName.Inactive" );
+  }
 
-  return values[ static_cast<int>( _status ) ];
-}
+  return "";
 
-std::string
+} // endasString( Status _status )-> std::string
+
+auto
 GCW::Gui::BillPay::
-asStyleClass( Status _status )
+asStyleClass( Status _status )-> std::string
 {
-  std::string values[] =
+  switch( _status )
   {
-    "billpay paid"     ,
-    "billpay pending"  ,
-    "billpay unpaid"   ,
-    "billpay inactive"
-  };
+    case Status::Paid     : return "billpay paid"     ;
+    case Status::Pending  : return "billpay pending"  ;
+    case Status::Unpaid   : return "billpay unpaid"   ;
+    case Status::Inactive : return "billpay inactive" ;
+  }
 
-  return values[ static_cast<int>( _status ) ];
-}
+  return "";
+
+} // endasStyleClass( Status _status )-> std::string
 

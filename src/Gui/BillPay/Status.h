@@ -14,19 +14,25 @@ namespace GCW {
 **
 ** Bills get loaded in to the model depending on their status.  A bills
 **  status depends on the selected month, and the check-box status
-**  for that same month.
+**  for that same month.  The check-box values equate as follows;
+**
+**  - unpaid  == (no)    unchecked
+**  - paid    == (yes)   checked
+**  - pending == (maybe) semi-checked
+**
+** \note these values are internal, not stored
 **
 */
 enum class Status
 {
-  /// Paid Status
-  Paid,
+  /// Unpaid Status
+  Unpaid,
 
   /// Pending Status
   Pending,
 
-  /// Unpaid Status
-  Unpaid,
+  /// Paid Status
+  Paid,
 
   /// Disabled Status
   Inactive
@@ -38,7 +44,7 @@ enum class Status
 ** This returns the 'string' representation of the status code.
 **
 */
-std::string asString( Status _status );
+auto asString( Status _status )-> std::string ;
 
 /*!
 ** \brief Get Status as Style Class
@@ -47,7 +53,7 @@ std::string asString( Status _status );
 **  on the status.
 **
 */
-std::string asStyleClass( Status _status );
+auto asStyleClass( Status _status )-> std::string ;
 
     } // endnamespace BillPay {
   } // endnamespace Gui {
