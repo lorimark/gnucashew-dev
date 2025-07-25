@@ -265,6 +265,7 @@ saveData()-> bool
   **          editable, but I don't know the long-term impact of storing data like this
   **          that gnucash might have to deal with.
   */
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   GCW::Eng::Transaction::Manager transMan;
   transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
   transMan.setDescription( m_desc-> valueText() );
@@ -280,6 +281,15 @@ saveData()-> bool
   return true;
 
 } // endsaveData()-> bool
+
+auto
+GCW::Gui::BillPay::PaymentWidget::
+paymentDate() const-> std::string
+{
+  return m_date-> valueText().toUTF8();
+
+} // endpaymentDate() const-> std::string
+
 
 GCW::Gui::BillPay::PaymentWidgetDialog::
 PaymentWidgetDialog( const std::string & _bpGuid )
@@ -311,5 +321,14 @@ saveData()-> void
     accept();
 
 } // endsaveData()-> void
+
+
+auto
+GCW::Gui::BillPay::PaymentWidgetDialog::
+paymentDate() const-> std::string
+{
+  return m_editWidget-> paymentDate();
+
+} // endpaymentDate() const-> std::string
 
 

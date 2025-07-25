@@ -47,6 +47,8 @@ class PaymentWidget
     auto loadData()-> void ;
     auto saveData()-> bool ;
 
+    auto paymentDate() const-> std::string ;
+
   private:
 
     auto table()-> Wt::WTable * { return m_table; }
@@ -106,6 +108,8 @@ class PaymentWidgetDialog
   public:
 
     PaymentWidgetDialog( const std::string & _bpGuid );
+
+    auto paymentDate() const-> std::string ;
 
   private:
 

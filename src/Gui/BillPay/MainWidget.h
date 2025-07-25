@@ -37,7 +37,6 @@ class MainWidget
     auto addClicked()-> void ;
     auto editClicked( TableView * _table, Wt::WModelIndex _index )-> void ;
     auto openEditor( const std::string & _bpGuid )-> void ;
-    auto buttonChanged( Wt::WRadioButton * _button )-> void ;
     auto setMonth( int _month )-> void ;
     auto refreshViews()-> void ;
     auto importClicked()-> void ;

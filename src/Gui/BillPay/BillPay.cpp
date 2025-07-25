@@ -16,6 +16,20 @@ configItem()-> GCW::Dbo::Vars::Item::Ptr
 
 auto
 GCW::Gui::BillPay::
+bpItems()-> std::vector< GCW::Gui::BillPay::Item >
+{
+  std::vector< GCW::Gui::BillPay::Item > retVal;
+
+  for( auto item : GCW::Dbo::Vars::getByCfy( GCW_GUI_BILLPAY_ITEM_CFY ) )
+    retVal.push_back( GCW::Gui::BillPay::Item( item ) );
+
+  return retVal;
+
+} // endbpItems()-> GCW::Gui::BillPay::Item::Vector
+
+
+auto
+GCW::Gui::BillPay::
 bpItem( const std::string & _guid )-> GCW::Gui::BillPay::Item
 {
   return

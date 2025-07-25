@@ -37,6 +37,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   // transaction
   m_transaction.modify()-> set_currency_guid( accountItem1-> commodity_guid() );
+  m_transaction.modify()-> set_enter_date( Wt::WDateTime::currentDateTime() );
   // Split1
   auto split1 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
   split1.modify()-> set_tx_guid         ( m_transaction-> guid() );

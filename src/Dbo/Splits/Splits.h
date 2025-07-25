@@ -333,6 +333,14 @@ auto find( const std::string & _splitGuid )-> Item::Ptr ;
 auto add( const std::string & _splitGuid )-> Item::Ptr ;
 
 /*!
+** \brief Load a single split
+**
+** This function returns a split based on the GUID.
+**
+*/
+inline auto byGuid( const std::string & _splitGuid )-> Item::Ptr { return load( _splitGuid ); }
+
+/*!
 ** \brief Load Splits by Account
 **
 ** This function returns a vector of Split items, sorted

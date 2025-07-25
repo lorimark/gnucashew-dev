@@ -26,7 +26,7 @@ RawTableWidget( const std::string & _viewName )
   auto w_ = std::make_unique< Wt::WLineEdit   >();
   m_search = w_.get();
   m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
-  m_toolBar-> addWidget( std::make_unique< Wt::WText >( "<span style=\"color:red;\">use caution!  modifying data here can destroy your database</span>" ) );
+  m_toolBar-> addWidget( std::make_unique< Wt::WText >( "<span style=\"color:red;\">these tables have been designed to facilitate the complete destruction of your database.  clicking can ruin your day!  use caution!</span>" ) );
   m_search -> setPlaceholderText( "Search" );
   m_search -> textInput().connect( this, &RawTableWidget<C>::on_search );
 

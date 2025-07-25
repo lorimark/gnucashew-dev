@@ -657,6 +657,16 @@ refreshFromDisk()-> void
     auto transactionSplits = GCW::Dbo::Splits       ::bySplitExcept ( splitItem-> guid    () );
 
     /*
+    ** BUGBUG: Depending on the condition of the database, in the odd chance that something
+    **  has gone corrupted, this will more-or-less mask the issue, by simply
+    **  stepping over this split that appears to be in bad shape.  Ideally we need
+    **  to generate some sort of report at this point, but for now we'll just step
+    **  over it.
+    */
+    if( !transactionItem )
+      continue;
+
+    /*
     ** The first row comprises all of the basic account register information, such
     **  as the transaction date, and target account and amounts and so forth.  It is
     **  the first line in the basic one-line ledger.

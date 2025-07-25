@@ -136,6 +136,8 @@ class Item
 
 }; // endclass Item
 
+//using std::vector< Item > as Vector;
+
     } // endnamespace BillPay {
   } // endnamespace Gui {
 } // endnamespace GCW {

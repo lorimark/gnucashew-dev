@@ -152,12 +152,6 @@ buildContent()-> void
 
   } // endinactive items
 
-  /*
-  ** This activates the summary widget and causes it to show
-  **   or not show depending on the chosen option.
-  */
-  do_summaryClicked();
-
   refreshViews();
 
 } // endbuildContent()-> void
@@ -278,29 +272,6 @@ editClicked( TableView * _table, Wt::WModelIndex _index )-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
-buttonChanged( Wt::WRadioButton * _button )-> void
-{
-  /*
-  ** If there is a button (sometimes there is not), then there's
-  **  nothing to do.
-  **
-  ** This function can get called from a selection of one of the
-  **  monthly buttons in the tool bar, or it can get called from a
-  **  detailForm .save. event.  It shouldn't happen, but it's possible
-  **  to add an item without having a month selected.  The button
-  **  is going to get defaulted to 1, to help mitigate the issue, but
-  **  it's still a problem if we pass a nullptr for the button.  So,
-  **  to be safe, just deal with it.
-  */
-  if( !_button )
-    return;
-
-  setMonth( std::stoi( _button-> text().toUTF8() ) );
-
-} // endbuttonChanged( Wt::WRadioButton * _button )-> void
-
-auto
-GCW::Gui::BillPay::MainWidget::
 do_inactiveClicked()-> void
 {
   if( m_toolBar-> showInactive() )
@@ -314,6 +285,10 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_summaryClicked()-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+  return;
+
   if( m_toolBar-> showSummary() )
     m_summaryView-> setHidden( false );
   else

@@ -56,6 +56,7 @@ class EditWidget
     Wt::Signal<> m_processed;
 
     std::string m_bpGuid;
+    std::string m_lastPaymentDate;
 
     GCW::Gui::AccountRegister * m_register  = nullptr ;
     Wt::WPushButton           * m_pbSave    = nullptr ;

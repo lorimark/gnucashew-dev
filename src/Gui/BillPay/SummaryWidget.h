@@ -7,6 +7,7 @@
 #include <Wt/WLabel.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WText.h>
+#include <Wt/WTable.h>
 
 namespace GCW {
   namespace Gui {
@@ -30,7 +31,17 @@ class SummaryWidget
 
   private:
 
-    Wt::WText * m_text = nullptr ;
+    /*!
+    ** \brief Splits
+    **
+    ** This returns all the splits in the selected month
+    **
+    */
+    auto splitGuids()-> std::set< std::string > ;
+
+    int          m_month = -1      ;
+    Wt::WText  * m_title = nullptr ;
+    Wt::WTable * m_table = nullptr ;
 
 }; // endclass SummaryWidget
 

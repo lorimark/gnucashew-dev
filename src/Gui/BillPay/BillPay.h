@@ -49,6 +49,14 @@ namespace GCW {
 auto configItem()-> GCW::Dbo::Vars::Item::Ptr ;
 
 /*!
+** \brief Bill Pay Items
+**
+** This returns all bill pay items in a vector
+**
+*/
+auto bpItems()-> std::vector< GCW::Gui::BillPay::Item > ;
+
+/*!
 ** \brief Bill Pay Item
 **
 ** This returns a bill-pay item based on the GUID of the relative account.

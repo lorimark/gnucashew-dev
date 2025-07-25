@@ -336,8 +336,11 @@ processPayment()-> void
   dialog = std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid );
   dialog-> show();
   dialog->
-    finished().connect( []()
+    finished().connect( [&]()
     {
+      m_lastPaymentDate = dialog-> paymentDate();
+      std::cout << __FILE__ << ":" << __LINE__ << " " << m_lastPaymentDate << std::endl;
+
       dialog.reset( nullptr );
     });
 
