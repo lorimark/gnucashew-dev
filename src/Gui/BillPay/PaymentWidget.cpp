@@ -95,6 +95,7 @@ PaymentWidget( const std::string & _bpGuid )
   /*
   ** apply styling
   */
+  m_date   -> setFormat( GCW_DATE_FORMAT_DISPLAY );
   m_date   -> addStyleClass( "date"   );
   m_num    -> addStyleClass( "num"    );
   m_desc   -> addStyleClass( "desc"   );

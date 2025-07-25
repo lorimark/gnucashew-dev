@@ -1,4 +1,4 @@
-#line 2 "src/Gui/BillPay/SummarytWidget.cpp"
+#line 2 "src/Gui/BillPay/SummaryWidget.cpp"
 
 #include <Wt/WMenuItem.h>
 #include <Wt/WVBoxLayout.h>
@@ -24,33 +24,34 @@ GCW::Gui::BillPay::SummaryWidget::
 setMonth( int _month )-> void
 {
   m_month = _month;
-  m_table-> clear();
   m_title-> setText( Wt::WString( "Selected Month: {1}" ).arg( m_month ) );
 
-  for( auto splitGuid : splitGuids() )
+  m_table-> clear();
+  m_table-> setStyleClass( "SummaryTable" );
+  int row = 0;
+  for( auto split : splits() )
   {
-    auto splitItem = GCW::Dbo:: Splits       ::byGuid( splitGuid                  );
+    auto splitItem = GCW::Dbo:: Splits       ::byGuid( split.guid                 );
     auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
     auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
 
-    std::cout << __FILE__ << ":" << __LINE__
-      << " " << splitGuid
-      << " " << GCW::Dbo::Accounts::fullName( acctItem-> guid() )
-      << " " << splitItem-> value()
-      << " " << txItem-> post_date_as_date().date().day()
-      << std::endl;
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( split.day ) );
+    m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( acctItem-> name()  );
+    m_table-> elementAt( row, 2 )-> addNew< Wt::WText >( split.bill  );
+    m_table-> elementAt( row, 3 )-> addNew< Wt::WText >( splitItem-> valueAsString() );
 
-  } // endfor( auto splitGuid : splitGuids() )
+    row++;
 
+  } // endfor( auto splitGuid : splits() )
 
 } // endloadData()-> void
 
 
 auto
 GCW::Gui::BillPay::SummaryWidget::
-splitGuids()-> std::set< std::string >
+splits()-> std::vector< Split_t >
 {
-  std::set< std::string > retVal;
+  std::vector< Split_t > retVal;
 
   /*
   ** here we loop through all the bp items and look at all the transactions
@@ -80,15 +81,26 @@ splitGuids()-> std::set< std::string >
         */
         for( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
         {
+          /*
+          ** there is a bp-account, and the pay-from account.  We want the
+          **  pay-from account.
+          */
           if( split-> account_guid() != bpItem.accountGuid() )
           {
-            retVal.insert( split-> guid() );
+            /*
+            ** gather up the relevant split info and stuff it
+            */
+            Split_t spt;
+            spt.day   = txItem-> post_date_as_date().date().day();
+            spt.guid  = split-> guid();
+            spt.bank  = GCW::Dbo::Accounts::fullName( split-> account_guid() );
+            spt.bill  = bpItem.nickname();
+            spt.value = split-> value();
+            retVal.push_back( spt );
 
 #ifdef NEVER
             std::cout << __FILE__ << ":" << __LINE__
-              << " " << split-> guid()
-              << " " << bpItem.accountGuid()
-              << " " << split-> account_guid()
+              << " " << txItem-> post_date_as_date().date().day()
               << " " << GCW::Dbo::Accounts::fullName( split-> account_guid() )
               << " " << bpItem.nickname()
               << " " << split-> value()
@@ -107,7 +119,7 @@ splitGuids()-> std::set< std::string >
 
   return retVal;
 
-} //  endsplitGuids()-> std::vector< std::string >
+} //  endsplits()-> std::vector< Split_t >
 
 
 

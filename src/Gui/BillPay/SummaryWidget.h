@@ -27,17 +27,26 @@ class SummaryWidget
 
     SummaryWidget( );
 
-      auto setMonth( int _month )-> void ;
+    auto setMonth( int _month )-> void ;
 
   private:
+
+    typedef struct SPLIT_S
+    {
+      int         day   ;
+      std::string guid  ;
+      std::string bank  ;
+      std::string bill  ;
+      GCW_NUMERIC value ;
+    } Split_t;
 
     /*!
     ** \brief Splits
     **
-    ** This returns all the splits in the selected month
+    ** This returns all the 'bill pay' splits in the selected month
     **
     */
-    auto splitGuids()-> std::set< std::string > ;
+    auto splits()-> std::vector< Split_t > ;
 
     int          m_month = -1      ;
     Wt::WText  * m_title = nullptr ;

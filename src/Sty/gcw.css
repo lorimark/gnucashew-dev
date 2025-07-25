@@ -168,6 +168,22 @@
   border: 1px solid black;
 }
 
+.BillPay .SummaryTable
+{
+  width: 100%;
+}
+
+.BillPay .SummaryTable td
+{
+  color:red;
+  padding-right:7px;
+}
+
+.BillPay .SummaryTable td:nth-child(4)
+{
+  text-align:right;
+}
+
 /*
 ** Selected 'month' columns are highlighted
 **  important overrides the alternating row colors

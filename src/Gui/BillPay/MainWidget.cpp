@@ -152,6 +152,8 @@ buildContent()-> void
 
   } // endinactive items
 
+  do_summaryClicked();
+
   refreshViews();
 
 } // endbuildContent()-> void
@@ -285,16 +287,12 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_summaryClicked()-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
-  return;
-
   if( m_toolBar-> showSummary() )
     m_summaryView-> setHidden( false );
   else
     m_summaryView-> setHidden( true );
 
-  m_summaryView-> setMonth( m_selectedMonth );
+//  m_summaryView-> setMonth( m_selectedMonth );
 
 } // enddo_summaryClicked()-> void
 
