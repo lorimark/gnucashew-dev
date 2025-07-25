@@ -269,7 +269,7 @@ saveData()-> bool
   GCW::Eng::Transaction::Manager transMan;
   transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
   transMan.setDescription( m_desc-> valueText() );
-  transMan.setDate       ( Wt::WDateTime::fromString( m_date-> valueText(), GCW_DATE_FORMAT_DISPLAY ) );
+  transMan.setDate       ( m_date-> date() );
   transMan.setValue      ( acctItem-> guid()   , -value() );
   transMan.setValue      ( bpItem.accountGuid(),  value() );
   transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );

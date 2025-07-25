@@ -181,6 +181,18 @@ setDate( const Wt::WDateTime & _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+setDate( const Wt::WDate & _value )-> void
+{
+  auto dateTime = Wt::WDateTime( _value );
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  m_transaction.modify()-> set_post_date( dateTime );
+
+} // endsetDate( const Wt::WDateTime & _value )-> void
+
+
+
+auto
+GCW::Eng::Transaction::Manager::
 setAction( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );

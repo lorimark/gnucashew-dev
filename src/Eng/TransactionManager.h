@@ -135,6 +135,7 @@ class Manager
     */
     auto getDate() const-> Wt::WDateTime ;
     auto setDate( const Wt::WDateTime & _value )-> void ;
+    auto setDate( const Wt::WDate & _value )-> void ;
 
     /*!
     ** \brief Set Action
