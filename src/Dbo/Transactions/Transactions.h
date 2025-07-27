@@ -160,6 +160,7 @@ auto byGuid( const std::string & _txGuid )-> Item::Ptr ;
 auto add( const std::string & _txGuid )-> Item::Ptr ;
 auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 auto byAccountMonth( const std::string & _accountGuid, int _month )-> Item::Vector ;
+auto byNumMonth( const std::string & _num, int _month )-> Item::Vector ;
 
     } // endnamespace Transactions {
   } // endnamespace Dbo {

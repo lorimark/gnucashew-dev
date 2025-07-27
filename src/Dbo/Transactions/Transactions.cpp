@@ -165,3 +165,28 @@ byAccountMonth( const std::string & _accountGuid, int _month )-> GCW::Dbo::Trans
 
 } // endbyAccountMonth( const std::string & _accountGuid, int _month )-> GCW::Dbo::Transactions::Item::Vector
 
+auto
+GCW::Dbo::Transactions::
+byNumMonth( const std::string & _num, int _month )-> GCW::Dbo::Transactions::Item::Vector
+{
+  GCW::Dbo::Transactions::Item::Vector retVal;
+
+  auto date = Wt::WDate( Wt::WDate::currentDate().year(), _month, 1 ).toString( "yyyy-MM" );
+
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  auto results =
+    GCW::app()-> gnucashew_session().find< GCW::Dbo::Transactions::Item >()
+    .where( "num = ? and post_date LIKE ?" )
+    .bind( _num )
+    .bind( date + "%" )
+    .orderBy( "post_date" )
+    .resultList();
+    ;
+
+  for( auto item : results )
+    retVal.push_back( item );
+
+  return retVal;
+
+} // endbyNumMonth( const std::string & _num, int _month )-> GCW::Dbo::Transactions::Item::Vector
+

@@ -31,22 +31,58 @@ class SummaryWidget
 
   private:
 
-    typedef struct SPLIT_S
+    class Splits
     {
-      int         day   ;
-      std::string guid  ;
-      std::string bank  ;
-      std::string bill  ;
-      GCW_NUMERIC value ;
-    } Split_t;
+      public:
 
-    /*!
-    ** \brief Splits
-    **
-    ** This returns all the 'bill pay' splits in the selected month
-    **
-    */
-    auto splits()-> std::vector< Split_t > ;
+#ifdef NEVER
+      typedef struct PAYMENT_S
+      {
+        int         day   ;
+        std::string guid  ;
+        std::string bank  ;
+        std::string bill  ;
+        GCW_NUMERIC value ;
+      } Split_t;
+#endif
+
+        Splits( int _month );
+
+        /*
+        ** this returns all the guids of all the splits
+        */
+        auto splitGuids () const-> std::vector< std::string > ;
+
+        /*
+        ** return all the days represented by all the splits
+        */
+        auto days() const-> std::set< int > ;
+
+        /*
+        ** return a list of payments made on a day
+        */
+        auto dayPayments( int _day ) const-> std::vector< std::string > ;
+
+        /*
+        ** return all the pay-froms represented
+        */
+        auto payFroms() const-> std::set< std::string > ;
+
+        /*
+        ** return all the days represented by this one payFrom account
+        */
+        auto payFromDays( const std::string & _payFrom ) const-> std::set< int > ;
+
+        /*
+        ** return all the payment splits that were paid from this
+        **  account and paid on this day
+        */
+        auto paymentSplits( const std::string & _payFrom, int _day ) const-> std::vector< std::string > ;
+
+        int m_month = -1;
+        std::vector< std::string > m_splitGuids;
+
+    };
 
     int          m_month = -1      ;
     Wt::WText  * m_title = nullptr ;

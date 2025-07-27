@@ -19,34 +19,119 @@ SummaryWidget()
 
 } // endSummaryWidget( const std::string & _accountGuid )
 
+namespace {
+
+auto ordinalSuffix( int number )-> std::string
+{
+  int lastTwo = number % 100;
+  int lastOne = number % 10;
+
+  if (lastTwo >= 11 && lastTwo <= 13)
+    return "th";
+
+  switch( lastOne )
+  {
+    case 1:  return "st";
+    case 2:  return "nd";
+    case 3:  return "rd";
+    default: return "th";
+  }
+
+  return "";
+
+} // endauto ordinalSuffix( int number )-> std::string
+
+} // endnamespace {
+
 auto
 GCW::Gui::BillPay::SummaryWidget::
 setMonth( int _month )-> void
 {
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+  /*
+  ** reset the report
+  */
+  m_table-> clear();
+  m_table-> setStyleClass( "SummaryTable" );
+
+  /*
+  ** post the month we're in
+  */
   m_month = _month;
   m_title-> setText( Wt::WString( "Selected Month: {1}" ).arg( m_month ) );
 
-  m_table-> clear();
-  m_table-> setStyleClass( "SummaryTable" );
+  /*
+  ** gather up all the payment splits and process them
+  **  in to the report
+  */
+  Splits splits( _month );
   int row = 0;
-  for( auto split : splits() )
+  std::map< int, GCW_NUMERIC > dayTotals;
+  for( auto payFrom : splits.payFroms() )
   {
-    auto splitItem = GCW::Dbo:: Splits       ::byGuid( split.guid                 );
-    auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
-    auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+    for( auto payFromDay : splits.payFromDays( payFrom ) )
+    {
+      auto acctDay =
+        Wt::WString("{1}<sup>{3}</sup> - {2}")
+        .arg( payFromDay )
+        .arg( payFrom )
+        .arg( ordinalSuffix( payFromDay ) )
+        .toUTF8()
+        ;
 
-    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( split.day ) );
-    m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( acctItem-> name()  );
-    m_table-> elementAt( row, 2 )-> addNew< Wt::WText >( split.bill  );
-    m_table-> elementAt( row, 3 )-> addNew< Wt::WText >( splitItem-> valueAsString() );
+      m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( acctDay );
+      m_table-> elementAt( row, 0 )-> setColumnSpan( 2 );
+      row++;
 
+      GCW_NUMERIC subTotal(0);
+      for( auto paymentSplit : splits.paymentSplits( payFrom, payFromDay ) )
+      {
+        auto splitItem = GCW::Dbo:: Splits       ::byGuid( paymentSplit               );
+        auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+        auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
+
+        m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
+        m_table-> elementAt( row, 2 )-> addNew< Wt::WText >( txItem    -> description()         );
+        row++;
+
+        subTotal += splitItem-> value( true );
+
+      } // endfor( ..all payments.. )
+
+      m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( subTotal, GCW::Cfg::decimal_format()  ) ) );
+      m_table-> elementAt( row,   1 )-> setStyleClass( "du" );
+      m_table-> elementAt( row-1, 1 )-> setStyleClass( "su" );
+      row++;
+
+    } // endfor( ..all payFromDays.. )
+
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "------------------------------------" );
+    m_table-> elementAt( row, 0 )-> setColumnSpan( 4 );
     row++;
 
-  } // endfor( auto splitGuid : splits() )
+  } // endfor( ..all payFroms.. )
+
+  m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "********************************" );
+  m_table-> elementAt( row, 0 )-> setColumnSpan( 4 );
+  row++;
+
+  for( auto day : splits.days() )
+  {
+    for( auto dayPayment : splits.dayPayments( day ) )
+    {
+      auto splitItem = GCW::Dbo:: Splits       ::byGuid( dayPayment               );
+      auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+      auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
+
+
+    }
+
+  } // endfor( auto day : splits.days() )
 
 } // endloadData()-> void
 
-
+#ifdef NEVER
 auto
 GCW::Gui::BillPay::SummaryWidget::
 splits()-> std::vector< Split_t >
@@ -54,72 +139,198 @@ splits()-> std::vector< Split_t >
   std::vector< Split_t > retVal;
 
   /*
-  ** here we loop through all the bp items and look at all the transactions
-  **  within this month.  We then see if the transaction was used for
-  **  bill-pay (num='bp') and will then generate a full report on all the
-  **  payments made.
+  ** get all the transactions that happened for this account for this month
   */
-  for( auto bpItem : bpItems() )
+  auto txItems = GCW::Dbo::Transactions::byNumMonth( "bp", m_month );
+
+  /*
+  ** if transactions happened, get them open and see if they should be in the summary report
+  */
+  for( auto txItem : txItems )
   {
-    /*
-    ** get all the transactions that happened for this account for this month
-    */
-    auto txItems = GCW::Dbo::Transactions::byAccountMonth( bpItem.accountGuid(), m_month );
+    Split_t spt;
+    spt.day  = txItem-> post_date_as_date().date().day();
+    spt.bill = txItem-> description();
 
     /*
-    ** if transactions happened, get them open and see if they should be in the summary report
+    ** loop through all the splits
     */
-    for( auto txItem : txItems )
+    for( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
     {
       /*
-      ** if this transaction is a bp transction, we want it in the summary report
+      ** We want the pay-from account.
       */
-      if( txItem-> num() == "bp" )
+      if( split-> value() < 0 )
       {
         /*
-        ** loop through all the splits
+        ** gather up the relevant split info and stuff it
         */
-        for( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
-        {
-          /*
-          ** there is a bp-account, and the pay-from account.  We want the
-          **  pay-from account.
-          */
-          if( split-> account_guid() != bpItem.accountGuid() )
-          {
-            /*
-            ** gather up the relevant split info and stuff it
-            */
-            Split_t spt;
-            spt.day   = txItem-> post_date_as_date().date().day();
-            spt.guid  = split-> guid();
-            spt.bank  = GCW::Dbo::Accounts::fullName( split-> account_guid() );
-            spt.bill  = bpItem.nickname();
-            spt.value = split-> value();
-            retVal.push_back( spt );
+        spt.guid  = split-> guid();
+        spt.bank  = GCW::Dbo::Accounts::fullName( split-> account_guid() );
 
-#ifdef NEVER
-            std::cout << __FILE__ << ":" << __LINE__
-              << " " << txItem-> post_date_as_date().date().day()
-              << " " << GCW::Dbo::Accounts::fullName( split-> account_guid() )
-              << " " << bpItem.nickname()
-              << " " << split-> value()
-              << std::endl;
-#endif
+        std::cout << __FILE__ << ":" << __LINE__ << " " << split-> value() << " " << split-> value( true ) << std::endl;
 
-          } // endif( ..other account.. )
+        spt.value = split-> value( true );
+        retVal.push_back( spt );
 
-        } // endfor( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
+      } // endif( ..other account.. )
 
-      } // endif( txItem-> num() == "bp" )
+    } // endfor( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
 
-    } // endfor( auto txItem : txItems )
-
-  } // endfor( auto bpItem : bpItems() )
+  } // endfor( auto txItem : txItems )
 
   return retVal;
 
 } //  endsplits()-> std::vector< Split_t >
+#endif
+
+
+GCW::Gui::BillPay::SummaryWidget::Splits::
+Splits( int _month )
+: m_month( _month )
+{
+  /*
+  ** get all the transactions that happened for this account for this month
+  */
+  auto txItems = GCW::Dbo::Transactions::byNumMonth( "bp", m_month );
+
+  /*
+  ** if transactions happened, get them open and see if they should be in the summary report
+  */
+  for( auto txItem : txItems )
+  {
+    /*
+    ** loop through all the splits
+    */
+    for( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
+    {
+      /*
+      ** We want the pay-from account.
+      */
+      if( split-> value() < 0 )
+      {
+        m_splitGuids.push_back( split-> guid() );
+
+      } // endif( ..pay-from account.. )
+
+    } // endfor( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
+
+  } // endfor( auto txItem : txItems )
+
+} // endSplits( int _month )
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+splitGuids() const-> std::vector< std::string >
+{
+  return m_splitGuids;
+
+} // endsplitGuids() const-> std::vector< std::string >
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+days() const-> std::set< int >
+{
+  std::set< int > retVal;
+
+  for( auto splitGuid : splitGuids() )
+  {
+    auto splitItem = GCW::Dbo:: Splits       ::byGuid( splitGuid                  );
+    auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
+
+    retVal.insert( txItem-> post_date_as_date().date().day() );
+
+  } // endfor( auto splitGuid : splitGuids() )
+
+  return retVal;
+
+} // enddays() const-> std::set< int >
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+payFroms() const-> std::set< std::string >
+{
+  std::set< std::string > retVal;
+
+  for( auto splitGuid : splitGuids() )
+  {
+    auto splitItem = GCW::Dbo:: Splits   ::byGuid( splitGuid                  );
+    auto acctItem  = GCW::Dbo:: Accounts ::byGuid( splitItem-> account_guid() );
+
+    retVal.insert( acctItem-> name() );
+
+  } // endfor( auto splitGuid : splitGuids() )
+
+  return retVal;
+
+} // enddays() const-> std::set< int >
+
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+payFromDays( const std::string & _payFrom ) const-> std::set< int >
+{
+  std::set< int > retVal;
+
+  for( auto splitGuid : splitGuids() )
+  {
+    auto splitItem = GCW::Dbo:: Splits       ::byGuid( splitGuid                  );
+    auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+    auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
+
+    if( acctItem-> name() == _payFrom )
+      retVal.insert( txItem-> post_date_as_date().date().day() );
+
+  } // endfor( auto splitGuid : splitGuids() )
+
+  return retVal;
+
+} // enddays() const-> std::set< int >
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+paymentSplits( const std::string & _payFrom, int _day ) const-> std::vector< std::string >
+{
+  std::vector< std::string > retVal;
+
+  for( auto splitGuid : splitGuids() )
+  {
+    auto splitItem = GCW::Dbo:: Splits       ::byGuid( splitGuid                  );
+    auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+    auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
+
+    if( acctItem-> name() == _payFrom
+     && txItem-> post_date_as_date().date().day() == _day
+      )
+      retVal.push_back( splitGuid );
+
+  } // endfor( auto splitGuid : splitGuids() )
+
+  return retVal;
+
+} // endpaymentSplits( const std::string & _payFrom, int _day ) const-> std::vector< std::string >
+
+
+auto
+GCW::Gui::BillPay::SummaryWidget::Splits::
+dayPayments( int _day ) const-> std::vector< std::string >
+{
+  std::vector< std::string > retVal;
+
+  for( auto splitGuid : splitGuids() )
+  {
+    auto splitItem = GCW::Dbo:: Splits       ::byGuid( splitGuid             );
+    auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid() );
+
+    if( txItem-> post_date_as_date().date().day() == _day )
+      retVal.push_back( splitGuid );
+
+  } // endfor( auto splitGuid : splitGuids() )
+
+  return retVal;
+
+} // enddayPayments( int _day ) const-> std::vector< std::string >
+
 
 
 

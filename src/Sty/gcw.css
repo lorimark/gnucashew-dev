@@ -170,7 +170,7 @@
 
 .BillPay .SummaryTable
 {
-  width: 100%;
+/*  width: 100%; */
 }
 
 .BillPay .SummaryTable td
@@ -179,9 +179,24 @@
   padding-right:7px;
 }
 
-.BillPay .SummaryTable td:nth-child(4)
+.BillPay .SummaryTable td:nth-child(2)
 {
   text-align:right;
+}
+
+.BillPay .SummaryTable td:nth-child(4)
+{
+/*  text-align:right; */
+}
+
+.BillPay .SummaryTable .su
+{
+  border-bottom: 1px solid red;
+}
+
+.BillPay .SummaryTable .du
+{
+  border-bottom: 3px double red;
 }
 
 /*
