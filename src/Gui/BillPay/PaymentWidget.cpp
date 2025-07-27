@@ -202,10 +202,14 @@ loadData()-> void
 
   GCW::Eng::Transaction::Manager transactionManager;
 
+  auto desc = bpItem.nickname();
+  if( bpItem.last4() != "" )
+    desc += " (" + bpItem.last4() + ")";
+
   m_date  -> setValueText( GCW::Core::currentDateTimeDisplayString() );
   m_recon -> setValueText( "n" );
   m_num   -> setValueText( "bp" );
-  m_desc  -> setValueText( bpItem.nickname() );
+  m_desc  -> setValueText( desc );
 
   if( auto splitItem = lastSplit() )
     m_acct-> setValueText( GCW::Dbo::Accounts::fullName( splitItem-> account_guid() ) );

@@ -179,14 +179,9 @@
   padding-right:7px;
 }
 
-.BillPay .SummaryTable td:nth-child(2)
+.BillPay .SummaryTable td:nth-child(1)
 {
   text-align:right;
-}
-
-.BillPay .SummaryTable td:nth-child(4)
-{
-/*  text-align:right; */
 }
 
 .BillPay .SummaryTable .su

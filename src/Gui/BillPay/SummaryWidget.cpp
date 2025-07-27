@@ -80,9 +80,8 @@ setMonth( int _month )-> void
         .toUTF8()
         ;
 
-      m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( acctDay );
-      m_table-> elementAt( row, 0 )-> setColumnSpan( 2 );
-      row++;
+      m_table-> elementAt( row, 0 )-> setAttributeValue( "style", "padding-top: 10px;" );
+      m_table-> elementAt( row, 1 )-> setAttributeValue( "style", "padding-top: 10px;" );
 
       GCW_NUMERIC subTotal(0);
       for( auto paymentSplit : splits.paymentSplits( payFrom, payFromDay ) )
@@ -91,17 +90,18 @@ setMonth( int _month )-> void
         auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
         auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
 
-        m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
-        m_table-> elementAt( row, 2 )-> addNew< Wt::WText >( txItem    -> description()         );
+        m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
+        m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( txItem    -> description()         );
         row++;
 
         subTotal += splitItem-> value( true );
 
       } // endfor( ..all payments.. )
 
-      m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( subTotal, GCW::Cfg::decimal_format()  ) ) );
-      m_table-> elementAt( row,   1 )-> setStyleClass( "du" );
-      m_table-> elementAt( row-1, 1 )-> setStyleClass( "su" );
+      m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( subTotal, GCW::Cfg::decimal_format()  ) ) );
+      m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
+      m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
+      m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( acctDay );
       row++;
 
     } // endfor( ..all payFromDays.. )
