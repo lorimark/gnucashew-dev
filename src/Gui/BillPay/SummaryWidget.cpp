@@ -73,7 +73,7 @@ setMonth( int _month )-> void
     for( auto payFromDay : splits.payFromDays( payFrom ) )
     {
       auto acctDay =
-        Wt::WString("{1}<sup>{3}</sup> - {2}")
+        Wt::WString("{1}<sup>{3}</sup> ~ {2}")
         .arg( payFromDay )
         .arg( payFrom )
         .arg( ordinalSuffix( payFromDay ) )

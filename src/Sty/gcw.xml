@@ -521,6 +521,28 @@
   <message id="gcw.billPay.ttp.payNow"                           ></message>
   <message id="gcw.billPay.ttp.clear"                            >Clear all the payment check-boxes.</message>
 
+  <message id="gcw.billPay.ttp.accountKey"                       >Primary Account Identifier</message>
+  <message id="gcw.billPay.ttp.last4"                            >Last 4 digits of account number</message>
+  <message id="gcw.billPay.ttp.Nickname"                         >Friendly Nickname for the account</message>
+  <message id="gcw.billPay.ttp.Gp"                               >Grouping</message>
+  <message id="gcw.billPay.ttp.Dy"                               >Day that the payment is due</message>
+  <message id="gcw.billPay.ttp.Min"                              >Minimum Payment Due</message>
+  <message id="gcw.billPay.ttp.Bgt"                              >Payment Budget</message>
+  <message id="gcw.billPay.ttp.Actual"                           >Actual payment most recently made</message>
+  <message id="gcw.billPay.ttp.Au"                               >Automatic Payment Indicator</message>
+  <message id="gcw.billPay.ttp.01"                               >January</message>
+  <message id="gcw.billPay.ttp.02"                               >February</message>
+  <message id="gcw.billPay.ttp.03"                               >March</message>
+  <message id="gcw.billPay.ttp.04"                               >April</message>
+  <message id="gcw.billPay.ttp.05"                               >May</message>
+  <message id="gcw.billPay.ttp.06"                               >June</message>
+  <message id="gcw.billPay.ttp.07"                               >July</message>
+  <message id="gcw.billPay.ttp.08"                               >August</message>
+  <message id="gcw.billPay.ttp.09"                               >September</message>
+  <message id="gcw.billPay.ttp.10"                               >October</message>
+  <message id="gcw.billPay.ttp.11"                               >November</message>
+  <message id="gcw.billPay.ttp.12"                               >December</message>
+
   <message id="gcw.billPay.pht.date"                             >Date</message>
   <message id="gcw.billPay.pht.num"                              >Num</message>
   <message id="gcw.billPay.pht.desc"                             >Description</message>

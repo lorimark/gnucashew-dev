@@ -18,8 +18,8 @@ namespace GCW {
 **
 ** This holds the column definitions for the Model and Table.  It
 **  includes the field name, field width (for the table), alignment
-**  (also for the table), and toolTip (which is applied to the model
-**  but gets displayed in the table).
+**  (also for the table).  The tool tip is derived from the 'name'
+**  value and is applied to the table accordingly.
 **
 */
 typedef struct COLUMNDEF
@@ -32,9 +32,6 @@ typedef struct COLUMNDEF
 
   /// alignment flag for the table view
   Wt::AlignmentFlag alignment;
-
-  /// tool tip for the table view
-  const char * toolTip;
 
 } ColumnDef_t;
 

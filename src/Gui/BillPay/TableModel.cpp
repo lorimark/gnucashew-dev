@@ -10,28 +10,28 @@ namespace {
 
 GCW::Gui::BillPay::ColumnDef_t columns[] =
 {
-//  name,          width,   alignment,                 toolTip
-  { "accountKey" , "120px", Wt::AlignmentFlag::Left,   "Primary Account Identifier"        },
-  { "last4"      ,  "60px", Wt::AlignmentFlag::Center, "Last 4 digits of account number"   },
-  { "Nickname"   , "100px", Wt::AlignmentFlag::Left,   "Friendly Nickname for the account" },
-  { "Gp"         ,  "50px", Wt::AlignmentFlag::Center, "Grouping"                          },
-  { "Dy"         ,  "50px", Wt::AlignmentFlag::Center, "Day that the payment is due"       },
-  { "Min"        ,  "50px", Wt::AlignmentFlag::Right,  "Minimum Payment Due"               },
-  { "Bgt"        ,  "50px", Wt::AlignmentFlag::Right,  "Payment Budget"                    },
-  { "Actual"     ,  "75px", Wt::AlignmentFlag::Right,  "Actual payment most recently made" },
-  { "Au"         ,  "50px", Wt::AlignmentFlag::Center, "Automatic Payment Indicator"       },
-  { "01"         ,  "35px", Wt::AlignmentFlag::Center, "January"                           },
-  { "02"         ,  "35px", Wt::AlignmentFlag::Center, "February"                          },
-  { "03"         ,  "35px", Wt::AlignmentFlag::Center, "March"                             },
-  { "04"         ,  "35px", Wt::AlignmentFlag::Center, "April"                             },
-  { "05"         ,  "35px", Wt::AlignmentFlag::Center, "May"                               },
-  { "06"         ,  "35px", Wt::AlignmentFlag::Center, "June"                              },
-  { "07"         ,  "35px", Wt::AlignmentFlag::Center, "July"                              },
-  { "08"         ,  "35px", Wt::AlignmentFlag::Center, "August"                            },
-  { "09"         ,  "35px", Wt::AlignmentFlag::Center, "September"                         },
-  { "10"         ,  "35px", Wt::AlignmentFlag::Center, "October"                           },
-  { "11"         ,  "35px", Wt::AlignmentFlag::Center, "November"                          },
-  { "12"         ,  "35px", Wt::AlignmentFlag::Center, "December"                          },
+//  name,          width,    alignment
+  { "accountKey" , "120px" , Wt::AlignmentFlag::Left    },
+  { "last4"      ,  "60px" , Wt::AlignmentFlag::Center  },
+  { "Nickname"   , "100px" , Wt::AlignmentFlag::Left    },
+  { "Gp"         ,  "50px" , Wt::AlignmentFlag::Center  },
+  { "Dy"         ,  "50px" , Wt::AlignmentFlag::Center  },
+  { "Min"        ,  "50px" , Wt::AlignmentFlag::Right   },
+  { "Bgt"        ,  "50px" , Wt::AlignmentFlag::Right   },
+  { "Actual"     ,  "75px" , Wt::AlignmentFlag::Right   },
+  { "Au"         ,  "50px" , Wt::AlignmentFlag::Center  },
+  { "01"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "02"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "03"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "04"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "05"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "06"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "07"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "08"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "09"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "10"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "11"         ,  "35px" , Wt::AlignmentFlag::Center  },
+  { "12"         ,  "35px" , Wt::AlignmentFlag::Center  },
 };
 
 #define COLUMN_COUNT (sizeof(columns)/sizeof(GCW::Gui::BillPay::ColumnDef_t))
@@ -43,6 +43,11 @@ TableModel( int _selectedMonth, const Status _status )
 : Wt::WStandardItemModel( 0, COLUMN_COUNT ),
   m_status( _status )
 {
+
+  auto _toolTip = [&]( int _col )
+  {
+    return TR( std::string("gcw.billPay.ttp." ) + columns[ _col ].name );
+  };
 
   /*
   ** Load the header _only_ on the 'unpaid' view.
@@ -59,7 +64,7 @@ TableModel( int _selectedMonth, const Status _status )
     for( int col = 1; col< COLUMN_COUNT; col++ )
     {
       setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].name    , Wt::ItemDataRole::Display );
-      setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].toolTip , Wt::ItemDataRole::ToolTip );
+      setHeaderData( col, Wt::Orientation::Horizontal, _toolTip( col )        , Wt::ItemDataRole::ToolTip );
     }
   }
 
