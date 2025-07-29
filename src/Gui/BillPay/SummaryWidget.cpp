@@ -67,7 +67,7 @@ setMonth( int _month )-> void
   */
   Splits splits( _month );
   int row = 0;
-  std::map< int, GCW_NUMERIC > dayTotals;
+  std::vector< DayTotal_t > dayTotals;
   for( auto payFrom : splits.payFroms() )
   {
     for( auto payFromDay : splits.payFromDays( payFrom ) )
@@ -104,6 +104,15 @@ setMonth( int _month )-> void
       m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( acctDay );
       row++;
 
+      /*
+      ** record the day total for the subsequent report
+      */
+      DayTotal_t dayTotal;
+      dayTotal.day   = payFromDay;
+      dayTotal.bank  = payFrom;
+      dayTotal.value = subTotal;
+      dayTotals.push_back( dayTotal );
+
     } // endfor( ..all payFromDays.. )
 
     m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "------------------------------------" );
@@ -112,78 +121,110 @@ setMonth( int _month )-> void
 
   } // endfor( ..all payFroms.. )
 
+  std::sort
+  (
+   dayTotals.begin(),
+   dayTotals.end(),
+   []( DayTotal_t a, DayTotal_t b )
+   {
+     return a.day < b.day;
+   }
+  );
+
+  GCW_NUMERIC grand(0);
+  GCW_NUMERIC sum(0);
+  int day = 0;
+  for( auto dayTotal : dayTotals )
+  {
+    if( day != dayTotal.day )
+    {
+      auto payDay =
+          Wt::WString("{1}<sup>{2}</sup>")
+          .arg( day )
+          .arg( ordinalSuffix( day ) )
+          .toUTF8()
+          ;
+
+      if( day != 0 )
+      {
+        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
+        m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString("Total for {1}").arg( payDay ) );
+        m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
+        m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
+        row++;
+        grand += sum;
+        sum = 0;
+
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "------------------------------------" );
+    m_table-> elementAt( row, 0 )-> setColumnSpan( 4 );
+    row++;
+
+
+      }
+
+      day = dayTotal.day;
+    }
+
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( dayTotal.value, GCW::Cfg::decimal_format()  ) ) );
+    m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( dayTotal.bank );
+    row++;
+
+    sum += dayTotal.value;
+
+#ifdef NEVER
+    if( day != dayTotal.day )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+      if( day != 0 )
+      {
+        std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
+        m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
+        m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
+        row++;
+        sum = 0;
+      }
+
+      day = dayTotal.day;
+    }
+#endif
+
+  } // endfor( auto day : splits.dayTotals() )
+
+      if( day != 0 )
+      {
+        auto payDay =
+            Wt::WString("{1}<sup>{2}</sup>")
+            .arg( day )
+            .arg( ordinalSuffix( day ) )
+            .toUTF8()
+            ;
+
+        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
+        m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString("Total for {1}").arg( payDay ) );
+        m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
+        m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
+        row++;
+        grand += sum;
+        sum = 0;
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "------------------------------------" );
+    m_table-> elementAt( row, 0 )-> setColumnSpan( 4 );
+    row++;
+
+      }
+
+        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( grand, GCW::Cfg::decimal_format()  ) ) );
+        m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString("Total for {1}").arg( TR("gcw.billPay.ttp." + toString( m_month ) ) ) );
+  row++;
+
   m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "********************************" );
   m_table-> elementAt( row, 0 )-> setColumnSpan( 4 );
   row++;
 
-  for( auto day : splits.days() )
-  {
-    for( auto dayPayment : splits.dayPayments( day ) )
-    {
-      auto splitItem = GCW::Dbo:: Splits       ::byGuid( dayPayment               );
-      auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
-      auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
 
-
-    }
-
-  } // endfor( auto day : splits.days() )
-
-} // endloadData()-> void
-
-#ifdef NEVER
-auto
-GCW::Gui::BillPay::SummaryWidget::
-splits()-> std::vector< Split_t >
-{
-  std::vector< Split_t > retVal;
-
-  /*
-  ** get all the transactions that happened for this account for this month
-  */
-  auto txItems = GCW::Dbo::Transactions::byNumMonth( "bp", m_month );
-
-  /*
-  ** if transactions happened, get them open and see if they should be in the summary report
-  */
-  for( auto txItem : txItems )
-  {
-    Split_t spt;
-    spt.day  = txItem-> post_date_as_date().date().day();
-    spt.bill = txItem-> description();
-
-    /*
-    ** loop through all the splits
-    */
-    for( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
-    {
-      /*
-      ** We want the pay-from account.
-      */
-      if( split-> value() < 0 )
-      {
-        /*
-        ** gather up the relevant split info and stuff it
-        */
-        spt.guid  = split-> guid();
-        spt.bank  = GCW::Dbo::Accounts::fullName( split-> account_guid() );
-
-        std::cout << __FILE__ << ":" << __LINE__ << " " << split-> value() << " " << split-> value( true ) << std::endl;
-
-        spt.value = split-> value( true );
-        retVal.push_back( spt );
-
-      } // endif( ..other account.. )
-
-    } // endfor( auto split : GCW::Dbo::Splits::byTransaction( txItem-> guid() ) )
-
-  } // endfor( auto txItem : txItems )
-
-  return retVal;
-
-} //  endsplits()-> std::vector< Split_t >
-#endif
-
+ } // endloadData()-> void
 
 GCW::Gui::BillPay::SummaryWidget::Splits::
 Splits( int _month )
@@ -330,6 +371,8 @@ dayPayments( int _day ) const-> std::vector< std::string >
   return retVal;
 
 } // enddayPayments( int _day ) const-> std::vector< std::string >
+
+
 
 
 

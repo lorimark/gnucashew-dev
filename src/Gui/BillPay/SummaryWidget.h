@@ -31,20 +31,17 @@ class SummaryWidget
 
   private:
 
+    typedef struct DAYTOTAL_S
+    {
+      int         day   ;
+      std::string bank  ;
+      GCW_NUMERIC value ;
+    } DayTotal_t;
+
+
     class Splits
     {
       public:
-
-#ifdef NEVER
-      typedef struct PAYMENT_S
-      {
-        int         day   ;
-        std::string guid  ;
-        std::string bank  ;
-        std::string bill  ;
-        GCW_NUMERIC value ;
-      } Split_t;
-#endif
 
         Splits( int _month );
 
