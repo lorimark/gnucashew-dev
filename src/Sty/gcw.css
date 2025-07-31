@@ -171,27 +171,44 @@
 .BillPay .SummaryTable
 {
 /*  width: 100%; */
+  border-collapse: separate;
+}
+
+.BillPay .SummaryTable .acctDay
+{
+  text-align:center !important;
+  color:black;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  padding-top: 5px;
 }
 
 .BillPay .SummaryTable td
 {
-  color:red;
-  padding-right:7px;
+  padding-left:4px;
+  padding-right:3px;
 }
 
 .BillPay .SummaryTable td:nth-child(1)
 {
+  border-left: 1px solid black;
   text-align:right;
+}
+
+.BillPay .SummaryTable td:nth-child(2)
+{
+  border-right: 1px solid black;
+  text-align:left;
 }
 
 .BillPay .SummaryTable .su
 {
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid black;
 }
 
 .BillPay .SummaryTable .du
 {
-  border-bottom: 3px double red;
+  border-bottom: 3px double black;
 }
 
 /*
