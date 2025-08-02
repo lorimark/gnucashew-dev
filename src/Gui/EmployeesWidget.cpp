@@ -23,9 +23,7 @@ EmployeesWidget()
   ** Standard TableView for now
   **
   */
-  auto w = std::make_unique< Wt::WTableView >();
-  m_view = w.get();
-  lw-> addWidget( std::move( w ), 1 );
+  m_view = lw-> addWidget( std::make_unique< Wt::WTableView >(), 1 );
 
   /*
   ** Setup standard control

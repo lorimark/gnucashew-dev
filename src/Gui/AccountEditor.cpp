@@ -88,9 +88,7 @@ Tab1( const std::string & _accountGuid )
   auto accountItem = GCW::Dbo::Accounts::load( m_accountGuid );
 
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
-  auto at1 = std::make_unique< Wt::WTemplate >( TR( "gcw_gui.accounteditor.form.tab1" ) );
-  auto t1 = at1.get();
-  lw-> addWidget( std::move( at1 ) );
+  auto t1 = lw-> addWidget( std::make_unique< Wt::WTemplate >( TR( "gcw_gui.accounteditor.form.tab1" ) ) );
 
   t1-> bindString( "name-label"        , TR( "gcw.AccountEditor.name"        ) );
   t1-> bindString( "code-label"        , TR( "gcw.AccountEditor.code"        ) );
@@ -130,9 +128,7 @@ Tab2( const std::string & _accountGuid )
 : m_accountGuid( _accountGuid )
 {
   auto lw  = setLayout( std::make_unique< Wt::WFitLayout >() );
-  auto at2 = std::make_unique< Wt::WTemplate >( TR( "gcw_gui.accounteditor.form.tab2" ) );
-  auto t2  = at2.get();
-  lw-> addWidget( std::move( at2 ) );
+  auto t2  = lw-> addWidget( std::make_unique< Wt::WTemplate >( TR( "gcw_gui.accounteditor.form.tab2" ) ) );
 
 } // endTab2( const std::string & _accountGuid )
 

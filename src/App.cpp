@@ -172,7 +172,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 #ifdef USER_LOGIN
   auto lw = root()-> setLayout( std::make_unique< Wt::WVBoxLayout >() );
 
-  lw-> addWidget( std::move( createAuthWidget() ) );
+  lw-> addWidget( ( createAuthWidget() ) );
 
   m_mainContainer = lw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 

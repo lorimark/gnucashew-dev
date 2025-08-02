@@ -645,9 +645,7 @@ AccountRegister( const std::string & _accountGuid )
   **
   */
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
-  auto w = std::make_unique< GCW::Gui::TableView >();
-  m_tableView = w.get();
-  lw-> addWidget( std::move( w ), 1 );
+  m_tableView = lw-> addWidget( std::make_unique< GCW::Gui::TableView >(), 1 );
 //  tableView()-> setRowHeight( "20px" );
 
   /*

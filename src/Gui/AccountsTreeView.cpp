@@ -44,9 +44,7 @@ init()-> void
   m_gridLayout = setLayout( std::make_unique< Wt::WGridLayout >() );
 //  lw-> setSpacing( 0 );
 
-  auto w = std::make_unique< Wt::WTreeView >();
-  m_view = w.get();
-  m_gridLayout-> addWidget( std::move( w ), 0, 0 );
+  m_view = m_gridLayout-> addWidget( std::make_unique< Wt::WTreeView >(), 0, 0 );
 
   view()-> setSelectionBehavior( Wt::SelectionBehavior::Rows );
   view()-> setSelectionMode(     Wt::SelectionMode::Single   );
@@ -215,9 +213,7 @@ editAccount( const std::string & _accountGuid )
   ** Split the page to open/edit this item
   **
   */
-  auto u_ = std::make_unique< GCW::Gui::AccountEditor >( _accountGuid );
-  m_editAccountWidget = u_.get();
-  m_gridLayout-> addWidget( std::move( u_), 0, 1 );
+  m_editAccountWidget = m_gridLayout-> addWidget( std::make_unique< GCW::Gui::AccountEditor >( _accountGuid ), 0, 1 );
   m_gridLayout-> setColumnResizable( 0, true, "25%" );
 
   m_editAccountWidget->

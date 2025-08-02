@@ -75,3 +75,29 @@ rowCount()-> int
 
 } // endrowCount()-> int
 
+
+#define SEPARATOR " ("
+auto
+GCW::Gui::BillPay::TableView::
+selectItem( const std::string _itemIdent )-> void
+{
+  clearSelection();
+
+  /*
+  ** strip off anything with the () SEPARATOR parenthesis
+  **  (ugly but functional)
+  */
+  auto id = _itemIdent;
+  if( id.find(SEPARATOR) != std::string::npos )
+      id = id.substr( 0, id.find(SEPARATOR) );
+
+  for( int row = 0; row< m_model-> rowCount(); row++ )
+  {
+    if( m_model-> item( row, 2 )-> text() == id )
+    {
+      select( m_model-> index( row, 2 ) );
+    }
+  }
+
+} // endselectItem( const std::string _itemIdent )-> void
+

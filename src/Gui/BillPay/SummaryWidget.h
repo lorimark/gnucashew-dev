@@ -29,6 +29,13 @@ class SummaryWidget
 
     auto setMonth( int _month )-> void ;
 
+    /*
+    ** clicking on the pay-from account causes
+    **  an ID to be emitted allowing the table-view
+    **  to be positioned on the same item.
+    */
+    auto clicked()-> Wt::Signal< std::string > & { return m_clicked; }
+
   private:
 
     typedef struct DAYTOTAL_S
@@ -81,9 +88,10 @@ class SummaryWidget
 
     };
 
-    int          m_month = -1      ;
-    Wt::WText  * m_title = nullptr ;
-    Wt::WTable * m_table = nullptr ;
+    int                       m_month = -1      ;
+    Wt::WText               * m_title = nullptr ;
+    Wt::WTable              * m_table = nullptr ;
+    Wt::Signal< std::string > m_clicked         ;
 
 }; // endclass SummaryWidget
 

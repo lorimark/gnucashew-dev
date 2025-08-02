@@ -28,36 +28,32 @@ buildContent()-> void
   m_hlw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
 
   m_summaryView = m_hlw-> addWidget( std::make_unique< SummaryWidget >() );
+  m_summaryView-> clicked().connect( this, &MainWidget::summaryClicked );
   m_hlw-> setResizable( 0, true, Wt::WLength( 20, Wt::LengthUnit::Percentage ) );
 
-  auto cw  = m_hlw-> addWidget( std::make_unique< Wt::WContainerWidget >() );
+  auto cw = m_hlw-> addWidget( std::make_unique< Wt::WContainerWidget >() );
 
   // toolbar
   {
-    auto u_ = std::make_unique< ToolBar >();
-    m_toolBar = u_.get();
-    cw-> addWidget( std::move( u_ ) );
-
-    m_toolBar                    -> addClicked()  .connect( this, &GCW::Gui::BillPay::MainWidget::do_addClicked  );
-    m_toolBar                    -> editClicked() .connect( this, &GCW::Gui::BillPay::MainWidget::do_editClicked );
-    m_toolBar-> inactiveButton() -> clicked()     .connect( this, &MainWidget::do_inactiveClicked                );
-    m_toolBar-> summaryButton()  -> clicked()     .connect( this, &MainWidget::do_summaryClicked                 );
-    m_toolBar-> importClicked()                   .connect( this, &MainWidget::importClicked                     );
-    m_toolBar-> exportClicked()                   .connect( this, &MainWidget::exportClicked                     );
+    m_toolBar = cw-> addWidget( std::make_unique< ToolBar >() );
+    m_toolBar                    -> addClicked () .connect( this, &MainWidget:: do_addClicked      );
+    m_toolBar                    -> editClicked() .connect( this, &MainWidget:: do_editClicked     );
+    m_toolBar-> inactiveButton() -> clicked    () .connect( this, &MainWidget:: do_inactiveClicked );
+    m_toolBar-> summaryButton () -> clicked    () .connect( this, &MainWidget:: do_summaryClicked  );
+    m_toolBar-> importClicked ()                  .connect( this, &MainWidget:: importClicked      );
+    m_toolBar-> exportClicked ()                  .connect( this, &MainWidget:: exportClicked      );
 
   } // toolbar
 
   // recall selected month
-  m_selectedMonth = configItem()-> getVarInt( "selectedMonth" );
+      m_selectedMonth = configItem()-> getVarInt( "selectedMonth" );
   if( m_selectedMonth < 1
    || m_selectedMonth > 12 )
       m_selectedMonth = 1;
 
   // unpaid items
   {
-    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Unpaid );
-    m_unpaidView = u_.get();
-    cw-> addWidget( std::move( u_ ) );
+    m_unpaidView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Unpaid ) );
     m_unpaidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -85,9 +81,7 @@ buildContent()-> void
 
   // pending items
   {
-    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Pending );
-    m_pendingView = u_.get();
-    cw-> addWidget( std::move( u_ ) );
+    m_pendingView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Pending ) );
     m_pendingView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -108,9 +102,7 @@ buildContent()-> void
 
   // paid items
   {
-    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Paid );
-    m_paidView = u_.get();
-    cw-> addWidget( std::move( u_ ) );
+    m_paidView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Paid ) );
     m_paidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -131,9 +123,7 @@ buildContent()-> void
 
   // inactive items
   {
-    auto u_ = std::make_unique< TableView >( m_selectedMonth, Status::Inactive );
-    m_inactiveView = u_.get();
-    cw-> addWidget( std::move( u_ ) );
+    m_inactiveView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Inactive ) );
     m_inactiveView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -157,6 +147,18 @@ buildContent()-> void
   refreshViews();
 
 } // endbuildContent()-> void
+
+
+auto
+GCW::Gui::BillPay::MainWidget::
+summaryClicked( const std::string & _itemIdent )-> void
+{
+  m_unpaidView   -> selectItem( _itemIdent );
+  m_pendingView  -> selectItem( _itemIdent );
+  m_paidView     -> selectItem( _itemIdent );
+  m_inactiveView -> selectItem( _itemIdent );
+
+} // endsummaryClicked( const std::string & _txGuid )-> void
 
 
 auto
@@ -199,7 +201,7 @@ openEditor( const std::string & _bpGuid )-> void
   m_editWidget->
     deleted().connect( [=]()
     {
-      Wt::WMessageBox::show( "Bill Pay", TR("gcw.not-yet-implemented"), Wt::StandardButton::Ok );
+      Wt::WMessageBox::show( TR("gcw.billPay.lbl.billPay"), TR("gcw.not-yet-implemented"), Wt::StandardButton::Ok );
     });
 
   m_editWidget->
