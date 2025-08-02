@@ -101,6 +101,7 @@ setMonth( int _month )-> void
 
         m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
         m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( txItem    -> description()         );
+        m_table-> elementAt( row, 1 )-> clicked().connect( [](){ std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl; });
         row++;
 
         subTotal += splitItem-> value( true );

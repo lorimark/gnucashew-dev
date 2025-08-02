@@ -6,18 +6,7 @@
 
 #include "../define.h"
 #include "../App.h"
-#include "../Dbo/Accounts/Accounts.h"
-#include "../Dbo/BillTerms/BillTerms.h"
-#include "../Dbo/Books/Books.h"
-#include "../Dbo/Customers/Customers.h"
-#include "../Dbo/Commodities/Commodities.h"
-#include "../Dbo/Entries/Entries.h"
-#include "../Dbo/GncLock/GncLock.h"
-#include "../Dbo/Invoices/Invoices.h"
-#include "../Dbo/Slots/Slots.h"
-#include "../Dbo/Splits/Splits.h"
-#include "../Dbo/Transactions/Transactions.h"
-#include "../Dbo/Versions/Versions.h"
+#include "../Dbo/Dbo.h"
 
 #ifdef ENABLE_BILLPAY
 #include "BillPay/MainWidget.h"
@@ -406,11 +395,34 @@ open_TablesWidget()-> void
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Entries      ::Item > >( "entries"      ), "entries"      );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: GncLock      ::Item > >( "gnclock"      ), "gnclock"      );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Invoices     ::Item > >( "invoices"     ), "invoices"     );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Jobs         ::Item > >( "jobs"         ), "jobs"         );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Slots        ::Item > >( "slots"        ), "slots"        );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Splits       ::Item > >( "splits"       ), "splits"       );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Transactions ::Item > >( "transactions" ), "transactions" );
-    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Vars         ::Item > >( "vars"         ), "vars"         );
+    tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Vars         ::Item > >( "gcw_vars"     ), "gcw_vars"     );
     tw-> addTab( std::make_unique< GCW::Gui::RawTableWidget< typename GCW::Dbo:: Versions     ::Item > >( "versions"     ), "versions"     );
+
+#ifdef NEVER
+budget_amounts
+budgets
+employees
+gcw_identity
+gcw_info
+gcw_token
+gcw_users
+gcw_vars
+gnclock
+jobs
+lots
+orders
+prices
+recurrences
+schedxactions
+taxtable_entries
+taxtables
+vendors
+versions
+#endif
 
   } // endif( tabIndex( _account-> name() ) == -1 )
 
