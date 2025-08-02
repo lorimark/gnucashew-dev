@@ -22,6 +22,12 @@ This will put you in to a generic default gnucash sqlite file
  will try to keep the demo running, but if you find it isn't
  shoot me a message.
 
+If you want to download the demo an run it on your local
+ machine with your own gnucash file, then visit the
+ gnucashew-docker project here;
+
+https://github.com/lorimark/gnucashew-docker
+
 The source-generated doxygen files can be found here;
 
 https://gnucashew.lorimarksolutions.com/dox/html/index.html
