@@ -75,7 +75,19 @@ rowCount()-> int
 
 } // endrowCount()-> int
 
-
+/*
+** BUGBUG: this is really crappy
+**
+** This function is here to capture the SummaryReport
+**  clicked() txItem-> description() value.  This value
+**  is a simple text-value from the description of the
+**  transaction as it was entered in the bill pay
+**  sub system.  Basically, there is no 'hard' connection
+**  between the bill pay event and the transaction item
+**  that gets entered.  This needs to be fixed, as keying
+**  these two widgets together like this is sloppy.
+**
+*/
 #define SEPARATOR " ("
 auto
 GCW::Gui::BillPay::TableView::

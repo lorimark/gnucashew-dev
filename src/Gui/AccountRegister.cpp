@@ -901,7 +901,7 @@ AccountRegister( const std::string & _accountGuid )
     goneDirty().connect( [&]( Wt::WModelIndex _index )
     {
       std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
-      baseModel()-> refreshFromDisk();
+//      baseModel()-> refreshFromDisk();
 //      m_batchEditModel -> setSourceModel( m_baseModel );
       std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
     });

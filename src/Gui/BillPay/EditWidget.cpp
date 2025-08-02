@@ -339,8 +339,6 @@ processPayment()-> void
     finished().connect( [&]()
     {
       m_lastPaymentDate = dialog-> paymentDate();
-      std::cout << __FILE__ << ":" << __LINE__ << " " << m_lastPaymentDate << std::endl;
-
       dialog.reset( nullptr );
     });
 
