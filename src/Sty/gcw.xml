@@ -499,6 +499,9 @@
   <message id="gcw.billPay.lbl.payNow"                           >Pay Now</message>
   <message id="gcw.billPay.lbl.clear"                            >clear</message>
   <message id="gcw.billPay.lbl.go"                               >go</message>
+  <message id="gcw.billPay.lbl.totalfor"                         >Total for {1}</message>
+  <message id="gcw.billPay.lbl.transfers"                        > * * * TRANSFERS * * * </message>
+  <message id="gcw.billPay.lbl.selectedMonth"                    >Selected Month: {1}</message>
 
   <message id="gcw.billPay.ttp.account"                          >Account Reference</message>
   <message id="gcw.billPay.ttp.taccount"                         >This is where the payment is being made to.</message>

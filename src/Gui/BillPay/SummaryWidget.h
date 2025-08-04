@@ -46,16 +46,33 @@ class SummaryWidget
     } DayTotal_t;
 
 
+    /*!
+    ** \brief Summary Splits
+    **
+    ** This is a convenience class to help manipulate all
+    **  of the splits associated with a Summary View.  It
+    **  facilitates the rapid query of the various values
+    **  that are needed for the summary report.
+    **
+    */
     class Splits
     {
       public:
 
+        /*!
+        ** \brief ctor
+        **
+        ** The splits are manipulated by month, since the
+        **  summary report shows all of the split values 
+        **  for that selected month.
+        **
+        */
         Splits( int _month );
 
         /*
-        ** this returns all the guids of all the splits
+        ** this returns all the guids of all the splits found.
         */
-        auto splitGuids () const-> std::vector< std::string > ;
+        auto splitGuids () const-> const std::vector< std::string > & ;
 
         /*
         ** return all the days represented by all the splits
@@ -83,10 +100,17 @@ class SummaryWidget
         */
         auto paymentSplits( const std::string & _payFrom, int _day ) const-> std::vector< std::string > ;
 
+        /*
+        ** selected month
+        */
         int m_month = -1;
+
+        /*
+        ** splits found in selected month
+        */
         std::vector< std::string > m_splitGuids;
 
-    };
+    }; // endclass Splits
 
     int                       m_month = -1      ;
     Wt::WText               * m_title = nullptr ;
