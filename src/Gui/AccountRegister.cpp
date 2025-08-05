@@ -634,7 +634,7 @@ GCW::Gui::AccountRegister::
 AccountRegister( const std::string & _accountGuid )
 {
   /*
-  ** Look in gcw.css for styling.
+  ** see; gcw.css for styling.
   **
   */
   addStyleClass( "AccountRegister" );

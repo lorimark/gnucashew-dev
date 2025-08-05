@@ -50,6 +50,7 @@ void showEnvironment()
     << "\n r-resourcesUrl:     " << app-> relativeResourcesUrl()
     << "\n referrer:           " << app-> environment().referer()
     << "\n accept:             " << app-> environment().accept()
+    << "\n Origin:             " << app-> environment().headerValue( "Origin" )
     << "\n X-Forwarded-For:    " << app-> environment().headerValue( "X-Forwarded-For" )
     << "\n X-Forwarded-Client: " << app-> environment().headerValue( "X-Forwarded-Client" )
     << "\n X-Forwarded-Xyz:    " << app-> environment().headerValue( "X-Forwarded-Xyz" )
@@ -57,6 +58,7 @@ void showEnvironment()
     << std::endl
     ;
 
+  std::cout << __FILE__ << ":" << __LINE__ << " parameterMapSize: " << app-> environment().getParameterMap().size() << std::endl;
   for( const auto & pair : app-> environment().getParameterMap() )
     for( const auto & value : pair.second )
       std::cout << __FILE__ << ":" << __LINE__ << " " << pair.first << "=" << value << std::endl;
@@ -117,7 +119,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 #endif
 
 #ifdef USE_GNUCASH_ENGINE
-  gnucash_session()  .open( g_dbName );
+  gnucash_session().open( g_dbName );
 #endif
 
 #ifdef USE_GNUCASHEW_SESSION
@@ -126,7 +128,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 
   engine().open( g_dbName );
 
-//  showEnvironment();
+  showEnvironment();
 
   /*
   ** Utilize the bootstrap theme.
@@ -354,20 +356,7 @@ buildLoggedIn()-> void
 
 #endif
 
-  /*
-  ** If this is the demo, wait a second and pop a welcome screen.
-  **
-  ** For whatever reason, just firing off this pop-up dialog at the
-  **  beginning of the program start causes the widget to not display
-  **  properly.  Instead of resizing the dialog to fit the available
-  **  space in the browser, it makes a super-wide dialog with all the
-  **  text on just one line.  By delaying the dialog just a bit, it
-  **  seems to mitigate this issue.
-  **
-  */
-//  if( bookmarkUrl() == "demo" )
-  if( g_dbName.find( "LorimarkSolutions" ) == std::string::npos )
-    Wt::WTimer::singleShot( std::chrono::seconds(1), this, &App::showWelcome );
+  Wt::WTimer::singleShot( std::chrono::seconds(1), this, &App::showWelcome    );
 
   /*
   ** If we have the gnucashew extensions, then record that we logged on.

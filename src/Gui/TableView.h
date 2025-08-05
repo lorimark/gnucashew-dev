@@ -12,11 +12,12 @@ namespace GCW {
 ** \brief Custom Table View Class
 **
 ** Implementing our own table view class derived from the Wt one.  This
-** implementation is designed to be layout aware.
+** implementation is designed to be layout aware.  Key features include
+** auto-resizing columns.
 **
 ** Code Credit:
 **   https://redmine.webtoolkit.eu/boards/1/topics/11110?r=18058#message-18058
-**
+**   Matt Russell (mrussell@neptec.com)
 **
 **/
 class TableView
@@ -24,21 +25,24 @@ class TableView
 {
 public:
 
-    /** Default table header height */
+    /*! Default table header height */
     const static int kTableHeaderRowHeight;
 
-    /** Default table row height */
+    /*! Default table row height */
     const static int kTableBodyRowHeight;
 
-    /** Assumed table cell padding */
+    /*! Assumed table cell padding */
     const static int kTableCellPadding;
 
-    /** Width that a scroll bar adds to a table */
+    /*! Width that a scroll bar adds to a table */
     const static int kScrollBarWidth;
 
-    /** Default fixed width a date/time column takes up (without wrapping) */
+    /*! Default fixed width a date/time column takes up (without wrapping) */
     const static int kDefaultDateTimeWidth;
 
+    /*!
+    ** \brief ctor
+    */
     TableView();
 
     /*!

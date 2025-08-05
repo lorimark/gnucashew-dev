@@ -317,7 +317,8 @@ layoutSizeChanged( int width, int height )-> void
 
 } // endauto GCW::Gui::TableView::layoutSizeChanged( int width, int height ) -> void
 
-auto GCW::Gui::TableView::
+auto
+GCW::Gui::TableView::
 setColumnWidth( int column, const Wt::WLength& width )-> void
 {
     // Just save the data and pass the the work up
@@ -348,9 +349,9 @@ setColumnWidth( int column, const Wt::WLength& width )-> void
 **
 */
 #ifdef NEVER
-void
+auto
 GCW::Gui::TableView::
-handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
 #ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
@@ -459,9 +460,9 @@ handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 #endif
 
 #ifdef NEVER
-void
+auto
 GCW::Gui::TableView::
-handleDoubleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+handleDoubleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
 #ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
@@ -482,9 +483,9 @@ handleDoubleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _even
 #endif
 
 #ifndef NEVER
-void
+auto
 GCW::Gui::TableView::
-handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
 
   // we can test the model and the table and the row and detect if the
@@ -531,13 +532,13 @@ handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event 
   */
   m_lastIndexClick = _index;
 
-} // endhandleMouseDown   ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+} // endhandleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 #endif
 
 #ifdef NEVER
-void
+auto
 GCW::Gui::TableView::
-handleMouseUp( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+handleMouseUp( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
 #ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
