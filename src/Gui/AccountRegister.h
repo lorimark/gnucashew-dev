@@ -62,21 +62,21 @@ class AccountRegister
       public:
         StatusBar();
 
-        auto setPresent   ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void;
-        auto setFuture    ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void;
-        auto setCleared   ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void;
-        auto setReconciled( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void;
-        auto setProjected ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void;
-        auto setRowCount  ( int         _value = 0              )-> void;
+        auto setPresent   ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void ;
+        auto setFuture    ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void ;
+        auto setCleared   ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void ;
+        auto setReconciled( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void ;
+        auto setProjected ( GCW_NUMERIC _value = GCW_NUMERIC(0) )-> void ;
+        auto setRowCount  ( int         _value = 0              )-> void ;
 
       private:
 
-        Wt::WText * m_present    = nullptr;
-        Wt::WText * m_future     = nullptr;
-        Wt::WText * m_cleared    = nullptr;
-        Wt::WText * m_reconciled = nullptr;
-        Wt::WText * m_projected  = nullptr;
-        Wt::WText * m_rowCount   = nullptr;
+        Wt::WText * m_present    = nullptr ;
+        Wt::WText * m_future     = nullptr ;
+        Wt::WText * m_cleared    = nullptr ;
+        Wt::WText * m_reconciled = nullptr ;
+        Wt::WText * m_projected  = nullptr ;
+        Wt::WText * m_rowCount   = nullptr ;
 
     }; // endclass StatusBar
 
@@ -88,9 +88,9 @@ class AccountRegister
     ** An alias for the Model in case this interface changes.
     **
     */
-    using BaseModel       = GCW::Eng::AccountRegisterModel;
-    using SortFilterModel = Wt::WSortFilterProxyModel;
-    using BatchEditModel  = Wt::WBatchEditProxyModel;
+    using BaseModel       = GCW::Eng::AccountRegisterModel ;
+    using SortFilterModel = Wt::WSortFilterProxyModel ;
+    using BatchEditModel  = Wt::WBatchEditProxyModel ;
 
     /*!
     ** \brief Constructor
@@ -102,6 +102,13 @@ class AccountRegister
     */
     AccountRegister( const std::string & _accountGuid = "" );
 
+    /*!
+    ** \brief Set Account
+    **
+    ** This sets the GUD of the account being represented by this
+    **  view
+    **
+    */
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
 
     /*!
@@ -114,10 +121,22 @@ class AccountRegister
     auto sortFilterModel ()-> std::shared_ptr< SortFilterModel >  { return m_sortFilterModel; }
     auto batchEditModel  ()-> std::shared_ptr< BatchEditModel  >  { return m_batchEditModel;  }
 
+    /*!
+    ** \brief Status Bar
+    **
+    ** This returns a pointer to the status bar
+    **
+    */
     auto statusBar()-> StatusBar * { return m_statusBar; }
 
-    auto test()-> void;
+    auto test()-> void ;
 
+    /*!
+    ** \brief Set Read Only
+    **
+    ** This makes the register view read-only
+    **
+    */
     auto setReadOnly( bool _state = true )-> void ;
 
     /*!
@@ -129,7 +148,7 @@ class AccountRegister
     ** \sa fromJson()
     **
     */
-    auto toJson() const-> Wt::Json::Object;
+    auto toJson() const-> Wt::Json::Object ;
 
     /*!
     ** \brief Set View Properties from JSON Object
@@ -139,21 +158,60 @@ class AccountRegister
     **  to its previous layout.
     **
     */
-    auto fromJson( const Wt::Json::Object & _jobj )-> bool;
+    auto fromJson( const Wt::Json::Object & _jobj )-> bool ;
 
   private:
 
-    auto loadData()-> void;
-    auto editRow( int _row )-> void;
-    auto deleteRow( int _row )-> void;
-//    auto editRow( Wt::WModelIndex _index )-> void;
-    auto lastIndex()-> Wt::WModelIndex;
-    auto on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
+    /*!
+    ** \brief Load the Data
+    **
+    ** This loads all of the transactions in to the register.
+    **
+    */
+    auto loadData()-> void ;
 
-    auto on_sortBy_triggered()-> void;
-    auto on_filterBy_triggered()-> void;
-    auto on_renamePage_triggered()-> void;
-    auto on_duplicate_triggered()-> void;
+    /*!
+    ** \brief Edit Row
+    **
+    ** This edits the row based on it's row number.
+    **
+    */
+    auto editRow( int _row )-> void ;
+
+    /*!
+    ** \brief Delete Row
+    **
+    ** This Deletes a row based on it's row number.
+    **
+    */
+    auto deleteRow( int _row )-> void ;
+
+//    auto editRow( Wt::WModelIndex _index )-> void ;
+
+    /*!
+    ** \brief Last Index
+    **
+    ** This returns the last index in the model.
+    **
+    */
+    auto lastIndex()-> Wt::WModelIndex ;
+
+    /*!
+    ** \brief Show Popup
+    **
+    ** This responds to a mouse-right-click within the table view.
+    **  When triggered, this will pop-up an environment-sensitive
+    **  menu that the user can choose actions from.  The context
+    **  sensitivity is driven by the type of item that is on the
+    **  row that the cursor was on with the click event was
+    **  triggered.
+    */
+    auto on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void ;
+
+    auto on_sortBy_triggered()-> void ;
+    auto on_filterBy_triggered()-> void ;
+    auto on_renamePage_triggered()-> void ;
+    auto on_duplicate_triggered()-> void ;
 
     /*!
     ** \brief Delete a Row
@@ -161,20 +219,108 @@ class AccountRegister
     ** This will delete a row from the register
     **
     */
-    auto on_delete_triggered()-> void;
+    auto on_delete_triggered()-> void ;
 
-    auto on_removeSplits_triggered()-> void;
-    auto on_enter_triggered()-> void;
-    auto on_cancel_triggered()-> void;
-    auto on_manageDocument_triggered()-> void;
-    auto on_openDocument_triggered()-> void;
-    auto on_blankTransaction_triggered()-> void;
-    auto on_goDate_triggered()-> void;
-    auto on_splitTransaction_triggered()-> void;
-    auto on_editExchangeRate_triggered()-> void;
-    auto on_schedule_triggered()-> void;
-    auto on_jump_triggered()-> void;
-    auto on_assignPayment_triggered()-> void;
+    /*!
+    ** \brief Remove Splits
+    **
+    ** This will remove the splits from the transaction
+    **
+    */
+    auto on_removeSplits_triggered()-> void ;
+
+    /*!
+    ** \brief Enter Transaction
+    **
+    ** This will enter the transaction, just like if the user
+    **  hit the ENTER key
+    **
+    */
+    auto on_enter_triggered()-> void ;
+
+    /*!
+    ** \brief Cancel Transaction
+    **
+    ** This will cancel the edits on the transaction.  This
+    **  would be the same if the user hit the <esc> key
+    **
+    */
+    auto on_cancel_triggered()-> void ;
+
+    /*!
+    ** \brief Manage Document
+    **
+    ** This opens a dialog that allows the user to attach
+    **  a document to the transaction
+    **
+    */
+    auto on_manageDocument_triggered()-> void ;
+
+    /*!
+    ** \brief Open Document
+    **
+    ** This allows the user to open the document attached
+    **  to the transaction
+    **
+    */
+    auto on_openDocument_triggered()-> void ;
+
+    /*!
+    ** \brief Blank Transaction
+    **
+    ** This will blank all the values in a transaction
+    **
+    */
+    auto on_blankTransaction_triggered()-> void ;
+
+    /*!
+    ** \brief Go to Date
+    **
+    ** This will jump to a specific date within the register view
+    **
+    */
+    auto on_goDate_triggered()-> void ;
+
+    /*!
+    ** \brief Split Transaction
+    **
+    ** This will split the current transaction
+    **
+    */
+    auto on_splitTransaction_triggered()-> void ;
+
+    /*!
+    ** \brief Edit Exchange Rate
+    **
+    ** This will edit the exchange rate on the transaction
+    **
+    */
+    auto on_editExchangeRate_triggered()-> void ;
+
+    /*!
+    ** \brief Schedule a Transaction
+    **
+    ** This will set up a scheduled transaction
+    **
+    */
+    auto on_schedule_triggered()-> void ;
+
+    /*!
+    ** \brief Jump to Transaction
+    **
+    ** This will jump to the other side of the transaction
+    **
+    */
+    auto on_jump_triggered()-> void ;
+
+    /*!
+    ** \brief Assign Payment
+    **
+    ** This allows the transaction to be assigned
+    **  as a payment to an invoice
+    **
+    */
+    auto on_assignPayment_triggered()-> void ;
 
     Wt::WPopupMenu                                 m_popupMenu               ;
     std::string                                    m_accountGuid             ;

@@ -41,7 +41,7 @@ AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
   ** set the lastDate to match the todays date, so when first
   **  opening the register, the date is automatically set.
   */
-  m_lastDate = Wt::WDate::currentDate().toString( GCW::Cfg::date_format() ).toUTF8();
+  m_lastDate = Wt::WDateTime::currentDateTime();
 
   refreshFromDisk();
 
@@ -424,7 +424,7 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
 
   } // endswitch( index.column() )
 
-} // endsaveToDisk( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> void
+} // endsaveToDisk( const Wt::WModelIndex & _index )-> void
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -708,10 +708,6 @@ refreshFromDisk()-> void
       **
       ** \sa getSplitGuid
       */
-      post_date = _addColumn( columns, transactionItem-> post_date_as_date().toString( GCW::Cfg::date_format() ) );
-      post_date-> setData( splitItem-> guid(), Wt::ItemDataRole::User );
-      post_date-> setData( splitItem , Wt::ItemDataRole::User + 1 );
-
       auto tip =
         Wt::WString
         (
@@ -723,6 +719,11 @@ refreshFromDisk()-> void
         .arg( m_accountGuid      )
         .arg( splitItem-> guid() )
         ;
+
+      post_date = _addColumn( columns, "" );
+      post_date-> setData( transactionItem-> post_date_as_date(), Wt::ItemDataRole::Edit );
+      post_date-> setData( splitItem-> guid(), Wt::ItemDataRole::User );
+      post_date-> setData( splitItem , Wt::ItemDataRole::User + 1 );
       post_date-> setToolTip( tip );
 
       /*!
@@ -1185,7 +1186,8 @@ refreshFromDisk()-> void
     ** Create a row with blank values
     */
     RowItem columns;
-    auto post_date = _addColumn( columns, m_lastDate  );                    // Date
+    auto post_date = _addColumn( columns, "" );                             // Date
+         post_date-> setData( m_lastDate, Wt::ItemDataRole::Edit );
          post_date-> setFlags( Wt::ItemFlag::Editable );
 
     _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Num

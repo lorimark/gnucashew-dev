@@ -133,7 +133,7 @@ GCW::App::App( const Wt::WEnvironment & env )
 
   engine().open( g_dbName );
 
-  showEnvironment();
+//  showEnvironment();
 
   /*
   ** Utilize the bootstrap theme.

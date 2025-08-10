@@ -240,7 +240,7 @@ balance
     ** Keep track of the last date entered for pre-populating
     **  the next row.
     */
-    std::string m_lastDate;
+    Wt::WDateTime m_lastDate;
 
     GCW_NUMERIC m_present    ;
     GCW_NUMERIC m_future     ;
