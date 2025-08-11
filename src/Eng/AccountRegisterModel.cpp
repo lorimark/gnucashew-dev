@@ -484,11 +484,29 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
       }
 
       else
+      if( typeid(Wt::WDate) == _any1.type() )
       {
-        std::cout << __FILE__ << ":" << __LINE__ << " unhandled type" << std::endl;
+        auto v1 = Wt::cpp17::any_cast< Wt::WDate >( _any1 );
+        auto v2 = Wt::cpp17::any_cast< Wt::WDate >( _any2 );
+        return v1 == v2;
       }
 
-    }
+      else
+      if( typeid(Wt::WDateTime) == _any1.type() )
+      {
+        auto v1 = Wt::cpp17::any_cast< Wt::WDateTime >( _any1 );
+        auto v2 = Wt::cpp17::any_cast< Wt::WDateTime >( _any2 );
+        return v1 == v2;
+      }
+
+      else
+      {
+        std::cout << __FILE__ << ":" << __LINE__
+          << " unhandled type " << _any1.type().name()
+          << std::endl;
+      }
+
+    } // endif( _any1.type() == _any2.type() )
 
     /*
     ** not a match!
@@ -516,20 +534,20 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     */
     retVal = Wt::WStandardItemModel::setData( _index, _value, _role );
 
-    saveToDisk( _index );
+//    saveToDisk( _index );
 
 //    m_dirtyRows.insert( _index.row() );
 
-    m_goneDirty.emit( _index );
+//    m_goneDirty.emit( _index );
 
-    dataChanged().emit( index( _index.row(), COL_DATE ), index( _index.row(), COL_BALANCE ) );
+//    dataChanged().emit( index( _index.row(), COL_DATE ), index( _index.row(), COL_BALANCE ) );
 
 #ifdef NEVER
     std::cout << BREAKFOOTER
       << std::endl;
 #endif
 
-  } // endif( data( _index ) != _value )
+  } // endif( !_valuesMatch( _index.data( _role ), _value ) )
 
   /*
   ** Return success fail
@@ -643,7 +661,8 @@ refreshFromDisk()-> void
   for( auto splitItem : splitItems )
   {
     /*
-    ** Start out read-only.
+    ** Start out read-only == true.  We want to default read-only
+    **  and upgrade to read-write if the dataset calls for it.
     **
     */
     bool readOnly = true;
@@ -1094,7 +1113,7 @@ refreshFromDisk()-> void
       **  state.  If the split has already been reconciled then
       **  we really don't want the user messing around with it.
       */
-      if( !readOnly )
+      if( !m_readOnly )
       {
         if( splitItem-> reconcile_state() == GCW_RECONCILE_YES )
         {

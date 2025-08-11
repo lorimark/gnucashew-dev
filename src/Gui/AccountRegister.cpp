@@ -184,6 +184,22 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/*!
+** \brief Date Delegate
+**
+** The date delegate handles the WDateTime value from the model.
+**  Even though a 'transaction' is posted on a 'date' and not
+**  particularly a time, the gnucash system still is sensitive
+**  to time values in date-only fields.  In the case of the
+**  transactions, the 'time' component is set to 10:59:00.  There
+**  is a macro that contains this value 'GCW_DATE_DEFAULT_TIME'
+**  which should be used to reference the correct time-value.
+**  The time-component is important since when reading items out
+**  of the database, gnucash responds poorly to posted dates that
+**  have a 00:00:00 time component set, it must be set to the
+**  10:59:00 value.
+**
+*/
 class DateDelegate
 : public BaseDelegate
 {
@@ -245,6 +261,7 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
   std::cout << __FILE__ << ":" << __LINE__
     << "(): " << _index.row() << "," << _index.column()
     << " DateDelegate::" << __FUNCTION__
+    << " "  << _index.data( Wt::ItemDataRole::Edit ).type().name()
     << " '" << Wt::asString( _index.data( Wt::ItemDataRole::Edit ) ) << "'"
     << std::endl;
 
@@ -304,7 +321,8 @@ setDate( Wt::cpp17::any _value ) const-> void
     auto dateTime = Wt::cpp17::any_cast< Wt::WDateTime >( _value );
 
     m_dateEdit-> setDate( dateTime.date() );
-  }
+
+  } // endif( _value.type() == typeid( Wt::WDateTime ) )
 
 } // endsetDate( Wt::cpp17::any & _value )-> void
 
@@ -354,7 +372,16 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
     ;
 #endif
 
-  return m_dateEdit-> date();
+  /*
+  ** the date editor only returns a 'date' component
+  **  so in order to return the correct data type
+  **  the date component must be upgraded to a datetime
+  **  element for return.
+  */
+  Wt::WDateTime retVal( m_dateEdit-> date() );
+  retVal.setTime( GCW_DATE_DEFAULT_TIME );
+
+  return retVal ;
 
 } // endeditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::cpp17::any
 
@@ -368,10 +395,14 @@ setEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::c
     << "(): " << _editor
     << " "    << _index.row() << "," << _index.column()
     << " '"   << Wt::asString( _value ) << "'"
+    << " "    << _value.type().name()
     << std::endl;
 #endif
 
-//  BaseDelegate::setEditState( _editor, _index, _value );
+  /*
+  ** The value type ~must~ be a WDateTime type
+  */
+  setDate( _value );
 
 } // endsetEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 
@@ -384,12 +415,13 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
     << " setModelData()"
     << " " << _index.row()
     << " " << _index.column()
+    << " " << _editState.type().name()
     << " " << Wt::asString( _editState )
     << " " << _model
     << std::endl;
 #endif
 
-//  BaseDelegate::setModelData( _editState, _model, _index );
+  BaseDelegate::setModelData( _editState, _model, _index );
 
 } // endsetModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void
 
@@ -926,7 +958,7 @@ AccountRegister( const std::string & _accountGuid )
 
   });
 
-#ifndef NEVER
+#ifdef NEVER
   /*
   ** This 'selectionChanged' procedure is 'clunky'.
   **
@@ -997,76 +1029,7 @@ AccountRegister( const std::string & _accountGuid )
     });
 #endif
 
-#ifndef NEVER
-  tableView()->
-    clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
-    {
-#ifndef NEVER
-      std::cout << __FILE__ << ":" << __LINE__
-        << " index(" << _index.row() << "," << _index.column()
-        << ") m_clicked(" << m_clickedRow << "," << m_clickedCol << ")"
-        << std::endl
-        ;
-#endif
-
-#ifdef NEVER
-      if( m_clickedRow != -1
-       && m_clickedCol != -1
-        )
-      {
-        std::cout << __FILE__ << ":" << __LINE__ << " unselect:" << m_clickedRow << std::endl;
-
-        for( int column = 0; column< tableView()-> model()-> columnCount(); column++ )
-        {
-          tableView()->
-            itemWidget( tableView()-> model()-> index( m_clickedRow, column ) )->
-              removeStyleClass( "active" );
-        }
-
-        if( m_clickedRow != _index.row()
-          )
-          tableView()-> closeEditors( true );
-      }
-#endif
-
-      /*
-      ** If we clicked on a different row, edit the whole row.
-      **  if we clicked and it's the same row, then just ignore
-      **  it.
-      */
-      if( m_clickedRow != _index.row() )
-      {
-        std::cout << __FILE__ << ":" << __LINE__
-          << " clicked row changed before:" << m_clickedRow
-          << " after:" << _index.row()
-          << std::endl;
-
-        m_clickedRow = _index.row();
-        m_clickedCol = _index.column();
-        editRow( _index.row() );
-
-      }
-      else
-      {
-        std::cout << __FILE__ << ":" << __LINE__ << " clicked row didn't change" << std::endl;
-      }
-
-#ifdef NEVER
-      for( int column = 0; column< tableView()-> model()-> columnCount(); column++ )
-      {
-        std::cout << __FILE__ << ":" << __LINE__ << " select:" << m_clickedRow << std::endl;
-
-        tableView()-> itemWidget( tableView()-> model()-> index( m_clickedRow, column ) )->
-          addStyleClass( "active" );
-      }
-#endif
-
-//      std::cout << __FILE__ << ":" << __LINE__
-//        << " " << Wt::WApplication::instance()-> theme()-> activeClass()
-//        << std::endl;
-
-    }); // endtableView()->clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
-#endif
+  tableView()-> clicked().connect( this,  &AccountRegister::on_tableView_clicked );
 
   m_baseModel       = std::make_shared< BaseModel                 >();
 //  m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
@@ -1088,6 +1051,29 @@ AccountRegister( const std::string & _accountGuid )
 
 
 } // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+
+
+auto
+GCW::Gui::AccountRegister::
+on_tableView_clicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )-> void
+{
+#ifdef NEVER
+ std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+   << " index("     << _index.row()         << "," << _index.column()         << ")"
+   << " m_clicked(" << m_clickedIndex.row() << "," << m_clickedIndex.column() << ")"
+   << std::endl
+   ;
+#endif
+
+  /*
+  ** do the select-row business.  this may seem somewhat redundant to call
+  **  selectRow again here, since clicking on the row causes it to be selected,
+  **  but we have additional logic we want to employ.
+  */
+  do_selectRow( _index );
+
+} // endtableView()->clicked().connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
+
 
 auto
 GCW::Gui::AccountRegister::
@@ -1175,7 +1161,7 @@ on_delete_triggered()-> void
     auto pbCancel        = templt-> bindNew< Wt::WPushButton >( "cancel"         , TR("gcw.AccountRegister.delete.cancel") );
     auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
 
-    auto splitGuid = baseModel()-> getSplitGuid( m_rightClickRow );
+    auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
     auto transMan = GCW::Eng::Transaction::Manager();
     transMan.loadSplit( splitGuid );
 
@@ -1207,7 +1193,7 @@ on_delete_triggered()-> void
         {
           askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
 
-          deleteRow( m_rightClickRow );
+          deleteRow( m_rightClickIndex.row() );
 
         }
         removeChild( msgBox );
@@ -1220,7 +1206,7 @@ on_delete_triggered()-> void
   */
   else
   {
-    deleteRow( m_rightClickRow );
+    deleteRow( m_rightClickIndex.row() );
   }
 
 } // endon_delete_triggered()-> void
@@ -1335,8 +1321,7 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
   /*
   ** remember
   */
-  m_rightClickRow = _index.row();
-  m_rightClickCol = _index.column();
+  m_rightClickIndex = _index;
 
   /*
   ** Set up the items in the pop-up menu
@@ -1422,7 +1407,7 @@ setAccountGuid( const std::string & _accountGuid )-> void
   /*
   ** Scroll to the bottom of the view, and select the last row.
   */
-  editRow( lastIndex().row() );
+  do_selectRow( lastIndex() );
 
 } // endsetAccountGuid( const std::string & _accountGuid )-> void
 
@@ -1500,11 +1485,44 @@ loadData()-> void
 
 auto
 GCW::Gui::AccountRegister::
+do_selectRow( Wt::WModelIndex _index )-> void
+{
+#ifdef NEVER
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << __FUNCTION__ << "(" << _row << ")"
+    << " ro:" << baseModel()-> isReadOnly( _row )
+    << " i: ("  << _index.row() << "," << _index.column() << ")"
+    << " si: (" << m_selectIndex.row() << "," << m_selectIndex.column() << ")"
+    << std::endl;
+#endif
+
+  /*
+  ** if the row hasn't changed, do nothing
+  */
+  if( m_selectIndex.row() == _index.row() )
+    return;
+
+  tableView()-> clearSelection();
+  tableView()-> closeEditors( true );
+  tableView()-> scrollTo( _index );
+  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
+
+  m_selectIndex = _index;
+
+  if( !baseModel()-> isReadOnly( _index.row() ) )
+    editRow( _index.row() );
+
+} // enddo_selectRow( Wt::WModelIndex _index )-> void
+
+auto
+GCW::Gui::AccountRegister::
 editRow( int _row )-> void
 {
   std::cout << __FILE__ << ":" << __LINE__
-    << " " << __FUNCTION__ << "(): " << _row
-    << " ro:" << baseModel()-> isReadOnly( _row )
+    << " " << __FUNCTION__ << "(" << _row << ")"
+    << " ro:"     << baseModel()-> isReadOnly( _row )
+    << " sel:"    << tableView()-> selectedIndexes().size()
+    << " selrow:" << tableView()-> selectedIndexes().begin()-> row()
     << std::endl;
 
   /*
@@ -1512,12 +1530,25 @@ editRow( int _row )-> void
   **  we want to make sure we un-select any other rows
   **  that may still be selected
   */
-  if( !baseModel()-> isReadOnly( _row ) )
+//  if( !baseModel()-> isReadOnly( _row ) )
   {
-    std::cout << __FILE__ << ":" << __LINE__ << " clear selection" << std::endl;
+    /*
+    ** if more than one other row is selected (should NEVER happen!)
+    **  then for sure we'll clear any selections.  But, if the row
+    **  number is the same, then we don't want to clear, since it's
+    **  the same row.
+    */
+    if( tableView()-> selectedIndexes().size() > 1
+     || tableView()-> selectedIndexes().begin()-> row() != _row
+      )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
-    tableView()-> clearSelection();
-  }
+      tableView()-> clearSelection();
+      tableView()-> closeEditors( true );
+    }
+
+  } // endif( !baseModel()-> isReadOnly( _row ) )
 
   /*
   ** Close all the editor then scroll down
@@ -1525,7 +1556,6 @@ editRow( int _row )-> void
   **  it is in view.
   */
   std::cout << __FILE__ << ":" << __LINE__ << " closing editors" << std::endl;
-  tableView()-> closeEditors( true );
   {
     auto index = baseModel()-> index( _row, 0 );
     tableView()-> scrollTo( index );

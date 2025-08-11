@@ -75,7 +75,7 @@ protected:
 
 //    auto handleClick       ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 //    auto handleDoubleClick ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
-    auto handleMouseDown   ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
+//    auto handleMouseDown   ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 //    auto handleMouseUp     ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 
     Wt::WModelIndex m_lastIndexClick;

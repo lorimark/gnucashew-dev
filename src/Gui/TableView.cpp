@@ -482,7 +482,7 @@ handleDoubleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _even
 } // endhandleDoubleClick ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 #endif
 
-#ifndef NEVER
+#ifdef NEVER
 auto
 GCW::Gui::TableView::
 handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
@@ -492,7 +492,7 @@ handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event 
   //  row we ~were~ on is dirty, and if it needs to be saved
 //  Wt::WMessageBox::show( "TableView", "something or whatever", Wt::StandardButton::Ok );
 
-#ifdef NEVER
+#ifndef NEVER
   std::cout << BREAKHEADER
     << " row:" << _index.row()
     << " col:" << _index.column()
