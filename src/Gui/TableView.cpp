@@ -348,12 +348,12 @@ setColumnWidth( int column, const Wt::WLength& width )-> void
 **  not signal to the rest of the row that it should be 'selected'.
 **
 */
-#ifdef NEVER
+#ifndef NEVER
 auto
 GCW::Gui::TableView::
 handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " handleClick:<start>"
     << " row:" << _index.row()
@@ -452,7 +452,7 @@ handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> 
   */
   Wt::WTableView::handleClick( _index, _event );
 
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " handleClick:<end>" << std::endl;
 #endif
 
@@ -482,7 +482,7 @@ handleDoubleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _even
 } // endhandleDoubleClick ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
 #endif
 
-#ifdef NEVER
+#ifndef NEVER
 auto
 GCW::Gui::TableView::
 handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
@@ -492,7 +492,7 @@ handleMouseDown( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event 
   //  row we ~were~ on is dirty, and if it needs to be saved
 //  Wt::WMessageBox::show( "TableView", "something or whatever", Wt::StandardButton::Ok );
 
-#ifndef NEVER
+#ifdef NEVER
   std::cout << BREAKHEADER
     << " row:" << _index.row()
     << " col:" << _index.column()
