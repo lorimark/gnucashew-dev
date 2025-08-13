@@ -8,6 +8,7 @@
 #include <Wt/WTheme.h>
 #include <Wt/WVBoxLayout.h>
 #include <Wt/WHBoxLayout.h>
+#include <Wt/WMessageBox.h>
 
 #include "../define.h"
 #include "../App.h"
@@ -30,7 +31,7 @@
 **
 */
 GCW::Gui::AccountRegisterEditor::BaseDelegate::
-BaseDelegate()
+BaseDelegate( AccountRegisterEditor * _editor )
 {
   // std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -137,7 +138,8 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::HeaderDelegate::
-HeaderDelegate()
+HeaderDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -179,7 +181,8 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::DateDelegate::
-DateDelegate()
+DateDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 
@@ -301,7 +304,7 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
   auto cw = dynamic_cast< Wt::WContainerWidget* >( _editor );
   if(  cw && cw-> layout()-> count() > 0 )
   {
-    auto de = dynamic_cast< Wt::WDateEdit* >( cw-> layout()-> widget() );
+    auto de = dynamic_cast< Wt::WDateEdit* >( cw-> layout()-> itemAt(0)-> widget() );
     if(  de )
     {
       /*
@@ -317,22 +320,6 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
     }
 
   }
-
-#ifdef NEVER
-  std::cout << __FILE__ << ":" << __LINE__
-    << " Wt::cpp17::any DateDelegate::editState()"
-    << " row:"   << _index.row()
-    << " col:"   << _index.column()
-    << " id:"    << cw-> id()
-    << " oname:" << cw-> objectName()
-    << " chlds:" << cw-> children().size()
-    << " typid:" << typeid( cw-> children().at(0) ).name()
-    << " dated:" << de
-    << " mdted:" << m_dateEdit
-    << " txt:"   << m_dateEdit-> text()
-    << std::endl
-    ;
-#endif
 
   return retVal ;
 
@@ -355,7 +342,7 @@ setEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::c
   auto cw = dynamic_cast< Wt::WContainerWidget* >( _editor );
   if(  cw && cw-> layout()-> count() > 0 )
   {
-    auto de = dynamic_cast< Wt::WDateEdit* >( cw-> layout()-> widget() );
+    auto de = dynamic_cast< Wt::WDateEdit* >( cw-> layout()-> itemAt(0)-> widget() );
     if(  de )
     {
       setDate( de, _value );
@@ -387,7 +374,8 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::ReconcileDelegate::
-ReconcileDelegate()
+ReconcileDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -539,7 +527,8 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::ValueDelegate::
-ValueDelegate()
+ValueDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -574,7 +563,8 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::BalanceDelegate::
-BalanceDelegate()
+BalanceDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -612,7 +602,8 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
 
 
 GCW::Gui::AccountRegisterEditor::SuggestionDelegate::
-SuggestionDelegate()
+SuggestionDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -672,7 +663,8 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegisterEditor::AccountDelegate::
-AccountDelegate()
+AccountDelegate( AccountRegisterEditor * _editor )
+: BaseDelegate( _editor )
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -707,17 +699,22 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
 } // endcreateEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget >
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
 GCW::Gui::AccountRegisterEditor::
 AccountRegisterEditor()
 {
-  m_delegateDate = std::make_shared< DateDelegate       >();
-  m_delegateNum  = std::make_shared< SuggestionDelegate >();
-  m_delegateMemo = std::make_shared< SuggestionDelegate >();
-  m_delegateAcct = std::make_shared< AccountDelegate    >();
-  m_delegateReco = std::make_shared< ReconcileDelegate  >();
-  m_delegateIn   = std::make_shared< ValueDelegate      >();
-  m_delegateOut  = std::make_shared< ValueDelegate      >();
-  m_delegateBal  = std::make_shared< BalanceDelegate    >();
+  m_delegateHeader = std::make_shared< HeaderDelegate     >( this );
+  m_delegateDate   = std::make_shared< DateDelegate       >( this );
+  m_delegateNum    = std::make_shared< SuggestionDelegate >( this );
+  m_delegateMemo   = std::make_shared< SuggestionDelegate >( this );
+  m_delegateAcct   = std::make_shared< AccountDelegate    >( this );
+  m_delegateReco   = std::make_shared< ReconcileDelegate  >( this );
+  m_delegateIn     = std::make_shared< ValueDelegate      >( this );
+  m_delegateOut    = std::make_shared< ValueDelegate      >( this );
+  m_delegateBal    = std::make_shared< BalanceDelegate    >( this );
 
 } // endAccountRegisterEditor()
 
@@ -728,6 +725,7 @@ setTableView( GCW::Gui::TableView * _tableView )-> void
 {
   m_tableView = _tableView;
 
+  tableView()-> setHeaderItemDelegate    ( m_delegateHeader   );
   tableView()-> setItemDelegateForColumn ( 0, m_delegateDate  );
   tableView()-> setItemDelegateForColumn ( 1, m_delegateNum   );
   tableView()-> setItemDelegateForColumn ( 2, m_delegateMemo  );
@@ -738,4 +736,61 @@ setTableView( GCW::Gui::TableView * _tableView )-> void
   tableView()-> setItemDelegateForColumn ( 7, m_delegateBal   );
 
 }
+
+auto
+GCW::Gui::AccountRegisterEditor::
+editRow( Wt::WModelIndex _index )-> void
+{
+#ifdef NEVER
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
+    << " sel:"    << tableView()-> selectedIndexes().size()
+    << " selrow:" << tableView()-> selectedIndexes().begin()-> row()
+    << std::endl;
+#endif
+
+  /*
+  ** before editing the row, ask if the user wants to
+  **  save the existing row
+  */
+  if( m_index.isValid() )
+  {
+//    Wt::WMessageBox::show( "show", "show", Wt::StandardButton::Ok );
+  }
+
+  if( _index.isValid() )
+  {
+    /*
+    ** if more than one other row is selected (should NEVER happen!)
+    **  then for sure we'll clear any selections.  But, if the row
+    **  number is the same, then we don't want to clear, since it's
+    **  the same row.
+    */
+    if( tableView()-> selectedIndexes().size() > 1
+     || tableView()-> selectedIndexes().begin()-> row() != _index.row()
+      )
+    {
+      tableView()-> clearSelection();
+      tableView()-> closeEditors( true );
+    }
+
+    /*
+    **  make sure it is in view.
+    */
+    tableView()-> scrollTo( _index );
+
+    for( int column=0; column< tableView()-> model()-> columnCount(); column++ )
+    {
+      tableView()-> edit( tableView()-> model()-> index( _index.row(), column ) );
+    }
+
+  } // endif( _index.isValid() )
+
+  /*
+  ** remember what we're editing
+  */
+  m_index = _index;
+
+} // endeditRow( Wt::WModelIndex _index )-> void
+
 

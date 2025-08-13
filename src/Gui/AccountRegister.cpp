@@ -112,7 +112,6 @@ AccountRegister( const std::string & _accountGuid )
   tableView()-> setEditTriggers         ( Wt::EditTrigger::SingleClicked                                );
 //  tableView()-> setEditOptions          ( Wt::EditOption::SingleEditor | Wt::EditOption::SaveWhenClosed );
   tableView()-> setEditOptions          ( Wt::EditOption::MultipleEditors | Wt::EditOption::LeaveEditorsOpen );
-  tableView()-> setHeaderItemDelegate   ( std::make_shared< AccountRegisterEditor::HeaderDelegate >()   );
 
   /*
   ** in order to allow right-click in the browser this oncontextmenu
@@ -666,7 +665,7 @@ auto
 GCW::Gui::AccountRegister::
 editRow( Wt::WModelIndex _index )-> void
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
     << " ro:"     << baseModel()-> isReadOnly( _index.row() )
@@ -675,44 +674,9 @@ editRow( Wt::WModelIndex _index )-> void
     << std::endl;
 #endif
 
-  /*
-  ** If the row we're editing ~can~ be edited, then
-  **  we want to make sure we un-select any other rows
-  **  that may still be selected
-  */
-//  if( !baseModel()-> isReadOnly( _row ) )
-  {
-    /*
-    ** if more than one other row is selected (should NEVER happen!)
-    **  then for sure we'll clear any selections.  But, if the row
-    **  number is the same, then we don't want to clear, since it's
-    **  the same row.
-    */
-    if( tableView()-> selectedIndexes().size() > 1
-     || tableView()-> selectedIndexes().begin()-> row() != _index.row()
-      )
-    {
-      tableView()-> clearSelection();
-      tableView()-> closeEditors( true );
-    }
+  editor().editRow( _index );
 
-  } // endif( !baseModel()-> isReadOnly( _index.row() ) )
-
-  /*
-  **  make sure it is in view.
-  */
-  {
-    auto index = baseModel()-> index( _index.row(), 0 );
-    tableView()-> scrollTo( index );
-  }
-
-  for( int column=0; column< baseModel()-> columnCount(); column++ )
-  {
-    auto index = baseModel()-> index( _index.row(), column );
-    tableView()-> edit( index );
-  }
-
-} // endeditRow( int _index.row() )-> void
+} // endeditRow( Wt::WModelIndex _index )-> void
 
 auto
 GCW::Gui::AccountRegister::

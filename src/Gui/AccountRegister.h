@@ -159,6 +159,12 @@ class AccountRegister
   private:
 
     /*!
+    ** \brief Editor Helper
+    **
+    */
+    auto editor()-> AccountRegisterEditor & { return m_editor; }
+
+    /*!
     ** \brief Load the Data
     **
     ** This loads all of the transactions in to the register.
@@ -314,10 +320,10 @@ class AccountRegister
     */
     auto on_tableView_clicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )-> void ;
 
-    auto editor()-> AccountRegisterEditor & { return m_editor; }
+
+    AccountRegisterEditor                          m_editor                  ;
 
     Wt::WPopupMenu                                 m_popupMenu               ;
-    AccountRegisterEditor                          m_editor                  ;
     std::string                                    m_accountGuid             ;
     std::shared_ptr< BaseModel                 >   m_baseModel               ;
     std::shared_ptr< Wt::WSortFilterProxyModel >   m_sortFilterModel         ;

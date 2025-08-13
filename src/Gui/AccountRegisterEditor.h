@@ -25,21 +25,17 @@ namespace GCW {
 ** \brief Account Register Editor
 **
 ** This object is a controller for editing of line items in the
-**  Account Register
-**
+**  Account Register.  The editor is a local(friend?) to the
+**  account register object that provides the delegates
+**  for the table view, and manipulates the delegates in
+**  relation to each other so as to be able to handle tabbing,
+**  up and down arrowing, and so on, within the table view, and
+**  keeping all the editors open, and saving them correctly
+**  when the user is done bla bla bla.
 */
 class AccountRegisterEditor
 {
   public:
-
-    AccountRegisterEditor();
-
-    auto setTableView( GCW::Gui::TableView * _tableView )-> void ;
-
-    /*!
-    ** \brief Table View
-    */
-    auto tableView ()-> GCW::Gui::TableView * { return m_tableView; }
 
     /*!
     ** \brief Base Delegate
@@ -55,7 +51,7 @@ class AccountRegisterEditor
     {
       public:
 
-        BaseDelegate();
+        BaseDelegate( AccountRegisterEditor * _editor );
        ~BaseDelegate();
         virtual auto update( Wt::WWidget * _widget, const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags )-> std::unique_ptr< Wt::WWidget > ;
         virtual auto updateModelIndex( Wt::WWidget * _widget, const Wt::WModelIndex & _index )-> void ;
@@ -63,6 +59,8 @@ class AccountRegisterEditor
         virtual auto editState( Wt::WWidget * _widget, const Wt::WModelIndex & _index ) const-> Wt::cpp17::any ;
         virtual auto setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void ;
         virtual auto setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void ;
+
+        AccountRegisterEditor * m_editor = nullptr ;
 
     }; // endclass BaseDelegate
 
@@ -73,7 +71,7 @@ class AccountRegisterEditor
     {
       public:
 
-        HeaderDelegate();
+        HeaderDelegate( AccountRegisterEditor * _editor );
        ~HeaderDelegate();
         auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
         virtual auto editState( Wt::WWidget *_editor, const Wt::WModelIndex &_index ) const-> Wt::cpp17::any override ;
@@ -85,17 +83,14 @@ class AccountRegisterEditor
     /*!
     ** \brief Date Delegate
     **
-    ** The date delegate handles the WDateTime value from the model.
-    **  Even though a 'transaction' is posted on a 'date' and not
-    **  particularly a time, the gnucash system still is sensitive
-    **  to time values in date-only fields.  In the case of the
-    **  transactions, the 'time' component is set to 10:59:00.  There
-    **  is a macro that contains this value 'GCW_DATE_DEFAULT_TIME'
-    **  which should be used to reference the correct time-value.
-    **  The time-component is important since when reading items out
-    **  of the database, gnucash responds poorly to posted dates that
-    **  have a 00:00:00 time component set, it must be set to the
-    **  10:59:00 value.
+    ** The date delegate handles the WDateTime value from the model.  Even though a 'transaction'
+    **  is posted on a 'date' and not particularly a time, the gnucash system still is sensitive
+    **  to time values in date-only fields.  In the case of the transactions, the 'time'
+    **  component is set to 10:59:00.  There is a macro that contains this value
+    **  'GCW_DATE_DEFAULT_TIME' which should be used to reference the correct time-value.  The
+    **  time-component is important since when reading items out of the database, gnucash
+    **  responds poorly to posted dates that have a 00:00:00 time component set, it must be set
+    **  to the 10:59:00 value.
     **
     */
     class DateDelegate
@@ -103,7 +98,7 @@ class AccountRegisterEditor
     {
       public:
 
-        DateDelegate();
+        DateDelegate( AccountRegisterEditor * _editor );
        ~DateDelegate();
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
 
@@ -138,7 +133,7 @@ class AccountRegisterEditor
     {
       public:
 
-        ReconcileDelegate();
+        ReconcileDelegate( AccountRegisterEditor * _editor );
        ~ReconcileDelegate();
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
         virtual auto editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::cpp17::any override ;
@@ -157,7 +152,7 @@ class AccountRegisterEditor
     {
       public:
 
-        ValueDelegate();
+        ValueDelegate( AccountRegisterEditor * _editor );
        ~ValueDelegate();
 
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
@@ -179,7 +174,7 @@ class AccountRegisterEditor
     {
       public:
 
-        BalanceDelegate();
+        BalanceDelegate( AccountRegisterEditor * _editor );
        ~BalanceDelegate();
 
         auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
@@ -193,7 +188,7 @@ class AccountRegisterEditor
     {
       public:
 
-        SuggestionDelegate();
+        SuggestionDelegate( AccountRegisterEditor * _editor );
        ~SuggestionDelegate();
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
 
@@ -206,11 +201,30 @@ class AccountRegisterEditor
     {
       public:
 
-        AccountDelegate();
+        AccountDelegate( AccountRegisterEditor * _editor );
        ~AccountDelegate();
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
 
     }; // endclass AccountDelegate
+
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * */
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+    AccountRegisterEditor();
+
+    auto setTableView( GCW::Gui::TableView * _tableView )-> void ;
+
+    /*!
+    ** \brief Table View
+    */
+    auto tableView ()-> GCW::Gui::TableView * { return m_tableView; }
+
+    /*!
+    ** \brief Edit Row
+    */
+    auto editRow( Wt::WModelIndex _index )-> void ;
 
     /*!
     ** \brief Delegate Handles
@@ -218,15 +232,17 @@ class AccountRegisterEditor
     ** Here we're going to hold on to the Delegate handles so
     **  we can interact with the UI a little bit
     */
-    std::shared_ptr< DateDelegate       > m_delegateDate ; // 0() );
-    std::shared_ptr< SuggestionDelegate > m_delegateNum  ; // 1() );
-    std::shared_ptr< SuggestionDelegate > m_delegateMemo ; // 2() );
-    std::shared_ptr< AccountDelegate    > m_delegateAcct ; // 3() );
-    std::shared_ptr< ReconcileDelegate  > m_delegateReco ; // 4() );
-    std::shared_ptr< ValueDelegate      > m_delegateIn   ; // 5() );
-    std::shared_ptr< ValueDelegate      > m_delegateOut  ; // 6() );
-    std::shared_ptr< BalanceDelegate    > m_delegateBal  ; // 7() );
+    std::shared_ptr< HeaderDelegate     > m_delegateHeader ; //
+    std::shared_ptr< DateDelegate       > m_delegateDate   ; // 0() );
+    std::shared_ptr< SuggestionDelegate > m_delegateNum    ; // 1() );
+    std::shared_ptr< SuggestionDelegate > m_delegateMemo   ; // 2() );
+    std::shared_ptr< AccountDelegate    > m_delegateAcct   ; // 3() );
+    std::shared_ptr< ReconcileDelegate  > m_delegateReco   ; // 4() );
+    std::shared_ptr< ValueDelegate      > m_delegateIn     ; // 5() );
+    std::shared_ptr< ValueDelegate      > m_delegateOut    ; // 6() );
+    std::shared_ptr< BalanceDelegate    > m_delegateBal    ; // 7() );
 
+    Wt::WModelIndex                       m_index               ;
     GCW::Gui::TableView                 * m_tableView = nullptr ;
 
 };  // endclass AccountRegisterEditor
