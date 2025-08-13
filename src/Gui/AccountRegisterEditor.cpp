@@ -109,7 +109,7 @@ auto
 GCW::Gui::AccountRegisterEditor::BaseDelegate::
 setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _widget
     << " "    << _index.row() << "," << _index.column()
@@ -131,7 +131,53 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
     << std::endl;
 #endif
 
+  auto _equal = []( Wt::cpp17::any _a, Wt::cpp17::any _b )
+  {
+    if( !_a.has_value() && !_b.has_value() )
+      return true; // both empty
+
+    if( _a.type() != _b.type() )
+      return false; // different types
+
+    // compare based on type
+    if( _a.type() == typeid(int) )
+      return Wt::cpp17::any_cast<int>(_a) ==
+             Wt::cpp17::any_cast<int>(_b);
+
+    if( _a.type() == typeid(std::string) )
+      return Wt::cpp17::any_cast<std::string>(_a) ==
+             Wt::cpp17::any_cast<std::string>(_b);
+
+    if( _a.type() == typeid(double) )
+      return Wt::cpp17::any_cast<double>(_a) ==
+             Wt::cpp17::any_cast<double>(_b);
+
+    if( _a.type() == typeid(Wt::WString) )
+      return Wt::cpp17::any_cast<Wt::WString>(_a) ==
+             Wt::cpp17::any_cast<Wt::WString>(_b);
+
+    if( _a.type() == typeid(Wt::WDateTime) )
+      return Wt::cpp17::any_cast<Wt::WDateTime>(_a) ==
+             Wt::cpp17::any_cast<Wt::WDateTime>(_b);
+
+    std::cout << __FILE__ << ":" << __LINE__ << " unhandled type: " << _a.type().name() << std::endl;
+
+    return false;
+  };
+
+  auto modelData = _index.data( Wt::ItemDataRole::Edit );
+
   Wt::WItemDelegate::setModelData( _editState, _model, _index );
+
+  if( !_equal( modelData, _editState ) )
+  {
+    std::cout << __FILE__ << ":" << __LINE__ << " data changed"
+      << " " << Wt::asString( modelData  )
+      << " " << Wt::asString( _editState )
+      << std::endl;
+
+    editor()-> markDirty( _index );
+  }
 
 } // endsetModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void
 
@@ -521,6 +567,8 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
     << std::endl;
 #endif
 
+  BaseDelegate::setModelData( _editState, _model, _index );
+
 } // endsetModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void
 
 
@@ -744,8 +792,6 @@ editRow( Wt::WModelIndex _index )-> void
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
-    << " sel:"    << tableView()-> selectedIndexes().size()
-    << " selrow:" << tableView()-> selectedIndexes().begin()-> row()
     << std::endl;
 #endif
 
@@ -755,7 +801,13 @@ editRow( Wt::WModelIndex _index )-> void
   */
   if( m_index.isValid() )
   {
-//    Wt::WMessageBox::show( "show", "show", Wt::StandardButton::Ok );
+    if( m_index.row() != _index.row() )
+    {
+
+
+
+//      Wt::WMessageBox::show( "Data Changed", "Do you want to record these changes?", Wt::StandardButton::Yes | Wt::StandardButton::No );
+    }
   }
 
   if( _index.isValid() )
@@ -792,5 +844,15 @@ editRow( Wt::WModelIndex _index )-> void
   m_index = _index;
 
 } // endeditRow( Wt::WModelIndex _index )-> void
+
+
+auto
+GCW::Gui::AccountRegisterEditor::
+markDirty( Wt::WModelIndex _index ) const-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << _index.row() << std::endl;
+
+
+} // endmarkDirty( Wt::WModelIndex _index )-> void
 
 

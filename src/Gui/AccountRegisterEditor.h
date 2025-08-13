@@ -53,6 +53,9 @@ class AccountRegisterEditor
 
         BaseDelegate( AccountRegisterEditor * _editor );
        ~BaseDelegate();
+
+       auto editor() const-> AccountRegisterEditor * { return m_editor; }
+
         virtual auto update( Wt::WWidget * _widget, const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags )-> std::unique_ptr< Wt::WWidget > ;
         virtual auto updateModelIndex( Wt::WWidget * _widget, const Wt::WModelIndex & _index )-> void ;
         virtual auto validate( const Wt::WModelIndex & _index, const Wt::cpp17::any & _editState ) const-> Wt::ValidationState ;
@@ -225,6 +228,8 @@ class AccountRegisterEditor
     ** \brief Edit Row
     */
     auto editRow( Wt::WModelIndex _index )-> void ;
+
+    auto markDirty( Wt::WModelIndex _index ) const-> void ;
 
     /*!
     ** \brief Delegate Handles
