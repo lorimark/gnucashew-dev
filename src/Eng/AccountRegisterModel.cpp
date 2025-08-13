@@ -42,6 +42,7 @@ AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
   **  opening the register, the date is automatically set.
   */
   m_lastDate = Wt::WDateTime::currentDateTime();
+  m_lastDate.setTime( GCW_DATE_DEFAULT_TIME );
 
   refreshFromDisk();
 
