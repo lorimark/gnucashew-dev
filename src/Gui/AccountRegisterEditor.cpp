@@ -113,6 +113,7 @@ setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::c
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _widget
     << " "    << _index.row() << "," << _index.column()
+    << " "    << _value.type().name()
     << " '"   << Wt::asString( _value ) << "'"
     << std::endl;
 #endif
@@ -131,6 +132,11 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
     << std::endl;
 #endif
 
+  /*
+  ** in order to compare .any. type, check the types,
+  **  and then ultimately cast the type correctly and
+  **  then compare the actual values.
+  */
   auto _equal = []( Wt::cpp17::any _a, Wt::cpp17::any _b )
   {
     if( !_a.has_value() && !_b.has_value() )
@@ -141,43 +147,50 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 
     // compare based on type
     if( _a.type() == typeid(int) )
-      return Wt::cpp17::any_cast<int>(_a) ==
-             Wt::cpp17::any_cast<int>(_b);
+      return Wt::cpp17::any_cast<int>(_a)
+          == Wt::cpp17::any_cast<int>(_b);
 
     if( _a.type() == typeid(std::string) )
-      return Wt::cpp17::any_cast<std::string>(_a) ==
-             Wt::cpp17::any_cast<std::string>(_b);
+      return Wt::cpp17::any_cast<std::string>(_a)
+          == Wt::cpp17::any_cast<std::string>(_b);
 
     if( _a.type() == typeid(double) )
-      return Wt::cpp17::any_cast<double>(_a) ==
-             Wt::cpp17::any_cast<double>(_b);
+      return Wt::cpp17::any_cast<double>(_a)
+          == Wt::cpp17::any_cast<double>(_b);
 
     if( _a.type() == typeid(Wt::WString) )
-      return Wt::cpp17::any_cast<Wt::WString>(_a) ==
-             Wt::cpp17::any_cast<Wt::WString>(_b);
+      return Wt::cpp17::any_cast<Wt::WString>(_a)
+          == Wt::cpp17::any_cast<Wt::WString>(_b);
 
     if( _a.type() == typeid(Wt::WDateTime) )
-      return Wt::cpp17::any_cast<Wt::WDateTime>(_a) ==
-             Wt::cpp17::any_cast<Wt::WDateTime>(_b);
+      return Wt::cpp17::any_cast<Wt::WDateTime>(_a)
+          == Wt::cpp17::any_cast<Wt::WDateTime>(_b);
 
     std::cout << __FILE__ << ":" << __LINE__ << " unhandled type: " << _a.type().name() << std::endl;
 
     return false;
-  };
+
+  }; // endauto _equal = []( Wt::cpp17::any _a, Wt::cpp17::any _b )
 
   auto modelData = _index.data( Wt::ItemDataRole::Edit );
 
   Wt::WItemDelegate::setModelData( _editState, _model, _index );
 
+  /*
+  ** if the data changed then signal the editor
+  */
   if( !_equal( modelData, _editState ) )
   {
+#ifdef NEVER
     std::cout << __FILE__ << ":" << __LINE__ << " data changed"
       << " " << Wt::asString( modelData  )
       << " " << Wt::asString( _editState )
       << std::endl;
+#endif
 
-    editor()-> markDirty( _index );
-  }
+    editor()-> setDirty( _index );
+
+  } // endif( !_equal( modelData, _editState ) )
 
 } // endsetModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void
 
@@ -375,13 +388,12 @@ auto
 GCW::Gui::AccountRegisterEditor::DateDelegate::
 setEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 {
-//  the '_editor' and 'm_dateEdit' are not the same widget
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _editor
     << " "    << _index.row() << "," << _index.column()
-    << " '"   << Wt::asString( _value ) << "'"
     << " "    << _value.type().name()
+    << " '"   << Wt::asString( _value ) << "'"
     << std::endl;
 #endif
 
@@ -461,12 +473,21 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
   /*
   ** Build an editor
   **
-  ** Hitting the 'enter' key or the 'esc' key closes the editor
+  ** This is actually only a WText object, since it's not really an editor,
+  **  it is a widget that responds to clicks.  It's not a push-button (doesn't
+  **  need to be) it's just text, and upon clicking on the widget it will respond
+  **  and change values accordingly.
   **
   */
-  auto reconciledEdit = std::make_unique< Wt::WLineEdit >();
-  reconciledEdit-> setReadOnly( true );
+  auto reconciledEdit = std::make_unique< Wt::WText >();
+//  reconciledEdit-> setReadOnly( true );
   reconciledEdit-> setText( reconciled );
+
+  /*!
+  ** \todo applying styles here; this needs to be moved to the .css files
+  */
+  reconciledEdit-> setAttributeValue( "style", "background-color:yellow;border-radius:4px;border:1px solid rgb(204,204,204)" );
+
 //  reconciledEdit-> enterPressed  ().connect( [&]()
 //    {
 //      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -522,7 +543,7 @@ editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::c
 {
   auto cw = dynamic_cast< Wt::WContainerWidget* >( _editor );
 
-  auto ed = dynamic_cast< Wt::WLineEdit* >( cw-> children().at(0) );
+  auto ed = dynamic_cast< Wt::WText* >( cw-> children().at(0) );
 
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
@@ -546,6 +567,15 @@ auto
 GCW::Gui::AccountRegisterEditor::ReconcileDelegate::
 setEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 {
+#ifndef NEVER
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+    << "(): " << _editor
+    << " "    << _index.row() << "," << _index.column()
+    << " "    << _value.type().name()
+    << " '"   << Wt::asString( _value ) << "'"
+    << std::endl;
+#endif
+
 //  the '_editor' and 'm_dateEdit' are not the same widget
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << _editor    << " " << typeid( _editor ).name()    << std::endl;
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << m_dateEdit << " " << typeid( m_dateEdit ).name() << std::endl;
@@ -843,16 +873,27 @@ editRow( Wt::WModelIndex _index )-> void
   */
   m_index = _index;
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_index.row() << std::endl;
+
 } // endeditRow( Wt::WModelIndex _index )-> void
 
 
 auto
 GCW::Gui::AccountRegisterEditor::
-markDirty( Wt::WModelIndex _index ) const-> void
+setDirty( Wt::WModelIndex _index ) const-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << _index.row() << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+#ifdef NEVER
+  std::cout << __FILE__ << ":" << __LINE__ << " " << _index.isValid() << std::endl;
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_index.isValid() << std::endl;
 
-} // endmarkDirty( Wt::WModelIndex _index )-> void
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+    << "(): " << m_index.isValid()
+    << "(): " << _index.row()
+    << std::endl;
+#endif
+
+} // endsetDirty( Wt::WModelIndex _index )-> void
 
 

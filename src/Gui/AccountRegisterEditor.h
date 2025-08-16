@@ -24,14 +24,11 @@ namespace GCW {
 /*!
 ** \brief Account Register Editor
 **
-** This object is a controller for editing of line items in the
-**  Account Register.  The editor is a local(friend?) to the
-**  account register object that provides the delegates
-**  for the table view, and manipulates the delegates in
-**  relation to each other so as to be able to handle tabbing,
-**  up and down arrowing, and so on, within the table view, and
-**  keeping all the editors open, and saving them correctly
-**  when the user is done bla bla bla.
+** This object is a controller for editing of line items in the Account Register.  The editor
+**  is a local(friend?) to the account register object that provides the delegates for the
+**  table view, and manipulates the delegates in relation to each other so as to be able to
+**  handle tabbing, up and down arrowing, and so on, within the table view, and keeping all
+**  the editors open, and saving them correctly when the user is done bla bla bla.
 */
 class AccountRegisterEditor
 {
@@ -40,10 +37,9 @@ class AccountRegisterEditor
     /*!
     ** \brief Base Delegate
     **
-    ** This class is strictly for debugging and tracing purposes.  It
-    **  facilitates the hooking of the various calls in to the delegate
-    **  classes so that their behaviour and interaction with the view
-    **  can be studied, understood (and perhaps documented).
+    ** This class is strictly for debugging and tracing purposes.  It facilitates the hooking
+    **  of the various calls in to the delegate classes so that their behaviour and interaction
+    **  with the view can be studied and understood.
     **
     */
     class BaseDelegate
@@ -93,7 +89,8 @@ class AccountRegisterEditor
     **  'GCW_DATE_DEFAULT_TIME' which should be used to reference the correct time-value.  The
     **  time-component is important since when reading items out of the database, gnucash
     **  responds poorly to posted dates that have a 00:00:00 time component set, it must be set
-    **  to the 10:59:00 value.
+    **  to the 10:59:00 value.  This delegate makes sure that happens (probably shouldn't be
+    **  done here).
     **
     */
     class DateDelegate
@@ -136,6 +133,13 @@ class AccountRegisterEditor
     {
       public:
 
+        /*!
+        ** \brief Reconcile Delegate
+        **
+        ** This delegate will present a WText field for the reconciliation
+        **  editor, and will activate that WText with click() response which
+        **  will handle the 'edit' portion of this delegate.
+        */
         ReconcileDelegate( AccountRegisterEditor * _editor );
        ~ReconcileDelegate();
         virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
@@ -222,14 +226,14 @@ class AccountRegisterEditor
     /*!
     ** \brief Table View
     */
-    auto tableView ()-> GCW::Gui::TableView * { return m_tableView; }
+    auto tableView()-> GCW::Gui::TableView * { return m_tableView; }
 
     /*!
     ** \brief Edit Row
     */
     auto editRow( Wt::WModelIndex _index )-> void ;
 
-    auto markDirty( Wt::WModelIndex _index ) const-> void ;
+    auto setDirty( Wt::WModelIndex _index ) const-> void ;
 
     /*!
     ** \brief Delegate Handles

@@ -18,22 +18,6 @@
 #include "AccountSuggestionPopup.h"
 #include "AccountRegister.h"
 
-namespace {
-
-auto
-setText_( Wt::WText * _widget, GCW_NUMERIC _value )-> void
-{
-  _widget-> setText( "$" + toString( _value, GCW::Cfg::decimal_format() ) );
-}
-
-auto
-setText_( Wt::WText * _widget, int _value )-> void
-{
-  _widget-> setText( std::to_string( _value ) );
-}
-
-} // endnamespace {
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegister::StatusBar::
@@ -69,14 +53,29 @@ StatusBar()
 
 } // endStatusBar()
 
-auto GCW::Gui::AccountRegister::StatusBar:: setPresent    ( GCW_NUMERIC _value )-> void  { setText_( m_present    , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setFuture     ( GCW_NUMERIC _value )-> void  { setText_( m_future     , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setCleared    ( GCW_NUMERIC _value )-> void  { setText_( m_cleared    , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setReconciled ( GCW_NUMERIC _value )-> void  { setText_( m_reconciled , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value )-> void  { setText_( m_projected  , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setRowCount   ( int         _value )-> void  { setText_( m_rowCount   , _value ); }
+auto
+GCW::Gui::AccountRegister::StatusBar::
+setText( Wt::WText * _widget, GCW_NUMERIC _value )-> void
+{
+  _widget-> setText( "$" + toString( _value, GCW::Cfg::decimal_format() ) );
+}
+
+auto
+GCW::Gui::AccountRegister::StatusBar::
+setText( Wt::WText * _widget, int _value )-> void
+{
+  _widget-> setText( std::to_string( _value ) );
+}
+
+auto GCW::Gui::AccountRegister::StatusBar:: setPresent    ( GCW_NUMERIC _value )-> void  { setText( m_present    , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setFuture     ( GCW_NUMERIC _value )-> void  { setText( m_future     , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setCleared    ( GCW_NUMERIC _value )-> void  { setText( m_cleared    , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setReconciled ( GCW_NUMERIC _value )-> void  { setText( m_reconciled , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value )-> void  { setText( m_projected  , _value ); }
+auto GCW::Gui::AccountRegister::StatusBar:: setRowCount   ( int         _value )-> void  { setText( m_rowCount   , _value ); }
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
@@ -118,12 +117,11 @@ AccountRegister( const std::string & _accountGuid )
   **  attribute must be set in the table which allows Wt to pick up the
   **  right-click event.
   */
-  tableView()-> setAttributeValue    ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
-  tableView()-> mouseWentUp().connect( this, &AccountRegister::on_showPopup_triggered );
+//  tableView()-> setAttributeValue    ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
+//  tableView()-> mouseWentUp().connect( this, &AccountRegister::on_showPopup_triggered );
 
   /*
-  ** set column delegates so the editors have assistance with list pickers and
-  **  whatnot
+  ** set the column delegates/editors
   */
   editor().setTableView( tableView() );
 
@@ -179,7 +177,7 @@ AccountRegister( const std::string & _accountGuid )
   tableView()-> clicked().connect( this,  &AccountRegister::on_tableView_clicked );
 
   m_baseModel       = std::make_shared< BaseModel                 >();
-//  m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
+  m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
   m_batchEditModel  = std::make_shared< Wt::WBatchEditProxyModel  >();
 //
 //  m_sortFilterModel-> setSourceModel( m_baseModel       );
@@ -313,8 +311,8 @@ on_delete_triggered()-> void
     transMan.loadSplit( splitGuid );
 
     templt-> bindString( "date"  , transMan.getDate().toString( GCW_DATE_FORMAT_DISPLAY ) );
-    templt-> bindString( "desc"  , transMan.getDescription  () );
-    templt-> bindString( "amount", transMan.getValueAsString() );
+    templt-> bindString( "desc"  , transMan.getDescription  ()                            );
+    templt-> bindString( "amount", transMan.getValueAsString()                            );
 
     pbCancel-> clicked().connect( msgBox, &Wt::WDialog::reject );
     pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );

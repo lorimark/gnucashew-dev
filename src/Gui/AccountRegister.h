@@ -19,12 +19,6 @@
 
 
 namespace GCW {
-
-  // FIXME
-  // not sure why I need to forward-declare this class... it's
-  //  right up there in the header
-  namespace Eng { class AccountRegisterModel; }
-
   namespace Gui {
 
 /*!
@@ -73,6 +67,9 @@ class AccountRegister
 
       private:
 
+        auto setText( Wt::WText * _widget, GCW_NUMERIC _value )-> void ;
+        auto setText( Wt::WText * _widget, int _value )-> void ;
+
         Wt::WText * m_present    = nullptr ;
         Wt::WText * m_future     = nullptr ;
         Wt::WText * m_cleared    = nullptr ;
@@ -92,8 +89,8 @@ class AccountRegister
     ** An alias for the Model in case this interface changes.
     */
     using BaseModel       = GCW::Eng::AccountRegisterModel ;
-    using SortFilterModel = Wt::WSortFilterProxyModel ;
-    using BatchEditModel  = Wt::WBatchEditProxyModel ;
+    using SortFilterModel = Wt::WSortFilterProxyModel      ;
+    using BatchEditModel  = Wt::WBatchEditProxyModel       ;
 
     /*!
     ** \brief Constructor
