@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountRegisterEditor.h"
+#line 2 "src/Gui/AccountRegister/AccountRegisterEditor.h"
 
 #ifndef __GUI_ACCOUNTREGISTEREDITOR_H___
 #define __GUI_ACCOUNTREGISTEREDITOR_H___
@@ -12,9 +12,9 @@
 #include <Wt/WItemDelegate.h>
 #include <Wt/WPopupMenu.h>
 
-#include "../GnuCashew.h"
-#include "../Eng/AccountRegisterModel.h"
-#include "TableView.h"
+#include "../../GnuCashew.h"
+#include "../../Eng/AccountRegisterModel.h"
+#include "../TableView.h"
 
 
 namespace GCW {

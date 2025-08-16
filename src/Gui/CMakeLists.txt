@@ -4,15 +4,12 @@ if( ENABLE_BILLPAY )
   add_subdirectory( BillPay  )
 endif()
 
+add_subdirectory( AccountRegister )
 add_subdirectory( Customer )
 
 set( GCW_FILES ${GCW_FILES}
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountComboBox.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountEditor.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/AccountRegister.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/AccountRegisterEditor.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/AccountSuggestionEdit.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/AccountSuggestionPopup.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/AccountsTreeView.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/CentralWidget.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/EmployeesWidget.cpp

@@ -21,7 +21,7 @@
 #include <Wt/WTextEdit.h>
 
 #include "../AccountComboBox.h"
-#include "../AccountSuggestionEdit.h"
+#include "../AccountRegister/AccountSuggestionEdit.h"
 #include "../../Dbo/Transactions/Transactions.h"
 #include "Item.h"
 

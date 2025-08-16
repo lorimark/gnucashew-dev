@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountRegisterEditor.cpp"
+#line 2 "src/Gui/AccountRegister/AccountRegisterEditor.cpp"
 
 #include <Wt/WDateEdit.h>
 #include <Wt/WPushButton.h>

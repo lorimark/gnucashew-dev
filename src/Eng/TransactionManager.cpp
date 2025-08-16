@@ -172,6 +172,14 @@ getDate() const-> Wt::WDateTime
 
 auto
 GCW::Eng::Transaction::Manager::
+getDateAsString() const-> Wt::WString
+{
+  return getDate().toString( GCW_DATE_FORMAT_DISPLAY );
+
+} // endgetDate() const-> Wt::WDateTime &;
+
+auto
+GCW::Eng::Transaction::Manager::
 setDate( const Wt::WDateTime & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );

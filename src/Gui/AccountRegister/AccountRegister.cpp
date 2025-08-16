@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountRegister.cpp"
+#line 2 "src/Gui/AccountRegister/AccountRegister.cpp"
 
 #include <Wt/WDateEdit.h>
 #include <Wt/WPushButton.h>
@@ -117,8 +117,8 @@ AccountRegister( const std::string & _accountGuid )
   **  attribute must be set in the table which allows Wt to pick up the
   **  right-click event.
   */
-//  tableView()-> setAttributeValue    ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
-//  tableView()-> mouseWentUp().connect( this, &AccountRegister::on_showPopup_triggered );
+  tableView()-> setAttributeValue    ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
+  tableView()-> mouseWentUp().connect( this, &AccountRegister::on_showPopup_triggered );
 
   /*
   ** set the column delegates/editors
@@ -149,7 +149,7 @@ AccountRegister( const std::string & _accountGuid )
   **
   ** Right now the problem is with the 'select' command, where
   **  it calling 'select' cause this 'selectionChanged' event
-  **  to fire again.  So, ther is a littl 'selecting' interlock
+  **  to fire again.  So, there is a little 'selecting' interlock
   **  built around it to try to prevent this weirdness.
   **
   ** The other problem with this routine is when 'selecting'
@@ -166,7 +166,7 @@ AccountRegister( const std::string & _accountGuid )
     });
 #endif
 
-#ifdef KEYPRESSED_ONLY_FIRES_WHEN_EDITORS_ARE_NOT_OPEN
+#ifdef KEYPRESSED_ONLY_FIRES_WHEN_EDITORS_ARE_NOT_OPEN_NOT_USEFUL_HERE
   tableView()->
     keyPressed().connect( [=]( Wt::WKeyEvent _event )
     {
@@ -299,7 +299,7 @@ on_delete_triggered()-> void
     auto templt = msgBox-> contents()-> addNew< Wt::WTemplate >( TR("gcw.AccountRegister.delete.contents") );
     msgBox-> setClosable( true );
     msgBox-> setMovable ( true );
-    msgBox-> show();
+    msgBox-> show(); // exec() blocks other users, show() doesn't
 
     auto rememberAlways  = templt-> bindNew< Wt::WCheckBox   >( "rememberAlways" , TR("gcw.AccountRegister.delete.rem1"  ) );
     auto rememberSession = templt-> bindNew< Wt::WCheckBox   >( "rememberSession", TR("gcw.AccountRegister.delete.rem2"  ) );
@@ -310,9 +310,9 @@ on_delete_triggered()-> void
     auto transMan = GCW::Eng::Transaction::Manager();
     transMan.loadSplit( splitGuid );
 
-    templt-> bindString( "date"  , transMan.getDate().toString( GCW_DATE_FORMAT_DISPLAY ) );
-    templt-> bindString( "desc"  , transMan.getDescription  ()                            );
-    templt-> bindString( "amount", transMan.getValueAsString()                            );
+    templt-> bindString( "date"  , transMan.getDateAsString () );
+    templt-> bindString( "desc"  , transMan.getDescription  () );
+    templt-> bindString( "amount", transMan.getValueAsString() );
 
     pbCancel-> clicked().connect( msgBox, &Wt::WDialog::reject );
     pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );

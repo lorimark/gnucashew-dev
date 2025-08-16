@@ -8,7 +8,7 @@
 #include <Wt/WTabWidget.h>
 
 #include "AccountsTreeView.h"
-#include "AccountRegister.h"
+#include "AccountRegister/AccountRegister.h"
 #include "Customer/MainWidget.h"
 
 namespace GCW {

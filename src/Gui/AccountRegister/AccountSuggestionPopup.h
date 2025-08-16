@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountSuggestionPopup.h"
+#line 2 "src/Gui/AccountRegister/AccountSuggestionPopup.h"
 
 #ifndef __GUI_ACCOUNTSUGGESTIONPOPUP_H___
 #define __GUI_ACCOUNTSUGGESTIONPOPUP_H___

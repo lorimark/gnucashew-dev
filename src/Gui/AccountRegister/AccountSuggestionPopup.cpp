@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountSuggestionPopup.cpp"
+#line 2 "src/Gui/AccountRegister/AccountSuggestionPopup.cpp"
 
 #include "../App.h"
 #include "AccountSuggestionPopup.h"
