@@ -353,7 +353,7 @@ auto
 GCW::Gui::TableView::
 handleClick( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " handleClick:<start>"
     << " row:" << _index.row()

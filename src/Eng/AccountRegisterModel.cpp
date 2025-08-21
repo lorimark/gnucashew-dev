@@ -1018,21 +1018,6 @@ refreshFromDisk()-> void
       } // endswitch( prefrenceItem.reverseBalanceAccounts() )
 
       /*
-      ** Compute the running balance.
-      */
-      runningBalance += splitItem-> value( invert );
-
-      /*!
-      ** \todo Add up the static running accumulators
-      **
-      */
-      m_present += splitItem-> value( invert );
-      //    m_future     ;
-      //    m_cleared    ;
-      //    m_reconciled ;
-      //    m_projected  ;
-
-      /*
       ** if the value is positive, we post it to the debit (left) column.
       */
       if( splitItem-> value() > 0 )
@@ -1073,6 +1058,24 @@ refreshFromDisk()-> void
         debit -> setData( GCW_NUMERIC(0), Wt::ItemDataRole::User );
         credit-> setData( GCW_NUMERIC(0), Wt::ItemDataRole::User );
       }
+
+      /*
+      ** Compute the running balance.
+      */
+      runningBalance += splitItem-> value( invert );
+
+      /*!
+      ** \todo Add up the static running accumulators
+      **
+      */
+      m_present += splitItem-> value( invert );
+      //    m_future     ;
+      //    m_cleared    ;
+
+      if( splitItem-> reconcile_state() == "y" )
+        m_reconciled += splitItem-> value( invert );
+
+      //    m_projected  ;
 
       /*
       ** Poke the balance in
@@ -1126,10 +1129,10 @@ refreshFromDisk()-> void
         }
       }
 
-      /*
+      /*!
       ** If this item can be edited then unlock everything.
       **
-      ** TODO: note, it would be possible here to do things
+      ** \todo note, it would be possible here to do things
       **        like, if the transaction has been reconciled,
       **        allow for the description to be edited, but
       **        perhaps not the date or amounts... that could

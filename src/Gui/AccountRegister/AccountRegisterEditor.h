@@ -50,8 +50,9 @@ class AccountRegisterEditor
         BaseDelegate( AccountRegisterEditor * _editor );
        ~BaseDelegate();
 
-       auto editor() const-> AccountRegisterEditor * { return m_editor; }
+        auto editor() const-> AccountRegisterEditor * { return m_editor; }
 
+        virtual auto createEditor( const Wt::WModelIndex &index, Wt::WFlags< Wt::ViewItemRenderFlag > flags ) const-> std::unique_ptr< Wt::WWidget > ;
         virtual auto update( Wt::WWidget * _widget, const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags )-> std::unique_ptr< Wt::WWidget > ;
         virtual auto updateModelIndex( Wt::WWidget * _widget, const Wt::WModelIndex & _index )-> void ;
         virtual auto validate( const Wt::WModelIndex & _index, const Wt::cpp17::any & _editState ) const-> Wt::ValidationState ;

@@ -35,6 +35,10 @@ Invoices()
 
     });
 
+  auto delegate = m_tableView-> itemDelegate( 0 );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << delegate << std::endl;
+
 } // endInvoices()
 
 auto

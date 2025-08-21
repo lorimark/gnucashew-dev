@@ -26,24 +26,24 @@ class MainWidget
 
     MainWidget();
 
-    std::shared_ptr< Model >   model () const { return m_model; }
-    Wt::WTableView           * view  () const { return m_view;  }
+    auto model () const-> std::shared_ptr< Model >   { return m_model; }
+    auto view  () const-> Wt::WTableView           * { return m_view;  }
 
-    Wt::Signal< std::string > & doubleClicked() { return m_doubleClicked; }
+    auto doubleClicked()-> Wt::Signal< std::string > & { return m_doubleClicked; }
 
-    std::string selectedAccount() const;
+    auto selectedAccount() const-> std::string ;
 
-    void editAccount( const std::string & _accountGuid );
-    void editSelectedAccount();
+    auto editAccount( const std::string & _accountGuid )-> void ;
+    auto editSelectedAccount()->                           void ;
 
-    Wt::Json::Object toJson() const;
-    bool fromJson( const Wt::Json::Object & _jobj );
+    auto toJson() const-> Wt::Json::Object ;
+    auto fromJson( const Wt::Json::Object & _jobj )-> bool ;
 
 
   private:
 
-    void setModel();
-    void doubleClicked( const Wt::WModelIndex & index, const Wt::WMouseEvent & event );
+    auto setModel()-> void ;
+    auto doubleClicked( const Wt::WModelIndex & index, const Wt::WMouseEvent & event )-> void ;
 
     Wt::WTableView               * m_view         = nullptr ;
     std::shared_ptr< Model >       m_model                  ;

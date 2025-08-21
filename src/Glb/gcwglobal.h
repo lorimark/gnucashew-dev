@@ -10,8 +10,8 @@
 
 #define ISO_DATE_FORMAT         "yyyy-MM-ddThh:mm:ss.zzzZ"
 #define GCW_DATE_FORMAT_STORAGE "yyyy-MM-dd hh:mm:ss"
-#define GCW_DATE_FORMAT_DISPLAY "MM/dd/yyyy"
-//#define GCW_DATE_FORMAT_DISPLAY "yyyy-MM-dd"
+//#define GCW_DATE_FORMAT_DISPLAY "MM/dd/yyyy"
+#define GCW_DATE_FORMAT_DISPLAY "yyyy-MM-dd"
 
 /*!
 ** \brief Default Time

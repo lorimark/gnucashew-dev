@@ -178,7 +178,7 @@ class Item
     ** \note All accounts 'require' a parent account link, with the exception
     **        of the internal 'root' account.
     */
-    auto parent_guid() const-> const std::string & { return m_parent_guid      ; }
+    auto parent_guid() const-> const std::string & { return m_parent_guid; }
 
     /*!
     ** \brief Code

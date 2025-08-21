@@ -53,6 +53,9 @@ auto
 GCW::Gui::BillPay::SummaryWidget::
 setMonth( int _month )-> void
 {
+  /*
+  ** open a transaction, helps all the queries to run faster
+  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
   /*
@@ -65,7 +68,12 @@ setMonth( int _month )-> void
   ** post the month we're in
   */
   m_month = _month;
-  m_title-> setText( Wt::WString( TR("gcw.billPay.lbl.selectedMonth") ).arg( TR("gcw.billPay.ttp." + toString( m_month ) ) ) );
+  m_title->
+    setText
+    (
+     Wt::WString( TR("gcw.billPay.lbl.selectedMonth") )
+     .arg( TR("gcw.billPay.ttp." + toString( m_month ) ) )
+    );
 
   /*
   ** gather up all the payment splits and process them
@@ -74,17 +82,17 @@ setMonth( int _month )-> void
   Splits splits( _month );
   int row = 0;
   std::vector< DayTotal_t > dayTotals;
-  for( auto payFrom : splits.payFroms() )
+  for( auto payFromAcct : splits.payFroms() )
   {
     /*
     ** all payFromDay
     */
-    for( auto payFromDay : splits.payFromDays( payFrom ) )
+    for( auto payFromDay : splits.payFromDays( payFromAcct ) )
     {
       auto acctDay =
         Wt::WString("<span style=\"border-bottom:1px solid black;\">{1}<sup>{3}</sup> ~ {2}</span>")
         .arg( payFromDay )
-        .arg( payFrom )
+        .arg( payFromAcct )
         .arg( ordinalSuffix( payFromDay ) )
         .toUTF8()
         ;
@@ -95,10 +103,11 @@ setMonth( int _month )-> void
       row++;
 
       GCW_NUMERIC subTotal(0);
-      for( auto paymentSplit : splits.paymentSplits( payFrom, payFromDay ) )
+      GCW::Dbo::Accounts::Item::Ptr acctItem;
+      for( auto paymentSplit : splits.paymentSplits( payFromAcct, payFromDay ) )
       {
         auto splitItem = GCW::Dbo:: Splits       ::byGuid( paymentSplit               );
-        auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
+             acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
         auto txItem    = GCW::Dbo:: Transactions ::byGuid( splitItem-> tx_guid()      );
 
         m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
@@ -116,18 +125,30 @@ setMonth( int _month )-> void
 
       /*
       ** record the day total for the subsequent report
+      **
+      ** \todo total unbelievable hack
+      **
+      ** This 'hack' causes this summary report to print ~only~ the values
+      **  that are considered payments that came from a 'bank' or some type
+      **  of ASSET account.  Note, that bills can also be paid with LIABILITY
+      **  account types, but we don't want those accounts to appear in the
+      **  transfer totals since the transfer totals are for showing how much
+      **  money needs to be transferred out of the checking account(s).
       */
-      DayTotal_t dayTotal;
-      dayTotal.day   = payFromDay;
-      dayTotal.bank  = payFrom;
-      dayTotal.value = subTotal;
-      dayTotals.push_back( dayTotal );
+      if( Dbo::Accounts::isType( acctItem, Dbo::Accounts::Type::ASSET ) )
+      {
+        DayTotal_t dayTotal;
+        dayTotal.day   = payFromDay;
+        dayTotal.bank  = payFromAcct;
+        dayTotal.value = subTotal;
+        dayTotals.push_back( dayTotal );
+      }
 
     } // endall payFromDay
 
   } // endfor( ..all payFroms.. )
 
-  m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( "gcw.billPay.lbl.transfers" );
+  m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( TR("gcw.billPay.lbl.transfers") );
   m_table-> elementAt( row, 0 )-> setStyleClass( "acctDay" );
   m_table-> elementAt( row, 0 )-> setAttributeValue( "style", "text-align:center;border-bottom: 1px solid black;" );
   m_table-> elementAt( row, 0 )-> setColumnSpan( 2 );
@@ -159,8 +180,8 @@ setMonth( int _month )-> void
 
       if( day != 0 )
       {
-        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}"          ) .arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
-        m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString(TR("gcw.billPay.lbl.totalfor")) .arg( payDay                                       ) );
+        m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}") .arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
+        m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString(TR("gcw.billPay.lbl.totalfor")) .arg( payDay ) );
         m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
         m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
         row++;
@@ -178,7 +199,7 @@ setMonth( int _month )-> void
 
     } // endif( day != dayTotal.day )
 
-    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( dayTotal.value, GCW::Cfg::decimal_format()  ) ) );
+    m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( dayTotal.value, GCW::Cfg::decimal_format() ) ) );
     m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( dayTotal.bank );
     row++;
 
@@ -248,14 +269,14 @@ setMonth( int _month )-> void
   Splits splits( _month );
   int row = 0;
   std::vector< DayTotal_t > dayTotals;
-  for( auto payFrom : splits.payFroms() )
+  for( auto payFromAcct : splits.payFroms() )
   {
     for( auto payFromDay : splits.payFromDays( payFrom ) )
     {
       auto acctDay =
         Wt::WString("{1}<sup>{3}</sup> ~ {2}")
         .arg( payFromDay )
-        .arg( payFrom )
+        .arg( payFromAcct )
         .arg( ordinalSuffix( payFromDay ) )
         .toUTF8()
         ;
@@ -264,7 +285,7 @@ setMonth( int _month )-> void
       m_table-> elementAt( row, 1 )-> setAttributeValue( "style", "padding-top: 10px;" );
 
       GCW_NUMERIC subTotal(0);
-      for( auto paymentSplit : splits.paymentSplits( payFrom, payFromDay ) )
+      for( auto paymentSplit : splits.paymentSplits( payFromAcct, payFromDay ) )
       {
         auto splitItem = GCW::Dbo:: Splits       ::byGuid( paymentSplit               );
         auto acctItem  = GCW::Dbo:: Accounts     ::byGuid( splitItem-> account_guid() );
@@ -289,7 +310,7 @@ setMonth( int _month )-> void
       */
       DayTotal_t dayTotal;
       dayTotal.day   = payFromDay;
-      dayTotal.bank  = payFrom;
+      dayTotal.bank  = payFromAcct;
       dayTotal.value = subTotal;
       dayTotals.push_back( dayTotal );
 

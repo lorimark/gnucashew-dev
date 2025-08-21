@@ -14,7 +14,7 @@ namespace GCW {
 ** \brief Account Register Model
 **
 ** This model is used to present account details to the
-**  'editor register' (the spreadsheet-looing book-like-looking
+**  'editor register' (the spreadsheet-looking book-like-looking
 **  thing that the user posts transactions through.
 */
 class AccountRegisterModel
@@ -25,6 +25,17 @@ class AccountRegisterModel
 
   public:
 
+    /*!
+    ** \brief View Mode
+    **
+    ** The View Mode defines how the data in the model is assembled.  The
+    **  simplest form is the one-line register, which is also the most compact.
+    **  The next mode is the Auto-Split ledger.  The auto-split ledger looks
+    **  just like the one-line register except for the line that is currently
+    **  selected, which is formatted as a transaction-journal, but just for
+    **  that one selected line.  The final format is the transaction-journal,
+    **  which is like the auto-split register but every row is already split out.
+    */
     enum class ViewMode
     {
       /// basic one-line per transaction
@@ -33,9 +44,13 @@ class AccountRegisterModel
       /// one-line ledger that auto-opens to multi-line for each selected row
       AUTOSPLIT_LEDGER,
 
-      /// self explanatory
-      TRANSACTION_JOURNAL
-    };
+      /// multi-line ledger for every row
+      TRANSACTION_JOURNAL,
+
+      /// multi-line ledger that shows all accounts and no balances
+      GENERAL_JOURNAL
+
+    }; // endenum class ViewMode
 
     /*!
     ** \brief ctor
@@ -145,8 +160,7 @@ class AccountRegisterModel
     auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
 
     /*!
-    ** \brief
-    **
+    ** \brief Get Balance (positive or negative)
     */
     auto getBalance ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
@@ -170,27 +184,6 @@ class AccountRegisterModel
     auto setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool ;
 
     auto goneDirty()-> Wt::Signal< Wt::WModelIndex > & { return m_goneDirty; }
-/*
-
-   these are additional values that need to be available
-
-balance
-  balance limit
-  balance (Period)
-  balance usd
-  cleared
-  cleared usd
-  fiture minimum
-  future minimum usa
-  last num
-  last reconcile date
-  opening balance
-  present
-  present usd
-  reconciled reconciled usd
-  total total period
-  total usd
-*/
 
   private:
 
@@ -241,6 +234,29 @@ balance
     **  the next row.
     */
     Wt::WDateTime m_lastDate;
+
+/*!
+** \brief Accumulators
+**
+** \todo these are additional values that need to be available
+**
+**   balance
+**   balance limit
+**   balance (Period)
+**   balance usd
+**   cleared
+**   cleared usd
+**   fiture minimum
+**   future minimum usa
+**   last num
+**   last reconcile date
+**   opening balance
+**   present
+**   present usd
+**   reconciled reconciled usd
+**   total total period
+**   total usd
+*/
 
     GCW_NUMERIC m_present    ;
     GCW_NUMERIC m_future     ;

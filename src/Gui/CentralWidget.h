@@ -42,6 +42,7 @@ class CentralWidget
     auto open_CustomersWidget      (                                   )-> void;
     auto open_EmployeesWidget      (                                   )-> void;
     auto open_CustomerReportWidget ( const std::string & _customerGuid )-> void;
+    auto open_GeneralJournal       (                                   )-> void;
     auto open_TablesWidget         (                                   )-> void;
 
 #ifdef ENABLE_BILLPAY

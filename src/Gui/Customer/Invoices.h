@@ -25,12 +25,12 @@ class Invoices
 
     Invoices();
 
-    auto setCustomerGuid( const std::string & _guid )-> void;
+    auto setCustomerGuid( const std::string & _guid )-> void ;
 
   private:
 
     Wt::WTableView * m_tableView = nullptr;
-    std::shared_ptr< GCW::Eng::InvoicesModel > m_model;
+    std::shared_ptr< GCW::Eng::InvoicesModel > m_model ;
 
 }; // endclass Invoices
 

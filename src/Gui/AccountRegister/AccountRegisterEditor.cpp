@@ -44,12 +44,26 @@ GCW::Gui::AccountRegisterEditor::BaseDelegate::
 
 auto
 GCW::Gui::AccountRegisterEditor::BaseDelegate::
+createEditor( const Wt::WModelIndex &_index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget >
+{
+#ifndef NEVER
+ std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+   << " ("   << _index.row() << "," << _index.column() << ")"
+   << std::endl;
+#endif
+
+  return Wt::WItemDelegate::createEditor( _index, _flags );
+
+} // endcreateEditor( ... ) const-> std::unique_ptr< WWidget >
+
+auto
+GCW::Gui::AccountRegisterEditor::BaseDelegate::
 update( Wt::WWidget * _widget, const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags )-> std::unique_ptr< Wt::WWidget >
 {
 #ifdef NEVER
  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
    << "(): " << widget
-   << " "    << index.row() << "," << index.column()
+   << " ("   << _index.row() << "," << _index.column() << ")"
    << std::endl;
 #endif
 
@@ -64,7 +78,7 @@ updateModelIndex( Wt::WWidget * _widget, const Wt::WModelIndex & _index )-> void
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _widget
-    << " "    << _index.row() << "," << _index.column()
+   << " ("   << _index.row() << "," << _index.column() << ")"
     << std::endl;
 #endif
 
@@ -78,7 +92,7 @@ validate( const Wt::WModelIndex & _index, const Wt::cpp17::any & _editState ) co
 {
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
-    << "(): " << _index.row() << "," << _index.column()
+    << " ("   << _index.row() << "," << _index.column() << ")"
     << std::endl;
 #endif
 
@@ -112,7 +126,7 @@ setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::c
 #ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _widget
-    << " "    << _index.row() << "," << _index.column()
+    << " ("   << _index.row() << "," << _index.column() << ")"
     << " "    << _value.type().name()
     << " '"   << Wt::asString( _value ) << "'"
     << std::endl;
@@ -128,7 +142,7 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
 {
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
-    << "(): " << _index.row() << "," << _index.column()
+    << " ("   << _index.row() << "," << _index.column() << ")"
     << std::endl;
 #endif
 
@@ -215,8 +229,8 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
 {
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
-    << "(): " << _index.row() << "," << _index.column()
     << " HeaderDelegate::" << __FUNCTION__
+    << " ("   << _index.row() << "," << _index.column() << ")"
     << std::endl;
 #endif
 
@@ -665,15 +679,53 @@ createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag
     << std::endl;
 #endif
 
+#ifdef NEVER
+  auto retVal = std::make_unique< Wt::WContainerWidget >();
+  retVal-> setSelectable( false );
+
+  /*
+  ** Get the data from the string value
+  **
+  */
+  auto balance =  Wt::asString( _index.data( Wt::ItemDataRole::Edit ) );
+
+  /*
+  ** Build an editor
+  **
+  ** This is actually only a WText object, since it's not really an editor,
+  **  it is a widget that responds to clicks.  It's not a push-button (doesn't
+  **  need to be) it's just text, and upon clicking on the widget it will respond
+  **  and change values accordingly.
+  **
+  */
+  auto balanceEdit = std::make_unique< Wt::WText >();
+  balanceEdit-> setText( balance );
+
+  /*!
+  ** \todo applying styles here; this needs to be moved to the .css files
+  */
+  balanceEdit-> setAttributeValue( "style", "background-color:yellow;border-radius:4px;border:1px solid rgb(204,204,204)" );
+
+  /*
+  ** Stuff it in to the layout
+  **
+  */
+  retVal-> setLayout( std::make_unique< Wt::WHBoxLayout >() );
+  retVal-> layout()-> setContentsMargins( 0,0,0,0 );
+  retVal-> layout()-> addWidget( std::move( balanceEdit ) );
+#endif
+
+#ifndef NEVER
   auto retVal = BaseDelegate::createEditor( _index, _flags );
   auto cw = dynamic_cast< Wt::WContainerWidget* >( retVal.get() );
   auto lineEdit = dynamic_cast< Wt::WLineEdit* >( cw-> widget(0) );
   lineEdit-> setReadOnly( true );
   lineEdit-> setAttributeValue( "style", "text-align:right;" );
+#endif
 
   return retVal;
 
-} // endcreateEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget >
+} // endcreateEditor( ... ) const-> std::unique_ptr< Wt::WWidget >
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -819,7 +871,7 @@ auto
 GCW::Gui::AccountRegisterEditor::
 editRow( Wt::WModelIndex _index )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
     << std::endl;
@@ -872,8 +924,6 @@ editRow( Wt::WModelIndex _index )-> void
   ** remember what we're editing
   */
   m_index = _index;
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << m_index.row() << std::endl;
 
 } // endeditRow( Wt::WModelIndex _index )-> void
 

@@ -25,7 +25,7 @@ MainWidget()
   ** Install the tool bar
   **
   */
-  auto tb_ = std::make_unique< GCW::Gui::Customer::ToolBar >();
+  auto tb_ = std::make_unique< ToolBar >();
   vlw-> addWidget( std::move( tb_ ) );
 
   auto hlw = vlw-> addLayout( std::make_unique< Wt::WHBoxLayout >(), 1 );
@@ -55,17 +55,17 @@ MainWidget()
   */
   std::vector< Wt::WFormModel::Field > fields =
   {
-    GCW::Dbo::Customers::Field::id,
-    GCW::Dbo::Customers::Field::name,
-    GCW::Dbo::Customers::Field::addr_phone,
-    GCW::Dbo::Customers::Field::addr_email
+    Dbo::Customers::Field::id,
+    Dbo::Customers::Field::name,
+    Dbo::Customers::Field::addr_phone,
+    Dbo::Customers::Field::addr_email
   };
 
   /*
   ** Create the model and apply it to the view
   **
   */
-  m_model = std::make_shared< GCW::Eng::CustomersModel >( fields );
+  m_model = std::make_shared< Eng::CustomersModel >( fields );
   model()-> sort( 0 );
   view()-> setModel( model() );
 
@@ -74,7 +74,7 @@ MainWidget()
   hlw-> addWidget( std::move( tabWidget_ ), 1 );
 
   {
-    auto w_ = std::make_unique< GCW::Gui::Customer::Invoices >();
+    auto w_ = std::make_unique< Invoices >();
     m_invoicesView = w_.get();
     m_tabWidget-> addTab( std::move( w_ ), "Invoices" );
 
@@ -88,10 +88,11 @@ MainWidget()
       });
   }
 
-} // endGCW::Gui::CustomersWidget::CustomersWidget()
+} // endMainWidget()
 
-void GCW::Gui::Customer::MainWidget::
-doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+auto
+GCW::Gui::Customer::MainWidget::
+doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
   /*
   ** get to the customerItem that was clicked on
@@ -103,7 +104,7 @@ doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
   */
 //  doubleClicked().emit( customerItem-> guid() );
 
-} // endvoid GCW::Gui::CustomersWidget::doubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )
+} // enddoubleClicked( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 
 
 

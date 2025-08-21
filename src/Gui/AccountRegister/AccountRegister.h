@@ -99,7 +99,17 @@ class AccountRegister
     **  is blank or cannot be found (why would that be?) then the register simply
     **  opens, allows registry entries, but has no place to save them (dangerous?).
     */
-    AccountRegister( const std::string & _accountGuid = "" );
+    AccountRegister( const std::string & _accountGuid );
+
+    /*!
+    ** \brief General Journal Constructor
+    **
+    ** The General Journal view is a view that shows all the splits, both sides,
+    **  all accounts.  The general journal is not tied to any account but can
+    **  be showing all accounts.:qa
+    **
+    */
+    AccountRegister( GCW::Eng::AccountRegisterModel::ViewMode _viewMode = GCW::Eng::AccountRegisterModel::ViewMode::TRANSACTION_JOURNAL  );
 
     /*!
     ** \brief Set Account
@@ -154,6 +164,13 @@ class AccountRegister
     auto fromJson( const Wt::Json::Object & _jobj )-> bool ;
 
   private:
+
+    /*!
+    ** \brief Internal Initializer
+    **
+    ** This takes care of all the basic initialization stuff.
+    */
+    auto init()-> void ;
 
     /*!
     ** \brief Editor Helper

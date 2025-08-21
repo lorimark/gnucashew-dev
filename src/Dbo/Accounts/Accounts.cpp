@@ -366,4 +366,44 @@ fullName( Item::Ptr _item )-> std::string
 } // endfullName( Item::Ptr _item )-> std::string
 
 
+auto
+GCW::Dbo::Accounts::
+isType( const Item::Ptr _acctItem, GCW::Dbo::Accounts::Type _type )-> bool
+{
+  /*
+  ** if there is no account item, return false
+  */
+  if( !_acctItem )
+    return false;
+
+  /*
+  ** if the account item is an ~type~, return true
+  */
+  if( _acctItem-> accountType() == _type )
+    return true;
+
+  /*
+  ** poke in to the parent account, see if it's an ~type~
+  */
+  return isType( _acctItem-> parent_guid(), _type );
+
+} // endisType( const Item::Ptr _acctItem, GCW::Dbo::Accounts::Type _type )-> bool
+
+auto
+GCW::Dbo::Accounts::
+isType( const std::string & _guid, GCW::Dbo::Accounts::Type _type )-> bool
+{
+  /*
+  ** if there is no guid, return false
+  */
+  if( _guid == "" )
+    return false;
+
+  /*
+  ** make query
+  */
+  return isType( byGuid( _guid ), _type );
+
+} // endisType( const std::string & _guid, GCW::Dbo::Accounts::Type _type )-> bool
+
 

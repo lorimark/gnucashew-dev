@@ -78,9 +78,9 @@ auto GCW::Gui::AccountRegister::StatusBar:: setRowCount   ( int         _value )
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
+auto
 GCW::Gui::AccountRegister::
-AccountRegister( const std::string & _accountGuid )
+init()-> void
 {
   /*
   ** see; gcw.css for styling.
@@ -194,8 +194,27 @@ AccountRegister( const std::string & _accountGuid )
 //      std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
     });
 
+}
+
+
+
+GCW::Gui::AccountRegister::
+AccountRegister( const std::string & _accountGuid )
+{
+  init();
+
 
 } // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+
+
+GCW::Gui::AccountRegister::
+AccountRegister( GCW::Eng::AccountRegisterModel::ViewMode _viewMode )
+{
+  init();
+
+
+} // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
+
 
 
 auto

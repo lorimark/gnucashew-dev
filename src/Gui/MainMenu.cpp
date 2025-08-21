@@ -320,8 +320,8 @@ MainMenu( MainWidget * _mainWidget )
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.closebook"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.importmap"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.translinkdoc"  ) )-> setDisabled( true );
-    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ) )-> setDisabled( true );
-    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.rawTables"     ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget );
+    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_GeneralJournal  );
+    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.rawTables"     ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget    );
 
     m_uTools-> setMenu( std::move( popTools ) );
   }

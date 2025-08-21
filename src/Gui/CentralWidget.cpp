@@ -363,6 +363,41 @@ open_BillPayWidget()-> void
 
 auto
 GCW::Gui::CentralWidget::
+open_GeneralJournal()-> void
+{
+  auto tabName = "General Journal";
+
+  /*
+  ** See if this tab exists, if not, then add it.
+  **
+  */
+  if( tabIndex( tabName ) == -1 )
+  {
+    auto u_ = std::make_unique< GCW::Gui::AccountRegister >( "" );
+    auto accountRegister = u_.get();
+
+    auto tab =
+      tabWidget()->
+        insertTab
+        ( 1,
+          std::move( u_ ),
+          tabName
+        );
+
+    tab-> setCloseable( true );
+
+  } // endif( tabIndex( _account-> name() ) == -1 )
+
+  /*
+  ** Go straight to the tab.
+  **
+  */
+  tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
+
+} // endopen_TablesWidget()-> void
+
+auto
+GCW::Gui::CentralWidget::
 open_TablesWidget()-> void
 {
   auto tabName = "RawTables";
