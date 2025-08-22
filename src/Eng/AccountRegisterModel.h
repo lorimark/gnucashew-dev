@@ -35,6 +35,8 @@ class AccountRegisterModel
     **  selected, which is formatted as a transaction-journal, but just for
     **  that one selected line.  The final format is the transaction-journal,
     **  which is like the auto-split register but every row is already split out.
+    **  The General Journal is the same as the Transaction Journal but it shows
+    **  every account, and does not compute balances.
     */
     enum class ViewMode
     {
@@ -55,9 +57,9 @@ class AccountRegisterModel
     /*!
     ** \brief ctor
     **
-    ** This opens the model associated with a specific account.
+    ** This constructs the model, empty.
     */
-    AccountRegisterModel( const std::string & _accountGuid = "", bool _readOnly = false );
+    AccountRegisterModel();
 
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
     auto refreshFromDisk()-> void ;
@@ -65,6 +67,7 @@ class AccountRegisterModel
 
     auto viewMode() const-> ViewMode { return m_viewMode; }
     auto setViewMode( ViewMode _viewMode )-> void;
+
     auto doubleLine() const-> bool { return m_doubleLine; }
     auto setDoubleLine( bool _doubleLine )-> void;
 

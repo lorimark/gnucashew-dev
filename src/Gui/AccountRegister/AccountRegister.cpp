@@ -194,27 +194,16 @@ init()-> void
 //      std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << std::endl;
     });
 
-}
-
+} // endinit()-> void
 
 
 GCW::Gui::AccountRegister::
-AccountRegister( const std::string & _accountGuid )
+AccountRegister()
 {
   init();
 
 
 } // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
-
-
-GCW::Gui::AccountRegister::
-AccountRegister( GCW::Eng::AccountRegisterModel::ViewMode _viewMode )
-{
-  init();
-
-
-} // endGCW::AccountRegister::AccountRegister( const std::string & _accountGuid )
-
 
 
 auto

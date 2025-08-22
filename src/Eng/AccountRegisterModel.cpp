@@ -32,10 +32,8 @@
 #define COL_NOTES       (2)
 
 GCW::Eng::AccountRegisterModel::
-AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
-: Wt::WStandardItemModel( 0, 8 ), // 8-columns
-  m_accountGuid( _accountGuid ),
-  m_readOnly( _readOnly )
+AccountRegisterModel()
+: Wt::WStandardItemModel( 0, 8 ) // 8-columns
 {
   /*
   ** set the lastDate to match the todays date, so when first
@@ -43,8 +41,6 @@ AccountRegisterModel( const std::string & _accountGuid, bool _readOnly )
   */
   m_lastDate = Wt::WDateTime::currentDateTime();
   m_lastDate.setTime( GCW_DATE_DEFAULT_TIME );
-
-  refreshFromDisk();
 
 #ifdef NEVER
   dataChanged().connect( [=]( Wt::WModelIndex _index1, Wt::WModelIndex _index2 )
@@ -91,14 +87,18 @@ GCW::Eng::AccountRegisterModel::
 setViewMode( ViewMode _viewMode )-> void
 {
   m_viewMode = _viewMode;
-}
+  refreshFromDisk();
+
+} // endsetViewMode( ViewMode _viewMode )-> void
 
 auto
 GCW::Eng::AccountRegisterModel::
 setDoubleLine( bool _doubleLine )-> void
 {
   m_doubleLine = _doubleLine;
-}
+  refreshFromDisk();
+
+} // endsetDoubleLine( bool _doubleLine )-> void
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -115,8 +115,7 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
   ** If this transaction split is reconciled, then it is
   **  considered not deletable
   */
-  GCW::Eng::Transaction::Manager transMan;
-  transMan.loadSplit( getSplitGuid( _index ) );
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
   if( transMan.thisSplit()-> isReconciled() )
     return false;
 
@@ -138,7 +137,16 @@ auto
 GCW::Eng::AccountRegisterModel::
 isReadOnly( const Wt::WModelIndex & _index )-> bool
 {
+  /*
+  ** if the whole model is read/only, return it
+  */
   if( isReadOnly() )
+    return true;
+
+  /*
+  ** if the index isn't valid, we are read/only
+  */
+  if( !_index.isValid() )
     return true;
 
   /*!
@@ -150,10 +158,15 @@ isReadOnly( const Wt::WModelIndex & _index )-> bool
 
   /*!
   ** If this transaction split is reconciled, then it is
-  **  considered not editable
+  **  considered not editable.
+  **
+  ** We have to convert this _index in to the proper split
+  **  that represents it, and then query that split to see
+  **  if it is reconciled or not.  We use the transaction
+  **  manager to get this done, as it encapsulates a bunch
+  **  of different tools for manipulating the data.
   */
-  GCW::Eng::Transaction::Manager transMan;
-  transMan.loadSplit( getSplitGuid( _index ) );
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
   if( transMan.thisSplit()-> isReconciled() )
     return true;
 
@@ -168,17 +181,15 @@ auto
 GCW::Eng::AccountRegisterModel::
 isReadOnly( int _row )-> bool
 {
-  if( isReadOnly() )
-    return true;
-
-  return isReadOnly( index( _row, 0 ) );
+  return
+    isReadOnly( index( _row, 0 ) );
 }
 
 auto
 GCW::Eng::AccountRegisterModel::
 saveToDisk()-> void
 {
-  std::cout << FUNCTION_HEADER << std::endl;
+  std::cout << FUNCTION_HEADER << " ~not implemented~ " << std::endl;
 
 } // endsaveToDisk()
 
@@ -222,7 +233,7 @@ getAction( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_ACTION );
 
-} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+} // endgetAction( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -238,7 +249,7 @@ getTransferText( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_TRANSFER );
 
-} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+} // endgetTransferText( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -247,7 +258,7 @@ getTransferGuid( const Wt::WModelIndex & _index )-> std::string
   return
     GCW::Dbo::Accounts::byFullName( getTransferText( _index ) )-> guid();
 
-} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+} // endgetTransferGuid( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -255,7 +266,7 @@ getReconcile( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_RECONCILE );
 
-} // endgetDescription( const Wt::WModelIndex & _index )-> std::string
+} // endgetReconcile( const Wt::WModelIndex & _index )-> std::string
 
 auto
 GCW::Eng::AccountRegisterModel::
@@ -560,10 +571,8 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 /*!
 ** \brief Refresh From Disk
 **
-** This procedure reads from the gnucash storage source
-**  (either postgres or sqlite) and loads all of the
-**  transactions and their associated splits in to the
-**  model suitable for editing within an automatic
+** This procedure reads from the gnucash storage source (either postgres or sqlite) and loads all of the
+**  transactions and their associated splits in to the model suitable for editing within an automatic
 **  table view.
 */
 auto
@@ -664,7 +673,6 @@ refreshFromDisk()-> void
     /*
     ** Start out read-only == true.  We want to default read-only
     **  and upgrade to read-write if the dataset calls for it.
-    **
     */
     bool readOnly = true;
 
@@ -1066,7 +1074,6 @@ refreshFromDisk()-> void
 
       /*!
       ** \todo Add up the static running accumulators
-      **
       */
       m_present += splitItem-> value( invert );
       //    m_future     ;

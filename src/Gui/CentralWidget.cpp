@@ -110,7 +110,6 @@ open_AccountRegister( const std::string & _accountGuid )-> void
 
   /*
   ** Grab the account so we can fetch things from it.
-  **
   */
   auto accountItem = GCW::Dbo::Accounts::byGuid( _accountGuid );
 
@@ -126,16 +125,14 @@ open_AccountRegister( const std::string & _accountGuid )-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( accountItem-> name() ) == -1 )
   {
-    auto u_ = std::make_unique< GCW::Gui::AccountRegister >( _accountGuid );
+    auto u_ = std::make_unique< GCW::Gui::AccountRegister >();
     auto accountRegister = u_.get();
 
     /*
     ** Open a new AccountRegister tab that is connected to the account
-    **
     */
     auto tab =
       tabWidget()->
@@ -155,7 +152,6 @@ open_AccountRegister( const std::string & _accountGuid )-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( accountItem-> name() ) );
 
@@ -167,7 +163,6 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
 {
   /*
   ** Grab the account so we can fetch things from it.
-  **
   */
   auto customerItem = GCW::Dbo::Customers::byGuid( _customerGuid );
 
@@ -175,14 +170,12 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
   ** If we didn't get a customer (this shouldn't happen) then
   **  there's nothing for us to do... perhaps pop an error dialog
   **  or something.
-  **
   */
   if( !customerItem )
     return;
 
   /*
   ** build a tab name
-  **
   */
   auto tabName = TR8( "gcw.cw.tabName.Customer" ) + ": " + customerItem-> name();
 
@@ -196,7 +189,6 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
     ** Open a new CustomerReportWidget tab that is connected to the account.
     **  When inserting the tab, insert it immediately after the currently
     **  selected customer.
-    **
     */
 #ifdef NEVER
     auto tab =
@@ -214,7 +206,6 @@ open_CustomerReportWidget( const std::string & _customerGuid )-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
@@ -228,13 +219,11 @@ open_CustomersWidget()-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( tabName ) == -1 )
   {
     /*
     ** Open a new CustomersWidget tab that is connected to the account
-    **
     */
     auto widget = std::make_unique< GCW::Gui::Customer::MainWidget >();
     auto w = widget.get();
@@ -242,7 +231,6 @@ open_CustomersWidget()-> void
     /*
     ** Double Clicking on a customer causes the customer report
     **  widget to open.
-    **
     */
     w->
       doubleClicked().connect( [=]( const std::string & _customerGuid )
@@ -264,7 +252,6 @@ open_CustomersWidget()-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
@@ -278,13 +265,11 @@ open_EmployeesWidget()-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( tabName ) == -1 )
   {
     /*
     ** Open a new EmployeesWidget tab that is connected to the account
-    **
     */
     auto widget = std::make_unique< GCW::Gui::EmployeesWidget >();
     auto w = widget.get();
@@ -292,7 +277,6 @@ open_EmployeesWidget()-> void
     /*
     ** Double Clicking on a employee causes the customer report
     **  widget to open.
-    **
     */
     w->
       doubleClicked().connect( [=]( const std::string & _customerGuid )
@@ -314,7 +298,6 @@ open_EmployeesWidget()-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
@@ -329,13 +312,11 @@ open_BillPayWidget()-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( tabName ) == -1 )
   {
     /*
     ** Open a new CustomersWidget tab that is connected to the account
-    **
     */
     auto widget = std::make_unique< GCW::Gui::BillPay::MainWidget >();
     auto w = widget.get();
@@ -354,7 +335,6 @@ open_BillPayWidget()-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
@@ -369,11 +349,10 @@ open_GeneralJournal()-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( tabName ) == -1 )
   {
-    auto u_ = std::make_unique< GCW::Gui::AccountRegister >( "" );
+    auto u_ = std::make_unique< GCW::Gui::AccountRegister >();
     auto accountRegister = u_.get();
 
     auto tab =
@@ -390,7 +369,6 @@ open_GeneralJournal()-> void
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 
@@ -404,7 +382,6 @@ open_TablesWidget()-> void
 
   /*
   ** See if this tab exists, if not, then add it.
-  **
   */
   if( tabIndex( tabName ) == -1 )
   {
@@ -463,7 +440,6 @@ versions
 
   /*
   ** Go straight to the tab.
-  **
   */
   tabWidget()-> setCurrentIndex( tabIndex( tabName ) );
 

@@ -25,16 +25,27 @@ namespace GCW {
   namespace Dbo {
     namespace Prefrences {
 
+/*!
+** \brief Reversed Balance Accounts
+**
+** Reverse Balanced accounts: This option lets you determine whether account balances
+**  will display as positive or negative numbers:
+**
+**  - Income & Expense assigns a positive credit balance to income account balances and a negative debit balance to expense account balances.
+**  - Credit accounts (default) displays a positive balance for account types that would normally carry a credit balance (income, credit, liability, equity).
+**  - None shows all credit balances as negative and all debit balances as positive.
+**
+*/
 enum class ReverseBalanceAccounts
 {
   /// no account balances are reversed
-  NONE           = 0x01,
+  NONE = 0x01,
 
   /// income and expense account balances are reversed
   INCOME_EXPENSE = 0x02,
 
   /// credit account balances are reversed
-  CREDIT         = 0x03
+  CREDIT = 0x03
 };
 
 /*!
@@ -47,10 +58,10 @@ enum class ReverseBalanceAccounts
 enum class AccountRegisterHighlight
 {
   /// no highlight handling
-  NONE         = 0x01,
+  NONE = 0x01,
 
   /// normal handling - neg values are red
-  NORMAL       = 0x02,
+  NORMAL = 0x02,
 
   /// extra handling - neg values are gold-background-full-line
   NEGVAL_EXTRA = 0x03,

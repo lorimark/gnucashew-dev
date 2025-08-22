@@ -112,7 +112,8 @@ setMonth( int _month )-> void
 
         m_table-> elementAt( row, 0 )-> addNew< Wt::WText >( splitItem -> valueAsString( true ) );
         m_table-> elementAt( row, 1 )-> addNew< Wt::WText >( txItem    -> description()         );
-        m_table-> elementAt( row, 1 )-> clicked().connect( [=](){ m_clicked.emit( txItem-> description() ); } ); row++;
+        m_table-> elementAt( row, 1 )-> clicked().connect( [=](){ m_clicked.emit( txItem-> description() ); } );
+        row++;
 
         subTotal += splitItem-> value( true );
 

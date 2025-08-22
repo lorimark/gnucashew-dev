@@ -12,6 +12,10 @@ Manager()
 GCW::Eng::Transaction::Manager::
 Manager( GCW::Dbo::Splits::Item::Ptr _splitItem )
 {
+  if( _splitItem )
+  {
+    loadSplit( _splitItem-> guid() );
+  }
 
 } // endManager()
 

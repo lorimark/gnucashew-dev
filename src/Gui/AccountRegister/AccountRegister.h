@@ -95,21 +95,8 @@ class AccountRegister
     /*!
     ** \brief Constructor
     **
-    ** A register must be opened to a specific AccountGuid.  If the AccountGuid
-    **  is blank or cannot be found (why would that be?) then the register simply
-    **  opens, allows registry entries, but has no place to save them (dangerous?).
     */
-    AccountRegister( const std::string & _accountGuid );
-
-    /*!
-    ** \brief General Journal Constructor
-    **
-    ** The General Journal view is a view that shows all the splits, both sides,
-    **  all accounts.  The general journal is not tied to any account but can
-    **  be showing all accounts.:qa
-    **
-    */
-    AccountRegister( GCW::Eng::AccountRegisterModel::ViewMode _viewMode = GCW::Eng::AccountRegisterModel::ViewMode::TRANSACTION_JOURNAL  );
+    AccountRegister();
 
     /*!
     ** \brief Set Account

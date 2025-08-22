@@ -35,12 +35,12 @@ void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
   (
    _splitItems.begin(),
    _splitItems.end(),
-   []( const GCW::Dbo::Splits::Item::Ptr item1,
-       const GCW::Dbo::Splits::Item::Ptr item2
+   []( const GCW::Dbo::Splits::Item::Ptr splitItem1,
+       const GCW::Dbo::Splits::Item::Ptr splitItem2
      )
      {
-       auto trans1 = GCW::Dbo::Transactions::byGuid( item1-> tx_guid() );
-       auto trans2 = GCW::Dbo::Transactions::byGuid( item2-> tx_guid() );
+       auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
+       auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
 
        if( trans1
         && trans2
@@ -49,15 +49,32 @@ void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
          /*
          ** return .bool. if the .trans1. date is .less than. the .trans2. date
          **
+         ** Also, return .bool. if the trans1-value is less than the trans2-value,
+         **  if the dates are the same.  This way, debits (more positive values)
+         **  are shown first in the register, and credits follow, in descending
+         **  value order.  This resolves one issue that has always drove me mental
+         **  is the register showing negative values because the withdrawals are
+         **  computed prior to the deposits... for that same day.  This totally
+         **  fixes that and lists the deposits first, followed by the withdrawals.
+         **  neat!
+         **
          ** note: it is possible to string-compare these date values, as they are
          **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
          **        sortable.  Alternatively, we can convert this string to an
          **        internal WDate element, but it's an unnecessary step.
+         **          return trans1-> post_date_as_date()
+         **               < trans2-> post_date_as_date();
          */
-         return trans1-> post_date()
-              < trans2-> post_date();
-//         return trans1-> post_date_as_date()
-//              < trans2-> post_date_as_date();
+         if( trans1-> post_date()
+          == trans2-> post_date()
+           )
+           return splitItem1-> value()
+                > splitItem2-> value()
+                ;
+
+         else
+           return trans1-> post_date()
+                < trans2-> post_date();
        }
 
        return false;
