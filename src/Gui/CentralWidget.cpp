@@ -132,6 +132,11 @@ open_AccountRegister( const std::string & _accountGuid )-> void
     auto accountRegister = u_.get();
 
     /*
+    ** on signal jump, open the other account
+    */
+    accountRegister-> jumpToAccount().connect( this, &CentralWidget::open_AccountRegister );
+
+    /*
     ** Open a new AccountRegister tab that is connected to the account
     */
     auto tab =

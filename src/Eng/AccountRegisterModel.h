@@ -78,6 +78,14 @@ class AccountRegisterModel
     */
     auto isDeletable( const Wt::WModelIndex & _index )-> bool ;
 
+    /*!
+    ** \brief Is Jumpable
+    **
+    ** This returns .true. if the item can be jumped to
+    **  the other account in the split
+    */
+    auto isJumpable( const Wt::WModelIndex & _index )-> bool ;
+
     auto isReadOnly()-> bool ;
     auto isReadOnly( int _row )-> bool ;
     auto isReadOnly( const Wt::WModelIndex & _index )-> bool ;

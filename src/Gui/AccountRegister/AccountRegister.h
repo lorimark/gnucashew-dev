@@ -132,6 +132,14 @@ class AccountRegister
     auto setReadOnly( bool _state = true )-> void ;
 
     /*!
+    ** \brief Signal JumpToAccount
+    **
+    ** This signals when the user has clicked on the
+    **  jump to account menu option.
+    */
+    auto jumpToAccount()-> Wt::Signal< std::string > & { return m_jumpToAccount; }
+
+    /*!
     ** \brief Create View Properties JSON Object
     **
     ** This will pack all of the Widget display variables in to a JSON
@@ -334,6 +342,7 @@ class AccountRegister
     Wt::WModelIndex                                m_selectIndex             ;
     Wt::WModelIndex                                m_clickedIndex            ;
     Wt::WModelIndex                                m_rightClickIndex         ;
+    Wt::Signal< std::string >                      m_jumpToAccount           ;
 
 };  // endclass AccountRegister
 

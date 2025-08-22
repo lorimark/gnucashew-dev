@@ -449,7 +449,23 @@ auto
 GCW::Gui::AccountRegister::
 on_jump_triggered()-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+  /*
+  ** use a transaction manager so we can find the other split guid
+  */
+  auto transMan = GCW::Eng::Transaction::Manager();
+  transMan.loadSplit( baseModel()-> getSplitGuid( m_rightClickIndex.row() ) );
+
+  /*!
+  ** \todo should deal with multiple splits
+  **
+  ** This function will emit the guid of the account of the 'other'
+  **  split used in this transaction.  But, a transaction may contain
+  **  multiple splits.  In that instance, this jump routine should
+  **  make some different decisions about where to jump.  In gnucash,
+  **  it indicates that the jump will jump to the 'highest value'
+  **  split... that could work.
+  */
+  jumpToAccount().emit( transMan.thatSplit()-> account_guid() );
 
 } // endon_jump_triggered()-> void
 
@@ -516,8 +532,20 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
   m_popupMenu.addSeparator();
   m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.ManageDocument"   ), std::make_unique< Wt::WText >() )-> setDisabled( true );
   m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.OpenDocument"     ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+#endif
+
   m_popupMenu.addSeparator();
-  m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump"             ), std::make_unique< Wt::WText >() )-> setDisabled( true );
+
+  // jump
+  {
+    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump" ), this, &AccountRegister::on_jump_triggered );
+
+    if( !(baseModel()-> isJumpable( _index )) )
+      item-> setDisabled( true );
+
+  }
+
+#ifdef NEVER
   m_popupMenu.addSeparator();
   m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.BlankTransaction" ), std::make_unique< Wt::WText >() )-> setDisabled( true );
   m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.GoDate"           ), std::make_unique< Wt::WText >() )-> setDisabled( true );

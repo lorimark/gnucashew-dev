@@ -128,6 +128,32 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
 
 auto
 GCW::Eng::AccountRegisterModel::
+isJumpable( const Wt::WModelIndex & _index )-> bool
+{
+  /*!
+  ** If this transaction split has no guid
+  **  then it's a new row, and cannot be jumped
+  */
+  if( getSplitGuid( _index ) == "" )
+    return false;
+
+  /*!
+  ** If this transaction split is reconciled, then it is
+  **  considered not deletable
+  */
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
+  if( transMan.thatSplit()-> guid() == "" )
+    return false;
+
+  /*
+  ** jumpable
+  */
+  return true;
+
+} // endisJumpable( const Wt::WModelIndex & _index )-> bool
+
+auto
+GCW::Eng::AccountRegisterModel::
 isReadOnly()-> bool
 {
   return m_readOnly;
