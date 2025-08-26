@@ -11,7 +11,6 @@
 
 /*
 ** Predefine the Account class that fixin to come up.
-**
 */
 namespace GCW {
   namespace Dbo {
@@ -26,7 +25,6 @@ namespace GCW {
 **  automatically generating an ID field or a VERSION
 **  field, and instead substitute the guid field
 **  as the primary key.
-**
 */
 template<> struct Wt::Dbo::dbo_traits< GCW::Dbo::Splits::Item >
 : public Wt::Dbo::dbo_default_traits
@@ -41,7 +39,6 @@ template<> struct Wt::Dbo::dbo_traits< const GCW::Dbo::Splits::Item > : Wt::Dbo:
 
 /*
 ** Now we can start building our class!
-**
 */
 namespace GCW {
   namespace Dbo {
@@ -85,7 +82,6 @@ namespace GCW {
 **  a67a975bc58a4fa1bd00421b37fed115|4b2259ef3fbb486bad1b42f28ec84346|d934f2e5606c4da6b25c703c4661d747|    |      |n |1970-01-01 00:00:00|-100     |100        |-100 |100  |
 **
 ** \endcode
-**
 */
 class Item
 : public GCW::Dbo::BaseItem< Item >
@@ -143,7 +139,6 @@ class Item
 
     /*!
     ** Set Action
-    **
     */
     auto set_action( const std::string & _value )-> void { m_action = _value; }
 
@@ -233,7 +228,6 @@ class Item
     **  as a std::string.
     **
     ** \sa GCW::Cfg::decimal_format()
-    **
     */
     std::string valueAsString( bool negate = false ) const
     {
@@ -311,7 +305,6 @@ extern const char * s_tableName;
 ** \brief Load a single split
 **
 ** This function returns a split based on the GUID.
-**
 */
 auto load( const std::string & _splitGuid )-> Item::Ptr ;
 
@@ -320,7 +313,6 @@ auto load( const std::string & _splitGuid )-> Item::Ptr ;
 **
 ** This function returns a split based on the GUID.  If the
 **  split is not found, a simple empty object is returned.
-**
 */
 auto find( const std::string & _splitGuid )-> Item::Ptr ;
 
@@ -328,7 +320,6 @@ auto find( const std::string & _splitGuid )-> Item::Ptr ;
 ** \brief Add a single split
 **
 ** This adds a new split item containing the guid requested
-**
 */
 auto add( const std::string & _splitGuid )-> Item::Ptr ;
 
@@ -336,7 +327,6 @@ auto add( const std::string & _splitGuid )-> Item::Ptr ;
 ** \brief Load a single split
 **
 ** This function returns a split based on the GUID.
-**
 */
 inline auto byGuid( const std::string & _splitGuid )-> Item::Ptr { return load( _splitGuid ); }
 

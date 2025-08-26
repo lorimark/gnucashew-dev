@@ -1,18 +1,14 @@
-#line 2 "src/Eng/AccountRegisterModel.h"
+#line 2 "src/Gui/AccountRegister/AccountRegisterModel.h"
 
-#ifndef __ENG_ACCOUNTREGISTERMODEL_H___
-#define __ENG_ACCOUNTREGISTERMODEL_H___
+#ifndef __GUI_ACCOUNTREGISTERMODEL_H___
+#define __GUI_ACCOUNTREGISTERMODEL_H___
 
-#include <Wt/WDateTime.h>
 #include <Wt/WStandardItemModel.h>
 
-#include "../Glb/gcwglobal.h"
+#include "../GnuCashew.h"
 
 namespace GCW {
-  namespace Eng {
-    namespace Transaction {
-      class Manager;
-    }
+  namespace Gui {
 
 /*!
 ** \brief Account Register Model
@@ -273,14 +269,11 @@ class AccountRegisterModel
 **   total usd
 */
 
-    GCW_NUMERIC m_balance    ;
     GCW_NUMERIC m_present    ;
     GCW_NUMERIC m_future     ;
     GCW_NUMERIC m_cleared    ;
     GCW_NUMERIC m_reconciled ;
     GCW_NUMERIC m_projected  ;
-
-    friend class Transaction::Manager ;
 
 }; // endclass AccountRegisterModel
 

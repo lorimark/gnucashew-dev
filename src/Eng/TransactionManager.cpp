@@ -1,21 +1,14 @@
 #line 2 "src/Eng/TransactionManager.cpp"
 
 #include "../Glb/Core.h"
+#include "../Dbo/Prefrences.h"
+#include "AccountRegisterModel.h"
 #include "TransactionManager.h"
 
 GCW::Eng::Transaction::Manager::
-Manager()
+Manager( GCW::Eng::AccountRegisterModel * _model )
+: m_model( _model )
 {
-
-} // endManager()
-
-GCW::Eng::Transaction::Manager::
-Manager( GCW::Dbo::Splits::Item::Ptr _splitItem )
-{
-  if( _splitItem )
-  {
-    loadSplit( _splitItem-> guid() );
-  }
 
 } // endManager()
 
@@ -33,24 +26,24 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   ** create a new transaction with two splits
   **
   */
-  m_transaction = GCW::Dbo::Transactions::add( GCW::Core::newGuid() );
+  m_transactionItem = GCW::Dbo::Transactions::add( GCW::Core::newGuid() );
 
   /*
   ** hook everything together
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   // transaction
-  m_transaction.modify()-> set_currency_guid( accountItem1-> commodity_guid() );
-  m_transaction.modify()-> set_enter_date( Wt::WDateTime::currentDateTime() );
+  m_transactionItem.modify()-> set_currency_guid( accountItem1-> commodity_guid() );
+  m_transactionItem.modify()-> set_enter_date( Wt::WDateTime::currentDateTime() );
   // Split1
   auto split1 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
-  split1.modify()-> set_tx_guid         ( m_transaction-> guid() );
+  split1.modify()-> set_tx_guid         ( m_transactionItem-> guid() );
   split1.modify()-> set_account_guid    ( _accountGuid1          );
   split1.modify()-> set_reconcile_state ( GCW_RECONCILE_NO       );
   split1.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE       );
   // Split2
   auto split2 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
-  split2.modify()-> set_tx_guid         ( m_transaction-> guid() );
+  split2.modify()-> set_tx_guid         ( m_transactionItem-> guid() );
   split2.modify()-> set_account_guid    ( _accountGuid2          );
   split2.modify()-> set_reconcile_state ( GCW_RECONCILE_NO       );
   split2.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE       );
@@ -70,12 +63,12 @@ loadTransaction( const std::string & _transactionGuid )-> void
   /*
   ** set the transaction
   */
-  m_transaction = GCW::Dbo::Transactions::load( _transactionGuid );
+  m_transactionItem = GCW::Dbo::Transactions::load( _transactionGuid );
 
   /*
   ** set the splits
   */
-  m_splits = GCW::Dbo::Splits::byTransaction( m_transaction-> guid() );
+  m_splits = GCW::Dbo::Splits::byTransaction( m_transactionItem-> guid() );
 
 } // endloadTransaction( const std::string & _transactionGuid )-> void
 
@@ -85,7 +78,7 @@ deleteTransaction()-> void
 {
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.remove();
+  m_transactionItem.remove();
   for( auto & splitItem : m_splits )
     splitItem.remove();
 
@@ -93,8 +86,22 @@ deleteTransaction()-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+setSplitItem( GCW::Dbo::Splits::Item::Ptr _splitItem )-> void
+{
+  if( !_splitItem )
+    return;
+
+  loadSplit( _splitItem-> guid() );
+
+} // endsetSplitItem( GCW::Dbo::Splits::Item::Ptr _splitItem )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
 loadSplit( const std::string & _splitGuid )-> void
 {
+  if( _splitGuid == "" )
+    return;
+
   /*
   ** in the words of spock: 'remember'
   */
@@ -170,7 +177,7 @@ auto
 GCW::Eng::Transaction::Manager::
 getDate() const-> Wt::WDateTime
 {
-  return m_transaction-> post_date_as_date();
+  return m_transactionItem-> post_date_as_date();
 
 } // endgetDate() const-> Wt::WDateTime &;
 
@@ -187,7 +194,7 @@ GCW::Eng::Transaction::Manager::
 setDate( const Wt::WDateTime & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.modify()-> set_post_date( _value );
+  m_transactionItem.modify()-> set_post_date( _value );
 
 } // endsetDate( const Wt::WDateTime & _value )-> void
 
@@ -196,7 +203,7 @@ GCW::Eng::Transaction::Manager::
 setDate( const Wt::WDate & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.modify()-> set_post_date( Wt::WDateTime( _value ) );
+  m_transactionItem.modify()-> set_post_date( Wt::WDateTime( _value ) );
 
 } // endsetDate( const Wt::WDateTime & _value )-> void
 
@@ -207,7 +214,7 @@ GCW::Eng::Transaction::Manager::
 setAction( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.modify()-> set_num( _value );
+  m_transactionItem.modify()-> set_num( _value );
 
 } // endsetAction( const std::string & _value )-> void
 
@@ -215,7 +222,7 @@ auto
 GCW::Eng::Transaction::Manager::
 getDescription() const-> std::string
 {
-  return m_transaction-> description();
+  return m_transactionItem-> description();
 
 } // endgetDescription() const-> std::string &
 
@@ -224,7 +231,7 @@ GCW::Eng::Transaction::Manager::
 setDescription( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.modify()-> set_description( _value );
+  m_transactionItem.modify()-> set_description( _value );
 
 } // endsetDescription( const std::string & _value )-> void
 
@@ -240,7 +247,7 @@ auto
 GCW::Eng::Transaction::Manager::
 getNum() const-> std::string
 {
-  return m_transaction-> num();
+  return m_transactionItem-> num();
 
 } // endgetDescription() const-> std::string &
 
@@ -249,7 +256,7 @@ GCW::Eng::Transaction::Manager::
 setNum( const std::string & _value )-> void
 {
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  m_transaction.modify()-> set_num( _value );
+  m_transactionItem.modify()-> set_num( _value );
 
 } // endsetDescription( const std::string & _value )-> void
 
@@ -322,6 +329,294 @@ setNotes( const std::string & _acctGuid, const std::string & _value  )-> void
   forAccountSplit( _acctGuid ).modify()-> set_memo( _value );
 
 } // endsetNotes( const std::string & _value  )-> void
+
+
+auto
+GCW::Eng::Transaction::Manager::
+otherSplits() const-> GCW::Dbo::Splits::Item::Vector
+{
+  return GCW::Dbo::Splits::bySplitExcept( m_splitGuid );
+
+} // endotherSplits() const-> GCW::Dbo::Splits::Item::Vector
+
+auto
+GCW::Eng::Transaction::Manager::
+setReadOnly( bool _value )-> void
+{
+
+} // endsetReadOnly( bool _value )-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+createDate() const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >();
+
+  /*!
+  ** \note The post_date column (col-0) also carries with it the guid of the split
+  **  item itself, so that the originating split can be located from the table
+  **  view.  The guid can be accessed by;
+  **
+  ** \code
+  ** Wt::WString splitRowGuid = Wt::asString( standardItem.data( Wt::ItemDataRole::User ) )
+  ** \endcode
+  **
+  ** \sa getSplitGuid
+  */
+  auto tip =
+    Wt::WString
+    (
+     "row: {1}\n"
+     "acg: {2}\n"
+     "spg: {3}\n"
+    )
+    .arg( m_model-> rowCount()          )
+    .arg( thisSplit()-> account_guid() )
+    .arg( thisSplit()-> guid()         )
+    ;
+
+  retVal-> setData( transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
+  retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
+  retVal-> setData( thisSplit(), Wt::ItemDataRole::User + 1 );
+  retVal-> setToolTip( tip );
+
+  return std::move( retVal );
+
+} // endcreateDate() const-> std::unique_ptr< Wt::WStandardItem > ;
+
+auto
+GCW::Eng::Transaction::Manager::
+createNum()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> num() );
+
+  return std::move( retVal );
+
+} // endcreateNum()  const-> std::unique_ptr< Wt::WStandardItem >
+
+
+auto
+GCW::Eng::Transaction::Manager::
+createDescription()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> description() );
+
+  return std::move( retVal );
+
+} // endcreateDescription()  const-> std::unique_ptr< Wt::WStandardItem >
+
+
+auto
+GCW::Eng::Transaction::Manager::
+createAccount()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> description() );
+
+  /*!
+  ** The 'account' text depends on the
+  **  target account defined in the split.  There are three
+  **  possibilities here;
+  **
+  **   -# no splits... this shows up as an <b>'imbalance'</b> (this is an error condition)
+  **   -# 1 split...   this just shows the split account on the same single line
+  **   -# >1 split...  this is more than one target account, so just indicate 'split'
+  */
+  switch( otherSplits().size() )
+  {
+    /*!
+    ** \par Imbalance
+    ** This is actually a problem... We don't have another split, and
+    **  according to 'generally accepted accounting practices' we
+    **  should!  So, just  plop an 'imbalance' indicator in the view.
+    **  A style-class is also applied to the item to allow the rendering
+    **  in the view to highlight this problem.
+    */
+    case 0:
+    {
+      retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") ); // account
+      retVal-> setStyleClass( "errval" );
+      retVal-> setToolTip( TR("gcw.AccountRegister.account.imbalanceUSD.toolTip") );
+      break;
+    }
+
+    /*!
+    ** \par Normal Split
+    ** This is a straight and simple 1:1 split transaction, so we can pull
+    **  the account name from the other side of the split and pop that in
+    **  to the model directly.
+    */
+    case 1:
+    {
+      auto txSplitItem      = *otherSplits().begin();
+      auto splitAccountItem = GCW::Dbo::Accounts::byGuid( txSplitItem-> account_guid() );
+
+      // yes, we have one account item
+      if( splitAccountItem )
+      {
+        retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
+
+        auto tip =
+          Wt::WString
+          (
+           "spa:{1}\n"
+           "txi:{2}\n"
+          )
+          .arg( splitAccountItem-> guid() )
+          .arg( txSplitItem-> guid() )
+          ;
+        retVal-> setToolTip( tip );
+      }
+
+      // no, we don't have an account item
+      else
+      {
+        /*!
+        ** \par Another Imbalance
+        ** This is another problem... We have another split, but the account
+        **  we are split-to doesn't exist.  This is a problem and should not
+        **  happen and represents an error in the database.  This means the
+        **  account containing this guid nolonger exists.  That should never
+        **  happen.
+        */
+        retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
+        retVal-> setStyleClass( "errval" );
+
+        auto toolTip =
+          Wt::WString("target guid:{1}\n{2}")
+          .arg( txSplitItem-> account_guid() )
+          .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
+          .toUTF8()
+          ;
+
+        retVal-> setToolTip( toolTip );
+
+      } // endelse no account item
+
+      break;
+
+    } // endcase 1:
+
+    /*!
+    ** \par Multi-Split
+    ** When we have more than one split then we cannot display
+    **  all of the split accounts on just one line, so just pop
+    **  a message that indicates that we're in a multisplit
+    **  transaction.
+    */
+    default:
+    {
+      retVal-> setText( TR("gcw.AccountRegister.account.multisplit") ); // account
+    }
+
+  } // endswitch( transMan.otherSplits().size() )
+
+
+  return std::move( retVal );
+
+} // endcreateAccount()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createReconcile()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( thisSplit()-> reconcile_state() );
+
+  return std::move( retVal );
+
+} // endcreateReconcile()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createDebit()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >(  );
+
+  if( thisSplit()-> value() > 0 )
+  {
+    retVal -> setText( thisSplit()-> valueAsString() );
+  }
+
+  return std::move( retVal );
+
+} // endcreateDebit()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createCredit()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >(  );
+
+  if( thisSplit()-> value() < 0 )
+  {
+    retVal -> setText( thisSplit()-> valueAsString( true ) );
+  }
+
+  return std::move( retVal );
+
+} // endcreateCredit()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createBalance()  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
+
+  return std::move( retVal );
+
+} // endcreateBalance()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+appendRow()-> void
+{
+  std::vector< std::unique_ptr< Wt::WStandardItem > > row ;
+
+  /*!
+  ** Get the prefrence item that can inform us about prefrences
+  **  to be applied to this model.
+  **
+  ** \todo would rather not do this here repeatedly
+  **
+  ** Loading prefrences on _every_ row append could be
+  **  time consumming.
+  */
+  auto prefrenceItem = GCW::Dbo::Prefrences::get();
+
+  /*
+  ** calculate the running balance
+  */
+  model()-> m_balance += thisSplit()-> value();
+
+  row.push_back( createDate        () );
+  row.push_back( createNum         () );
+  row.push_back( createDescription () );
+  row.push_back( createAccount     () );
+  row.push_back( createReconcile   () );
+  row.push_back( createDebit       () );
+  row.push_back( createCredit      () );
+  row.push_back( createBalance     () );
+
+  /*
+  ** if the balance is negative, highlight the row
+  */
+  if( model()-> m_balance < 0 )
+  {
+    if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
+    {
+      for( int col = 0; col< row.size(); col++ )
+        row.at( col ) -> setStyleClass( "negval" );
+    }
+
+    if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
+    {
+      row.at( row.size()-1 ) -> setStyleClass( "negval" );
+    }
+
+  } // endif( model()-> m_balance < 0 )
+
+  m_model-> appendRow( std::move( row ) );
+
+} // endappendRow( GCW_NUMERIC _balance )-> GCW_NUMERIC
 
 
 

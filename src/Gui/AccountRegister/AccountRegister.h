@@ -315,6 +315,13 @@ class AccountRegister
     auto on_jump_triggered()-> void ;
 
     /*!
+    ** \brief Edit to Transaction
+    **
+    ** This will Edit to the other side of the transaction
+    */
+    auto on_edit_triggered()-> void ;
+
+    /*!
     ** \brief Assign Payment
     **
     ** This allows the transaction to be assigned

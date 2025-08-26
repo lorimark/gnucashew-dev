@@ -240,10 +240,12 @@ auto
 GCW::Gui::AccountRegister::
 deleteRow( int _row )-> void
 {
+  // BUGBUG working on the register, fix this!
+
   auto splitGuid = baseModel()-> getSplitGuid( _row );
-  auto transMan = GCW::Eng::Transaction::Manager();
-  transMan.loadSplit( splitGuid );
-  transMan.deleteTransaction();
+//  auto transMan = GCW::Eng::Transaction::Manager();
+//  transMan.loadSplit( splitGuid );
+//  transMan.deleteTransaction();
 
   baseModel()-> refreshFromDisk();
 
@@ -315,12 +317,12 @@ on_delete_triggered()-> void
     auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
 
     auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
-    auto transMan = GCW::Eng::Transaction::Manager();
-    transMan.loadSplit( splitGuid );
+//    auto transMan = GCW::Eng::Transaction::Manager();
+//    transMan.loadSplit( splitGuid );
 
-    templt-> bindString( "date"  , transMan.getDateAsString () );
-    templt-> bindString( "desc"  , transMan.getDescription  () );
-    templt-> bindString( "amount", transMan.getValueAsString() );
+//    templt-> bindString( "date"  , transMan.getDateAsString () );
+//    templt-> bindString( "desc"  , transMan.getDescription  () );
+//    templt-> bindString( "amount", transMan.getValueAsString() );
 
     pbCancel-> clicked().connect( msgBox, &Wt::WDialog::reject );
     pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );
@@ -452,8 +454,8 @@ on_jump_triggered()-> void
   /*
   ** use a transaction manager so we can find the other split guid
   */
-  auto transMan = GCW::Eng::Transaction::Manager();
-  transMan.loadSplit( baseModel()-> getSplitGuid( m_rightClickIndex.row() ) );
+//  auto transMan = GCW::Eng::Transaction::Manager();
+//  transMan.loadSplit( baseModel()-> getSplitGuid( m_rightClickIndex.row() ) );
 
   /*!
   ** \todo should deal with multiple splits
@@ -465,9 +467,17 @@ on_jump_triggered()-> void
   **  it indicates that the jump will jump to the 'highest value'
   **  split... that could work.
   */
-  jumpToAccount().emit( transMan.thatSplit()-> account_guid() );
+//  jumpToAccount().emit( transMan.thatSplit()-> account_guid() );
 
 } // endon_jump_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::
+on_edit_triggered()-> void
+{
+
+
+} // endon_edit_triggered()-> void
 
 auto
 GCW::Gui::AccountRegister::
@@ -544,6 +554,13 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
       item-> setDisabled( true );
 
   }
+
+  // edit
+  {
+    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.edit" ), this, &AccountRegister::on_edit_triggered );
+  }
+
+
 
 #ifdef NEVER
   m_popupMenu.addSeparator();

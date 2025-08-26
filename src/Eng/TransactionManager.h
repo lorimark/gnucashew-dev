@@ -13,32 +13,34 @@
 */
 namespace GCW {
   namespace Eng {
+    class AccountRegisterModel ;
     namespace Transaction {
 
 /*!
 ** \brief Transaction Manager
 **
-** This is a convenience class for grouping all the
-**  transaction manipulation tasks in to one place.  It allows
-**  new transactions to be created, and takes care of insuring that
-**  the transaction is always in balance, and always contains the
-**  requisite debits and credits to insure a properly balanced
-**  transaction.
+** This is a convenience class for grouping all the transaction manipulation tasks in to one place.
+**  It allows new transactions to be created, and takes care of insuring that the transaction is
+**  always in balance, and always contains the requisite debits and credits to insure a properly
+**  balanced transaction.
+**
+** The Transaction Manager is a 'friend' class to the AccountRegisterModel.  This allows the manager
+**  to poke directly in to the model and manipulate it.
 **
 */
 class Manager
 {
   public:
 
-    Manager();
-    Manager( GCW::Dbo::Splits::Item::Ptr _splitItem );
+    Manager( GCW::Eng::AccountRegisterModel * _model );
+
+    auto model() const-> GCW::Eng::AccountRegisterModel * { return m_model ; }
 
     /*!
     ** \brief Set Transaction
     **
     ** Set transaction based on the transaction Guid.  This will load
     **  the transaction as well as all the splits associated with it.
-    **
     */
     auto loadTransaction( const std::string & _transactionGuid )-> void ;
 
@@ -47,9 +49,10 @@ class Manager
     **
     ** This insures all splits and any other data associated with the
     **  transaction is properly removed.
-    **
     */
     auto deleteTransaction()-> void ;
+
+    auto setSplitItem( GCW::Dbo::Splits::Item::Ptr _splitItem )-> void ;
 
     /*!
     ** \brief Set Split
@@ -58,7 +61,6 @@ class Manager
     **
     ** This will load the split, then load the transaction for that split,
     **  causing all the other splits to load.
-    **
     */
     auto loadSplit( const std::string & _splitGuid )-> void ;
 
@@ -66,7 +68,6 @@ class Manager
     ** \brief Sort Splits
     **
     ** Sorts first Debits, then Credits
-    **
     */
     auto sortSplits()-> void ;
 
@@ -77,7 +78,6 @@ class Manager
     **  balance or not.
     **
     ** \ref see; gnucash/libgnucash/engine/Transaction.cpp:1030
-    **
     */
     auto isBalanced()-> bool ;
 
@@ -89,7 +89,6 @@ class Manager
     **  transaction is in balance.
     **
     ** \ref see; gnucash/libgnucash/engine/Transaction.cpp:1030
-    **
     */
     auto balanceValue()-> GCW_NUMERIC ;
 
@@ -98,7 +97,6 @@ class Manager
     **
     ** This will create a new Transaction for an account within the
     **  system fully populated with at least two splits.
-    **
     */
     auto newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void ;
 
@@ -106,24 +104,23 @@ class Manager
     ** \brief Transaction Item
     **
     ** This returns the transaction pointer object
-    **
     */
-    auto transaction() const-> GCW::Dbo::Transactions::Item::Ptr { return m_transaction; }
+    auto transactionItem() const-> GCW::Dbo::Transactions::Item::Ptr { return m_transactionItem; }
 
     /*!
     ** \brief Splits Vector
     **
     ** This returns the splits vector
-    **
     */
     auto splits() const-> GCW::Dbo::Splits::Item::Vector { return m_splits; }
+
+    auto otherSplits() const-> GCW::Dbo::Splits::Item::Vector ;
 
     /*!
     ** \brief Other GUID
     **
     ** When there are only two splits, this will return the guid of the
     **  split item that _does not_ match the guid provided.
-    **
     */
     auto otherGuid() const-> std::string ;
 
@@ -131,7 +128,6 @@ class Manager
     ** \brief Set Date
     **
     ** This sets the date on the Transaction of the element.
-    **
     */
     auto getDate() const-> Wt::WDateTime ;
     auto getDateAsString() const-> Wt::WString ;
@@ -151,7 +147,6 @@ class Manager
     ** \brief Set Description
     **
     ** This sets the description on the Transaction of the element.
-    **
     */
     auto getDescription() const-> std::string ;
     auto setDescription( const std::string & _value )-> void ;
@@ -163,7 +158,6 @@ class Manager
     ** On the Transaction, the 'num' is the action field, on the splits
     **  it is the action value.  So, in transaction it's called 'num' and
     **  in the splits it's called 'action'.
-    **
     */
     auto getNum() const-> std::string ;
     auto setNum( const std::string & _value )-> void ;
@@ -209,18 +203,35 @@ class Manager
     ** When we know the account guid, this will fetch the associated split
     **
     ** \note this assumes an account only has a single split
-    **
     */
     auto forAccountSplit( const std::string & _accountGuid ) const-> GCW::Dbo::Splits::Item::Ptr ;
 
     auto thisSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
     auto thatSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
 
+    /*
+    ** append the row to the model
+    */
+    auto appendRow()-> void ;
+
+    auto setReadOnly( bool _value )-> void ;
+
   private:
 
-    std::string                            m_splitGuid   ;
-    GCW::Dbo:: Transactions ::Item::Ptr    m_transaction ;
-    GCW::Dbo:: Splits       ::Item::Vector m_splits      ;
+    auto createDate        () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createNum         () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDescription () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createAccount     () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createReconcile   () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDebit       () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createCredit      () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createBalance     () const-> std::unique_ptr< Wt::WStandardItem > ;
+
+    GCW::Eng::AccountRegisterModel          * m_model           = nullptr ;
+    Wt::WModelIndex                           m_index           ;
+    std::string                               m_splitGuid       ;
+    GCW::Dbo:: Transactions ::Item::Ptr       m_transactionItem ;
+    GCW::Dbo:: Splits       ::Item::Vector    m_splits          ;
 
 }; // endclass Manager
 

@@ -115,8 +115,8 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
   ** If this transaction split is reconciled, then it is
   **  considered not deletable
   */
-  auto split = Dbo::Splits::byGuid( getSplitGuid( _index ) );
-  if( split-> isReconciled() )
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
+  if( transMan.thisSplit()-> isReconciled() )
     return false;
 
   /*
@@ -130,21 +130,20 @@ auto
 GCW::Eng::AccountRegisterModel::
 isJumpable( const Wt::WModelIndex & _index )-> bool
 {
-  /*!
+  /*
   ** If this transaction split has no guid
   **  then it's a new row, and cannot be jumped
   */
   if( getSplitGuid( _index ) == "" )
     return false;
 
-  // BUGBUG: use transman here to get the other split
-  /*!
-  ** Need to have another split to be jumpable
+  /*
+  ** If this transaction split has not corresponding split it is
+  **  considered not jumpable
   */
-//  auto splits = Dbo::Splits::bySplitExcept( getSplitGuid( _index ) );
-//  if( 
-//  if( !split || split-> guid() == "" )
-//    return false;
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
+  if( transMan.thatSplit()-> guid() == "" )
+    return false;
 
   /*
   ** jumpable
@@ -193,9 +192,9 @@ isReadOnly( const Wt::WModelIndex & _index )-> bool
   **  manager to get this done, as it encapsulates a bunch
   **  of different tools for manipulating the data.
   */
-//  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
-//  if( transMan.thisSplit()-> isReconciled() )
-//    return true;
+  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
+  if( transMan.thisSplit()-> isReconciled() )
+    return true;
 
   /*
   ** readOnly == false == editable
@@ -241,7 +240,7 @@ getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
   auto retVal =
     Wt::WDateTime::fromString             // convert the WString to a WDateTime
     (
-      getString( _index, 0 /* COL_DATE */ ),
+      getString( _index, COL_DATE ),
       GCW_DATE_FORMAT_DISPLAY             // use this DATE format for the conversion
     );
 
@@ -378,7 +377,7 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   /*
   ** Prepare to update everything
   */
-  GCW::Eng::Transaction::Manager transMan( this );
+  GCW::Eng::Transaction::Manager transMan;
 
   /*
   ** If we don't have a split guid, then this is a new row.  It also
@@ -659,11 +658,6 @@ refreshFromDisk()-> void
   */
   auto registerAccountItem = GCW::Dbo::Accounts::byGuid( m_accountGuid );
 
-  /*
-  ** use a transaction manager for accessing everything
-  */
-  GCW::Eng::Transaction::Manager transMan( this );
-
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " guid:" << registerAccountItem-> guid()
@@ -699,16 +693,22 @@ refreshFromDisk()-> void
   **  subsequently re-sorted or subset-extracted without affecting
   **  the running balances and so forth.
   */
-  m_balance = GCW_NUMERIC( 0 );
+  GCW_NUMERIC runningBalance( 0 );
   for( auto splitItem : splitItems )
   {
-    transMan.setSplitItem( splitItem );
-
     /*
     ** Start out read-only == true.  We want to default read-only
     **  and upgrade to read-write if the dataset calls for it.
     */
     bool readOnly = true;
+
+    /*!
+    ** From the initial split item, we get a handle on the transaction,
+    **  and then load all of the other splits associated with this
+    **  transaction.
+    */
+    auto transactionItem   = GCW::Dbo::Transactions ::byGuid        ( splitItem-> tx_guid () );
+    auto transactionSplits = GCW::Dbo::Splits       ::bySplitExcept ( splitItem-> guid    () );
 
     /*
     ** BUGBUG: Depending on the condition of the database, in the odd chance that something
@@ -717,7 +717,7 @@ refreshFromDisk()-> void
     **  to generate some sort of report at this point, but for now we'll just step
     **  over it.
     */
-    if( !transMan.transactionItem() )
+    if( !transactionItem )
       continue;
 
     /*
@@ -727,7 +727,6 @@ refreshFromDisk()-> void
     */
     auto _append1stRow = [&]()
     {
-#ifdef NEVER
       /*
       ** Prepare a row of columns.
       **
@@ -776,7 +775,7 @@ refreshFromDisk()-> void
         ;
 
       post_date = _addColumn( columns, "" );
-      post_date-> setData( transMan.transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
+      post_date-> setData( transactionItem-> post_date_as_date(), Wt::ItemDataRole::Edit );
       post_date-> setData( splitItem-> guid(), Wt::ItemDataRole::User );
       post_date-> setData( splitItem , Wt::ItemDataRole::User + 1 );
       post_date-> setToolTip( tip );
@@ -784,12 +783,12 @@ refreshFromDisk()-> void
       /*!
       ** The 'num' column is a simple text-column.
       */
-      num = _addColumn( columns, transMan.transactionItem()-> num() );
+      num = _addColumn( columns, transactionItem-> num() );
 
       /*!
       ** The 'description' column is a simple text-column.
       */
-      description = _addColumn( columns, transMan.transactionItem()-> description() );
+      description = _addColumn( columns, transactionItem-> description() );
 
       /*!
       ** The 'account' text depends on the
@@ -800,7 +799,7 @@ refreshFromDisk()-> void
       **   -# 1 split...   this just shows the split account on the same single line
       **   -# >1 split...  this is more than one target account, so just indicate 'split'
       */
-      switch( transMan.otherSplits().size() )
+      switch( transactionSplits.size() )
       {
         /*!
         ** \par Imbalance
@@ -826,7 +825,7 @@ refreshFromDisk()-> void
         */
         case 1:
         {
-          auto txSplitItem      = *transMan.otherSplits().begin();
+          auto txSplitItem      = *transactionSplits.begin();
           auto splitAccountItem = GCW::Dbo::Accounts::byGuid( txSplitItem-> account_guid() );
 
           // yes, we have one account item
@@ -887,7 +886,7 @@ refreshFromDisk()-> void
           account = _addColumn( columns, TR("gcw.AccountRegister.account.multisplit") ); // account
         }
 
-      } // endswitch( transMan.otherSplits().size() )
+      } // endswitch( transactionSplits.size() )
 
       /*!
       ** The reconcile column is a simple text-column.
@@ -897,34 +896,31 @@ refreshFromDisk()-> void
       /*!
       ** \par Balance Computation Notes
       **
-      **  There are two 'types' of accounts; Debit/Credit.  Gnucash
-      **   stores split information as a single value that is positive
-      **   or negative.  If the value is positive, then it is posted
-      **   to the debit (left) column.  If the value is negative, it
-      **   is posted to credit (right) column.
+      **  There are two 'types' of accounts; Debit/Credit.  Gnucash stores split
+      **   information as a single value that is positive or negative.  If the value
+      **   is positive, then it is posted to the debit (left) column.  If the value
+      **   is negative, it is posted to credit (right) column.
       **
-      **  Depending on the account type (debit/credit), that value is
-      **   then either 'added' or 'subtracted' from the account balance.
-      **   If this is a 'credit' account, then the value is subtracted,
-      **   and if it is a debit account, the value is added.
+      **  Depending on the account type (debit/credit), that value is then either
+      **   'added' or 'subtracted' from the account balance.  If this is a 'credit'
+      **   account, then the value is subtracted, and if it is a debit account, the
+      **   value is added.
       **
-      **  Therefore, if this is a credit account, such as a credit card,
-      **   then a 'positive' value, posted to the debit column, would
-      **   'decrease' the balance in that account.  Therefore, the value,
-      **   being positive, is 'subtracted' from the running balance.  If
-      **   the value were negative, it would be posted to the credit
-      **   column, and again would be 'subtracted' from the running
-      **   balance, and a negative value being subtracted from a value
-      **   causes the result to 'increase'.
+      **  Therefore, if this is a credit account, such as a credit card, then a
+      **   'positive' value, posted to the debit column, would 'decrease' the balance
+      **   in that account.  Therefore, the value, being positive, is 'subtracted'
+      **   from the running balance.  If the value were negative, it would be posted
+      **   to the credit column, and again would be 'subtracted' from the running
+      **   balance, and a negative value being subtracted from a value causes the
+      **   result to 'increase'.
       **
-      **  If this is a debit account, such as a bank checking account, a
-      **   'positive' value, posted to the debit column (again), would
-      **   'increase' the balance in that account.
+      **  If this is a debit account, such as a bank checking account, a 'positive'
+      **   value, posted to the debit column (again), would 'increase' the balance
+      **   in that account.
       **
       **  So, that's the funky GAAP math done here.
       **
-      ** What follows is a pretty good explanation of the debit/credit
-      **  stuff;
+      ** What follows is a pretty good explanation of the debit/credit stuff;
       **
       **  >>>>>>>>>>>>>>>
       **  Debit/Credit is just Left/Right.
@@ -1097,7 +1093,7 @@ refreshFromDisk()-> void
       /*
       ** Compute the running balance.
       */
-      m_balance += splitItem-> value( invert );
+      runningBalance += splitItem-> value( invert );
 
       /*!
       ** \todo Add up the static running accumulators
@@ -1119,15 +1115,15 @@ refreshFromDisk()-> void
         (
          columns,
          Wt::WString( "{1}" )
-         .arg( toString( m_balance, GCW::Cfg::decimal_format() ) )
+         .arg( toString( runningBalance, GCW::Cfg::decimal_format() ) )
         );
-      balance-> setData( m_balance, Wt::ItemDataRole::User );
+      balance-> setData( runningBalance, Wt::ItemDataRole::User );
 
       /*
       ** If the balance hit negative, highlight the number with a bit
       **  of bad-news-red.
       */
-      if( m_balance < 0 )
+      if( runningBalance < 0 )
       {
         if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
         {
@@ -1185,28 +1181,6 @@ refreshFromDisk()-> void
       ** Add the row to the model
       */
       appendRow( std::move( columns ) );
-#endif
-
-      /*
-      ** If this model is editable, then check the reconciliation
-      **  state.  If the split has already been reconciled then
-      **  we really don't want the user messing around with it.
-      */
-      if( !m_readOnly )
-      {
-        if( splitItem-> reconcile_state() == GCW_RECONCILE_YES )
-        {
-          readOnly = true;
-        }
-        else
-        {
-          readOnly = false;
-        }
-      }
-
-      transMan.setReadOnly( readOnly );
-
-      transMan.appendRow();
 
     }; // endauto _append1stRow = [&]()
 

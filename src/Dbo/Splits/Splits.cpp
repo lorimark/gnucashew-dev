@@ -12,75 +12,87 @@ namespace {
 /*!
 ** \brief Splits Sorter
 **
-** This is a little (private) vector sorter used to sort
-**  the items pulled from the database.  The database can
-**  produce items in random order, and the 'date' is
-**  contained on the 'transaction' so sorting by date
-**  requires a lookup in to the transaction.
+** This is a little (private) vector sorter used to sort the items pulled from the
+**  database.  The database can produce items in random order, and the 'date' is
+**  contained on the 'transaction' so sorting by date requires a lookup in to the
+**  transaction.
 **
-** The sorted vector_of_splits is used in the Account
-**  Register editor, whereby the items need to be in
-**  correct chronological order so as to be able to
-**  calculate a running balance.
-**
+** The sorted_vector_of_splits is used in the Account Register editor, whereby the
+**  items need to be in correct chronological order so as to be able to calculate
+**  a running balance.
 */
 void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 {
   /*!
-  ** Sort the vector of splits by transaction date so that they can be loaded
+  ** Sort the vector of splits by 'transaction date' + 'value' so that they can be loaded
   **  in to the model in proper sequential order.
-  **
   */
   std::sort
   (
-   _splitItems.begin(),
-   _splitItems.end(),
-   []( const GCW::Dbo::Splits::Item::Ptr splitItem1,
-       const GCW::Dbo::Splits::Item::Ptr splitItem2
-     )
-     {
-       auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
-       auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
+    _splitItems.begin(),
+    _splitItems.end(),
+    []
+    ( const GCW::Dbo::Splits::Item::Ptr splitItem1,
+      const GCW::Dbo::Splits::Item::Ptr splitItem2
+    )
+    {
+      /*
+      ** get the transactions
+      */
+      auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
+      auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
 
-       if( trans1
-        && trans2
-         )
-       {
-         /*
-         ** return .bool. if the .trans1. date is .less than. the .trans2. date
-         **
-         ** Also, return .bool. if the trans1-value is less than the trans2-value,
-         **  if the dates are the same.  This way, debits (more positive values)
-         **  are shown first in the register, and credits follow, in descending
-         **  value order.  This resolves one issue that has always drove me mental
-         **  is the register showing negative values because the withdrawals are
-         **  computed prior to the deposits... for that same day.  This totally
-         **  fixes that and lists the deposits first, followed by the withdrawals.
-         **  neat!
-         **
-         ** note: it is possible to string-compare these date values, as they are
-         **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
-         **        sortable.  Alternatively, we can convert this string to an
-         **        internal WDate element, but it's an unnecessary step.
-         **          return trans1-> post_date_as_date()
-         **               < trans2-> post_date_as_date();
-         */
-         if( trans1-> post_date()
-          == trans2-> post_date()
-           )
-           return splitItem1-> value()
-                > splitItem2-> value()
-                ;
+      /*
+      ** if we got transactions, analyze them!
+      */
+      if( trans1
+       && trans2
+        )
+      {
+        /*
+        ** return .bool. if the .trans1. date is .less than. the .trans2. date
+        **
+        ** Also, return .bool. if the trans1-split-value is greater than the
+        **  trans2-split-value, if the dates are the same.  This way, debits
+        **  (positive values) are shown first in the register, and credits
+        **  follow, in value-descending order.  This resolves one issue that
+        **  has always driven me mental which is the register showing negative
+        **  balance values because the withdrawals are computed prior to the
+        **  deposits... for that same day.  This totally fixes that and lists
+        **  the deposits first, followed by the withdrawals.  neat!
+        **
+        ** note: it is possible to string-compare these date values, as they are
+        **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
+        **        sortable.  Alternatively, we can convert this string to an
+        **        internal WDate element, but that would be an unnecessary step.
+        **
+        **            return trans1-> post_date_as_date()
+        **                 < trans2-> post_date_as_date();
+        */
+        if( trans1-> post_date()
+         == trans2-> post_date()
+          )
+          /*
+          ** dates are the same, so compare the values
+          */
+          return splitItem1-> value()
+               > splitItem2-> value()
+               ;
 
-         else
-           return trans1-> post_date()
-                < trans2-> post_date();
-       }
+        /*
+        ** the dates are different so just compare them
+        */
+        else
+          return trans1-> post_date()
+               < trans2-> post_date()
+               ;
+      }
 
-       return false;
+      return false;
 
-     }
-  );
+    } // endlambda( ..compare.. )
+
+  ); // endstd::sort
 
 } // endvoid sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 
@@ -127,7 +139,6 @@ find( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Ptr
 
     /*
     ** We should find only one item
-    **
     */
     if( results.size() == 1 )
       retVal = *results.begin();
@@ -196,7 +207,6 @@ bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
 
   /*
   ** If we don't have a splitItem then we can't do nuthin.
-  **
   */
   if( splitItem )
   {
@@ -212,16 +222,14 @@ bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
     /*
     ** Load the vector, but skip the one that
     **  matches our incoming split guid.
-    **
     */
     for( auto result : results )
       if( result-> guid() != _splitGuid )
         retVal.push_back( result );
 
-    /*!
+    /*
     ** The vector is sorted by transction-date before
     **  returning to the caller.
-    **
     */
     sort( retVal );
 
@@ -249,10 +257,9 @@ byTransaction( const std::string & _txGuid )-> GCW::Dbo::Splits::Item::Vector
   for( auto result : results )
     retVal.push_back( result );
 
-  /*!
+  /*
   ** The vector is sorted by transction-date before
   **  returning to the caller.
-  **
   */
   sort( retVal );
 

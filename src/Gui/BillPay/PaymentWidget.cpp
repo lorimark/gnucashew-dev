@@ -200,8 +200,6 @@ loadData()-> void
 
   auto bpItem = GCW::Gui::BillPay::bpItem( bpGuid() );
 
-  GCW::Eng::Transaction::Manager transactionManager;
-
   auto desc = bpItem.nickname();
   if( bpItem.last4() != "" )
     desc += " (" + bpItem.last4() + ")";
@@ -271,14 +269,16 @@ saveData()-> bool
   **          that gnucash might have to deal with.
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  GCW::Eng::Transaction::Manager transMan;
-  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
-  transMan.setDescription( m_desc-> valueText() );
-  transMan.setDate       ( m_date-> date() );
-  transMan.setValue      ( acctItem-> guid()   , -value() );
-  transMan.setValue      ( bpItem.accountGuid(),  value() );
-  transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
-  transMan.setNum        ( m_num-> valueText().toUTF8() );
+//  GCW::Eng::Transaction::Manager transMan;
+//  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
+//  transMan.setDescription( m_desc-> valueText() );
+//  transMan.setDate       ( m_date-> date() );
+//  transMan.setValue      ( acctItem-> guid()   , -value() );
+//  transMan.setValue      ( bpItem.accountGuid(),  value() );
+//  transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
+//  transMan.setNum        ( m_num-> valueText().toUTF8() );
+
+#warning need to fix this code!
 
   /*
   ** good save

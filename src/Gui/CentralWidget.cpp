@@ -106,6 +106,13 @@ auto
 GCW::Gui::CentralWidget::
 open_AccountRegister( const std::string & _accountGuid )-> void
 {
+  /*!
+  ** \todo handle row selection also
+  **
+  ** This needs to also receive the 'split-guid' of the item
+  **  to jump to.
+  **
+  */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
   /*
