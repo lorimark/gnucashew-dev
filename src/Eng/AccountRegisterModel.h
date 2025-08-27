@@ -24,8 +24,8 @@ namespace GCW {
 class AccountRegisterModel
 : public Wt::WStandardItemModel
 {
-  using RowItem = std::vector< std::unique_ptr< Wt::WStandardItem > >;
-  using ColItem = Wt::WStandardItem *;
+  using RowItem = std::vector< std::unique_ptr< Wt::WStandardItem > > ;
+  using ColItem = Wt::WStandardItem * ;
 
   public:
 
@@ -63,17 +63,17 @@ class AccountRegisterModel
     **
     ** This constructs the model, empty.
     */
-    AccountRegisterModel();
+    AccountRegisterModel() ;
 
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
     auto refreshFromDisk()-> void ;
     auto saveToDisk()-> void ;
 
     auto viewMode() const-> ViewMode { return m_viewMode; }
-    auto setViewMode( ViewMode _viewMode )-> void;
+    auto setViewMode( ViewMode _viewMode )-> void ;
 
     auto doubleLine() const-> bool { return m_doubleLine; }
-    auto setDoubleLine( bool _doubleLine )-> void;
+    auto setDoubleLine( bool _doubleLine )-> void ;
 
     /*!
     ** \brief Is Read Only
@@ -115,22 +115,22 @@ class AccountRegisterModel
     **        does not support a time component... this seems to be
     **        consistent with GnuCash.
     */
-    auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime;
+    auto getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime ;
 
     /*!
     ** \brief Get Action
     */
-    auto getAction( const Wt::WModelIndex & _index )-> std::string;
+    auto getAction( const Wt::WModelIndex & _index )-> std::string ;
 
     /*!
     ** \brief Get Description
     */
-    auto getDescription( const Wt::WModelIndex & _index )-> std::string;
+    auto getDescription( const Wt::WModelIndex & _index )-> std::string ;
 
     /*!
     ** \brief Get Transfer Account Text
     */
-    auto getTransferText( const Wt::WModelIndex & _index )-> std::string;
+    auto getTransferText( const Wt::WModelIndex & _index )-> std::string ;
 
     /*!
     ** \brief Get Transfer Account GUID
@@ -140,7 +140,7 @@ class AccountRegisterModel
     /*!
     ** \brief Get Reconciliation
     */
-    auto getReconcile( const Wt::WModelIndex & _index )-> std::string;
+    auto getReconcile( const Wt::WModelIndex & _index )-> std::string ;
 
     /*!
     ** \brief Get numeric value
@@ -150,17 +150,17 @@ class AccountRegisterModel
     **  intended for internal use).  The 'value' is pulled from the Display
     **  value of the index and converted to a GCW_NUMERIC value.
     */
-    auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+    auto getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     /*!
     ** \brief Get Debit value
     */
-    auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+    auto getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     /*!
     ** \brief Get Credit value
     */
-    auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+    auto getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     /*!
     ** \brief Get Value (positive or negative)
@@ -172,18 +172,18 @@ class AccountRegisterModel
     **
     ** This function always positive for debit, and negative for credit values.
     */
-    auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC;
+    auto getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
     /*!
     ** \brief Get Balance (positive or negative)
     */
     auto getBalance ( const Wt::WModelIndex & _index )-> GCW_NUMERIC ;
 
-    auto present    () const-> GCW_NUMERIC { return m_present;    }
-    auto future     () const-> GCW_NUMERIC { return m_future;     }
-    auto cleared    () const-> GCW_NUMERIC { return m_cleared;    }
-    auto reconciled () const-> GCW_NUMERIC { return m_reconciled; }
-    auto projected  () const-> GCW_NUMERIC { return m_projected;  }
+    auto present    () const-> GCW_NUMERIC { return m_present    ; }
+    auto future     () const-> GCW_NUMERIC { return m_future     ; }
+    auto cleared    () const-> GCW_NUMERIC { return m_cleared    ; }
+    auto reconciled () const-> GCW_NUMERIC { return m_reconciled ; }
+    auto projected  () const-> GCW_NUMERIC { return m_projected  ; }
 
     auto makeRow( const std::string & _splitGuid )-> RowItem ;
 
@@ -202,7 +202,10 @@ class AccountRegisterModel
 
   private:
 
-    auto getString( const Wt::WModelIndex & _index, int column )-> std::string;
+    auto setStyleClass( int _row, const std::string & _class )-> void ;
+    auto removeStyleClass( int _row, const std::string & _class )-> void ;
+
+    auto getString( const Wt::WModelIndex & _index, int column )-> std::string ;
 
     auto saveToDisk( const Wt::WModelIndex & _index )-> void ;
 
@@ -210,8 +213,8 @@ class AccountRegisterModel
     template <typename T>
     bool matchValue( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
     {
-      auto v1 = Wt::cpp17::any_cast< T >( _any1 );
-      auto v2 = Wt::cpp17::any_cast< T >( _any2 );
+      auto v1 = Wt::cpp17::any_cast< T >( _any1 ) ;
+      auto v2 = Wt::cpp17::any_cast< T >( _any2 ) ;
       return v1 == v2;
     }
 #endif
@@ -220,7 +223,7 @@ class AccountRegisterModel
     ** Send a signal when a index is being updated
     **  because it was dirty.
     */
-    Wt::Signal< Wt::WModelIndex > m_goneDirty;
+    Wt::Signal< Wt::WModelIndex > m_goneDirty ;
 
     /*
     ** keep track of rows as they go dirty.
@@ -232,23 +235,23 @@ class AccountRegisterModel
     **
     ** The model can be either R/W (read-write) or R/O (read-only).
     */
-    bool m_readOnly = false;
+    bool m_readOnly = false ;
 
-    ViewMode m_viewMode   = ViewMode::BASIC_LEDGER;
-    bool     m_doubleLine = false;
+    ViewMode m_viewMode   = ViewMode::BASIC_LEDGER ;
+    bool     m_doubleLine = false ;
 
     /*!
     ** \brief Account GUID
     **
     ** The model is associated with a single account.
     */
-    std::string m_accountGuid;
+    std::string m_accountGuid ;
 
     /*
     ** Keep track of the last date entered for pre-populating
     **  the next row.
     */
-    Wt::WDateTime m_lastDate;
+    Wt::WDateTime m_lastDate ;
 
 /*!
 ** \brief Accumulators

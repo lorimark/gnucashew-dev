@@ -57,7 +57,6 @@
   padding:0px;
 }
 
-
 /* Account elipsis '...' on the left */
 .AccountRegister
  .Wt-header
@@ -72,30 +71,93 @@
 /* read-only selected row */
 .AccountRegister
  .Wt-tableview
-  .Wt-tv-contents.Wt-striped
+  .Wt-tv-contents
    div.Wt-tv-c.active
 {
   color: #0d0c0c;
   font-weight:bold;
-  background-color:#ffff7e !important;
+  background-color:#ffef98 !important;
 }
 
-/* Alternating Row Colors */
+/* alternating row colors, first line (basic ledger: rowbl) */
 .AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowbl:nth-child(2n)
+{
+  background-color:#1c861333;
+}
+
+/* alternating row colors, second line (basic ledger: rowbl) */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowbl:nth-child(2n+1)
+{
+  background-color:#ffcb0024;
+}
+
+/* static row colors, (transaction journal: rowtj) */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowtj
+{
+  background-color:#bfdeb9;
+}
+
+/* static row colors, (transaction journal data: rowtd) */
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowtd
+{
+  background-color:#ede7d3;
+}
+
+/*
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowo
+{
+  background-color:#1c861333;
+}
+
+.AccountRegister
+ .Wt-tableview
+  .Wt-tv-contents
+   .rowe
+{
+  background-color:#ffcb0024;
+}
+*/
+
+/*
+** the following css are turned off because we're not
+**  using the 'alternatingRowColors' feature in the
+**  table views.  Insead we are using the .rowo and
+**  .rowe class selectors.
+*/
+/* Alternating Row Colors Even */
+/*.AccountRegister
  .Wt-tableview
   .Wt-tv-contents.Wt-striped
    div.Wt-tv-c:nth-child(2n)
 {
   background-color:#ffcb0024;
 }
+*/
 
-.AccountRegister
+/* Alternating Row Colors Odd */
+/*.AccountRegister
  .Wt-tableview
   .Wt-tv-contents.Wt-striped
    div.Wt-tv-c:nth-child(2n+1)
 {
   background-color:#1c861333;
 }
+*/
 
 /* Thin black line underneath each row */
 .AccountRegister
@@ -150,6 +212,7 @@
    div.Wt-tv-c.selectable
     input
 {
+/*  background-color:#ffef98; */
   background-color:yellow;
   vertical-align:top;
 }

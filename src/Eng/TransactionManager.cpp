@@ -348,9 +348,35 @@ setReadOnly( bool _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-createDate() const-> std::unique_ptr< Wt::WStandardItem >
+createBlank() const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
+
+  retVal-> setStyleClass( "blank" );
+
+  return std::move( retVal );
+
+} // endcreateBlank()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createEmpty() const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >();
+
+  retVal-> setStyleClass( "empty" );
+
+  return std::move( retVal );
+
+} // endcreateEmpty()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >();
+
+  retVal-> setStyleClass( "date" );
 
   /*!
   ** \note The post_date column (col-0) also carries with it the guid of the split
@@ -370,14 +396,13 @@ createDate() const-> std::unique_ptr< Wt::WStandardItem >
      "acg: {2}\n"
      "spg: {3}\n"
     )
-    .arg( m_model-> rowCount()          )
+    .arg( m_model-> rowCount()         )
     .arg( thisSplit()-> account_guid() )
     .arg( thisSplit()-> guid()         )
     ;
 
   retVal-> setData( transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
   retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
-  retVal-> setData( thisSplit(), Wt::ItemDataRole::User + 1 );
   retVal-> setToolTip( tip );
 
   return std::move( retVal );
@@ -386,9 +411,9 @@ createDate() const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createNum()  const-> std::unique_ptr< Wt::WStandardItem >
+createNum( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> num() );
+  auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> num() );
 
   return std::move( retVal );
 
@@ -397,9 +422,20 @@ createNum()  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createDescription()  const-> std::unique_ptr< Wt::WStandardItem >
+createNum( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> description() );
+  auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> action() );
+
+  return std::move( retVal );
+
+} // endcreateNum()  const-> std::unique_ptr< Wt::WStandardItem >
+
+
+auto
+GCW::Eng::Transaction::Manager::
+createDescription( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> description() );
 
   return std::move( retVal );
 
@@ -408,9 +444,20 @@ createDescription()  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createAccount()  const-> std::unique_ptr< Wt::WStandardItem >
+createDescription( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( transactionItem()-> description() );
+  auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> memo() );
+
+  return std::move( retVal );
+
+} // endcreateDescription()  const-> std::unique_ptr< Wt::WStandardItem >
+
+#ifdef NEVER
+auto
+GCW::Eng::Transaction::Manager::
+createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >();
 
   /*!
   ** The 'account' text depends on the
@@ -514,12 +561,67 @@ createAccount()  const-> std::unique_ptr< Wt::WStandardItem >
   return std::move( retVal );
 
 } // endcreateAccount()  const-> std::unique_ptr< Wt::WStandardItem >
+#endif
 
 auto
 GCW::Eng::Transaction::Manager::
-createReconcile()  const-> std::unique_ptr< Wt::WStandardItem >
+createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( thisSplit()-> reconcile_state() );
+  auto retVal = std::make_unique< Wt::WStandardItem >();
+
+  auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
+
+  // yes, we have one account item
+  if( splitAccountItem )
+  {
+    retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
+
+    auto tip =
+      Wt::WString
+      (
+       "spa:{1}\n"
+       "txi:{2}\n"
+      )
+      .arg( splitAccountItem-> guid() )
+      .arg( _splitItem-> guid() )
+      ;
+    retVal-> setToolTip( tip );
+  }
+
+  // no, we don't have an account item
+  else
+  {
+    /*!
+    ** \par Another Imbalance
+    ** This is another problem... We have another split, but the account
+    **  we are split-to doesn't exist.  This is a problem and should not
+    **  happen and represents an error in the database.  This means the
+    **  account containing this guid nolonger exists.  That should never
+    **  happen.
+    */
+    retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
+    retVal-> setStyleClass( "errval" );
+
+    auto toolTip =
+      Wt::WString("target guid:{1}\n{2}")
+      .arg( _splitItem-> account_guid() )
+      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
+      .toUTF8()
+      ;
+
+    retVal-> setToolTip( toolTip );
+
+  } // endelse no account item
+
+  return std::move( retVal );
+
+} // endcreateAccount()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
+createReconcile( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( _splitItem-> reconcile_state() );
 
   return std::move( retVal );
 
@@ -527,13 +629,13 @@ createReconcile()  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createDebit()  const-> std::unique_ptr< Wt::WStandardItem >
+createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
-  if( thisSplit()-> value() > 0 )
+  if( _splitItem-> value() > 0 )
   {
-    retVal -> setText( thisSplit()-> valueAsString() );
+    retVal -> setText( _splitItem-> valueAsString() );
   }
 
   return std::move( retVal );
@@ -542,13 +644,13 @@ createDebit()  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createCredit()  const-> std::unique_ptr< Wt::WStandardItem >
+createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
-  if( thisSplit()-> value() < 0 )
+  if( _splitItem-> value() < 0 )
   {
-    retVal -> setText( thisSplit()-> valueAsString( true ) );
+    retVal -> setText( _splitItem-> valueAsString( true ) );
   }
 
   return std::move( retVal );
@@ -567,56 +669,167 @@ createBalance()  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-appendRow()-> void
+highlightNegativeBalance( RowItem & _row ) const-> void
 {
-  std::vector< std::unique_ptr< Wt::WStandardItem > > row ;
-
-  /*!
-  ** Get the prefrence item that can inform us about prefrences
-  **  to be applied to this model.
-  **
-  ** \todo would rather not do this here repeatedly
-  **
-  ** Loading prefrences on _every_ row append could be
-  **  time consumming.
-  */
-  auto prefrenceItem = GCW::Dbo::Prefrences::get();
-
-  /*
-  ** calculate the running balance
-  */
-  model()-> m_balance += thisSplit()-> value();
-
-  row.push_back( createDate        () );
-  row.push_back( createNum         () );
-  row.push_back( createDescription () );
-  row.push_back( createAccount     () );
-  row.push_back( createReconcile   () );
-  row.push_back( createDebit       () );
-  row.push_back( createCredit      () );
-  row.push_back( createBalance     () );
-
   /*
   ** if the balance is negative, highlight the row
   */
   if( model()-> m_balance < 0 )
   {
+    /*!
+    ** Get the prefrence item that can inform us about prefrences
+    **  to be applied to this model.
+    **
+    ** \todo would rather not do this here repeatedly
+    **
+    ** Loading prefrences on _every_ row append could be
+    **  time consumming.
+    */
+    auto prefrenceItem = GCW::Dbo::Prefrences::get();
+
     if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
     {
-      for( int col = 0; col< row.size(); col++ )
-        row.at( col ) -> setStyleClass( "negval" );
+      for( int col = 0; col< _row.size(); col++ )
+        _row.at( col ) -> setStyleClass( "negval" );
     }
 
     if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
     {
-      row.at( row.size()-1 ) -> setStyleClass( "negval" );
+      _row.at( _row.size()-1 ) -> setStyleClass( "negval" );
     }
 
   } // endif( model()-> m_balance < 0 )
 
-  m_model-> appendRow( std::move( row ) );
 
-} // endappendRow( GCW_NUMERIC _balance )-> GCW_NUMERIC
+} // endhighlightNegativeBalance() const-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+appendBasicLedger() const-> void
+{
+  RowItem row ;
+
+  row.push_back( createDate        ( transactionItem() ) );
+  row.push_back( createNum         ( transactionItem() ) );
+  row.push_back( createDescription ( transactionItem() ) );
+  row.push_back( createAccount     ( thatSplit()       ) );
+  row.push_back( createReconcile   ( thisSplit()       ) );
+  row.push_back( createDebit       ( thisSplit()       ) );
+  row.push_back( createCredit      ( thisSplit()       ) );
+  row.push_back( createBalance     (                   ) );
+
+  highlightNegativeBalance( row );
+
+  /*
+  ** set alternating row colors (row-basic-ledger: rowbl)
+  */
+  for( int col=0; col< row.size(); col++ )
+    row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowbl" );
+
+  model()-> appendRow( std::move( row ) );
+
+} // endappendBasicLedger() const-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+appendAutosplitLedger() const-> void
+{
+} // endappendAutosplitLedger() const-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+appendTransactionJournal() const-> void
+{
+  RowItem row ;
+
+  row.push_back( createDate        ( transactionItem() ) );
+  row.push_back( createNum         ( transactionItem() ) );
+  row.push_back( createDescription ( transactionItem() ) );
+  row.push_back( createEmpty       (                   ) ); // account is empty on this row
+  row.push_back( createEmpty       (                   ) ); // reconcile is empty on this row
+  row.push_back( createDebit       ( thisSplit()       ) );
+  row.push_back( createCredit      ( thisSplit()       ) );
+  row.push_back( createBalance     (                   ) );
+
+  highlightNegativeBalance( row );
+
+  /*
+  ** set static row colorw (row-transaction-journal: rowtj)
+  */
+  for( int col=0; col< row.size(); col++ )
+    row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtj" );
+
+  model()-> appendRow( std::move( row ) );
+
+  for( auto splitItem : splits() )
+  {
+    row.clear();
+    row.push_back( createEmpty       (           ) );
+    row.push_back( createNum         ( splitItem ) );
+    row.push_back( createDescription ( splitItem ) );
+    row.push_back( createAccount     ( splitItem ) );
+    row.push_back( createReconcile   ( splitItem ) );
+    row.push_back( createDebit       ( splitItem ) );
+    row.push_back( createCredit      ( splitItem ) );
+    row.push_back( createEmpty       (           ) );
+
+    for( int col=1; col< row.size(); col++ )
+      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtd" );
+
+    model()-> appendRow( std::move( row ) );
+  }
+
+} // endappendTransactionJournal() const-> void
+
+auto
+GCW::Eng::Transaction::Manager::
+appendGeneralJournal() const-> void
+{
+} // endappendGeneralJournal() const-> void
+
+
+
+auto
+GCW::Eng::Transaction::Manager::
+appendRow()-> void
+{
+  /*
+  ** calculate the running balance
+  */
+  model()-> m_balance += thisSplit()-> value();
+
+  /*
+  ** build a row depending on the view mode
+  */
+  switch( model()-> viewMode() )
+  {
+    case AccountRegisterModel::ViewMode::BASIC_LEDGER:
+    {
+      appendBasicLedger();
+      break;
+    }
+
+    case AccountRegisterModel::ViewMode::AUTOSPLIT_LEDGER:
+    {
+      appendAutosplitLedger();
+      break;
+    }
+
+    case AccountRegisterModel::ViewMode::TRANSACTION_JOURNAL:
+    {
+      appendTransactionJournal();
+      break;
+    }
+
+    case AccountRegisterModel::ViewMode::GENERAL_JOURNAL:
+    {
+      appendGeneralJournal();
+      break;
+    }
+
+  } // endswitch( model()-> viewMode() )
+
+} // endappendRow()-> void
 
 
 

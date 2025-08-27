@@ -9,11 +9,11 @@
 #include "TableView.h"
 
 // Pixels
-const int GCW::Gui::TableView::kTableHeaderRowHeight = 30;
-const int GCW::Gui::TableView::kTableBodyRowHeight   = 20;
-const int GCW::Gui::TableView::kTableCellPadding     = 7;
-const int GCW::Gui::TableView::kScrollBarWidth       = 20;
-const int GCW::Gui::TableView::kDefaultDateTimeWidth = 120;
+const int GCW::Gui::TableView::kTableHeaderRowHeight = 30  ;
+const int GCW::Gui::TableView::kTableBodyRowHeight   = 20  ;
+const int GCW::Gui::TableView::kTableCellPadding     = 7   ;
+const int GCW::Gui::TableView::kScrollBarWidth       = 20  ;
+const int GCW::Gui::TableView::kDefaultDateTimeWidth = 120 ;
 
 namespace {
 static auto keyToCode( Wt::Key _key )-> std::string

@@ -36,6 +36,15 @@ AccountRegisterModel()
 : Wt::WStandardItemModel( 0, 8 ) // 8-columns
 {
   /*
+  ** these are here for testing, so we can quickly enable the view and putz around on it
+  */
+//  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
+//  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
+//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+//  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
+
+
+  /*
   ** set the lastDate to match the todays date, so when first
   **  opening the register, the date is automatically set.
   */
@@ -1344,5 +1353,20 @@ suggestionsFromColumn( int _column ) const-> std::set< std::string >
   return retVal;
 
 } // endsuggestionsFromColumn( int _column ) const-> std::set< std::string >
+
+auto
+GCW::Eng::AccountRegisterModel::
+setStyleClass( int _row, const std::string & _class )-> void
+{
+  
+
+} // endsetStyleClass( int _row, const std::string & _class )-> void
+
+auto
+GCW::Eng::AccountRegisterModel::
+removeStyleClass( int _row, const std::string & _class )-> void
+{
+
+} // endremoveStyleClass( int _row, const std::string & _class )-> void
 
 

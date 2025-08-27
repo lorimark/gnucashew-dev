@@ -78,7 +78,7 @@ class Item
 
     Item( GCW::Dbo::Vars::Item::Ptr _varItem );
 
-    auto reverseBalanceAccounts()   const-> ReverseBalanceAccounts;
+    auto reverseBalanceAccounts() const-> ReverseBalanceAccounts;
     auto accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool;
     auto askOnDelete() const-> bool;
 

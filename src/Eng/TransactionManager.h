@@ -32,6 +32,10 @@ class Manager
 {
   public:
 
+    using RowItem = std::vector< std::unique_ptr< Wt::WStandardItem > > ;
+    using TxItem  = GCW::Dbo::Transactions::Item::Ptr ;
+    using SpItem  = GCW::Dbo::Splits::Item::Ptr ;
+
     Manager( GCW::Eng::AccountRegisterModel * _model );
 
     auto model() const-> GCW::Eng::AccountRegisterModel * { return m_model ; }
@@ -209,23 +213,34 @@ class Manager
     auto thisSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
     auto thatSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
 
+    auto setReadOnly( bool _value )-> void ;
+
     /*
     ** append the row to the model
     */
     auto appendRow()-> void ;
 
-    auto setReadOnly( bool _value )-> void ;
-
   private:
 
-    auto createDate        () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createNum         () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDescription () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createAccount     () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createReconcile   () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDebit       () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createCredit      () const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createBalance     () const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto highlightNegativeBalance( RowItem & _row ) const-> void ;
+
+    auto createBlank       (                ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createEmpty       (                ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDate        ( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createNum         ( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createNum         ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDescription ( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDescription ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createAccount     ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createReconcile   ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDebit       ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createCredit      ( SpItem _spItem ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createBalance     (                ) const-> std::unique_ptr< Wt::WStandardItem > ;
+
+    auto appendBasicLedger        () const-> void ;
+    auto appendAutosplitLedger    () const-> void ;
+    auto appendTransactionJournal () const-> void ;
+    auto appendGeneralJournal     () const-> void ;
 
     GCW::Eng::AccountRegisterModel          * m_model           = nullptr ;
     Wt::WModelIndex                           m_index           ;

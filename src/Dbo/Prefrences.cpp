@@ -7,12 +7,10 @@
 #include "../App.h"
 #include "Prefrences.h"
 
-
 GCW::Dbo::Prefrences::Item::
 Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 {
 }
-
 
 auto
 GCW::Dbo::Prefrences::
@@ -39,11 +37,11 @@ auto
 GCW::Dbo::Prefrences::Item::
 accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
 {
-//  if( _value == AccountRegisterHighlight::NEGVAL_EXTRA )
-//    return true;
-
-  if( _value == AccountRegisterHighlight::NORMAL )
+  if( _value == AccountRegisterHighlight::NEGVAL_EXTRA )
     return true;
+
+//  if( _value == AccountRegisterHighlight::NORMAL )
+//    return true;
 
   return false;
 

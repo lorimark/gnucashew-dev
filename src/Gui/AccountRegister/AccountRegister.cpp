@@ -104,7 +104,7 @@ init()-> void
   ** Configure the table view.
   */
   tableView()-> setSortingEnabled       ( false                                                         );
-  tableView()-> setAlternatingRowColors ( true                                                          );
+//  tableView()-> setAlternatingRowColors ( true                                                          ); /// \todo need to redo this
   tableView()-> setSelectionBehavior    ( Wt::SelectionBehavior::Rows                                   );
   tableView()-> setSelectionMode        ( Wt::SelectionMode::Single                                     );
 //  tableView()-> setEditTriggers         ( Wt::EditTrigger::None                                         );
