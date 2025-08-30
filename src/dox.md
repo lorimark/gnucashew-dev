@@ -57,6 +57,12 @@ This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library
   register).  It's imperfect, but quite functional, and adds multi-user capability for a
   fairly small code payload.
 
+\par Wt Documentation
+ The Wt documentation set is available locally from here;
+ <a href="/wt-docs/reference/html/index.html" target="_blank">
+  (local)/wt-docs/reference/html/index.html
+ </a>
+
 \page AccountEditor Account Editor
 
 This will edit the details of the selected account.
