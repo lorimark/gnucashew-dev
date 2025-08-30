@@ -224,6 +224,7 @@ class Manager
 
     auto highlightNegativeBalance( RowItem & _row ) const-> void ;
 
+    auto createText        ( const std::string & _text ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createBlank       (                ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createEmpty       (                ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createDate        ( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem > ;

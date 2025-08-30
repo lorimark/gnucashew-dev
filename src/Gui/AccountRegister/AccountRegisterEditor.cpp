@@ -871,10 +871,14 @@ auto
 GCW::Gui::AccountRegisterEditor::
 editRow( Wt::WModelIndex _index )-> void
 {
+  return;
 #ifndef NEVER
-  std::cout << __FILE__ << ":" << __LINE__
-    << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
-    << std::endl;
+  if( _index.isValid() )
+  {
+    std::cout << __FILE__ << ":" << __LINE__
+      << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
+      << std::endl;
+  }
 #endif
 
   /*

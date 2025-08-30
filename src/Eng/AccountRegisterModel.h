@@ -17,9 +17,8 @@ namespace GCW {
 /*!
 ** \brief Account Register Model
 **
-** This model is used to present account details to the
-**  'editor register' (the spreadsheet-looking book-like-looking
-**  thing that the user posts transactions through.
+** This model is used to present account details to the 'editor register' (the spreadsheet-looking
+**  book-like-looking thing that the user posts transactions through.
 */
 class AccountRegisterModel
 : public Wt::WStandardItemModel
@@ -32,15 +31,13 @@ class AccountRegisterModel
     /*!
     ** \brief View Mode
     **
-    ** The View Mode defines how the data in the model is assembled.  The
-    **  simplest form is the one-line register, which is also the most compact.
-    **  The next mode is the Auto-Split ledger.  The auto-split ledger looks
-    **  just like the one-line register except for the line that is currently
-    **  selected, which is formatted as a transaction-journal, but just for
-    **  that one selected line.  The final format is the transaction-journal,
-    **  which is like the auto-split register but every row is already split out.
-    **  The General Journal is the same as the Transaction Journal but it shows
-    **  every account, and does not compute balances.
+    ** The View Mode defines how the data in the model is assembled.  The simplest form is the
+    **  one-line register, which is also the most compact.  The next mode is the Auto-Split
+    **  ledger.  The auto-split ledger looks just like the one-line register except for the
+    **  line that is currently selected, which is formatted as a transaction-journal, but just for
+    **  that one selected line.  The final format is the transaction-journal, which is like the
+    **  auto-split register but every row is already split out.  The General Journal is the same
+    **  as the Transaction Journal but it shows every account, and does not compute balances.
     */
     enum class ViewMode
     {
@@ -74,6 +71,17 @@ class AccountRegisterModel
 
     auto doubleLine() const-> bool { return m_doubleLine; }
     auto setDoubleLine( bool _doubleLine )-> void ;
+
+    /*!
+    ** \brief Split Count
+    **
+    ** This is ~slightly~ different than the rowCount() since
+    **  rowCount will return the number of rows in the model, and
+    **  splitCount will return the number of splits used to build
+    **  the model.
+    **
+    */
+    auto splitCount()-> int ;
 
     /*!
     ** \brief Is Read Only
@@ -276,6 +284,7 @@ class AccountRegisterModel
 **   total usd
 */
 
+    int         m_splitCount ; // different than rowCount depending on 'viewMode'
     GCW_NUMERIC m_balance    ;
     GCW_NUMERIC m_present    ;
     GCW_NUMERIC m_future     ;

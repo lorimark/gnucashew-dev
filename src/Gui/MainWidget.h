@@ -46,6 +46,11 @@ class MainWidget
     auto openSelectedAccount()    -> void ;
     auto test()                   -> void ;
 
+    auto setBasicLedger()-> void ;
+    auto setAutosplit()-> void ;
+    auto setTransaction()-> void ;
+    auto setDoubleLine()-> void ;
+
   private:
 
     Wt::WNavigationBar   * m_navBar        = nullptr;

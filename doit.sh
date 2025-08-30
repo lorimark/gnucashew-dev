@@ -8,9 +8,7 @@
 [ -e "gnucashew-live" ] && rm gnucashew-live
 
 pkill -9 gnucashew-bin
-make -j 4 && \
-cp gnucashew-bin gnucashew-live && \
-../run.sh
+make -j 4 && ../run.sh
 
 # ../doit.sh
 

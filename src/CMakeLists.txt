@@ -8,7 +8,7 @@ project (gnucashew-bin
 )
 
 option(ENABLE_BILLPAY "Enable BillPay modules" OFF)
-option(ENABLE_ASAN "Enable AddressSanitizer for memory debugging" OFF)
+option(ENABLE_ASAN "Enable AddressSanitizer for memory debugging" ON)
 
 #
 # this library is used in the file guid.cpp for generating
@@ -29,14 +29,14 @@ endif()
 set(CMAKE_CXX_FLAGS "-DDEC_NAMESPACE=DECIMAL -std=c++17 -Wfatal-errors -Wbuiltin-macro-redefined -g")
 
 # Append AddressSanitizer flags if requested
-if(ENABLE_ASAN)
+#if(ENABLE_ASAN)
   message(STATUS "AddressSanitizer ENABLED")
   set(ASAN_FLAGS "-fsanitize=address -fno-omit-frame-pointer")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ASAN_FLAGS}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${ASAN_FLAGS}")
-else()
-  message(STATUS "AddressSanitizer DISABLED")
-endif()
+#else()
+#message(STATUS "AddressSanitizer DISABLED")
+#endif()
 
 set(PACKAGE_NAME GnuCashew)
 #set(PACKAGE_BUGREPORT "https://bugs.gnucash.org")

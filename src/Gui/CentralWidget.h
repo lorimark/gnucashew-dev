@@ -64,6 +64,8 @@ class CentralWidget
     */
     auto tabIndex( const std::string & _text )-> int ;
 
+    auto currentAccountRegister()-> Gui::AccountRegister * ;
+
     auto test()-> void ;
 
   private:

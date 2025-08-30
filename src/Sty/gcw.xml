@@ -100,6 +100,10 @@
   <message id="gcw.MainWidget.mu.view.filterby"                      >Filter by...</message>
   <message id="gcw.MainWidget.mu.view.refresh"                       >Refresh</message>
   <message id="gcw.MainWidget.mu.view.newaccounts"                   >New Accounts Page</message>
+  <message id="gcw.MainWidget.mu.view.basic"                         >Basic Ledger</message>
+  <message id="gcw.MainWidget.mu.view.autosplit"                     >Auto-Split Ledger</message>
+  <message id="gcw.MainWidget.mu.view.transaction"                   >Transaction Journal</message>
+  <message id="gcw.MainWidget.mu.view.doubleline"                    >Double Line</message>
 
   <message id="gcw.MainWidget.mu.actions"                            >Actions</message>
   <message id="gcw.MainWidget.mu.actions.online"                     >Online Actions</message>

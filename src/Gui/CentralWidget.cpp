@@ -81,8 +81,6 @@ activateAccountsTreeView()-> void
 {
   auto index = tabIndex( TR8( "gcw.AccountsTreeView.tabName" ) );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << index << std::endl;
-
   if( index != -1 )
   {
     tabWidget()-> setCurrentIndex( index );
@@ -135,13 +133,15 @@ open_AccountRegister( const std::string & _accountGuid )-> void
   */
   if( tabIndex( accountItem-> name() ) == -1 )
   {
-    auto u_ = std::make_unique< GCW::Gui::AccountRegister >();
+    auto u_ = std::make_unique< AccountRegister >();
     auto accountRegister = u_.get();
 
     /*
     ** on signal jump, open the other account
     */
-    accountRegister-> jumpToAccount().connect( this, &CentralWidget::open_AccountRegister );
+    accountRegister->
+      jumpToAccount()
+      .connect( this, &CentralWidget::open_AccountRegister );
 
     /*
     ** Open a new AccountRegister tab that is connected to the account
@@ -168,6 +168,16 @@ open_AccountRegister( const std::string & _accountGuid )-> void
   tabWidget()-> setCurrentIndex( tabIndex( accountItem-> name() ) );
 
 } // endopen_AccountRegister( const std::string & _accountGuid )-> void
+
+auto
+GCW::Gui::CentralWidget::
+currentAccountRegister()-> Gui::AccountRegister *
+{
+  Gui::AccountRegister * retVal = dynamic_cast< Gui::AccountRegister * >( tabWidget()-> widget( tabWidget()-> currentIndex() ) );
+
+  return retVal;
+
+} // endcurrentAccountRegister() const-> Gui::AccountRegister *
 
 auto
 GCW::Gui::CentralWidget::

@@ -154,6 +154,43 @@ openSelectedAccount()-> void
 
 } // endopenSelectedAccount()
 
+auto
+GCW::Gui::MainWidget::
+setBasicLedger()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+}
+
+auto
+GCW::Gui::MainWidget::
+setAutosplit()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+}
+
+auto
+GCW::Gui::MainWidget::
+setTransaction()-> void
+{
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+}
+
+auto
+GCW::Gui::MainWidget::
+setDoubleLine()-> void
+{
+  if( auto accountRegister = centralWidget()-> currentAccountRegister() )
+  {
+    auto doubleLine = m_mainMenu-> menuItem( TR( "gcw.MainWidget.mu.view.doubleline" ) );
+
+    accountRegister-> setDoubleLine( doubleLine-> isChecked() );
+  }
+
+} // endsetDoubleLine()-> void
+
 
 auto
 test_tableview()-> void

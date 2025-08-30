@@ -106,6 +106,8 @@ class AccountRegister
     */
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
 
+    auto setDoubleLine( bool _state )-> void ;
+
     /*!
     ** \brief Table View
     */
@@ -336,9 +338,7 @@ class AccountRegister
     */
     auto on_tableView_clicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )-> void ;
 
-
     AccountRegisterEditor                          m_editor                  ;
-
     Wt::WPopupMenu                                 m_popupMenu               ;
     std::string                                    m_accountGuid             ;
     std::shared_ptr< BaseModel                 >   m_baseModel               ;

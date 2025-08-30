@@ -1,4 +1,4 @@
-
+#line 2 "src/Gui/MainMenu.cpp"
 
 #include <Wt/WMenu.h>
 #include <Wt/WPopupMenu.h>
@@ -69,6 +69,12 @@ MainMenu( MainWidget * _mainWidget )
     popView-> addItem( TR( "gcw.MainWidget.mu.view.statusbar"     ) )-> setDisabled( true );
     popView-> addItem( TR( "gcw.MainWidget.mu.view.tabposition"   ) )-> setDisabled( true );
     popView-> addSeparator();
+    popView-> addItem( TR( "gcw.MainWidget.mu.view.basic"         ), _mainWidget, &MainWidget:: setBasicLedger )-> setCheckable( true );
+    popView-> addItem( TR( "gcw.MainWidget.mu.view.autosplit"     ), _mainWidget, &MainWidget:: setAutosplit   )-> setCheckable( true );
+    popView-> addItem( TR( "gcw.MainWidget.mu.view.transaction"   ), _mainWidget, &MainWidget:: setTransaction )-> setCheckable( true );
+    popView-> addSeparator();
+    popView-> addItem( TR( "gcw.MainWidget.mu.view.doubleline"    ), _mainWidget, &MainWidget:: setDoubleLine  )-> setCheckable( true );
+    popView-> addSeparator();
     popView-> addItem( TR( "gcw.MainWidget.mu.view.filterby"      ) )-> setDisabled( true );
     popView-> addSeparator();
     popView-> addItem( TR( "gcw.MainWidget.mu.view.refresh"       ) )-> setDisabled( true );
@@ -89,7 +95,7 @@ MainMenu( MainWidget * _mainWidget )
 
 #ifdef ENABLE_BILLPAY
     if( GCW::app()-> gnucashew_session().hasGnuCashewExtensions() )
-      popActions-> addItem( TR( "gcw.MainWidget.mu.actions.billpay"       ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_BillPayWidget );
+      popActions-> addItem( TR( "gcw.MainWidget.mu.actions.billpay"       ), _mainWidget-> centralWidget(), &CentralWidget::open_BillPayWidget );
 #endif
 
     popActions-> addSeparator();
@@ -307,7 +313,7 @@ MainMenu( MainWidget * _mainWidget )
   } // endREPORTS
 
   /*
-  ** TOOLS->
+  ** TOOLS
   */
   {
     auto m_uTools = addItem( TR( "gcw.MainWidget.mu.tools" ) );
@@ -320,14 +326,14 @@ MainMenu( MainWidget * _mainWidget )
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.closebook"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.importmap"     ) )-> setDisabled( true );
     popTools-> addItem( TR( "gcw.MainWidget.mu.tools.translinkdoc"  ) )-> setDisabled( true );
-    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_GeneralJournal  );
-    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.rawTables"     ), _mainWidget-> centralWidget(), &GCW::Gui::CentralWidget::open_TablesWidget    );
+    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.generaljourn"  ), _mainWidget-> centralWidget(), &CentralWidget::open_GeneralJournal  );
+    popTools-> addItem( TR( "gcw.MainWidget.mu.tools.rawTables"     ), _mainWidget-> centralWidget(), &CentralWidget::open_TablesWidget    );
 
     m_uTools-> setMenu( std::move( popTools ) );
   }
 
   /*
-  ** HELP->
+  ** HELP
   */
   {
     auto m_uHelp = addItem( TR( "gcw.MainWidget.mu.help" ) );
@@ -335,10 +341,58 @@ MainMenu( MainWidget * _mainWidget )
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.tutorial"      ) )-> setDisabled( true );
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.tip"           ) )-> setDisabled( true );
     popHelp-> addItem( TR( "gcw.MainWidget.mu.help.contents"      ) )-> setDisabled( true );
-    popHelp-> addItem( TR( "gcw.MainWidget.mu.help.about"         ), _mainWidget, &GCW::Gui::MainWidget::open_aboutWidget );
+    popHelp-> addItem( TR( "gcw.MainWidget.mu.help.about"         ), _mainWidget, &MainWidget::open_aboutWidget );
     m_uHelp-> setMenu( std::move( popHelp ) );
   }
 
 } // endMainMenu();
+
+
+auto
+GCW::Gui::MainMenu::
+menuItem( const Wt::WString & _text, Wt::WMenu * _menu )-> Wt::WMenuItem *
+{
+  /*
+  ** need a menu or we're dead.
+  */
+  if( !_menu )
+    return nullptr;
+
+  /*
+  ** loop through the menu looking for a match
+  */
+  for( auto item : _menu-> items() )
+  {
+    /*
+    ** found a match, return it
+    */
+    if( item-> text() == _text )
+      return item;
+
+    /*
+    ** no match, see if there's a sub-menu to search
+    */
+    if( item-> menu() )
+      if( auto sub = menuItem( _text, item-> menu() ) )
+        return sub;
+
+  } // endfor( auto item : _menu-> items() )
+
+  /*
+  ** nothing found
+  */
+  return nullptr;
+
+} // endmenuItem( const Wt::WString & _text, Wt::WMenu * _menu )-> Wt::WMenuItem *
+
+auto
+GCW::Gui::MainMenu::
+menuItem( const Wt::WString & _text )-> Wt::WMenuItem *
+{
+  return menuItem( _text, this );
+
+} // endfindItem( const std::string & _text )-> Wt::WMenuItem *
+
+
 
 

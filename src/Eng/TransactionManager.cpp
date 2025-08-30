@@ -348,6 +348,18 @@ setReadOnly( bool _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+createText( const std::string & _text ) const-> std::unique_ptr< Wt::WStandardItem >
+{
+  auto retVal = std::make_unique< Wt::WStandardItem >( _text );
+
+  retVal-> setStyleClass( "blank" );
+
+  return std::move( retVal );
+
+} // endcreateBlank()  const-> std::unique_ptr< Wt::WStandardItem >
+
+auto
+GCW::Eng::Transaction::Manager::
 createBlank() const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
@@ -740,30 +752,38 @@ auto
 GCW::Eng::Transaction::Manager::
 appendTransactionJournal() const-> void
 {
-  RowItem row ;
+  /*
+  ** set the first line
+  */
+  {
+    RowItem row ;
 
-  row.push_back( createDate        ( transactionItem() ) );
-  row.push_back( createNum         ( transactionItem() ) );
-  row.push_back( createDescription ( transactionItem() ) );
-  row.push_back( createEmpty       (                   ) ); // account is empty on this row
-  row.push_back( createEmpty       (                   ) ); // reconcile is empty on this row
-  row.push_back( createDebit       ( thisSplit()       ) );
-  row.push_back( createCredit      ( thisSplit()       ) );
-  row.push_back( createBalance     (                   ) );
+    row.push_back( createDate        ( transactionItem() ) );
+    row.push_back( createNum         ( transactionItem() ) );
+    row.push_back( createDescription ( transactionItem() ) );
+    row.push_back( createEmpty       (                   ) ); // account is empty on this row
+    row.push_back( createEmpty       (                   ) ); // reconcile is empty on this row
+    row.push_back( createDebit       ( thisSplit()       ) );
+    row.push_back( createCredit      ( thisSplit()       ) );
+    row.push_back( createBalance     (                   ) );
 
-  highlightNegativeBalance( row );
+    highlightNegativeBalance( row );
+
+    /*
+    ** set static row color (row-transaction-journal: rowtj)
+    */
+    for( int col=0; col< row.size(); col++ )
+      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtj" );
+
+    model()-> appendRow( std::move( row ) );
+  }
 
   /*
-  ** set static row colorw (row-transaction-journal: rowtj)
+  ** set another line, one for each split
   */
-  for( int col=0; col< row.size(); col++ )
-    row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtj" );
-
-  model()-> appendRow( std::move( row ) );
-
   for( auto splitItem : splits() )
   {
-    row.clear();
+    RowItem row ;
     row.push_back( createEmpty       (           ) );
     row.push_back( createNum         ( splitItem ) );
     row.push_back( createDescription ( splitItem ) );
@@ -775,6 +795,21 @@ appendTransactionJournal() const-> void
 
     for( int col=1; col< row.size(); col++ )
       row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtd" );
+
+    model()-> appendRow( std::move( row ) );
+  }
+
+  if( model()-> doubleLine() )
+  {
+    RowItem row ;
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
 
     model()-> appendRow( std::move( row ) );
   }

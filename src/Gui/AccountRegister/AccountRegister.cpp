@@ -611,6 +611,17 @@ setAccountGuid( const std::string & _accountGuid )-> void
 
 auto
 GCW::Gui::AccountRegister::
+setDoubleLine( bool _state )-> void
+{
+
+  baseModel()-> setDoubleLine( _state );
+
+  setAccountGuid( m_accountGuid );
+
+} // endsetDoubleLine( bool _state )-> void
+
+auto
+GCW::Gui::AccountRegister::
 lastIndex()-> Wt::WModelIndex
 {
   return baseModel()-> index( baseModel()-> rowCount() -1, 0 );
@@ -668,7 +679,7 @@ loadData()-> void
   statusBar()-> setReconciled ( baseModel()-> reconciled () );
   statusBar()-> setFuture     ( baseModel()-> future     () );
   statusBar()-> setCleared    ( baseModel()-> cleared    () );
-  statusBar()-> setRowCount   ( baseModel()-> rowCount   () );
+  statusBar()-> setRowCount   ( baseModel()-> splitCount () );
 
 } // endloadData()-> void
 
