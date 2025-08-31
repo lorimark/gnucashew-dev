@@ -14,7 +14,7 @@ ASAN_OPTIONS=halt_on_error=1:abort_on_error=1 \
   --pid-file=gnucashew-bin-dev.pid \
   --config=../src/wt_config.xml \
   --approot="../approot" \
-  --docroot="../docroot;.,/images,/resources,/styles,/themes,/dox,/wt-docs" \
+  --docroot="../docroot;.,/images,/resources,/styles,/themes,/dox" \
   --errroot="../errroot" \
   --http-listen 0.0.0.0:$GNUCASHEW_PORT \
 

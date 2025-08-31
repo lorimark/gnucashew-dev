@@ -63,6 +63,10 @@ This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library
   (local)/wt-docs/reference/html/index.html
  </a>
 
+\par
+You will be able to locate documentation on \ref Wt::WTableView
+
+
 \page AccountEditor Account Editor
 
 This will edit the details of the selected account.
