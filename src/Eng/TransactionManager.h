@@ -4,6 +4,7 @@
 #define __ENG_TRANSACTIONMANAGER_H___
 
 #include "../Dbo/Accounts/Accounts.h"
+#include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Dbo/Transactions/Transactions.h"
 
@@ -36,6 +37,7 @@ class Manager
     using TxItem  = GCW::Dbo::Transactions::Item::Ptr ;
     using SpItem  = GCW::Dbo::Splits::Item::Ptr ;
 
+    Manager();
     Manager( GCW::Eng::AccountRegisterModel * _model );
 
     auto model() const-> GCW::Eng::AccountRegisterModel * { return m_model ; }
@@ -110,6 +112,7 @@ class Manager
     ** This returns the transaction pointer object
     */
     auto transactionItem() const-> GCW::Dbo::Transactions::Item::Ptr { return m_transactionItem; }
+    auto prefrenceItem() const-> const GCW::Dbo::Prefrences::Item & { return m_prefrenceItem; }
 
     /*!
     ** \brief Splits Vector
@@ -247,6 +250,7 @@ class Manager
     Wt::WModelIndex                           m_index           ;
     std::string                               m_splitGuid       ;
     GCW::Dbo:: Transactions ::Item::Ptr       m_transactionItem ;
+    GCW::Dbo:: Prefrences   ::Item            m_prefrenceItem   ;
     GCW::Dbo:: Splits       ::Item::Vector    m_splits          ;
 
 }; // endclass Manager

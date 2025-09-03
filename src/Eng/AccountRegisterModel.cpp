@@ -1,5 +1,7 @@
 #line 2 "src/Eng/AccountRegisterModel.cpp"
 
+#include <chrono>
+
 #include "../Glb/gcwglobal.h"
 #include "../Dbo/SessionGnuCash.h"
 #include "../Dbo/Splits/Splits.h"
@@ -40,9 +42,9 @@ AccountRegisterModel()
   */
 //  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
-//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
-//  m_doubleLine = true ;
+  m_doubleLine = true ;
 
   /*
   ** set the lastDate to match the todays date, so when first
@@ -623,6 +625,8 @@ auto
 GCW::Eng::AccountRegisterModel::
 refreshFromDisk()-> void
 {
+  const auto start = std::chrono::system_clock::now();
+
   /*
   ** this gets recomputed below
   */
@@ -834,6 +838,11 @@ refreshFromDisk()-> void
   ** Let the rest of the world know the model changed.
   */
   layoutChanged().emit();
+
+  /*
+  ** load time
+  */
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::system_clock::now() - start ).count() << std::endl;
 
 } // endrefreshFromDisk()-> void
 

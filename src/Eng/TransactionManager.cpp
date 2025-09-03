@@ -1,13 +1,20 @@
 #line 2 "src/Eng/TransactionManager.cpp"
 
 #include "../Glb/Core.h"
-#include "../Dbo/Prefrences.h"
 #include "AccountRegisterModel.h"
 #include "TransactionManager.h"
 
 GCW::Eng::Transaction::Manager::
+Manager()
+: m_prefrenceItem( GCW::Dbo::Prefrences::get() )
+{
+
+} // endManager()
+
+GCW::Eng::Transaction::Manager::
 Manager( GCW::Eng::AccountRegisterModel * _model )
-: m_model( _model )
+: m_model( _model ),
+  m_prefrenceItem( GCW::Dbo::Prefrences::get() )
 {
 
 } // endManager()
@@ -401,21 +408,21 @@ createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
   **
   ** \sa getSplitGuid
   */
-  auto tip =
-    Wt::WString
-    (
-     "row: {1}\n"
-     "acg: {2}\n"
-     "spg: {3}\n"
-    )
-    .arg( m_model-> rowCount()         )
-    .arg( thisSplit()-> account_guid() )
-    .arg( thisSplit()-> guid()         )
-    ;
+//  auto tip =
+//    Wt::WString
+//    (
+//     "row: {1}\n"
+//     "acg: {2}\n"
+//     "spg: {3}\n"
+//    )
+//    .arg( m_model-> rowCount()         )
+//    .arg( thisSplit()-> account_guid() )
+//    .arg( thisSplit()-> guid()         )
+//    ;
 
   retVal-> setData( transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
   retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
-  retVal-> setToolTip( tip );
+//  retVal-> setToolTip( tip );
 
   return std::move( retVal );
 
@@ -588,16 +595,16 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   {
     retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
 
-    auto tip =
-      Wt::WString
-      (
-       "spa:{1}\n"
-       "txi:{2}\n"
-      )
-      .arg( splitAccountItem-> guid() )
-      .arg( _splitItem-> guid() )
-      ;
-    retVal-> setToolTip( tip );
+//    auto tip =
+//      Wt::WString
+//      (
+//       "spa:{1}\n"
+//       "txi:{2}\n"
+//      )
+//      .arg( splitAccountItem-> guid() )
+//      .arg( _splitItem-> guid() )
+//      ;
+//    retVal-> setToolTip( tip );
   }
 
   // no, we don't have an account item
@@ -614,14 +621,13 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
     retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
     retVal-> setStyleClass( "errval" );
 
-    auto toolTip =
-      Wt::WString("target guid:{1}\n{2}")
-      .arg( _splitItem-> account_guid() )
-      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
-      .toUTF8()
-      ;
-
-    retVal-> setToolTip( toolTip );
+//    auto toolTip =
+//      Wt::WString("target guid:{1}\n{2}")
+//      .arg( _splitItem-> account_guid() )
+//      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
+//      .toUTF8()
+//      ;
+//    retVal-> setToolTip( toolTip );
 
   } // endelse no account item
 
@@ -688,24 +694,13 @@ highlightNegativeBalance( RowItem & _row ) const-> void
   */
   if( model()-> m_balance < 0 )
   {
-    /*!
-    ** Get the prefrence item that can inform us about prefrences
-    **  to be applied to this model.
-    **
-    ** \todo would rather not do this here repeatedly
-    **
-    ** Loading prefrences on _every_ row append could be
-    **  time consumming.
-    */
-    auto prefrenceItem = GCW::Dbo::Prefrences::get();
-
-    if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
+    if( prefrenceItem().accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
     {
       for( int col = 0; col< _row.size(); col++ )
         _row.at( col ) -> setStyleClass( "negval" );
     }
 
-    if( prefrenceItem.accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
+    if( prefrenceItem().accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
     {
       _row.at( _row.size()-1 ) -> setStyleClass( "negval" );
     }
