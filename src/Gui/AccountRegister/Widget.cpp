@@ -1,4 +1,4 @@
-#line 2 "src/Gui/AccountRegister/AccountRegister.cpp"
+#line 2 "src/Gui/AccountRegister/Widget.cpp"
 
 #include <Wt/WDateEdit.h>
 #include <Wt/WPushButton.h>
@@ -15,71 +15,15 @@
 #include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Eng/TransactionManager.h"
-#include "AccountSuggestionPopup.h"
-#include "AccountRegister.h"
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-GCW::Gui::AccountRegister::StatusBar::
-StatusBar()
-{
-  addStyleClass( "StatusBar" );
-
-  auto lw = setLayout( std::make_unique< Wt::WHBoxLayout >() );
-
-  lw-> setSpacing( 0 );
-
-  auto _addWidget = [&]( const std::string & _key, int _spacing = 0 )
-  {
-    lw-> addWidget( std::make_unique< Wt::WText >( TR("gcw.AccountRegister.StatusBar." + _key ) + ":" ) );
-    auto retVal = lw-> addWidget( std::make_unique< Wt::WText >(), _spacing );
-    retVal-> setAttributeValue( "style", "margin-right:10px" );
-    return retVal;
-  };
-
-  m_present    = _addWidget( "present"      );
-  m_future     = _addWidget( "future"       );
-  m_cleared    = _addWidget( "cleared"      );
-  m_reconciled = _addWidget( "reconciled"   );
-  m_projected  = _addWidget( "projected", 1 );
-  m_rowCount   = _addWidget( "rowCount"     );
-
-  setPresent    ();
-  setFuture     ();
-  setCleared    ();
-  setReconciled ();
-  setProjected  ();
-  setRowCount   ();
-
-} // endStatusBar()
-
-auto
-GCW::Gui::AccountRegister::StatusBar::
-setText( Wt::WText * _widget, GCW_NUMERIC _value )-> void
-{
-  _widget-> setText( "$" + toString( _value, GCW::Cfg::decimal_format() ) );
-}
-
-auto
-GCW::Gui::AccountRegister::StatusBar::
-setText( Wt::WText * _widget, int _value )-> void
-{
-  _widget-> setText( std::to_string( _value ) );
-}
-
-auto GCW::Gui::AccountRegister::StatusBar:: setPresent    ( GCW_NUMERIC _value )-> void  { setText( m_present    , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setFuture     ( GCW_NUMERIC _value )-> void  { setText( m_future     , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setCleared    ( GCW_NUMERIC _value )-> void  { setText( m_cleared    , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setReconciled ( GCW_NUMERIC _value )-> void  { setText( m_reconciled , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setProjected  ( GCW_NUMERIC _value )-> void  { setText( m_projected  , _value ); }
-auto GCW::Gui::AccountRegister::StatusBar:: setRowCount   ( int         _value )-> void  { setText( m_rowCount   , _value ); }
-
+#include "SuggestionPopup.h"
+#include "StatusBar.h"
+#include "Widget.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 init()-> void
 {
   /*
@@ -118,12 +62,14 @@ init()-> void
   **  right-click event.
   */
   tableView()-> setAttributeValue    ( "oncontextmenu","event.cancelBubble=true;event.returnValue=false;return false;" );
-  tableView()-> mouseWentUp().connect( this, &AccountRegister::on_showPopup_triggered );
+  tableView()-> mouseWentUp().connect( this, &Widget::on_showPopup_triggered );
 
   /*
   ** set the column delegates/editors
   */
-  editor().setTableView( tableView() );
+#warning fix me
+  Editor editor;
+  editor.setTableView( tableView() );
 
   tableView()-> headerClicked().connect( [=]( int col, Wt::WMouseEvent event )
   {
@@ -174,7 +120,7 @@ init()-> void
     });
 #endif
 
-  tableView()-> clicked().connect( this,  &AccountRegister::on_tableView_clicked );
+  tableView()-> clicked().connect( this,  &Widget::on_tableView_clicked );
 
   m_baseModel       = std::make_shared< BaseModel                 >();
   m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
@@ -183,7 +129,7 @@ init()-> void
 //  m_sortFilterModel-> setSourceModel( m_baseModel       );
 //  m_sortFilterModel-> sort(0);
 //  m_batchEditModel -> setSourceModel( m_sortFilterModel );
-  m_batchEditModel -> setSourceModel( m_baseModel );
+//  m_batchEditModel -> setSourceModel( m_baseModel );
 
   baseModel()->
     goneDirty().connect( [&]( Wt::WModelIndex _index )
@@ -197,8 +143,8 @@ init()-> void
 } // endinit()-> void
 
 
-GCW::Gui::AccountRegister::
-AccountRegister()
+GCW::Gui::AccountRegister::Widget::
+Widget()
 {
   init();
 
@@ -207,7 +153,7 @@ AccountRegister()
 
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_tableView_clicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )-> void
 {
 #ifdef NEVER
@@ -229,7 +175,7 @@ on_tableView_clicked( Wt::WModelIndex _index, Wt::WMouseEvent _event )-> void
 
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 setReadOnly( bool _state )-> void
 {
   baseModel()-> setReadOnly( _state );
@@ -237,7 +183,7 @@ setReadOnly( bool _state )-> void
 } // endsetReadOnly( bool _state = true )
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 deleteRow( int _row )-> void
 {
   // BUGBUG working on the register, fix this!
@@ -252,7 +198,7 @@ deleteRow( int _row )-> void
 } // enddeleteRow( int _row )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_sortBy_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -260,7 +206,7 @@ on_sortBy_triggered()-> void
 } // endon_sortBy_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_filterBy_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -268,7 +214,7 @@ on_filterBy_triggered()-> void
 } // endon_filterBy_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_renamePage_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -276,7 +222,7 @@ on_renamePage_triggered()-> void
 } // endon_renamePage_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_duplicate_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -284,7 +230,7 @@ on_duplicate_triggered()-> void
 } // endon_duplicate_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_delete_triggered()-> void
 {
   /*!
@@ -367,7 +313,7 @@ on_delete_triggered()-> void
 } // endon_delete_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_removeSplits_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -375,7 +321,7 @@ on_removeSplits_triggered()-> void
 } // endon_removeSplits_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_enter_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -383,7 +329,7 @@ on_enter_triggered()-> void
 } // endon_enter_triggered()-> void;
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_cancel_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -391,7 +337,7 @@ on_cancel_triggered()-> void
 } // endon_cancel_triggered()-> void;
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_manageDocument_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -400,7 +346,7 @@ on_manageDocument_triggered()-> void
 } // endon_manageDocument_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_openDocument_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -408,7 +354,7 @@ on_openDocument_triggered()-> void
 } // endon_openDocument_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_blankTransaction_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -416,7 +362,7 @@ on_blankTransaction_triggered()-> void
 } // endon_blankTransaction_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_goDate_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -424,7 +370,7 @@ on_goDate_triggered()-> void
 } // endon_goDate_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_splitTransaction_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -432,7 +378,7 @@ on_splitTransaction_triggered()-> void
 } // endon_splitTransaction_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_editExchangeRate_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -440,7 +386,7 @@ on_editExchangeRate_triggered()-> void
 } // endon_editExchangeRate_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_schedule_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -448,7 +394,7 @@ on_schedule_triggered()-> void
 } // endon_schedule_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_jump_triggered()-> void
 {
   /*
@@ -472,7 +418,7 @@ on_jump_triggered()-> void
 } // endon_jump_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_edit_triggered()-> void
 {
 
@@ -480,7 +426,7 @@ on_edit_triggered()-> void
 } // endon_edit_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_assignPayment_triggered()-> void
 {
   std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -488,7 +434,7 @@ on_assignPayment_triggered()-> void
 } // endon_assignPayment_triggered()-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void
 {
   /*
@@ -525,7 +471,7 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
 
   // delete
   {
-    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Delete"), this, &AccountRegister::on_delete_triggered );
+    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Delete"), this, &Widget::on_delete_triggered );
 
     /*
     ** delete doesn't work on the 'new' line (need a split guid)
@@ -548,16 +494,32 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
 
   // jump
   {
-    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Jump" ), this, &AccountRegister::on_jump_triggered );
+    /*
+    ** create the menu item
+    */
+    auto item =
+      m_popupMenu
+      .addItem
+      (
+       TR( "gcw.AccountRegister.Popup.Jump" ),
+       this,
+       &Widget::on_jump_triggered
+      );
 
     if( !(baseModel()-> isJumpable( _index )) )
       item-> setDisabled( true );
-
   }
 
   // edit
   {
-    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.edit" ), this, &AccountRegister::on_edit_triggered );
+    auto item =
+      m_popupMenu
+      .addItem
+      (
+       TR( "gcw.AccountRegister.Popup.edit" ),
+       this,
+       &Widget::on_edit_triggered
+      );
   }
 
 
@@ -593,7 +555,7 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
 
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 setAccountGuid( const std::string & _accountGuid )-> void
 {
   m_accountGuid = _accountGuid;
@@ -610,7 +572,7 @@ setAccountGuid( const std::string & _accountGuid )-> void
 } // endsetAccountGuid( const std::string & _accountGuid )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 setDoubleLine( bool _state )-> void
 {
 
@@ -621,7 +583,7 @@ setDoubleLine( bool _state )-> void
 } // endsetDoubleLine( bool _state )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 lastIndex()-> Wt::WModelIndex
 {
   return baseModel()-> index( baseModel()-> rowCount() -1, 0 );
@@ -629,9 +591,11 @@ lastIndex()-> Wt::WModelIndex
 } // endlastIndex()-> Wt::WModelIndex
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 loadData()-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_baseModel-> rowCount() << std::endl;
+
   tableView()-> setModel( m_baseModel );
 
   // 0 = Date
@@ -693,10 +657,10 @@ loadData()-> void
 //} // endeditRow( Wt::WModelIndex _index )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 do_selectRow( Wt::WModelIndex _index )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << ")"
     << " ro:" << baseModel()-> isReadOnly( _index.row() )
@@ -724,7 +688,7 @@ do_selectRow( Wt::WModelIndex _index )-> void
 } // enddo_selectRow( Wt::WModelIndex _index )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 editRow( Wt::WModelIndex _index )-> void
 {
 #ifdef NEVER
@@ -736,12 +700,14 @@ editRow( Wt::WModelIndex _index )-> void
     << std::endl;
 #endif
 
-  editor().editRow( _index );
+#warning fix me
+  Editor editor;
+  editor.editRow( _index );
 
 } // endeditRow( Wt::WModelIndex _index )-> void
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 toJson() const-> Wt::Json::Object
 {
   Wt::Json::Object jobj;
@@ -750,7 +716,7 @@ toJson() const-> Wt::Json::Object
 }
 
 auto
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 fromJson( const Wt::Json::Object & _jobj )-> bool
 {
   return true;
@@ -759,7 +725,7 @@ fromJson( const Wt::Json::Object & _jobj )-> bool
 
 
 void
-GCW::Gui::AccountRegister::
+GCW::Gui::AccountRegister::Widget::
 test()
 {
   std::cout << __FILE__ << ":" << __LINE__ << " ::test::" << std::endl;
@@ -777,7 +743,5 @@ test()
 
 
 } // endvoid GCW::Gui::AccountRegister::test()
-
-
 
 

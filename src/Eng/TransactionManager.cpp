@@ -1,7 +1,7 @@
 #line 2 "src/Eng/TransactionManager.cpp"
 
 #include "../Glb/Core.h"
-#include "AccountRegisterModel.h"
+#include "../Gui/AccountRegister/Model.h"
 #include "TransactionManager.h"
 
 GCW::Eng::Transaction::Manager::
@@ -12,7 +12,7 @@ Manager()
 } // endManager()
 
 GCW::Eng::Transaction::Manager::
-Manager( GCW::Eng::AccountRegisterModel * _model )
+Manager( Gui::AccountRegister::Model * _model )
 : m_model( _model ),
   m_prefrenceItem( GCW::Dbo::Prefrences::get() )
 {
@@ -24,14 +24,12 @@ GCW::Eng::Transaction::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void
 {
   /*!
-  ** The process begins by loading up the two accounts.  The two account
-  **
+  ** The process begins by loading up the two accounts.
   */
   auto accountItem1 = GCW::Dbo::Accounts::load( _accountGuid1 );
 
   /*
   ** create a new transaction with two splits
-  **
   */
   m_transactionItem = GCW::Dbo::Transactions::add( GCW::Core::newGuid() );
 
@@ -396,6 +394,7 @@ createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "date" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   /*!
   ** \note The post_date column (col-0) also carries with it the guid of the split
@@ -434,6 +433,9 @@ createNum( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> num() );
 
+  retVal-> setStyleClass( "txnum" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+
   return std::move( retVal );
 
 } // endcreateNum()  const-> std::unique_ptr< Wt::WStandardItem >
@@ -444,6 +446,9 @@ GCW::Eng::Transaction::Manager::
 createNum( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> action() );
+
+  retVal-> setStyleClass( "spnum" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   return std::move( retVal );
 
@@ -456,6 +461,9 @@ createDescription( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem 
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> description() );
 
+  retVal-> setStyleClass( "txdesc" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+
   return std::move( retVal );
 
 } // endcreateDescription()  const-> std::unique_ptr< Wt::WStandardItem >
@@ -467,6 +475,9 @@ createDescription( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem 
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> memo() );
 
+  retVal-> setStyleClass( "spdesc" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+
   return std::move( retVal );
 
 } // endcreateDescription()  const-> std::unique_ptr< Wt::WStandardItem >
@@ -477,6 +488,8 @@ GCW::Eng::Transaction::Manager::
 createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
+  retVal-> setStyleClass( "acct" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   /*!
   ** The 'account' text depends on the
@@ -500,7 +513,7 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
     case 0:
     {
       retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") ); // account
-      retVal-> setStyleClass( "errval" );
+      retVal-> setStyleClass( retVal-> styleClass() + " errval" );
       retVal-> setToolTip( TR("gcw.AccountRegister.account.imbalanceUSD.toolTip") );
       break;
     }
@@ -545,7 +558,7 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
         **  happen.
         */
         retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
-        retVal-> setStyleClass( "errval" );
+        retVal-> setStyleClass( retVal-> styleClass() + " errval" );
 
         auto toolTip =
           Wt::WString("target guid:{1}\n{2}")
@@ -587,6 +600,7 @@ GCW::Eng::Transaction::Manager::
 createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
 
@@ -619,7 +633,7 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
     **  happen.
     */
     retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
-    retVal-> setStyleClass( "errval" );
+    retVal-> setStyleClass( retVal-> styleClass() + " errval" );
 
 //    auto toolTip =
 //      Wt::WString("target guid:{1}\n{2}")
@@ -641,6 +655,9 @@ createReconcile( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _splitItem-> reconcile_state() );
 
+  retVal-> setStyleClass( "rec" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+
   return std::move( retVal );
 
 } // endcreateReconcile()  const-> std::unique_ptr< Wt::WStandardItem >
@@ -650,6 +667,9 @@ GCW::Eng::Transaction::Manager::
 createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
+
+  retVal-> setStyleClass( "dr" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   if( _splitItem-> value() > 0 )
   {
@@ -666,6 +686,9 @@ createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
+  retVal-> setStyleClass( "cr" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+
   if( _splitItem-> value() < 0 )
   {
     retVal -> setText( _splitItem-> valueAsString( true ) );
@@ -680,6 +703,9 @@ GCW::Eng::Transaction::Manager::
 createBalance()  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
+
+  retVal-> setStyleClass( "bal" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   return std::move( retVal );
 
@@ -697,12 +723,12 @@ highlightNegativeBalance( RowItem & _row ) const-> void
     if( prefrenceItem().accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NEGVAL_EXTRA ) )
     {
       for( int col = 0; col< _row.size(); col++ )
-        _row.at( col ) -> setStyleClass( "negval" );
+        _row.at( col )-> setStyleClass( _row.at( col )-> styleClass() + " negval" );
     }
 
     if( prefrenceItem().accountRegisterHighlight( GCW::Dbo::Prefrences::AccountRegisterHighlight::NORMAL ) )
     {
-      _row.at( _row.size()-1 ) -> setStyleClass( "negval" );
+      _row.at( _row.size()-1 )-> setStyleClass( _row.at( _row.size()-1 )-> styleClass() + " negval" );
     }
 
   } // endif( model()-> m_balance < 0 )
@@ -833,29 +859,32 @@ appendRow()-> void
   */
   switch( model()-> viewMode() )
   {
-    case AccountRegisterModel::ViewMode::BASIC_LEDGER:
+// #warning fix this
+#ifndef NEVER
+    case GCW::Gui::AccountRegister::Model::ViewMode::BASIC_LEDGER:
     {
       appendBasicLedger();
       break;
     }
 
-    case AccountRegisterModel::ViewMode::AUTOSPLIT_LEDGER:
+    case GCW::Gui::AccountRegister::Model::ViewMode::AUTOSPLIT_LEDGER:
     {
       appendAutosplitLedger();
       break;
     }
 
-    case AccountRegisterModel::ViewMode::TRANSACTION_JOURNAL:
+    case GCW::Gui::AccountRegister::Model::ViewMode::TRANSACTION_JOURNAL:
     {
       appendTransactionJournal();
       break;
     }
 
-    case AccountRegisterModel::ViewMode::GENERAL_JOURNAL:
+    case GCW::Gui::AccountRegister::Model::ViewMode::GENERAL_JOURNAL:
     {
       appendGeneralJournal();
       break;
     }
+#endif
 
   } // endswitch( model()-> viewMode() )
 

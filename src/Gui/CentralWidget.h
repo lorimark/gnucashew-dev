@@ -8,7 +8,7 @@
 #include <Wt/WTabWidget.h>
 
 #include "AccountsTreeView.h"
-#include "AccountRegister/AccountRegister.h"
+#include "AccountRegister/Widget.h"
 #include "Customer/MainWidget.h"
 
 namespace GCW {
@@ -64,7 +64,7 @@ class CentralWidget
     */
     auto tabIndex( const std::string & _text )-> int ;
 
-    auto currentAccountRegister()-> Gui::AccountRegister * ;
+    auto currentAccountRegister()-> Gui::AccountRegister::Widget * ;
 
     auto test()-> void ;
 

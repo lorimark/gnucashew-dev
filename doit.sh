@@ -9,6 +9,7 @@
 
 pkill -9 gnucashew-bin
 make -j 4 && ../run.sh
+# make && ../run.sh
 
 # ../doit.sh
 

@@ -1,4 +1,4 @@
-#line 2 "src/Eng/AccountRegisterModel.cpp"
+#line 2 "src/Gui/AccountRegister/Model.cpp"
 
 #include <chrono>
 
@@ -8,8 +8,8 @@
 #include "../Dbo/Prefrences.h"
 #include "../Dbo/Vars/Vars.h"
 #include "../Glb/Core.h"
-#include "TransactionManager.h"
-#include "AccountRegisterModel.h"
+#include "../Eng/TransactionManager.h"
+#include "Model.h"
 
 /*
 ** column definitions:
@@ -33,8 +33,8 @@
 #define COL_BALANCE     (7)
 #define COL_NOTES       (2)
 
-GCW::Eng::AccountRegisterModel::
-AccountRegisterModel()
+GCW::Gui::AccountRegister::Model::
+Model()
 : Wt::WStandardItemModel( 0, 8 ) // 8-columns
 {
   /*
@@ -42,9 +42,9 @@ AccountRegisterModel()
   */
 //  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
-  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
-  m_doubleLine = true ;
+//  m_doubleLine = true ;
 
   /*
   ** set the lastDate to match the todays date, so when first
@@ -82,10 +82,10 @@ AccountRegisterModel()
   });
 #endif
 
-} // endGCW::Eng::AccountRegisterModel::AccountRegisterModel( const std::string & _accountGuid )
+} // endGCW::Gui::AccountRegisterModel::AccountRegisterModel( const std::string & _accountGuid )
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 setAccountGuid( const std::string & _accountGuid )-> void
 {
   m_accountGuid = _accountGuid;
@@ -94,7 +94,7 @@ setAccountGuid( const std::string & _accountGuid )-> void
 } // endsetAccountGuid( const std::string & _accountGuid )-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 setViewMode( ViewMode _viewMode )-> void
 {
   m_viewMode = _viewMode;
@@ -103,7 +103,7 @@ setViewMode( ViewMode _viewMode )-> void
 } // endsetViewMode( ViewMode _viewMode )-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 setDoubleLine( bool _doubleLine )-> void
 {
   m_doubleLine = _doubleLine;
@@ -112,7 +112,7 @@ setDoubleLine( bool _doubleLine )-> void
 } // endsetDoubleLine( bool _doubleLine )-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 splitCount()-> int
 {
   return m_splitCount;
@@ -120,7 +120,7 @@ splitCount()-> int
 } // endsplitCount()-> int
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 isDeletable( const Wt::WModelIndex & _index )-> bool
 {
   /*!
@@ -146,7 +146,7 @@ isDeletable( const Wt::WModelIndex & _index )-> bool
 } // endisDeletable( const Wt::WModelIndex & _index )-> bool
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 isJumpable( const Wt::WModelIndex & _index )-> bool
 {
   /*!
@@ -173,14 +173,14 @@ isJumpable( const Wt::WModelIndex & _index )-> bool
 } // endisJumpable( const Wt::WModelIndex & _index )-> bool
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 isReadOnly()-> bool
 {
   return m_readOnly;
 }
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 isReadOnly( const Wt::WModelIndex & _index )-> bool
 {
   /*
@@ -212,7 +212,7 @@ isReadOnly( const Wt::WModelIndex & _index )-> bool
   **  manager to get this done, as it encapsulates a bunch
   **  of different tools for manipulating the data.
   */
-//  GCW::Eng::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
+//  GCW::Gui::Transaction::Manager transMan( Dbo::Splits::byGuid( getSplitGuid( _index ) ) );
 //  if( transMan.thisSplit()-> isReconciled() )
 //    return true;
 
@@ -224,7 +224,7 @@ isReadOnly( const Wt::WModelIndex & _index )-> bool
 } // endReadOnly( const Wt::WModelIndex & _index )-> bool
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 isReadOnly( int _row )-> bool
 {
   return
@@ -232,7 +232,7 @@ isReadOnly( int _row )-> bool
 }
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 saveToDisk()-> void
 {
   std::cout << FUNCTION_HEADER << " ~not implemented~ " << std::endl;
@@ -240,7 +240,7 @@ saveToDisk()-> void
 } // endsaveToDisk()
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getString( const Wt::WModelIndex & _index, int column )-> std::string
 {
   return
@@ -254,7 +254,7 @@ getString( const Wt::WModelIndex & _index, int column )-> std::string
 } // endgetString( const Wt::WModelIndex & _index, int column )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
 {
   auto retVal =
@@ -274,7 +274,7 @@ getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
 } // endgetDate( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getAction( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_ACTION );
@@ -282,7 +282,7 @@ getAction( const Wt::WModelIndex & _index )-> std::string
 } // endgetAction( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getDescription( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_DESCRIPTION );
@@ -290,7 +290,7 @@ getDescription( const Wt::WModelIndex & _index )-> std::string
 } // endgetDescription( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getTransferText( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_TRANSFER );
@@ -298,7 +298,7 @@ getTransferText( const Wt::WModelIndex & _index )-> std::string
 } // endgetTransferText( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getTransferGuid( const Wt::WModelIndex & _index )-> std::string
 {
   return
@@ -307,7 +307,7 @@ getTransferGuid( const Wt::WModelIndex & _index )-> std::string
 } // endgetTransferGuid( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getReconcile( const Wt::WModelIndex & _index )-> std::string
 {
   return getString( _index, COL_RECONCILE );
@@ -315,7 +315,7 @@ getReconcile( const Wt::WModelIndex & _index )-> std::string
 } // endgetReconcile( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   GCW_NUMERIC retVal( 0 );
@@ -328,7 +328,7 @@ getNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 } // endgetNumeric( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
@@ -337,7 +337,7 @@ getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 } // endgetDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
@@ -346,7 +346,7 @@ getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 } // endgetCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   GCW_NUMERIC retVal( 0 );
@@ -361,7 +361,7 @@ getValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 } // endgetValue( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getSplitGuid( const Wt::WModelIndex & _index )-> std::string
 {
   return
@@ -375,7 +375,7 @@ getSplitGuid( const Wt::WModelIndex & _index )-> std::string
 } // endgetSplitGuid( const Wt::WModelIndex & _index )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 getSplitGuid( int _row )-> std::string
 {
   return getSplitGuid( index( _row, COL_DATE ) );
@@ -383,7 +383,7 @@ getSplitGuid( int _row )-> std::string
 } // endgetSplitGuid( int _row )-> std::string
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 saveToDisk( const Wt::WModelIndex & _index )-> void
 {
 #ifdef NEVER
@@ -485,7 +485,7 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
 } // endsaveToDisk( const Wt::WModelIndex & _index )-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::ItemDataRole _role )-> bool
 {
   /*
@@ -622,7 +622,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 **  table view.
 */
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 refreshFromDisk()-> void
 {
   const auto start = std::chrono::system_clock::now();
@@ -842,22 +842,27 @@ refreshFromDisk()-> void
   /*
   ** load time
   */
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::chrono::duration_cast< std::chrono::milliseconds >( std::chrono::system_clock::now() - start ).count() << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << std::chrono::duration_cast< std::chrono::milliseconds >
+            ( std::chrono::system_clock::now() - start ).count()
+    << "mS load time for"
+    << " " << splitCount() << " items"
+    << std::endl;
 
 } // endrefreshFromDisk()-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
-makeRow( const std::string & _splitGuid )-> GCW::Eng::AccountRegisterModel::RowItem
+GCW::Gui::AccountRegister::Model::
+makeRow( const std::string & _splitGuid )-> GCW::Gui::AccountRegister::Model::RowItem
 {
   RowItem rowItem;
 
   return rowItem;
 
-} // endmakeRow( const std::string & _splitGuid )-> GCW::Eng::AccountRegisterModel::RowItem
+} // endmakeRow( const std::string & _splitGuid )-> GCW::Gui::AccountRegisterModel::RowItem
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 suggestionsFromColumn( int _column ) const-> std::set< std::string >
 {
   /*
@@ -872,7 +877,7 @@ suggestionsFromColumn( int _column ) const-> std::set< std::string >
 } // endsuggestionsFromColumn( int _column ) const-> std::set< std::string >
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 setStyleClass( int _row, const std::string & _class )-> void
 {
   
@@ -880,7 +885,7 @@ setStyleClass( int _row, const std::string & _class )-> void
 } // endsetStyleClass( int _row, const std::string & _class )-> void
 
 auto
-GCW::Eng::AccountRegisterModel::
+GCW::Gui::AccountRegister::Model::
 removeStyleClass( int _row, const std::string & _class )-> void
 {
 

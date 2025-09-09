@@ -1,10 +1,10 @@
-#line 2 "src/Gui/AccountRegister/AccountSuggestionPopup.cpp"
+#line 2 "src/Gui/AccountRegister/SuggestionPopup.cpp"
 
 #include "../App.h"
-#include "AccountSuggestionPopup.h"
+#include "SuggestionPopup.h"
 
-GCW::Gui::AccountSuggestionPopup::
-AccountSuggestionPopup()
+GCW::Gui::AccountRegister::SuggestionPopup::
+SuggestionPopup()
 : Wt::WSuggestionPopup
   (
     Wt::WSuggestionPopup::Options

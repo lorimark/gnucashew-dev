@@ -1,7 +1,7 @@
 #line 2 "src/Dbo/Accounts/Accounts.cpp"
 
-#include "../Glb/Core.h"
-#include "../App.h"
+#include "../../Glb/Core.h"
+#include "../../App.h"
 #include "Accounts.h"
 
 const char * GCW::Dbo::Accounts::s_tableName = "accounts";

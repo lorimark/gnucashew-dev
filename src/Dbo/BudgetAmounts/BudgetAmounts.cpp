@@ -1,11 +1,11 @@
-#line 2 "src/Dbo/Invoices/Invoices.cpp"
+#line 2 "src/Dbo/BudgetAmounts/BudgetAmounts.cpp"
 
 #include "../App.h"
 #include "../Glb/Core.h"
 
-#include "Invoices.h"
+#include "BudgetAmounts.h"
 
-const char * GCW::Dbo::Invoices::s_tableName = "invoices";
+const char * GCW::Dbo::Invoices::s_tableName = "budget_amounts";
 
 const Wt::WFormModel::Field GCW::Dbo::Invoices::Field::guid             = "guid"             ; // text(32) PRIMARY KEY NOT NULL,
 const Wt::WFormModel::Field GCW::Dbo::Invoices::Field::id               = "id"               ; // text(2048) NOT NULL,

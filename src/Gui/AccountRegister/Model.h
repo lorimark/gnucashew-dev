@@ -1,7 +1,7 @@
-#line 2 "src/Eng/AccountRegisterModel.h"
+#line 2 "src/Gui/AccountRegister/Model.h"
 
-#ifndef __ENG_ACCOUNTREGISTERMODEL_H___
-#define __ENG_ACCOUNTREGISTERMODEL_H___
+#ifndef __ENG_ACCOUNTREGISTER_MODEL_H___
+#define __ENG_ACCOUNTREGISTER_MODEL_H___
 
 #include <Wt/WDateTime.h>
 #include <Wt/WStandardItemModel.h>
@@ -12,7 +12,11 @@ namespace GCW {
   namespace Eng {
     namespace Transaction {
       class Manager;
-    }
+    } // endnamespace Transaction {
+  } // endnamespace Eng {
+
+  namespace Gui {
+    namespace AccountRegister {
 
 /*!
 ** \brief Account Register Model
@@ -20,7 +24,7 @@ namespace GCW {
 ** This model is used to present account details to the 'editor register' (the spreadsheet-looking
 **  book-like-looking thing that the user posts transactions through.
 */
-class AccountRegisterModel
+class Model
 : public Wt::WStandardItemModel
 {
   using RowItem = std::vector< std::unique_ptr< Wt::WStandardItem > > ;
@@ -39,6 +43,7 @@ class AccountRegisterModel
     **  auto-split register but every row is already split out.  The General Journal is the same
     **  as the Transaction Journal but it shows every account, and does not compute balances.
     */
+#warning move ViewMode to stand-alone class: GCW::Gui::AccountRegister::ViewMode
     enum class ViewMode
     {
       /// basic one-line per transaction
@@ -60,7 +65,7 @@ class AccountRegisterModel
     **
     ** This constructs the model, empty.
     */
-    AccountRegisterModel() ;
+    Model() ;
 
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
     auto refreshFromDisk()-> void ;
@@ -292,14 +297,15 @@ class AccountRegisterModel
     GCW_NUMERIC m_reconciled ;
     GCW_NUMERIC m_projected  ;
 
-    friend class Transaction::Manager ;
+    friend class Eng::Transaction::Manager ;
 
-}; // endclass AccountRegisterModel
+}; // endclass Model
 
-  } //  namespace Eng {
+    } // namespace AccountRegister {
+  } //  namespace Gui {
 } // endnamespace GCW {
 
-#endif // #ifndef __ENG_ACCOUNTREGISTERMODEL_H___
+#endif // #ifndef __ENG_ACCOUNTREGISTER_MODEL_H___
 
 
 

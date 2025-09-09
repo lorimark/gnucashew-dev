@@ -13,8 +13,12 @@
 **
 */
 namespace GCW {
+  namespace Gui {
+    namespace AccountRegister {
+    class Model ;
+    }
+  }
   namespace Eng {
-    class AccountRegisterModel ;
     namespace Transaction {
 
 /*!
@@ -38,9 +42,9 @@ class Manager
     using SpItem  = GCW::Dbo::Splits::Item::Ptr ;
 
     Manager();
-    Manager( GCW::Eng::AccountRegisterModel * _model );
+    Manager( Gui::AccountRegister::Model * _model );
 
-    auto model() const-> GCW::Eng::AccountRegisterModel * { return m_model ; }
+    auto model() const-> Gui::AccountRegister::Model * { return m_model ; }
 
     /*!
     ** \brief Set Transaction
@@ -246,7 +250,7 @@ class Manager
     auto appendTransactionJournal () const-> void ;
     auto appendGeneralJournal     () const-> void ;
 
-    GCW::Eng::AccountRegisterModel          * m_model           = nullptr ;
+    Gui::AccountRegister::Model             * m_model           = nullptr ;
     Wt::WModelIndex                           m_index           ;
     std::string                               m_splitGuid       ;
     GCW::Dbo:: Transactions ::Item::Ptr       m_transactionItem ;

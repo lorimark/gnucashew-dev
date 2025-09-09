@@ -12,7 +12,7 @@
 */
 namespace GCW {
   namespace Dbo {
-    namespace Invoices {
+    namespace BudgetAmounts {
       class Item;
     }
   }
@@ -28,9 +28,9 @@ namespace GCW {
 template<> struct Wt::Dbo::dbo_traits< GCW::Dbo::Invoices::Item >
 : public Wt::Dbo::dbo_default_traits
 {
-  using IdType = std::string;
-  static auto invalidId()-> IdType { return std::string(); }
-  static auto surrogateIdField()-> const char * { return nullptr; }
+//  using IdType = std::string;
+//  static auto invalidId()-> IdType { return std::string(); }
+//  static auto surrogateIdField()-> const char * { return nullptr; }
   static auto versionField()-> const char * { return nullptr; }
 };
 
@@ -42,43 +42,11 @@ template<> struct Wt::Dbo::dbo_traits< const GCW::Dbo::Invoices::Item > : Wt::Db
 */
 namespace GCW {
   namespace Dbo {
-    namespace Invoices {
+    namespace BudgetAmounts {
 
 /*!
-** \brief Invoices Class
+** \brief BudgetAmounts Class
 **
-**
-** \dot
-** digraph InvoicesMap
-** {
-**   InvoicesItem;
-** }
-** \enddot
-**
-** \par Native GnuCash Invoice Sqlite Schema
-** \code
-**    CREATE TABLE invoices
-**    (
-**     guid text(32) PRIMARY KEY NOT NULL,
-**     id text(2048) NOT NULL,
-**     date_opened text(19),
-**     date_posted text(19),
-**     notes text(2048) NOT NULL,
-**     active integer NOT NULL,
-**     currency text(32) NOT NULL,
-**     owner_type integer,
-**     owner_guid text(32),
-**     terms text(32),
-**     billing_id text(2048),
-**     post_txn text(32),
-**     post_lot text(32),
-**     post_acc text(32),
-**     billto_type integer,
-**     billto_guid text(32),
-**     charge_amt_num bigint,
-**     charge_amt_denom bigint
-**    );
-** \endcode
 **
 */
 class Item
@@ -95,13 +63,6 @@ class Item
     ** \brief ctor with guid
     */
     Item( const std::string & _guid ): m_guid( _guid ){}
-
-    /*!
-    ** \brief GUID
-    **
-    ** Return account 'guid' value - the primary key for the account
-    */
-    auto guid() const-> const std::string & { return m_guid; }
 
     template< class Action > auto
     persist( Action & action )-> void
@@ -129,30 +90,17 @@ class Item
 
   private:
 
-    std::string m_guid             ; // text(32) PRIMARY KEY NOT NULL,
-    std::string m_id               ; // text(2048) NOT NULL,
-    std::string m_date_opened      ; // text(19),
-    std::string m_date_posted      ; // text(19),
-    std::string m_notes            ; // text(2048) NOT NULL,
-    int         m_active           ; // integer NOT NULL,
-    std::string m_currency         ; // text(32) NOT NULL,
-    int         m_owner_type       ; // integer,
-    std::string m_owner_guid       ; // text(32),
-    std::string m_terms            ; // text(32),
-    std::string m_billing_id       ; // text(2048),
-    std::string m_post_txn         ; // text(32),
-    std::string m_post_lot         ; // text(32),
-    std::string m_post_acc         ; // text(32),
-    int         m_billto_type      ; // integer,
-    std::string m_billto_guid      ; // text(32),
-    int         m_charge_amt_num   ; // bigint,
-    int         m_charge_amt_denom ; // bigint
+    std::string m_budget_guid      ; // text(32) NOT NULL
+    std::string m_account_guid     ; // text(32) NOT NULL
+    int         m_period_num       ; // integer  NOT NULL
+    int         m_amount_num       ; // bigint   NOT NULL
+    int         m_amount_denom     ; // bigint   NOT NULL
 
 }; // endclass Item
 
-    } // endnamespace Invoices {
+    } // endnamespace BudgetAmounts {
   } // endnamespace Dbo {
 } // endnamespace GCW {
 
-#endif // __DBO_INVOICES_ITEM_H___
+#endif // __DBO_BUDGETAMOUNTS_ITEM_H___
 

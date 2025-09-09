@@ -261,21 +261,22 @@ saveData()-> bool
   **
   ** BUGBUG: note, this procedure will save 'm_confirm' which is the confirmation notes
   **          to the split item memo field.  This can cause gnucash to improperly display
-  **          the value of that memo field if that value that was set there is multi-line.
-  **          If the value is multi-line, it is able to store properly in the sql database,
-  **          but the display in gnucash does not expand to show the multiple lines, instead
-  **          it shows everything on one line with 'line-return' indicators in it.  It is
-  **          editable, but I don't know the long-term impact of storing data like this
-  **          that gnucash might have to deal with.
+  **          the value of that memo field if that value that was set there is multi-line
+  **          (ie; contains carriage return codes in the line string)  If the value is
+  **          multi-line, it is able to store properly in the sql database, but the display
+  **          in gnucash does not expand to show the multiple lines, instead it shows
+  **          everything on one line with 'line-return' indicators in it.  It is editable,
+  **          but I don't know the long-term impact of storing data like this that gnucash
+  **          might have to deal with.
   */
   GCW::Eng::Transaction::Manager transMan;
-  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid() );
-  transMan.setDescription( m_desc-> valueText() );
-  transMan.setDate       ( m_date-> date() );
-  transMan.setValue      ( acctItem-> guid()   , -value() );
-  transMan.setValue      ( bpItem.accountGuid(),  value() );
+  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid()                );
+  transMan.setDescription( m_desc-> valueText()                                   );
+  transMan.setDate       ( m_date-> date()                                        );
+  transMan.setValue      ( acctItem-> guid()   , -value()                         );
+  transMan.setValue      ( bpItem.accountGuid(),  value()                         );
   transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
-  transMan.setNum        ( m_num-> valueText().toUTF8() );
+  transMan.setNum        ( m_num-> valueText().toUTF8()                           );
 
 #warning need to fix this code!
 
