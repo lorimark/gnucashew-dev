@@ -32,6 +32,10 @@ The source-generated doxygen files can be found here;
 
 https://gnucashew.lorimarksolutions.com/dox/html/index.html
 
+Incidently, this code is hand-written by me.  I use AI a bit for searches and
+ other look-ups and queries, but the code itself is hand-written-by-a-human.
+ Never thought of having to say that before!
+
 This project uses Wt (https://www.webtoolkit.eu/wt) as the
  web rendering library.
 
