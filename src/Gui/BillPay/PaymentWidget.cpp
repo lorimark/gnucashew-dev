@@ -35,13 +35,13 @@ PaymentWidget( const std::string & _bpGuid )
   /*
   ** add the first row of widgets
   */
-  m_date   = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit         >( );
-  m_num    = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit         >( );
-  m_desc   = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit         >( );
-  m_acct   = table()-> elementAt( 0, 3 )-> addNew< AccountSuggestionEdit >( );
-  m_recon  = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit         >( );
-//  m_debit  = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit         >( );
-  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit         >( );
+  m_date   = table()-> elementAt( 0, 0 )-> addNew< Wt::WDateEdit                   >( );
+  m_num    = table()-> elementAt( 0, 1 )-> addNew< Wt::WLineEdit                   >( );
+  m_desc   = table()-> elementAt( 0, 2 )-> addNew< Wt::WLineEdit                   >( );
+  m_acct   = table()-> elementAt( 0, 3 )-> addNew< AccountRegister::SuggestionEdit >( );
+  m_recon  = table()-> elementAt( 0, 4 )-> addNew< Wt::WLineEdit                   >( );
+//  m_debit  = table()-> elementAt( 0, 5 )-> addNew< Wt::WLineEdit                   >( );
+  m_credit = table()-> elementAt( 0, 6 )-> addNew< Wt::WLineEdit                   >( );
 
 #ifdef INCLUDE_TABLE_WITH_MULTIPLE_INPUT_ROWS
   /*

@@ -21,7 +21,7 @@
 #include <Wt/WTextEdit.h>
 
 #include "../AccountComboBox.h"
-#include "../AccountRegister/AccountSuggestionEdit.h"
+#include "../AccountRegister/LineEdit.h"
 #include "../../Dbo/Transactions/Transactions.h"
 #include "Item.h"
 
@@ -81,16 +81,16 @@ class PaymentWidget
     */
     auto value()-> GCW_NUMERIC ;
 
-    std::string             m_bpGuid            ;
-    Wt::WTable            * m_table   = nullptr ;
-    Wt::WDateEdit         * m_date    = nullptr ;
-    Wt::WLineEdit         * m_num     = nullptr ;
-    Wt::WLineEdit         * m_desc    = nullptr ;
-    AccountSuggestionEdit * m_acct    = nullptr ;
-    Wt::WLineEdit         * m_recon   = nullptr ;
-//    Wt::WLineEdit         * m_debit   = nullptr ;
-    Wt::WLineEdit         * m_credit  = nullptr ;
-    Wt::WTextArea         * m_confirm = nullptr ;
+    std::string                       m_bpGuid            ;
+    Wt::WTable                      * m_table   = nullptr ;
+    Wt::WDateEdit                   * m_date    = nullptr ;
+    Wt::WLineEdit                   * m_num     = nullptr ;
+    Wt::WLineEdit                   * m_desc    = nullptr ;
+    AccountRegister::SuggestionEdit * m_acct    = nullptr ;
+    Wt::WLineEdit                   * m_recon   = nullptr ;
+//    Wt::WLineEdit                   * m_debit   = nullptr ;
+    Wt::WLineEdit                   * m_credit  = nullptr ;
+    Wt::WTextArea                   * m_confirm = nullptr ;
 
     std::vector< std::vector< Wt::WFormWidget * > > m_tableWidgets ;
 

@@ -151,7 +151,7 @@ EditWidget( const std::string & _bpGuid )
     **  to set the widget height.
     **
     */
-    auto w_ = std::make_unique< GCW::Gui::AccountRegister >();
+    auto w_ = std::make_unique< GCW::Gui::AccountRegister::Widget >();
     m_register = w_.get();
     m_register-> setReadOnly( true );
     auto tab = m_tabWidget-> addTab( std::move( w_ ), TR("gcw.billPay.tabName.history") );

@@ -42,8 +42,10 @@ class Model
     **  that one selected line.  The final format is the transaction-journal, which is like the
     **  auto-split register but every row is already split out.  The General Journal is the same
     **  as the Transaction Journal but it shows every account, and does not compute balances.
+    **
+    ** \todo move ViewMode to stand-alone class: GCW::Gui::AccountRegister::ViewMode
+    **
     */
-#warning move ViewMode to stand-alone class: GCW::Gui::AccountRegister::ViewMode
     enum class ViewMode
     {
       /// basic one-line per transaction
