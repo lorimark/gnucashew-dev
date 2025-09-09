@@ -67,9 +67,8 @@ init()-> void
   /*
   ** set the column delegates/editors
   */
-#warning fix me
   Editor editor;
-  editor.setTableView( tableView() );
+  editor.applyDelegates( tableView() );
 
   tableView()-> headerClicked().connect( [=]( int col, Wt::WMouseEvent event )
   {
@@ -594,8 +593,6 @@ auto
 GCW::Gui::AccountRegister::Widget::
 loadData()-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << m_baseModel-> rowCount() << std::endl;
-
   tableView()-> setModel( m_baseModel );
 
   // 0 = Date
@@ -660,27 +657,28 @@ auto
 GCW::Gui::AccountRegister::Widget::
 do_selectRow( Wt::WModelIndex _index )-> void
 {
-#ifndef NEVER
-  std::cout << __FILE__ << ":" << __LINE__
-    << " " << __FUNCTION__ << "(" << _index.row() << ")"
-    << " ro:" << baseModel()-> isReadOnly( _index.row() )
-    << " i: ("  << _index.row() << "," << _index.column() << ")"
-    << " si: (" << m_selectIndex.row() << "," << m_selectIndex.column() << ")"
-    << std::endl;
-#endif
-
   /*
   ** if the row hasn't changed, do nothing
   */
-  if( m_selectIndex.row() == _index.row() )
-    return;
+  if( m_selectIndex.isValid() )
+    if( m_selectIndex.row() == _index.row() )
+      return;
+
+  m_selectIndex = _index;
+
+#ifndef NEVER
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << __FUNCTION__ << "(" << _index.row() << ")"
+    << " isR/O:" << baseModel()-> isReadOnly( _index.row() )
+    << " i("  << _index.row() << "," << _index.column() << ")"
+    << " si(" << m_selectIndex.row() << "," << m_selectIndex.column() << ")"
+    << std::endl;
+#endif
 
   tableView()-> clearSelection();
   tableView()-> closeEditors( true );
   tableView()-> scrollTo( _index );
   tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
-
-  m_selectIndex = _index;
 
   if( !baseModel()-> isReadOnly( _index.row() ) )
     editRow( _index );
@@ -700,8 +698,7 @@ editRow( Wt::WModelIndex _index )-> void
     << std::endl;
 #endif
 
-#warning fix me
-  Editor editor;
+  Editor editor( tableView() );
   editor.editRow( _index );
 
 } // endeditRow( Wt::WModelIndex _index )-> void

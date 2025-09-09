@@ -25,6 +25,10 @@ Source Code Repository is found here;
 
 https://github.com/lorimark/gnucashew-dev
 
+Incidently, this code is hand-written by me.  I use AI a bit for searches and
+ other look-ups and queries, but the code itself is hand-written-by-a-human.
+ Never thought of having to say that before!
+
 This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library.
  This is a very powerful c++ web-rendering library with features such as;
   1. multi-lingual

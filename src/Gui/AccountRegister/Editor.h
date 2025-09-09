@@ -43,9 +43,23 @@ class Editor
 {
   public:
 
+    /*!
+    ** \brief Empty ctor
+    **
+    */
     Editor();
 
-    auto setTableView( GCW::Gui::TableView * _tableView )-> void ;
+    /*!
+    ** \brief ctor for TableView
+    **
+    ** This constructor connects the editor directly to
+    **  the table view.  It automatically grabs the
+    **  delegates.
+    **
+    */
+    Editor( GCW::Gui::TableView * _tableView );
+
+    auto applyDelegates( GCW::Gui::TableView * _tableView )-> void ;
 
     /*!
     ** \brief Table View

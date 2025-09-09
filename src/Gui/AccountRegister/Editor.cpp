@@ -36,10 +36,25 @@ Editor()
 {
 } // endAccountRegisterEditor()
 
+GCW::Gui::AccountRegister::Editor::
+Editor( GCW::Gui::TableView * _tableView )
+: m_tableView( _tableView )
+{
+  m_delegateHeader = std::static_pointer_cast< DelegateHeader     >( tableView()-> headerItemDelegate()       );
+  m_delegateDate   = std::static_pointer_cast< DelegateDate       >( tableView()-> itemDelegateForColumn( 0 ) );
+  m_delegateNum    = std::static_pointer_cast< DelegateSuggestion >( tableView()-> itemDelegateForColumn( 1 ) );
+  m_delegateMemo   = std::static_pointer_cast< DelegateSuggestion >( tableView()-> itemDelegateForColumn( 2 ) );
+  m_delegateAcct   = std::static_pointer_cast< DelegateAccount    >( tableView()-> itemDelegateForColumn( 3 ) );
+  m_delegateReco   = std::static_pointer_cast< DelegateReconcile  >( tableView()-> itemDelegateForColumn( 4 ) );
+  m_delegateIn     = std::static_pointer_cast< DelegateValue      >( tableView()-> itemDelegateForColumn( 5 ) );
+  m_delegateOut    = std::static_pointer_cast< DelegateValue      >( tableView()-> itemDelegateForColumn( 6 ) );
+  m_delegateBal    = std::static_pointer_cast< DelegateBalance    >( tableView()-> itemDelegateForColumn( 7 ) );
+
+} // endEditor( GCW::Gui::TableView * _tableView )
 
 auto
 GCW::Gui::AccountRegister::Editor::
-setTableView( GCW::Gui::TableView * _tableView )-> void
+applyDelegates( GCW::Gui::TableView * _tableView )-> void
 {
   m_tableView = _tableView;
 
@@ -63,13 +78,16 @@ setTableView( GCW::Gui::TableView * _tableView )-> void
   tableView()-> setItemDelegateForColumn ( 6, m_delegateOut    );
   tableView()-> setItemDelegateForColumn ( 7, m_delegateBal    );
 
-}
+} // endapplyDelegates( GCW::Gui::TableView * _tableView )-> void
 
 auto
 GCW::Gui::AccountRegister::Editor::
 editRow( Wt::WModelIndex _index )-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   return;
+
 #ifndef NEVER
   if( _index.isValid() )
   {

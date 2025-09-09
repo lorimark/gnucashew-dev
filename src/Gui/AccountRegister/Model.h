@@ -7,6 +7,7 @@
 #include <Wt/WStandardItemModel.h>
 
 #include "../Glb/gcwglobal.h"
+#include "ViewMode.h"
 
 namespace GCW {
   namespace Eng {
@@ -31,36 +32,6 @@ class Model
   using ColItem = Wt::WStandardItem * ;
 
   public:
-
-    /*!
-    ** \brief View Mode
-    **
-    ** The View Mode defines how the data in the model is assembled.  The simplest form is the
-    **  one-line register, which is also the most compact.  The next mode is the Auto-Split
-    **  ledger.  The auto-split ledger looks just like the one-line register except for the
-    **  line that is currently selected, which is formatted as a transaction-journal, but just for
-    **  that one selected line.  The final format is the transaction-journal, which is like the
-    **  auto-split register but every row is already split out.  The General Journal is the same
-    **  as the Transaction Journal but it shows every account, and does not compute balances.
-    **
-    ** \todo move ViewMode to stand-alone class: GCW::Gui::AccountRegister::ViewMode
-    **
-    */
-    enum class ViewMode
-    {
-      /// basic one-line per transaction
-      BASIC_LEDGER,
-
-      /// one-line ledger that auto-opens to multi-line for each selected row
-      AUTOSPLIT_LEDGER,
-
-      /// multi-line ledger for every row
-      TRANSACTION_JOURNAL,
-
-      /// multi-line ledger that shows all accounts and no balances
-      GENERAL_JOURNAL
-
-    }; // endenum class ViewMode
 
     /*!
     ** \brief ctor

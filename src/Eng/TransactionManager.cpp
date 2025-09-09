@@ -859,32 +859,29 @@ appendRow()-> void
   */
   switch( model()-> viewMode() )
   {
-// #warning fix this
-#ifndef NEVER
-    case GCW::Gui::AccountRegister::Model::ViewMode::BASIC_LEDGER:
+    case GCW::Gui::AccountRegister::ViewMode::BASIC_LEDGER:
     {
       appendBasicLedger();
       break;
     }
 
-    case GCW::Gui::AccountRegister::Model::ViewMode::AUTOSPLIT_LEDGER:
+    case GCW::Gui::AccountRegister::ViewMode::AUTOSPLIT_LEDGER:
     {
       appendAutosplitLedger();
       break;
     }
 
-    case GCW::Gui::AccountRegister::Model::ViewMode::TRANSACTION_JOURNAL:
+    case GCW::Gui::AccountRegister::ViewMode::TRANSACTION_JOURNAL:
     {
       appendTransactionJournal();
       break;
     }
 
-    case GCW::Gui::AccountRegister::Model::ViewMode::GENERAL_JOURNAL:
+    case GCW::Gui::AccountRegister::ViewMode::GENERAL_JOURNAL:
     {
       appendGeneralJournal();
       break;
     }
-#endif
 
   } // endswitch( model()-> viewMode() )
 

@@ -278,8 +278,6 @@ saveData()-> bool
   transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
   transMan.setNum        ( m_num-> valueText().toUTF8()                           );
 
-#warning need to fix this code!
-
   /*
   ** good save
   */
