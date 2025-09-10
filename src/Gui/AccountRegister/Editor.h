@@ -59,6 +59,12 @@ class Editor
     */
     Editor( GCW::Gui::TableView * _tableView );
 
+    /*!
+    ** \brief Apply Delegates
+    **
+    ** This will apply the delegates to the table.
+    **
+    */
     auto applyDelegates( GCW::Gui::TableView * _tableView )-> void ;
 
     /*!
@@ -79,15 +85,15 @@ class Editor
     ** Here we're going to hold on to the Delegate handles so
     **  we can interact with the UI a little bit
     */
-    std::shared_ptr< DelegateHeader     > m_delegateHeader ; //
-    std::shared_ptr< DelegateDate       > m_delegateDate   ; // 0
-    std::shared_ptr< DelegateSuggestion > m_delegateNum    ; // 1
-    std::shared_ptr< DelegateSuggestion > m_delegateMemo   ; // 2
-    std::shared_ptr< DelegateAccount    > m_delegateAcct   ; // 3
-    std::shared_ptr< DelegateReconcile  > m_delegateReco   ; // 4
-    std::shared_ptr< DelegateValue      > m_delegateIn     ; // 5
-    std::shared_ptr< DelegateValue      > m_delegateOut    ; // 6
-    std::shared_ptr< DelegateBalance    > m_delegateBal    ; // 7
+    auto delegateHeader ()-> std::shared_ptr< DelegateHeader     > ; //
+    auto delegateDate   ()-> std::shared_ptr< DelegateDate       > ; // 0
+    auto delegateNum    ()-> std::shared_ptr< DelegateSuggestion > ; // 1
+    auto delegateMemo   ()-> std::shared_ptr< DelegateSuggestion > ; // 2
+    auto delegateAcct   ()-> std::shared_ptr< DelegateAccount    > ; // 3
+    auto delegateReco   ()-> std::shared_ptr< DelegateReconcile  > ; // 4
+    auto delegateIn     ()-> std::shared_ptr< DelegateValue      > ; // 5
+    auto delegateOut    ()-> std::shared_ptr< DelegateValue      > ; // 6
+    auto delegateBal    ()-> std::shared_ptr< DelegateBalance    > ; // 7
 
     Wt::WModelIndex                       m_index               ;
     GCW::Gui::TableView                 * m_tableView = nullptr ;

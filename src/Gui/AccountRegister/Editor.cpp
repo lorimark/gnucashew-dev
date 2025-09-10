@@ -40,43 +40,103 @@ GCW::Gui::AccountRegister::Editor::
 Editor( GCW::Gui::TableView * _tableView )
 : m_tableView( _tableView )
 {
-  m_delegateHeader = std::static_pointer_cast< DelegateHeader     >( tableView()-> headerItemDelegate()       );
-  m_delegateDate   = std::static_pointer_cast< DelegateDate       >( tableView()-> itemDelegateForColumn( 0 ) );
-  m_delegateNum    = std::static_pointer_cast< DelegateSuggestion >( tableView()-> itemDelegateForColumn( 1 ) );
-  m_delegateMemo   = std::static_pointer_cast< DelegateSuggestion >( tableView()-> itemDelegateForColumn( 2 ) );
-  m_delegateAcct   = std::static_pointer_cast< DelegateAccount    >( tableView()-> itemDelegateForColumn( 3 ) );
-  m_delegateReco   = std::static_pointer_cast< DelegateReconcile  >( tableView()-> itemDelegateForColumn( 4 ) );
-  m_delegateIn     = std::static_pointer_cast< DelegateValue      >( tableView()-> itemDelegateForColumn( 5 ) );
-  m_delegateOut    = std::static_pointer_cast< DelegateValue      >( tableView()-> itemDelegateForColumn( 6 ) );
-  m_delegateBal    = std::static_pointer_cast< DelegateBalance    >( tableView()-> itemDelegateForColumn( 7 ) );
 
 } // endEditor( GCW::Gui::TableView * _tableView )
 
 auto
 GCW::Gui::AccountRegister::Editor::
+delegateHeader ()-> std::shared_ptr< DelegateHeader >
+{
+  return
+    std::static_pointer_cast< DelegateHeader >
+    ( tableView()-> headerItemDelegate() );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateDate()-> std::shared_ptr< DelegateDate >
+{
+  return
+    std::static_pointer_cast< DelegateDate >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DATE ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateNum()-> std::shared_ptr< DelegateSuggestion >
+{
+  return
+    std::static_pointer_cast< DelegateSuggestion >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::ACTION ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateMemo()-> std::shared_ptr< DelegateSuggestion >
+{
+  return
+    std::static_pointer_cast< DelegateSuggestion >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DESCRIPTION ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateAcct()-> std::shared_ptr< DelegateAccount >
+{
+  return
+    std::static_pointer_cast< DelegateAccount >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::TRANSFER ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateReco()-> std::shared_ptr< DelegateReconcile >
+{
+  return
+    std::static_pointer_cast< DelegateReconcile >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::RECONCILE ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateIn()-> std::shared_ptr< DelegateValue >
+{
+  return
+    std::static_pointer_cast< DelegateValue >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DEBIT ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateOut()-> std::shared_ptr< DelegateValue >
+{
+  return
+    std::static_pointer_cast< DelegateValue >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::CREDIT )) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateBal()-> std::shared_ptr< DelegateBalance >
+{
+  return
+    std::static_pointer_cast< DelegateBalance >
+    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::BALANCE ) ) );
+}
+
+auto
+GCW::Gui::AccountRegister::Editor::
 applyDelegates( GCW::Gui::TableView * _tableView )-> void
 {
-  m_tableView = _tableView;
-
-  m_delegateHeader = std::make_shared< DelegateHeader     >( this );
-  m_delegateDate   = std::make_shared< DelegateDate       >( this );
-  m_delegateNum    = std::make_shared< DelegateSuggestion >( this );
-  m_delegateMemo   = std::make_shared< DelegateSuggestion >( this );
-  m_delegateAcct   = std::make_shared< DelegateAccount    >( this );
-  m_delegateReco   = std::make_shared< DelegateReconcile  >( this );
-  m_delegateIn     = std::make_shared< DelegateValue      >( this );
-  m_delegateOut    = std::make_shared< DelegateValue      >( this );
-  m_delegateBal    = std::make_shared< DelegateBalance    >( this );
-
-  tableView()-> setHeaderItemDelegate    (    m_delegateHeader );
-  tableView()-> setItemDelegateForColumn ( 0, m_delegateDate   );
-  tableView()-> setItemDelegateForColumn ( 1, m_delegateNum    );
-  tableView()-> setItemDelegateForColumn ( 2, m_delegateMemo   );
-  tableView()-> setItemDelegateForColumn ( 3, m_delegateAcct   );
-  tableView()-> setItemDelegateForColumn ( 4, m_delegateReco   );
-  tableView()-> setItemDelegateForColumn ( 5, m_delegateIn     );
-  tableView()-> setItemDelegateForColumn ( 6, m_delegateOut    );
-  tableView()-> setItemDelegateForColumn ( 7, m_delegateBal    );
+  _tableView-> setHeaderItemDelegate    (                                std::make_shared< DelegateHeader     >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DATE        ), std::make_shared< DelegateDate       >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::ACTION      ), std::make_shared< DelegateSuggestion >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DESCRIPTION ), std::make_shared< DelegateSuggestion >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::TRANSFER    ), std::make_shared< DelegateAccount    >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::RECONCILE   ), std::make_shared< DelegateReconcile  >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DEBIT       ), std::make_shared< DelegateValue      >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::CREDIT      ), std::make_shared< DelegateValue      >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::BALANCE     ), std::make_shared< DelegateBalance    >( this ) );
 
 } // endapplyDelegates( GCW::Gui::TableView * _tableView )-> void
 
@@ -84,7 +144,7 @@ auto
 GCW::Gui::AccountRegister::Editor::
 editRow( Wt::WModelIndex _index )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 
   return;
 

@@ -11,28 +11,6 @@
 #include "../Eng/TransactionManager.h"
 #include "Model.h"
 
-/*
-** column definitions:
-**
-** 0,0 - date        : transaction -> post_date
-** 0,1 - action      : split       -> action
-** 0,2 - description : transaction -> description
-** 0,3 - transfer    : split       -> {tx_guid 2nd split}
-** 0,4 - reconcile   : split       -> reconcile_state, reconcile_date
-** 0,5 - debit       : split       -> value_num, value_denom (+positive value)
-** 0,6 - credit      : split       -> value_num, value_denom (-negative value)
-** 1,2 - notes       : split       -> memo
-*/
-#define COL_DATE        (0)
-#define COL_ACTION      (1)
-#define COL_DESCRIPTION (2)
-#define COL_TRANSFER    (3)
-#define COL_RECONCILE   (4)
-#define COL_DEBIT       (5)
-#define COL_CREDIT      (6)
-#define COL_BALANCE     (7)
-#define COL_NOTES       (2)
-
 GCW::Gui::AccountRegister::Model::
 Model()
 : Wt::WStandardItemModel( 0, 8 ) // 8-columns
@@ -260,7 +238,7 @@ getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
   auto retVal =
     Wt::WDateTime::fromString             // convert the WString to a WDateTime
     (
-      getString( _index, 0 /* COL_DATE */ ),
+      getString( _index, asInt( ColDefs::DATE ) ),
       GCW_DATE_FORMAT_DISPLAY             // use this DATE format for the conversion
     );
 
@@ -277,7 +255,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getAction( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, COL_ACTION );
+  return getString( _index, asInt( ColDefs::ACTION ) );
 
 } // endgetAction( const Wt::WModelIndex & _index )-> std::string
 
@@ -285,7 +263,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getDescription( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, COL_DESCRIPTION );
+  return getString( _index, asInt( ColDefs::DESCRIPTION ) );
 
 } // endgetDescription( const Wt::WModelIndex & _index )-> std::string
 
@@ -293,7 +271,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getTransferText( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, COL_TRANSFER );
+  return getString( _index, asInt( ColDefs::TRANSFER ) );
 
 } // endgetTransferText( const Wt::WModelIndex & _index )-> std::string
 
@@ -310,7 +288,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getReconcile( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, COL_RECONCILE );
+  return getString( _index, asInt( ColDefs::RECONCILE ) );
 
 } // endgetReconcile( const Wt::WModelIndex & _index )-> std::string
 
@@ -332,7 +310,7 @@ GCW::Gui::AccountRegister::Model::
 getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
-    getNumeric( index( _index.row(), COL_DEBIT ) );
+    getNumeric( index( _index.row(), asInt( ColDefs::DEBIT ) ) );
 
 } // endgetDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
@@ -341,7 +319,7 @@ GCW::Gui::AccountRegister::Model::
 getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
-    getNumeric( index( _index.row(), COL_CREDIT ) );
+    getNumeric( index( _index.row(), asInt( ColDefs::CREDIT ) ) );
 
 } // endgetCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
@@ -367,7 +345,7 @@ getSplitGuid( const Wt::WModelIndex & _index )-> std::string
   return
     Wt::asString                           // convert the index.data() to a WString
     (
-     index( _index.row(), COL_DATE )       // get the index of the DATE column
+     index( _index.row(), asInt( ColDefs::DATE ) )       // get the index of the DATE column
      .data( Wt::ItemDataRole::User )       // get the (string/User) data from it
     )
     .toUTF8();                             // convert the WString to a std::string
@@ -378,7 +356,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getSplitGuid( int _row )-> std::string
 {
-  return getSplitGuid( index( _row, COL_DATE ) );
+  return getSplitGuid( index( _row, asInt( ColDefs::DATE ) ) );
 
 } // endgetSplitGuid( int _row )-> std::string
 
@@ -430,50 +408,50 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   */
   switch( _index.column() )
   {
-    case COL_DATE:
+    case asInt( ColDefs::DATE ):
     {
       transMan.setDate( getDate( _index ) );
       break;
     }
 
-    case COL_ACTION:
+    case asInt( ColDefs::ACTION ):
     {
       transMan.setAction( getAction( _index ) );
       break;
     }
 
-    case COL_DESCRIPTION:
+    case asInt( ColDefs::DESCRIPTION ):
     {
       transMan.setDescription( getDescription( _index ) );
       break;
     }
 
-    case COL_TRANSFER:
+    case asInt( ColDefs::TRANSFER ):
     {
       transMan.setTransferGuid( getTransferGuid( _index ) );
       break;
     }
 
-    case COL_RECONCILE:
+    case asInt( ColDefs::RECONCILE ):
     {
       transMan.setReconcile( getReconcile( _index ) );
       break;
     }
 
-    case COL_DEBIT:
+    case asInt( ColDefs::DEBIT ):
     {
       transMan.setValue( getValue( _index ) );
       break;
     }
 
-    case COL_CREDIT:
+    case asInt( ColDefs::CREDIT ):
     {
       transMan.setValue( getValue( _index ) );
       break;
     }
 
 #ifdef NEVER
-    case COL_NOTES:
+    case asInt( ColDefs::NOTES ):
     {
       transMan.setNotes( getNotes( _index ) );
       break;
@@ -642,32 +620,6 @@ refreshFromDisk()-> void
   ** Signal the model is about to be reset.
   */
   layoutAboutToBeChanged().emit();
-
-  /*!
-  ** \par Model Columns
-  ** \code
-  **   col  name                  notes
-  **  -----+---------------------+----------------------
-  **    0   date
-  **    1   num (check number)
-  **    2   description
-  **    3   account / transfer
-  **    4   reconciliation
-  **    5   debit
-  **    6   credit
-  **    7   balance r/o (computed)
-  ** \endcode
-  */
-  auto _addColumn = [&]( RowItem & columns, auto _value )
-  {
-    auto item = std::make_unique< Wt::WStandardItem >( _value );
-
-    item-> setToolTip( _value );
-
-    auto retVal = item.get();
-    columns.push_back( std::move( item ) );
-    return retVal;
-  };
 
   /*!
   ** Before refreshing from disk, the entire contents of the
