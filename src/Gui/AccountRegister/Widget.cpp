@@ -596,44 +596,44 @@ loadData()-> void
   tableView()-> setModel( m_baseModel );
 
   // 0 = Date
-  tableView()-> setColumnWidth    ( asInt( ColDefs::DATE        ), "150px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::DATE        ), Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( asInt( ColDefs::DATE        ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnWidth    ( asInt( Col::DATE        ), "125px"                   );
+  tableView()-> setHeaderAlignment( asInt( Col::DATE        ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnAlignment( asInt( Col::DATE        ), Wt::AlignmentFlag::Right  );
 
   // 1 = Action/Num
-  tableView()-> setColumnWidth    ( asInt( ColDefs::ACTION      ),  "50px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::ACTION      ), Wt::AlignmentFlag::Center );
-  tableView()-> setColumnAlignment( asInt( ColDefs::ACTION      ), Wt::AlignmentFlag::Center );
+  tableView()-> setColumnWidth    ( asInt( Col::ACTION      ), "50px"                    );
+  tableView()-> setHeaderAlignment( asInt( Col::ACTION      ), Wt::AlignmentFlag::Center );
+  tableView()-> setColumnAlignment( asInt( Col::ACTION      ), Wt::AlignmentFlag::Center );
 
   // 2 = Memo/Description
-  tableView()-> setColumnWidth    ( asInt( ColDefs::DESCRIPTION ),   "99%"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::DESCRIPTION ), Wt::AlignmentFlag::Left   );
-  tableView()-> setColumnAlignment( asInt( ColDefs::DESCRIPTION ), Wt::AlignmentFlag::Left   );
+  tableView()-> setColumnWidth    ( asInt( Col::DESCRIPTION ), "99%"                     );
+  tableView()-> setHeaderAlignment( asInt( Col::DESCRIPTION ), Wt::AlignmentFlag::Left   );
+  tableView()-> setColumnAlignment( asInt( Col::DESCRIPTION ), Wt::AlignmentFlag::Left   );
 
   // 3 = Account/Transfer
-  tableView()-> setColumnWidth    ( asInt( ColDefs::TRANSFER    ), "150px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::TRANSFER    ), Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( asInt( ColDefs::TRANSFER    ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnWidth    ( asInt( Col::TRANSFER    ), "150px"                   );
+  tableView()-> setHeaderAlignment( asInt( Col::TRANSFER    ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnAlignment( asInt( Col::TRANSFER    ), Wt::AlignmentFlag::Right  );
 
   // 4 = Reconciliation
-  tableView()-> setColumnWidth    ( asInt( ColDefs::RECONCILE   ),  "25px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::RECONCILE   ), Wt::AlignmentFlag::Center );
-  tableView()-> setColumnAlignment( asInt( ColDefs::RECONCILE   ), Wt::AlignmentFlag::Center );
+  tableView()-> setColumnWidth    ( asInt( Col::RECONCILE   ), "25px"                    );
+  tableView()-> setHeaderAlignment( asInt( Col::RECONCILE   ), Wt::AlignmentFlag::Center );
+  tableView()-> setColumnAlignment( asInt( Col::RECONCILE   ), Wt::AlignmentFlag::Center );
 
   // 5 = Debit
-  tableView()-> setColumnWidth    ( asInt( ColDefs::DEBIT       ), "100px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::DEBIT       ), Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( asInt( ColDefs::DEBIT       ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnWidth    ( asInt( Col::DEBIT       ), "85px"                    );
+  tableView()-> setHeaderAlignment( asInt( Col::DEBIT       ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnAlignment( asInt( Col::DEBIT       ), Wt::AlignmentFlag::Right  );
 
   // 6 = Credit
-  tableView()-> setColumnWidth    ( asInt( ColDefs::CREDIT      ), "100px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::CREDIT      ), Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( asInt( ColDefs::CREDIT      ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnWidth    ( asInt( Col::CREDIT      ), "85px"                    );
+  tableView()-> setHeaderAlignment( asInt( Col::CREDIT      ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnAlignment( asInt( Col::CREDIT      ), Wt::AlignmentFlag::Right  );
 
   // 7 = Balance
-  tableView()-> setColumnWidth    ( asInt( ColDefs::BALANCE     ), "100px"                   );
-  tableView()-> setHeaderAlignment( asInt( ColDefs::BALANCE     ), Wt::AlignmentFlag::Right  );
-  tableView()-> setColumnAlignment( asInt( ColDefs::BALANCE     ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnWidth    ( asInt( Col::BALANCE     ), "85px"                    );
+  tableView()-> setHeaderAlignment( asInt( Col::BALANCE     ), Wt::AlignmentFlag::Right  );
+  tableView()-> setColumnAlignment( asInt( Col::BALANCE     ), Wt::AlignmentFlag::Right  );
 
   statusBar()-> setPresent    ( baseModel()-> present    () );
   statusBar()-> setProjected  ( baseModel()-> projected  () );

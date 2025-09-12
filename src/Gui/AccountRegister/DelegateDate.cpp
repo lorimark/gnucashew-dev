@@ -35,6 +35,12 @@ GCW::Gui::AccountRegister::DelegateDate::
 createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget >
 {
 #ifdef NEVER
+ std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+   << " ("   << _index.row() << "," << _index.column() << ")"
+   << std::endl;
+#endif
+
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << "(): " << _index.row() << "," << _index.column()
     << " DateDelegate::" << __FUNCTION__
@@ -157,7 +163,7 @@ auto
 GCW::Gui::AccountRegister::DelegateDate::
 setEditState( Wt::WWidget * _editor, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _editor
     << " "    << _index.row() << "," << _index.column()

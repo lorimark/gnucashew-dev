@@ -119,7 +119,6 @@ TableView()
 
   setHeaderHeight( kTableHeaderRowHeight );
   setRowHeight( kTableBodyRowHeight );
-
   setLayoutSizeAware( true );
 
 #ifdef NEVER
@@ -256,8 +255,10 @@ TableView()
 
 auto
 GCW::Gui::TableView::
-layoutSizeChanged( int width, int height )-> void
+layoutSizeChanged( int _width, int _height )-> void
 {
+//  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " )" << std::endl;
+
   // Calculate our fixed width columns
   auto nfixed = 0;
   auto nrel   = 0;
@@ -265,12 +266,12 @@ layoutSizeChanged( int width, int height )-> void
   // "fixed" number of pixels
   auto fixed = 0.0;
 
-  for( auto col : widths_ )
+  for( auto col : m_widths )
     if( col.second.unit() == Wt::LengthUnit::Percentage )
       nrel++;
 
-  auto percent_sum=0.0;
-  for( auto col : widths_)
+  auto percent_sum = 0.0;
+  for( auto col : m_widths )
   {
     if( col.second.unit() != Wt::LengthUnit::Percentage )
       fixed += col.second.toPixels();
@@ -284,7 +285,8 @@ layoutSizeChanged( int width, int height )-> void
   const auto epsilon = 0.5;
   if( 100.0 - percent_sum > epsilon )
     Wt::log("debug")
-      << "Warning: Relative column widths do not take up 100% of the available width"
+      << "Warning: Relative column widths do not take up 100% of the available width: "
+      << percent_sum << "%"
       ;
 
   // Columns who's width wasn't explicitly set are considered "fixed", and Wt
@@ -294,35 +296,41 @@ layoutSizeChanged( int width, int height )-> void
     nfixed = model()->columnCount() - nrel;
 
     // Show scroll bar?
-    bool show_scroll = visible_rows_ > 0 && model()->rowCount() > visible_rows_;
+    bool show_scroll = m_visible_rows > 0 && model()-> rowCount() > m_visible_rows;
 
-    auto remainder = width - ( fixed + ( kTableCellPadding * model()->columnCount() ) + ( show_scroll ? kScrollBarWidth : 0.0 ) );
+    auto remainder = _width - ( fixed + ( kTableCellPadding * model()->columnCount() ) + ( show_scroll ? kScrollBarWidth : 0.0 ) );
 
-  for( auto col : widths_)
-    if( col.second.unit() == Wt::LengthUnit::Percentage )
-      setColumnWidth
-      (
-       col.first,
-       Wt::WLength
-       (
-        col.second.value()/100.0*remainder,
-        Wt::LengthUnit::Pixel
-       )
-      );
+    for( auto col : m_widths )
+    {
+      if( col.second.unit() == Wt::LengthUnit::Percentage )
+      {
+        setColumnWidth
+        (
+         col.first,
+         Wt::WLength
+         (
+          col.second.value()/100.0*remainder,
+          Wt::LengthUnit::Pixel
+         )
+        );
+
+      } // endif( col.second.unit() == Wt::LengthUnit::Percentage )
+
+    } // endfor( auto col : m_widths_)
 
   } // endif( model() )
 
   // Pass the call up the chain
-  Wt::WTableView::layoutSizeChanged( width, height );
+  Wt::WTableView::layoutSizeChanged( _width, _height );
 
-} // endauto GCW::Gui::TableView::layoutSizeChanged( int width, int height ) -> void
+} // endauto GCW::Gui::TableView::layoutSizeChanged( int _width, int _height ) -> void
 
 auto
 GCW::Gui::TableView::
 setColumnWidth( int column, const Wt::WLength& width )-> void
 {
     // Just save the data and pass the the work up
-    widths_.emplace( column, width );
+    m_widths.emplace( column, width );
 
     Wt::WTableView::setColumnWidth( column, width );
 

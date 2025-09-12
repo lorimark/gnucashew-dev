@@ -45,7 +45,6 @@ class Editor
 
     /*!
     ** \brief Empty ctor
-    **
     */
     Editor();
 
@@ -55,15 +54,13 @@ class Editor
     ** This constructor connects the editor directly to
     **  the table view.  It automatically grabs the
     **  delegates.
-    **
     */
     Editor( GCW::Gui::TableView * _tableView );
 
     /*!
     ** \brief Apply Delegates
     **
-    ** This will apply the delegates to the table.
-    **
+    ** This will create and apply the delegates to the table.
     */
     auto applyDelegates( GCW::Gui::TableView * _tableView )-> void ;
 
@@ -82,8 +79,8 @@ class Editor
     /*!
     ** \brief Delegate Handles
     **
-    ** Here we're going to hold on to the Delegate handles so
-    **  we can interact with the UI a little bit
+    ** These functions return the cast< Delegate > value so the correct
+    **  delegate can be accessed
     */
     auto delegateHeader ()-> std::shared_ptr< DelegateHeader     > ; //
     auto delegateDate   ()-> std::shared_ptr< DelegateDate       > ; // 0
@@ -91,12 +88,16 @@ class Editor
     auto delegateMemo   ()-> std::shared_ptr< DelegateSuggestion > ; // 2
     auto delegateAcct   ()-> std::shared_ptr< DelegateAccount    > ; // 3
     auto delegateReco   ()-> std::shared_ptr< DelegateReconcile  > ; // 4
-    auto delegateIn     ()-> std::shared_ptr< DelegateValue      > ; // 5
-    auto delegateOut    ()-> std::shared_ptr< DelegateValue      > ; // 6
+    auto delegateDr     ()-> std::shared_ptr< DelegateValue      > ; // 5
+    auto delegateCr     ()-> std::shared_ptr< DelegateValue      > ; // 6
     auto delegateBal    ()-> std::shared_ptr< DelegateBalance    > ; // 7
 
-    Wt::WModelIndex                       m_index               ;
-    GCW::Gui::TableView                 * m_tableView = nullptr ;
+  private:
+
+    auto model( Wt::WModelIndex _index )-> Model * ;
+
+    Wt::WModelIndex        m_index               ;
+    GCW::Gui::TableView  * m_tableView = nullptr ;
 
 };  // endclass Editor
 

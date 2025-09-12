@@ -600,6 +600,7 @@ GCW::Eng::Transaction::Manager::
 createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
+  retVal-> setStyleClass( "acct" );
   retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
   auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
@@ -609,16 +610,16 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   {
     retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
 
-//    auto tip =
-//      Wt::WString
-//      (
-//       "spa:{1}\n"
-//       "txi:{2}\n"
-//      )
-//      .arg( splitAccountItem-> guid() )
-//      .arg( _splitItem-> guid() )
-//      ;
-//    retVal-> setToolTip( tip );
+    auto tip =
+      Wt::WString
+      (
+       "spa:{1}\n"
+       "txi:{2}\n"
+      )
+      .arg( splitAccountItem-> guid() )
+      .arg( _splitItem-> guid() )
+      ;
+    retVal-> setToolTip( tip );
   }
 
   // no, we don't have an account item
@@ -635,13 +636,13 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
     retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
     retVal-> setStyleClass( retVal-> styleClass() + " errval" );
 
-//    auto toolTip =
-//      Wt::WString("target guid:{1}\n{2}")
-//      .arg( _splitItem-> account_guid() )
-//      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
-//      .toUTF8()
-//      ;
-//    retVal-> setToolTip( toolTip );
+    auto toolTip =
+      Wt::WString("target guid:{1}\n{2}")
+      .arg( _splitItem-> account_guid() )
+      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
+      .toUTF8()
+      ;
+    retVal-> setToolTip( toolTip );
 
   } // endelse no account item
 
@@ -671,6 +672,9 @@ createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   retVal-> setStyleClass( "dr" );
   retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
+  /*
+  ** debits are always positive
+  */
   if( _splitItem-> value() > 0 )
   {
     retVal -> setText( _splitItem-> valueAsString() );
@@ -689,8 +693,14 @@ createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   retVal-> setStyleClass( "cr" );
   retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
 
+  /*
+  ** credit are always negative
+  */
   if( _splitItem-> value() < 0 )
   {
+    /*
+    **  set the value and invert(true) the sign
+    */
     retVal -> setText( _splitItem-> valueAsString( true ) );
   }
 

@@ -40,16 +40,27 @@ GCW::Gui::AccountRegister::Editor::
 Editor( GCW::Gui::TableView * _tableView )
 : m_tableView( _tableView )
 {
-
 } // endEditor( GCW::Gui::TableView * _tableView )
+
 
 auto
 GCW::Gui::AccountRegister::Editor::
-delegateHeader ()-> std::shared_ptr< DelegateHeader >
+model( Wt::WModelIndex _index )-> Model *
+{
+  return
+    const_cast< Model * >( static_cast< const Model* >( _index.model() ) );
+
+} // endmodel( Wt::WModelIndex _index )-> Model *
+
+auto
+GCW::Gui::AccountRegister::Editor::
+delegateHeader()-> std::shared_ptr< DelegateHeader >
 {
   return
     std::static_pointer_cast< DelegateHeader >
-    ( tableView()-> headerItemDelegate() );
+    (
+     tableView()-> headerItemDelegate()
+    );
 }
 
 auto
@@ -58,7 +69,9 @@ delegateDate()-> std::shared_ptr< DelegateDate >
 {
   return
     std::static_pointer_cast< DelegateDate >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DATE ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::DATE ) )
+    );
 }
 
 auto
@@ -67,7 +80,9 @@ delegateNum()-> std::shared_ptr< DelegateSuggestion >
 {
   return
     std::static_pointer_cast< DelegateSuggestion >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::ACTION ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::ACTION ) )
+    );
 }
 
 auto
@@ -76,7 +91,9 @@ delegateMemo()-> std::shared_ptr< DelegateSuggestion >
 {
   return
     std::static_pointer_cast< DelegateSuggestion >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DESCRIPTION ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::DESCRIPTION ) )
+    );
 }
 
 auto
@@ -85,7 +102,9 @@ delegateAcct()-> std::shared_ptr< DelegateAccount >
 {
   return
     std::static_pointer_cast< DelegateAccount >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::TRANSFER ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::TRANSFER ) )
+    );
 }
 
 auto
@@ -94,25 +113,31 @@ delegateReco()-> std::shared_ptr< DelegateReconcile >
 {
   return
     std::static_pointer_cast< DelegateReconcile >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::RECONCILE ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::RECONCILE ) )
+    );
 }
 
 auto
 GCW::Gui::AccountRegister::Editor::
-delegateIn()-> std::shared_ptr< DelegateValue >
+delegateDr()-> std::shared_ptr< DelegateValue >
 {
   return
     std::static_pointer_cast< DelegateValue >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::DEBIT ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::DEBIT ) )
+    );
 }
 
 auto
 GCW::Gui::AccountRegister::Editor::
-delegateOut()-> std::shared_ptr< DelegateValue >
+delegateCr()-> std::shared_ptr< DelegateValue >
 {
   return
     std::static_pointer_cast< DelegateValue >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::CREDIT )) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::CREDIT ) )
+    );
 }
 
 auto
@@ -121,22 +146,24 @@ delegateBal()-> std::shared_ptr< DelegateBalance >
 {
   return
     std::static_pointer_cast< DelegateBalance >
-    ( tableView()-> itemDelegateForColumn( asInt( ColDefs::BALANCE ) ) );
+    (
+     tableView()-> itemDelegateForColumn( asInt( Col::BALANCE ) )
+    );
 }
 
 auto
 GCW::Gui::AccountRegister::Editor::
 applyDelegates( GCW::Gui::TableView * _tableView )-> void
 {
-  _tableView-> setHeaderItemDelegate    (                                std::make_shared< DelegateHeader     >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DATE        ), std::make_shared< DelegateDate       >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::ACTION      ), std::make_shared< DelegateSuggestion >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DESCRIPTION ), std::make_shared< DelegateSuggestion >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::TRANSFER    ), std::make_shared< DelegateAccount    >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::RECONCILE   ), std::make_shared< DelegateReconcile  >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::DEBIT       ), std::make_shared< DelegateValue      >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::CREDIT      ), std::make_shared< DelegateValue      >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( ColDefs::BALANCE     ), std::make_shared< DelegateBalance    >( this ) );
+  _tableView-> setHeaderItemDelegate    (                            std::make_shared< DelegateHeader     >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DATE        ), std::make_shared< DelegateDate       >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::ACTION      ), std::make_shared< DelegateSuggestion >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DESCRIPTION ), std::make_shared< DelegateSuggestion >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::TRANSFER    ), std::make_shared< DelegateAccount    >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::RECONCILE   ), std::make_shared< DelegateReconcile  >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DEBIT       ), std::make_shared< DelegateValue      >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::CREDIT      ), std::make_shared< DelegateValue      >( this ) );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::BALANCE     ), std::make_shared< DelegateBalance    >( this ) );
 
 } // endapplyDelegates( GCW::Gui::TableView * _tableView )-> void
 
@@ -144,7 +171,23 @@ auto
 GCW::Gui::AccountRegister::Editor::
 editRow( Wt::WModelIndex _index )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")" << std::endl;
+
+  auto row = _index.row();
+  auto mdl = model( _index );
+
+  /*
+  ** edit all the columns, except the last (balance)
+  */
+  for( int col=0; col< mdl-> columnCount() - 1; col++ )
+  {
+    auto item  = mdl-> item( row, col );
+    auto index = mdl-> indexFromItem( item );
+
+    item-> setFlags( Wt::ItemFlag::Editable );
+    m_tableView-> edit( index );
+
+  } // for( ..all columns except balance.. )
 
   return;
 

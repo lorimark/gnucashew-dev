@@ -50,7 +50,7 @@ enum class ViewMode
 ** 0,6 - credit      : split       -> value_num, value_denom (-negative value)
 ** 1,2 - notes       : split       -> memo
 */
-enum class ColDefs : int
+enum class Col : int
 {
   DATE        = 0,
   ACTION      = 1,
@@ -64,7 +64,7 @@ enum class ColDefs : int
 
 };
 
-constexpr int asInt( ColDefs col ) noexcept
+constexpr int asInt( Col col ) noexcept
 {
   return static_cast< int >( col );
 }

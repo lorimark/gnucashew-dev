@@ -238,7 +238,7 @@ getDate( const Wt::WModelIndex & _index )-> Wt::WDateTime
   auto retVal =
     Wt::WDateTime::fromString             // convert the WString to a WDateTime
     (
-      getString( _index, asInt( ColDefs::DATE ) ),
+      getString( _index, asInt( Col::DATE ) ),
       GCW_DATE_FORMAT_DISPLAY             // use this DATE format for the conversion
     );
 
@@ -255,7 +255,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getAction( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, asInt( ColDefs::ACTION ) );
+  return getString( _index, asInt( Col::ACTION ) );
 
 } // endgetAction( const Wt::WModelIndex & _index )-> std::string
 
@@ -263,7 +263,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getDescription( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, asInt( ColDefs::DESCRIPTION ) );
+  return getString( _index, asInt( Col::DESCRIPTION ) );
 
 } // endgetDescription( const Wt::WModelIndex & _index )-> std::string
 
@@ -271,7 +271,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getTransferText( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, asInt( ColDefs::TRANSFER ) );
+  return getString( _index, asInt( Col::TRANSFER ) );
 
 } // endgetTransferText( const Wt::WModelIndex & _index )-> std::string
 
@@ -288,7 +288,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getReconcile( const Wt::WModelIndex & _index )-> std::string
 {
-  return getString( _index, asInt( ColDefs::RECONCILE ) );
+  return getString( _index, asInt( Col::RECONCILE ) );
 
 } // endgetReconcile( const Wt::WModelIndex & _index )-> std::string
 
@@ -310,7 +310,7 @@ GCW::Gui::AccountRegister::Model::
 getDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
-    getNumeric( index( _index.row(), asInt( ColDefs::DEBIT ) ) );
+    getNumeric( index( _index.row(), asInt( Col::DEBIT ) ) );
 
 } // endgetDebit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
@@ -319,7 +319,7 @@ GCW::Gui::AccountRegister::Model::
 getCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 {
   return
-    getNumeric( index( _index.row(), asInt( ColDefs::CREDIT ) ) );
+    getNumeric( index( _index.row(), asInt( Col::CREDIT ) ) );
 
 } // endgetCredit( const Wt::WModelIndex & _index )-> GCW_NUMERIC
 
@@ -345,7 +345,7 @@ getSplitGuid( const Wt::WModelIndex & _index )-> std::string
   return
     Wt::asString                           // convert the index.data() to a WString
     (
-     index( _index.row(), asInt( ColDefs::DATE ) )       // get the index of the DATE column
+     index( _index.row(), asInt( Col::DATE ) )       // get the index of the DATE column
      .data( Wt::ItemDataRole::User )       // get the (string/User) data from it
     )
     .toUTF8();                             // convert the WString to a std::string
@@ -356,7 +356,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 getSplitGuid( int _row )-> std::string
 {
-  return getSplitGuid( index( _row, asInt( ColDefs::DATE ) ) );
+  return getSplitGuid( index( _row, asInt( Col::DATE ) ) );
 
 } // endgetSplitGuid( int _row )-> std::string
 
@@ -408,50 +408,50 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
   */
   switch( _index.column() )
   {
-    case asInt( ColDefs::DATE ):
+    case asInt( Col::DATE ):
     {
       transMan.setDate( getDate( _index ) );
       break;
     }
 
-    case asInt( ColDefs::ACTION ):
+    case asInt( Col::ACTION ):
     {
       transMan.setAction( getAction( _index ) );
       break;
     }
 
-    case asInt( ColDefs::DESCRIPTION ):
+    case asInt( Col::DESCRIPTION ):
     {
       transMan.setDescription( getDescription( _index ) );
       break;
     }
 
-    case asInt( ColDefs::TRANSFER ):
+    case asInt( Col::TRANSFER ):
     {
       transMan.setTransferGuid( getTransferGuid( _index ) );
       break;
     }
 
-    case asInt( ColDefs::RECONCILE ):
+    case asInt( Col::RECONCILE ):
     {
       transMan.setReconcile( getReconcile( _index ) );
       break;
     }
 
-    case asInt( ColDefs::DEBIT ):
+    case asInt( Col::DEBIT ):
     {
       transMan.setValue( getValue( _index ) );
       break;
     }
 
-    case asInt( ColDefs::CREDIT ):
+    case asInt( Col::CREDIT ):
     {
       transMan.setValue( getValue( _index ) );
       break;
     }
 
 #ifdef NEVER
-    case asInt( ColDefs::NOTES ):
+    case asInt( Col::NOTES ):
     {
       transMan.setNotes( getNotes( _index ) );
       break;
@@ -670,6 +670,9 @@ refreshFromDisk()-> void
   */
   auto splitItems = GCW::Dbo::Splits::byAccount( m_accountGuid );
 
+  /*
+  ** remember the split count
+  */
   m_splitCount = splitItems.size();
 
   /*!

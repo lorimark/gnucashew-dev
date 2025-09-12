@@ -32,7 +32,7 @@ auto
 GCW::Gui::AccountRegister::DelegateBase::
 createEditor( const Wt::WModelIndex &_index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget >
 {
-#ifndef NEVER
+#ifdef NEVER
  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
    << " ("   << _index.row() << "," << _index.column() << ")"
    << std::endl;
@@ -109,7 +109,7 @@ auto
 GCW::Gui::AccountRegister::DelegateBase::
 setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
     << "(): " << _widget
     << " ("   << _index.row() << "," << _index.column() << ")"

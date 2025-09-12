@@ -43,16 +43,15 @@ public:
     /*!
     ** \brief ctor
     */
-    TableView();
+    TableView() ;
 
     /*!
     ** Upon a table resize, size the columns appropriately.
     **
     ** @param int width Full table width
     ** @param int height Full table height
-    **
     */
-    auto layoutSizeChanged( int width, int height )-> void override;
+    auto layoutSizeChanged( int _width, int _height )-> void override ;
 
     /*!
     ** Overload setColumnWidth so we can save what the user specifies into our
@@ -61,15 +60,13 @@ public:
     ** non-allocated width remaining.  i.e. if a table is 100px, and one column
     ** has an absolute width of 20px, then the two following relative columns
     ** should both use 50%, which would yeild 40px each (minus padding.)
-    **
     */
-    auto setColumnWidth(int column, const Wt::WLength& width)-> void override;
+    auto setColumnWidth( int _column, const Wt::WLength & _width )-> void override ;
 
     /*!
     ** Set the number of visible rows before a scroll bar appears
-    **
     */
-    auto setVisibleRows(int rows)-> void { visible_rows_ = rows; }
+    auto setVisibleRows( int _rows )-> void { m_visible_rows = _rows; }
 
 protected:
 
@@ -82,19 +79,16 @@ protected:
 
     /*
     ** Map table columns to width
-    **
     */
-    std::map< int, Wt::WLength > widths_;
+    std::map< int, Wt::WLength > m_widths;
 
     /*
     ** Rows visible before scroll bar
-    **
     */
-    int visible_rows_ = -1;
+    int m_visible_rows = -1;
 
     /*
     ** Indicates which row is being edited
-    **
     */
     int m_editingRow = -1;
 
