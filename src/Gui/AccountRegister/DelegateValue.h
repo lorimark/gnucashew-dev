@@ -17,7 +17,7 @@ class DelegateValue
 {
   public:
 
-    DelegateValue( Editor * _editor );
+    DelegateValue();
    ~DelegateValue();
 
     virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;

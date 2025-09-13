@@ -17,7 +17,7 @@ class DelegateSuggestion
 {
   public:
 
-    DelegateSuggestion( Editor * _editor );
+    DelegateSuggestion();
    ~DelegateSuggestion();
     virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
 

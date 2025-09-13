@@ -8,8 +8,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegister::DelegateReconcile::
-DelegateReconcile( Editor * _editor )
-: DelegateBase( _editor )
+DelegateReconcile()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }

@@ -6,8 +6,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegister::DelegateBalance::
-DelegateBalance( Editor * _editor )
-: DelegateBase( _editor )
+DelegateBalance()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }

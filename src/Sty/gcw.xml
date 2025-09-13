@@ -322,13 +322,13 @@
     <p>
       <center>
         <h2>GnuCashew</h2>
+        <p> <small> Accounting for personal and small business finance. </small> </p>
         <p> Version: ${version}  </p>
         <p> Build ID: ${buildid} </p>
         <p> Finance: ${finance}  </p>
-        <p> :) </p>
-        <p> Accounting for personal and small business finance. </p>
         <p> <a href="https://github.com/lorimark/gnucashew-dev" target="_blank"> Visit the GnuCashew website. </a> </p>
-        <p> <a href="dox/html/help_overview.html" target="_blank"> Visit the GnuCashew local documentation. </a> </p>
+        <p> ~ ~ ~ ~ ~ ~ </p>
+        <p> <a href="dox/html/help_overview.html" target="_blank"> local documentation<br />(click here) </a> </p>
         <p> <small> Copyright &#169; 2024-2025 The GnuCashew contributors. </small> </p>
       </center>
     </p>

@@ -17,10 +17,8 @@ class DelegateHeader
 {
   public:
 
-    DelegateHeader( Editor * _editor );
+    DelegateHeader();
    ~DelegateHeader();
-    auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
-    virtual auto editState( Wt::WWidget *_editor, const Wt::WModelIndex &_index ) const-> Wt::cpp17::any override ;
 
 }; // endclass DelegateHeader
 

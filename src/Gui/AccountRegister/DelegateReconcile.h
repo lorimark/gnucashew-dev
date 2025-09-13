@@ -24,7 +24,7 @@ class DelegateReconcile
     **  editor, and will activate that WText with click() response which
     **  will handle the 'edit' portion of this delegate.
     */
-    DelegateReconcile( Editor * _editor );
+    DelegateReconcile();
    ~DelegateReconcile();
     virtual auto createEditor( const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags ) const-> std::unique_ptr< Wt::WWidget > ;
     virtual auto editState( Wt::WWidget * _editor, const Wt::WModelIndex & _index ) const-> Wt::cpp17::any override ;

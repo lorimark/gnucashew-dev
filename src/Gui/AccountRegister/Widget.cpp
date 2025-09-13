@@ -16,7 +16,6 @@
 #include "../Dbo/Splits/Splits.h"
 #include "../Eng/TransactionManager.h"
 #include "SuggestionPopup.h"
-#include "StatusBar.h"
 #include "Widget.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -36,6 +35,14 @@ init()-> void
   **  that the widget will fit and scroll properly.
   */
   auto lw = setLayout( std::make_unique< Wt::WVBoxLayout >() );
+
+  /*
+  ** Poke a tool bar up at the top of the area.
+  */
+  m_toolBar = lw-> addWidget( std::make_unique< ToolBar >() );
+
+
+
   m_tableView = lw-> addWidget( std::make_unique< GCW::Gui::TableView >(), 1 );
 //  tableView()-> setRowHeight( "20px" );
 
@@ -67,8 +74,7 @@ init()-> void
   /*
   ** set the column delegates/editors
   */
-  Editor editor;
-  editor.applyDelegates( tableView() );
+  Editor::applyDelegates( tableView() );
 
   tableView()-> headerClicked().connect( [=]( int col, Wt::WMouseEvent event )
   {

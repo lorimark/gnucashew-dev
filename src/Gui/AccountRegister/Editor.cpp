@@ -155,15 +155,15 @@ auto
 GCW::Gui::AccountRegister::Editor::
 applyDelegates( GCW::Gui::TableView * _tableView )-> void
 {
-  _tableView-> setHeaderItemDelegate    (                            std::make_shared< DelegateHeader     >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::DATE        ), std::make_shared< DelegateDate       >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::ACTION      ), std::make_shared< DelegateSuggestion >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::DESCRIPTION ), std::make_shared< DelegateSuggestion >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::TRANSFER    ), std::make_shared< DelegateAccount    >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::RECONCILE   ), std::make_shared< DelegateReconcile  >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::DEBIT       ), std::make_shared< DelegateValue      >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::CREDIT      ), std::make_shared< DelegateValue      >( this ) );
-  _tableView-> setItemDelegateForColumn ( asInt( Col::BALANCE     ), std::make_shared< DelegateBalance    >( this ) );
+  _tableView-> setHeaderItemDelegate    (                            std::make_shared< DelegateHeader     >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DATE        ), std::make_shared< DelegateDate       >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::ACTION      ), std::make_shared< DelegateSuggestion >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DESCRIPTION ), std::make_shared< DelegateSuggestion >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::TRANSFER    ), std::make_shared< DelegateAccount    >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::RECONCILE   ), std::make_shared< DelegateReconcile  >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::DEBIT       ), std::make_shared< DelegateValue      >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::CREDIT      ), std::make_shared< DelegateValue      >() );
+  _tableView-> setItemDelegateForColumn ( asInt( Col::BALANCE     ), std::make_shared< DelegateBalance    >() );
 
 } // endapplyDelegates( GCW::Gui::TableView * _tableView )-> void
 
@@ -177,9 +177,9 @@ editRow( Wt::WModelIndex _index )-> void
   auto mdl = model( _index );
 
   /*
-  ** edit all the columns, except the last (balance)
+  ** edit all the columns
   */
-  for( int col=0; col< mdl-> columnCount() - 1; col++ )
+  for( int col=0; col< mdl-> columnCount(); col++ )
   {
     auto item  = mdl-> item( row, col );
     auto index = mdl-> indexFromItem( item );

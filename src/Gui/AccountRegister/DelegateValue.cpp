@@ -6,8 +6,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegister::DelegateValue::
-DelegateValue( Editor * _editor )
-: DelegateBase( _editor )
+DelegateValue()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }

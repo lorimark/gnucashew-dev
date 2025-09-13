@@ -16,8 +16,7 @@
 **
 */
 GCW::Gui::AccountRegister::DelegateBase::
-DelegateBase( Editor * _editor )
-: m_editor( _editor )
+DelegateBase()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
@@ -188,7 +187,7 @@ setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model
       << std::endl;
 #endif
 
-    editor()-> setDirty( _index );
+//    editor()-> setDirty( _index );
 
   } // endif( !_equal( modelData, _editState ) )
 

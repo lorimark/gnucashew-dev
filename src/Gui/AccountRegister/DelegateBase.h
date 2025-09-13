@@ -25,10 +25,8 @@ class DelegateBase
 {
   public:
 
-    DelegateBase( Editor * _editor );
+    DelegateBase();
    ~DelegateBase();
-
-    auto editor() const-> Editor * { return m_editor; }
 
     virtual auto createEditor( const Wt::WModelIndex &index, Wt::WFlags< Wt::ViewItemRenderFlag > flags ) const-> std::unique_ptr< Wt::WWidget > ;
     virtual auto update( Wt::WWidget * _widget, const Wt::WModelIndex & _index, Wt::WFlags< Wt::ViewItemRenderFlag > _flags )-> std::unique_ptr< Wt::WWidget > ;
@@ -37,8 +35,6 @@ class DelegateBase
     virtual auto editState( Wt::WWidget * _widget, const Wt::WModelIndex & _index ) const-> Wt::cpp17::any ;
     virtual auto setEditState( Wt::WWidget * _widget, const Wt::WModelIndex & _index, const Wt::cpp17::any & _value ) const-> void ;
     virtual auto setModelData( const Wt::cpp17::any & _editState, Wt::WAbstractItemModel * _model, const Wt::WModelIndex & _index ) const-> void ;
-
-    Editor * m_editor = nullptr ;
 
 }; // endclass DelegateBase
 

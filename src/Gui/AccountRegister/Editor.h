@@ -61,8 +61,9 @@ class Editor
     ** \brief Apply Delegates
     **
     ** This will create and apply the delegates to the table.
+    **
     */
-    auto applyDelegates( GCW::Gui::TableView * _tableView )-> void ;
+    static auto applyDelegates( GCW::Gui::TableView * _tableView )-> void ;
 
     /*!
     ** \brief Table View

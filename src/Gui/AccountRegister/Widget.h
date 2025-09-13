@@ -16,6 +16,7 @@
 #include "../TableView.h"
 #include "Model.h"
 #include "StatusBar.h"
+#include "ToolBar.h"
 #include "Editor.h"
 
 namespace GCW {
@@ -314,6 +315,7 @@ class Widget
     std::shared_ptr< Wt::WBatchEditProxyModel  >   m_batchEditModel          ;
     GCW::Gui::TableView                          * m_tableView     = nullptr ;
     StatusBar                                    * m_statusBar     = nullptr ;
+    ToolBar                                      * m_toolBar       = nullptr ;
     Wt::WModelIndex                                m_selectIndex             ;
     Wt::WModelIndex                                m_clickedIndex            ;
     Wt::WModelIndex                                m_rightClickIndex         ;

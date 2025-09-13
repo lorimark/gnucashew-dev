@@ -9,8 +9,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 GCW::Gui::AccountRegister::DelegateDate::
-DelegateDate( Editor * _editor )
-: DelegateBase( _editor )
+DelegateDate()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 

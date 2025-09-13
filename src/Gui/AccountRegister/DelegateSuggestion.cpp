@@ -10,8 +10,7 @@
 
 
 GCW::Gui::AccountRegister::DelegateSuggestion::
-DelegateSuggestion( Editor * _editor )
-: DelegateBase( _editor )
+DelegateSuggestion()
 {
 //  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 }
