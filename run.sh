@@ -9,7 +9,7 @@ echo "running"
 # gdb --args \
 # valgrind -v --leak-check=full --show-leak-kinds=all \
 
-ASAN_OPTIONS=halt_on_error=1:abort_on_error=1 \
+# ASAN_OPTIONS=halt_on_error=1:abort_on_error=1 \
 ./gnucashew-bin sqlite3data.gnucash \
   --pid-file=gnucashew-bin-dev.pid \
   --config=../src/wt_config.xml \

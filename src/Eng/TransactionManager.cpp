@@ -358,6 +358,7 @@ createText( const std::string & _text ) const-> std::unique_ptr< Wt::WStandardIt
   auto retVal = std::make_unique< Wt::WStandardItem >( _text );
 
   retVal-> setStyleClass( "blank" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
 
   return std::move( retVal );
 
@@ -370,6 +371,7 @@ createBlank() const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "blank" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
 
   return std::move( retVal );
 
@@ -382,6 +384,7 @@ createEmpty() const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "empty" );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
 
   return std::move( retVal );
 
@@ -394,7 +397,7 @@ createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "date" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   /*!
   ** \note The post_date column (col-0) also carries with it the guid of the split
@@ -434,7 +437,7 @@ createNum( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> num() );
 
   retVal-> setStyleClass( "txnum" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   return std::move( retVal );
 
@@ -448,7 +451,7 @@ createNum( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> action() );
 
   retVal-> setStyleClass( "spnum" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   return std::move( retVal );
 
@@ -462,7 +465,7 @@ createDescription( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem 
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> description() );
 
   retVal-> setStyleClass( "txdesc" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   return std::move( retVal );
 
@@ -476,7 +479,7 @@ createDescription( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem 
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> memo() );
 
   retVal-> setStyleClass( "spdesc" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   return std::move( retVal );
 
@@ -489,7 +492,7 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "acct" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   /*!
   ** The 'account' text depends on the
@@ -601,7 +604,7 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "acct" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
 
@@ -657,7 +660,7 @@ createReconcile( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem
   auto retVal = std::make_unique< Wt::WStandardItem >( _splitItem-> reconcile_state() );
 
   retVal-> setStyleClass( "rec" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   return std::move( retVal );
 
@@ -670,7 +673,7 @@ createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
   retVal-> setStyleClass( "dr" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   /*
   ** debits are always positive
@@ -691,7 +694,7 @@ createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
   retVal-> setStyleClass( "cr" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
 
   /*
   ** credit are always negative
@@ -715,7 +718,7 @@ createBalance()  const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
 
   retVal-> setStyleClass( "bal" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip );
+  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
 
   return std::move( retVal );
 
@@ -764,7 +767,7 @@ appendBasicLedger() const-> void
   highlightNegativeBalance( row );
 
   /*
-  ** set alternating row colors (row-basic-ledger: rowbl)
+  ** set alternating row colors (rowbl == row-basic-ledger)
   */
   for( int col=0; col< row.size(); col++ )
     row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowbl" );
@@ -801,7 +804,7 @@ appendTransactionJournal() const-> void
     highlightNegativeBalance( row );
 
     /*
-    ** set static row color (row-transaction-journal: rowtj)
+    ** set static row color (rowtj == row-transaction-journal)
     */
     for( int col=0; col< row.size(); col++ )
       row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtj" );
@@ -824,7 +827,7 @@ appendTransactionJournal() const-> void
     row.push_back( createCredit      ( splitItem ) );
     row.push_back( createEmpty       (           ) );
 
-    for( int col=1; col< row.size(); col++ )
+    for( int col=0; col< row.size(); col++ )
       row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtd" );
 
     model()-> appendRow( std::move( row ) );
@@ -841,6 +844,9 @@ appendTransactionJournal() const-> void
     row.push_back( createEmpty() );
     row.push_back( createEmpty() );
     row.push_back( createEmpty() );
+
+    for( int col=0; col< row.size(); col++ )
+      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowte" );
 
     model()-> appendRow( std::move( row ) );
   }

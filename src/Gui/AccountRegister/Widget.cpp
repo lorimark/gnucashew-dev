@@ -672,16 +672,17 @@ do_selectRow( Wt::WModelIndex _index )-> void
 
   m_selectIndex = _index;
 
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << ")"
     << " isR/O:" << baseModel()-> isReadOnly( _index.row() )
     << " i("  << _index.row() << "," << _index.column() << ")"
     << " si(" << m_selectIndex.row() << "," << m_selectIndex.column() << ")"
     << std::endl;
+  wApp-> processEvents();
 #endif
 
-  tableView()-> clearSelection();
+//  tableView()-> clearSelection();
   tableView()-> closeEditors( true );
   tableView()-> scrollTo( _index );
   tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
@@ -695,12 +696,11 @@ auto
 GCW::Gui::AccountRegister::Widget::
 editRow( Wt::WModelIndex _index )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
     << " ro:"     << baseModel()-> isReadOnly( _index.row() )
     << " sel:"    << tableView()-> selectedIndexes().size()
-    << " selrow:" << tableView()-> selectedIndexes().begin()-> row()
     << std::endl;
 #endif
 

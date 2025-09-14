@@ -171,7 +171,7 @@ auto
 GCW::Gui::AccountRegister::Editor::
 editRow( Wt::WModelIndex _index )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")" << std::endl;
+//  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")" << std::endl;
 
   auto row = _index.row();
   auto mdl = model( _index );
@@ -184,7 +184,6 @@ editRow( Wt::WModelIndex _index )-> void
     auto item  = mdl-> item( row, col );
     auto index = mdl-> indexFromItem( item );
 
-    item-> setFlags( Wt::ItemFlag::Editable );
     m_tableView-> edit( index );
 
   } // for( ..all columns except balance.. )

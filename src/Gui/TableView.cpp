@@ -121,7 +121,7 @@ TableView()
   setRowHeight( kTableBodyRowHeight );
   setLayoutSizeAware( true );
 
-#ifdef NEVER
+#ifndef NEVER
   clicked()
     .connect( [=]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
     {
