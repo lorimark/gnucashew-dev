@@ -685,7 +685,7 @@ do_selectRow( Wt::WModelIndex _index )-> void
 //  tableView()-> clearSelection();
   tableView()-> closeEditors( true );
   tableView()-> scrollTo( _index );
-  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
+//  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
 
   if( !baseModel()-> isReadOnly( _index.row() ) )
     editRow( _index );

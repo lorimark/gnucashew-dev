@@ -20,9 +20,9 @@ Model()
   */
 //  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
-  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
-  m_doubleLine = true ;
+//  m_doubleLine = true ;
 
   /*
   ** set the lastDate to match the todays date, so when first
@@ -691,12 +691,6 @@ refreshFromDisk()-> void
     transMan.setSplitItem( splitItem );
 
     /*
-    ** Start out read-only == true.  We want to default read-only
-    **  and upgrade to read-write if the dataset calls for it.
-    */
-    bool readOnly = true;
-
-    /*
     ** BUGBUG: Depending on the condition of the database, in the odd chance that something
     **  has gone corrupted, this will more-or-less mask the issue, by simply
     **  stepping over this split that appears to be in bad shape.  Ideally we need
@@ -706,26 +700,7 @@ refreshFromDisk()-> void
     if( !transMan.transactionItem() )
       continue;
 
-    /*
-    ** If this model is editable, then check the reconciliation
-    **  state.  If the split has already been reconciled then
-    **  we really don't want the user messing around with it.
-    */
-    if( !m_readOnly )
-    {
-      if( splitItem-> reconcile_state() == GCW_RECONCILE_YES )
-      {
-        readOnly = true;
-      }
-      else
-      {
-        readOnly = false;
-      }
-    }
-
-    transMan.setReadOnly( readOnly );
-
-    transMan.appendRow();
+    transMan.appendRow( false );
 
   } // endfor( auto splitItem : splitItems )
 

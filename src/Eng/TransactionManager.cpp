@@ -353,12 +353,29 @@ setReadOnly( bool _value )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
+flags( bool _readOnly ) const-> Wt::WFlags< Wt::ItemFlag >
+{
+  Wt::WFlags< Wt::ItemFlag > retVal;
+
+  retVal = Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable;
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << _readOnly << std::endl;
+
+  if( !_readOnly )
+    retVal |= Wt::ItemFlag::Editable;
+
+  return retVal;
+
+} // endflags( bool _readOnly ) const-> Wt::WFlags< Wt::ItemFlag >
+
+auto
+GCW::Eng::Transaction::Manager::
 createText( const std::string & _text ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _text );
 
   retVal-> setStyleClass( "blank" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
+  retVal-> setFlags( flags( true ) );
 
   return std::move( retVal );
 
@@ -371,7 +388,7 @@ createBlank() const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "blank" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
+  retVal-> setFlags( flags( true ) );
 
   return std::move( retVal );
 
@@ -384,7 +401,7 @@ createEmpty() const-> std::unique_ptr< Wt::WStandardItem >
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "empty" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
+  retVal-> setFlags( flags( true ) );
 
   return std::move( retVal );
 
@@ -392,12 +409,12 @@ createEmpty() const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
+createDate( const TxItem & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
 
   retVal-> setStyleClass( "date" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   /*!
   ** \note The post_date column (col-0) also carries with it the guid of the split
@@ -432,12 +449,12 @@ createDate( TxItem _txItem ) const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createNum( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createNum( const TxItem & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> num() );
 
   retVal-> setStyleClass( "txnum" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   return std::move( retVal );
 
@@ -446,12 +463,12 @@ createNum( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createNum( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createNum( const SpItem & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> action() );
 
   retVal-> setStyleClass( "spnum" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   return std::move( retVal );
 
@@ -460,12 +477,12 @@ createNum( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createDescription( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createDescription( const TxItem & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> description() );
 
   retVal-> setStyleClass( "txdesc" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   return std::move( retVal );
 
@@ -474,12 +491,12 @@ createDescription( TxItem _txItem )  const-> std::unique_ptr< Wt::WStandardItem 
 
 auto
 GCW::Eng::Transaction::Manager::
-createDescription( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createDescription( const SpItem & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> memo() );
 
   retVal-> setStyleClass( "spdesc" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   return std::move( retVal );
 
@@ -488,11 +505,11 @@ createDescription( SpItem _spItem )  const-> std::unique_ptr< Wt::WStandardItem 
 #ifdef NEVER
 auto
 GCW::Eng::Transaction::Manager::
-createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createAccount( const SpItem & _splitItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "acct" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   /*!
   ** The 'account' text depends on the
@@ -600,11 +617,11 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createAccount( const SpItem & _splitItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "acct" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
 
@@ -655,12 +672,12 @@ createAccount( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createReconcile( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createReconcile( const SpItem & _splitItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( _splitItem-> reconcile_state() );
 
   retVal-> setStyleClass( "rec" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   return std::move( retVal );
 
@@ -668,12 +685,12 @@ createReconcile( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem
 
 auto
 GCW::Eng::Transaction::Manager::
-createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createDebit( const SpItem & _splitItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
   retVal-> setStyleClass( "dr" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   /*
   ** debits are always positive
@@ -689,12 +706,12 @@ createDebit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
+createCredit( const SpItem & _splitItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >(  );
 
   retVal-> setStyleClass( "cr" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable | Wt::ItemFlag::Editable );
+  retVal-> setFlags( flags( _readOnly ) );
 
   /*
   ** credit are always negative
@@ -713,12 +730,12 @@ createCredit( SpItem _splitItem )  const-> std::unique_ptr< Wt::WStandardItem >
 
 auto
 GCW::Eng::Transaction::Manager::
-createBalance()  const-> std::unique_ptr< Wt::WStandardItem >
+createBalance() const-> std::unique_ptr< Wt::WStandardItem >
 {
   auto retVal = std::make_unique< Wt::WStandardItem >( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
 
   retVal-> setStyleClass( "bal" );
-  retVal-> setFlags( Wt::ItemFlag::DeferredToolTip | Wt::ItemFlag::Selectable );
+  retVal-> setFlags( flags( true ) );
 
   return std::move( retVal );
 
@@ -751,18 +768,20 @@ highlightNegativeBalance( RowItem & _row ) const-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-appendBasicLedger() const-> void
+appendBasicLedger( bool _readOnly ) const-> void
 {
   RowItem row ;
 
-  row.push_back( createDate        ( transactionItem() ) );
-  row.push_back( createNum         ( transactionItem() ) );
-  row.push_back( createDescription ( transactionItem() ) );
-  row.push_back( createAccount     ( thatSplit()       ) );
-  row.push_back( createReconcile   ( thisSplit()       ) );
-  row.push_back( createDebit       ( thisSplit()       ) );
-  row.push_back( createCredit      ( thisSplit()       ) );
-  row.push_back( createBalance     (                   ) );
+  auto ro = thisSplit()-> reconcile_state() == GCW_RECONCILE_YES;
+
+  row.push_back( createDate        ( transactionItem() , ro ) );
+  row.push_back( createNum         ( transactionItem() , ro ) );
+  row.push_back( createDescription ( transactionItem() , ro ) );
+  row.push_back( createAccount     ( thatSplit()       , ro ) );
+  row.push_back( createReconcile   ( thisSplit()       , ro ) );
+  row.push_back( createDebit       ( thisSplit()       , ro ) );
+  row.push_back( createCredit      ( thisSplit()       , ro ) );
+  row.push_back( createBalance     (                        ) );
 
   highlightNegativeBalance( row );
 
@@ -778,28 +797,30 @@ appendBasicLedger() const-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-appendAutosplitLedger() const-> void
+appendAutosplitLedger( bool _readOnly ) const-> void
 {
 } // endappendAutosplitLedger() const-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-appendTransactionJournal() const-> void
+appendTransactionJournal( bool _readOnly ) const-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__ << " " << _readOnly << std::endl;
+
   /*
   ** set the first line
   */
   {
     RowItem row ;
 
-    row.push_back( createDate        ( transactionItem() ) );
-    row.push_back( createNum         ( transactionItem() ) );
-    row.push_back( createDescription ( transactionItem() ) );
-    row.push_back( createEmpty       (                   ) ); // account is empty on this row
-    row.push_back( createEmpty       (                   ) ); // reconcile is empty on this row
-    row.push_back( createDebit       ( thisSplit()       ) );
-    row.push_back( createCredit      ( thisSplit()       ) );
-    row.push_back( createBalance     (                   ) );
+    row.push_back( createDate        ( transactionItem(), _readOnly ) );
+    row.push_back( createNum         ( transactionItem(), _readOnly ) );
+    row.push_back( createDescription ( transactionItem(), _readOnly ) );
+    row.push_back( createEmpty       (                              ) ); // account is empty on this row
+    row.push_back( createEmpty       (                              ) ); // reconcile is empty on this row
+    row.push_back( createDebit       ( thisSplit()      , true      ) ); // debit cannot be edited here
+    row.push_back( createCredit      ( thisSplit()      , true      ) ); // credit cannot be edited here
+    row.push_back( createBalance     (                              ) );
 
     highlightNegativeBalance( row );
 
@@ -817,15 +838,16 @@ appendTransactionJournal() const-> void
   */
   for( auto splitItem : splits() )
   {
+    auto ro = splitItem-> reconcile_state() == GCW_RECONCILE_YES;
     RowItem row ;
-    row.push_back( createEmpty       (           ) );
-    row.push_back( createNum         ( splitItem ) );
-    row.push_back( createDescription ( splitItem ) );
-    row.push_back( createAccount     ( splitItem ) );
-    row.push_back( createReconcile   ( splitItem ) );
-    row.push_back( createDebit       ( splitItem ) );
-    row.push_back( createCredit      ( splitItem ) );
-    row.push_back( createEmpty       (           ) );
+    row.push_back( createEmpty       (               ) );
+    row.push_back( createNum         ( splitItem, ro ) );
+    row.push_back( createDescription ( splitItem, ro ) );
+    row.push_back( createAccount     ( splitItem, ro ) );
+    row.push_back( createReconcile   ( splitItem, ro ) );
+    row.push_back( createDebit       ( splitItem, ro ) );
+    row.push_back( createCredit      ( splitItem, ro ) );
+    row.push_back( createEmpty       (               ) );
 
     for( int col=0; col< row.size(); col++ )
       row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowtd" );
@@ -855,7 +877,7 @@ appendTransactionJournal() const-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-appendGeneralJournal() const-> void
+appendGeneralJournal( bool _readOnly ) const-> void
 {
 } // endappendGeneralJournal() const-> void
 
@@ -863,7 +885,7 @@ appendGeneralJournal() const-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-appendRow()-> void
+appendRow( bool _readOnly )-> void
 {
   /*
   ** calculate the running balance
@@ -877,25 +899,25 @@ appendRow()-> void
   {
     case GCW::Gui::AccountRegister::ViewMode::BASIC_LEDGER:
     {
-      appendBasicLedger();
+      appendBasicLedger( _readOnly );
       break;
     }
 
     case GCW::Gui::AccountRegister::ViewMode::AUTOSPLIT_LEDGER:
     {
-      appendAutosplitLedger();
+      appendAutosplitLedger( _readOnly );
       break;
     }
 
     case GCW::Gui::AccountRegister::ViewMode::TRANSACTION_JOURNAL:
     {
-      appendTransactionJournal();
+      appendTransactionJournal( _readOnly );
       break;
     }
 
     case GCW::Gui::AccountRegister::ViewMode::GENERAL_JOURNAL:
     {
-      appendGeneralJournal();
+      appendGeneralJournal( _readOnly );
       break;
     }
 
