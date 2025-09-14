@@ -20,7 +20,7 @@ Model()
   */
 //  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
-//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
 //  m_doubleLine = true ;
 
@@ -700,7 +700,7 @@ refreshFromDisk()-> void
     if( !transMan.transactionItem() )
       continue;
 
-    transMan.appendRow( false );
+    transMan.appendRow( true );
 
   } // endfor( auto splitItem : splitItems )
 

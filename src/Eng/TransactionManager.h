@@ -225,32 +225,32 @@ class Manager
     /*
     ** append the row to the model
     */
-    auto appendRow( bool _readOnly )-> void ;
+    auto appendRow( bool _editable )-> void ;
 
   private:
 
     auto highlightNegativeBalance( RowItem & _row ) const-> void ;
 
-    auto flags( bool _readOnly ) const-> Wt::WFlags< Wt::ItemFlag > ;
+    auto flags( bool _editable ) const-> Wt::WFlags< Wt::ItemFlag > ;
 
     auto createText        ( const std::string & _text                   ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createBlank       (                                             ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createEmpty       (                                             ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDate        ( const TxItem      & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createNum         ( const TxItem      & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createNum         ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDescription ( const TxItem      & _txItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDescription ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createAccount     ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createReconcile   ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createDebit       ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
-    auto createCredit      ( const SpItem      & _spItem, bool _readOnly ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDate        ( const TxItem      & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createNum         ( const TxItem      & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createNum         ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDescription ( const TxItem      & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDescription ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createAccount     ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createReconcile   ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createDebit       ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
+    auto createCredit      ( const SpItem      & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem > ;
     auto createBalance     (                                             ) const-> std::unique_ptr< Wt::WStandardItem > ;
 
-    auto appendBasicLedger        ( bool _readOnly ) const-> void ;
-    auto appendAutosplitLedger    ( bool _readOnly ) const-> void ;
-    auto appendTransactionJournal ( bool _readOnly ) const-> void ;
-    auto appendGeneralJournal     ( bool _readOnly ) const-> void ;
+    auto appendBasicLedger        ( bool _editable ) const-> void ;
+    auto appendAutosplitLedger    ( bool _editable ) const-> void ;
+    auto appendTransactionJournal ( bool _editable ) const-> void ;
+    auto appendGeneralJournal     ( bool _editable ) const-> void ;
 
     Gui::AccountRegister::Model             * m_model           = nullptr ;
     Wt::WModelIndex                           m_index           ;
