@@ -1,5 +1,7 @@
 #line 2 "src/Dbo/Splits.cpp"
 
+#include <chrono>
+
 #include "../App.h"
 
 #include "Splits.h"
@@ -23,76 +25,90 @@ namespace {
 */
 void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 {
-  /*!
-  ** Sort the vector of splits by 'transaction date' + 'value' so that they can be loaded
-  **  in to the model in proper sequential order.
-  */
-  std::sort
-  (
-    _splitItems.begin(),
-    _splitItems.end(),
-    []
-    ( const GCW::Dbo::Splits::Item::Ptr splitItem1,
-      const GCW::Dbo::Splits::Item::Ptr splitItem2
-    )
-    {
-      /*
-      ** get the transactions
-      */
-      auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
-      auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
+  return;
+  if( _splitItems.size() > 5 )
+  {
+    const auto start = std::chrono::system_clock::now();
 
-      /*
-      ** if we got transactions, analyze them!
-      */
-      if( trans1
-       && trans2
-        )
+    /*!
+    ** Sort the vector of splits by 'transaction date' + 'value' so that they can be loaded
+    **  in to the model in proper sequential order.
+    */
+    std::sort
+    (
+      _splitItems.begin(),
+      _splitItems.end(),
+      []
+      ( const GCW::Dbo::Splits::Item::Ptr splitItem1,
+        const GCW::Dbo::Splits::Item::Ptr splitItem2
+      )
       {
         /*
-        ** return .bool. if the .trans1. date is .less than. the .trans2. date
-        **
-        ** Also, return .bool. if the trans1-split-value is greater than the
-        **  trans2-split-value, if the dates are the same.  This way, debits
-        **  (positive values) are shown first in the register, and credits
-        **  follow, in value-descending order.  This resolves one issue that
-        **  has always driven me mental which is the register showing negative
-        **  balance values because the withdrawals are computed prior to the
-        **  deposits... for that same day.  This totally fixes that and lists
-        **  the deposits first, followed by the withdrawals.  neat!
-        **
-        ** note: it is possible to string-compare these date values, as they are
-        **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
-        **        sortable.  Alternatively, we can convert this string to an
-        **        internal WDate element, but that would be an unnecessary step.
-        **
-        **            return trans1-> post_date_as_date()
-        **                 < trans2-> post_date_as_date();
+        ** get the transactions
         */
-        if( trans1-> post_date()
-         == trans2-> post_date()
-          )
-          /*
-          ** dates are the same, so compare the values
-          */
-          return splitItem1-> value()
-               > splitItem2-> value()
-               ;
+        auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
+        auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
 
         /*
-        ** the dates are different so just compare them
+        ** if we got transactions, analyze them!
         */
-        else
-          return trans1-> post_date()
-               < trans2-> post_date()
-               ;
-      }
+        if( trans1
+         && trans2
+          )
+        {
+          /*
+          ** return .bool. if the .trans1. date is .less than. the .trans2. date
+          **
+          ** Also, return .bool. if the trans1-split-value is greater than the
+          **  trans2-split-value, if the dates are the same.  This way, debits
+          **  (positive values) are shown first in the register, and credits
+          **  follow, in value-descending order.  This resolves one issue that
+          **  has always driven me mental which is the register showing negative
+          **  balance values because the withdrawals are computed prior to the
+          **  deposits... for that same day.  This totally fixes that and lists
+          **  the deposits first, followed by the withdrawals.  neat!
+          **
+          ** note: it is possible to string-compare these date values, as they are
+          **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
+          **        sortable.  Alternatively, we can convert this string to an
+          **        internal WDate element, but that would be an unnecessary step.
+          **
+          **            return trans1-> post_date_as_date()
+          **                 < trans2-> post_date_as_date();
+          */
+          if( trans1-> post_date()
+           == trans2-> post_date()
+            )
+            /*
+            ** dates are the same, so compare the values
+            */
+            return splitItem1-> value()
+                 > splitItem2-> value()
+                 ;
 
-      return false;
+          /*
+          ** the dates are different so just compare them
+          */
+          else
+            return trans1-> post_date()
+                 < trans2-> post_date()
+                 ;
+        }
 
-    } // endlambda( ..compare.. )
+        return false;
 
-  ); // endstd::sort
+      } // endlambda( ..compare.. )
+
+    ); // endstd::sort
+
+    std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+      << " " << std::chrono::duration_cast< std::chrono::milliseconds >
+              ( std::chrono::system_clock::now() - start ).count()
+      << "mS load time for"
+      << " " << _splitItems.size() << " items"
+      << std::endl;
+
+  }
 
 } // endvoid sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 
@@ -166,19 +182,29 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
+  const auto start = std::chrono::system_clock::now();
+
   if( _accountGuid != "" )
   {
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+
+    std::string sql =
+      "SELECT s "
+      "FROM splits s "
+      "JOIN transactions t ON s.tx_guid = t.guid "
+      "WHERE s.account_guid = ? "
+      "ORDER BY t.post_date";
 
     /*
     ** grab the raw data items out of the storage
     */
     auto results =
-      GCW::app()-> gnucashew_session().find< GCW::Dbo::Splits::Item >()
-      .where( "account_guid = ?" )
-      .bind( _accountGuid )
-      .resultList()
-      ;
+      GCW::app()->
+        gnucashew_session()
+        .query< GCW::Dbo::Splits::Item::Ptr >( sql )
+        .bind( _accountGuid )
+        .resultList()
+        ;
 
     /*
     ** vector everything
@@ -189,9 +215,16 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
     /*
     ** sort the vector
     */
-    sort( retVal );
+//    sort( retVal );
 
   } // endif( _accountGuid != "" )
+
+  std::cout << __FILE__ << ":" << __LINE__
+    << " " << std::chrono::duration_cast< std::chrono::milliseconds >
+            ( std::chrono::system_clock::now() - start ).count()
+    << "mS load time for"
+    << " " << retVal.size() << " items"
+    << std::endl;
 
   return retVal;
 

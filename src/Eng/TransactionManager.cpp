@@ -803,8 +803,6 @@ auto
 GCW::Eng::Transaction::Manager::
 appendTransactionJournal( bool _editable ) const-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << _editable << std::endl;
-
   /*
   ** set the first line
   */

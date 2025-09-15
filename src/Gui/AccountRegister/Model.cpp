@@ -22,7 +22,7 @@ Model()
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
   m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
-//  m_doubleLine = true ;
+  m_doubleLine = true ;
 
   /*
   ** set the lastDate to match the todays date, so when first
