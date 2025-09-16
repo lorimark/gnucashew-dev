@@ -90,6 +90,8 @@ class Model
     auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
     auto getSplitGuid( int _row )-> std::string ;
 
+    auto getSplitRow( const std::string & _guid )-> int ;
+
     /*!
     ** \brief Get Date from the index
     **

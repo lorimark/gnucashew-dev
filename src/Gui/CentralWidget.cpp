@@ -140,7 +140,7 @@ open_AccountRegister( const std::string & _accountGuid )-> void
     */
     accountRegister->
       jumpToAccount()
-      .connect( this, &CentralWidget::open_AccountRegister );
+      .connect( this, &CentralWidget::open_AccountBySplit );
 
     /*
     ** Open a new AccountRegister tab that is connected to the account
@@ -165,6 +165,37 @@ open_AccountRegister( const std::string & _accountGuid )-> void
   ** Go straight to the tab.
   */
   tabWidget()-> setCurrentIndex( tabIndex( accountItem-> name() ) );
+
+} // endopen_AccountRegister( const std::string & _accountGuid )-> void
+
+auto
+GCW::Gui::CentralWidget::
+open_AccountBySplit( const std::string & _splitGuid )-> void
+{
+  /*
+  ** Grab the split so we can fetch things from it.
+  */
+  auto splitItem = GCW::Dbo::Splits::byGuid( _splitGuid );
+
+  /*
+  ** If we didn't get a split (this shouldn't happen) then
+  **  there's nothing for us to do... perhaps pop an error dialog
+  **  or something.
+  **
+  ** \todo add pop-up dialog message here
+  */
+  if( !splitItem )
+    return;
+
+  /*
+  ** open the register (it automatically becomes 'current')
+  */
+  open_AccountRegister( splitItem-> account_guid() );
+
+  /*
+  ** scroll to the item
+  */
+  currentAccountRegister()-> selectSplit( splitItem-> guid() );
 
 } // endopen_AccountRegister( const std::string & _accountGuid )-> void
 

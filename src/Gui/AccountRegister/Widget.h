@@ -111,6 +111,12 @@ class Widget
     auto jumpToAccount()-> Wt::Signal< std::string > & { return m_jumpToAccount; }
 
     /*!
+    ** \brief Select Split
+    **
+    */
+    auto selectSplit( const std::string & _guid )-> void ;
+
+    /*!
     ** \brief Create View Properties JSON Object
     **
     ** This will pack all of the Widget display variables in to a JSON

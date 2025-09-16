@@ -39,6 +39,7 @@ class CentralWidget
     auto activateAccountsTreeView()-> void ;
 
     auto open_AccountRegister      ( const std::string & _accountGuid  )-> void;
+    auto open_AccountBySplit       ( const std::string & _splitGuid    )-> void;
     auto open_CustomersWidget      (                                   )-> void;
     auto open_EmployeesWidget      (                                   )-> void;
     auto open_CustomerReportWidget ( const std::string & _customerGuid )-> void;

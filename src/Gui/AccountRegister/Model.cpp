@@ -20,9 +20,9 @@ Model()
   */
 //  m_viewMode = ViewMode::BASIC_LEDGER        ; // (default)
 //  m_viewMode = ViewMode::AUTOSPLIT_LEDGER    ;
-  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
+//  m_viewMode = ViewMode::TRANSACTION_JOURNAL ;
 //  m_viewMode = ViewMode::GENERAL_JOURNAL     ;
-  m_doubleLine = true ;
+//  m_doubleLine = true ;
 
   /*
   ** set the lastDate to match the todays date, so when first
@@ -360,6 +360,20 @@ getSplitGuid( int _row )-> std::string
 
 } // endgetSplitGuid( int _row )-> std::string
 
+
+auto
+GCW::Gui::AccountRegister::Model::
+getSplitRow( const std::string & _guid )-> int
+{
+  for( int row = 0; row< rowCount(); row++ )
+    if( getSplitGuid( row ) == _guid )
+      return row;
+
+  return -1;
+
+} // endgetSplitRow( const std::string & _guid )-> int
+
+
 auto
 GCW::Gui::AccountRegister::Model::
 saveToDisk( const Wt::WModelIndex & _index )-> void
@@ -537,7 +551,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 
       else
       {
-        std::cout << __FILE__ << ":" << __LINE__
+        std::cout << __FILE__ << ":" << __LINE__ << " setData:_valuesMatch"
           << " unhandled type " << _any1.type().name()
           << std::endl;
       }
@@ -708,28 +722,11 @@ refreshFromDisk()-> void
   ** After all the split items are loaded, an additional ~blank~ item
   **  is included at the end of the vector, for coding new entries.
   */
-#ifdef NEVER
   if( !isReadOnly() )
   {
-    /*
-    ** Create a row with blank values
-    */
-    RowItem columns;
-    auto post_date = _addColumn( columns, "" );                             // Date
-         post_date-> setData( m_lastDate, Wt::ItemDataRole::Edit );
-         post_date-> setFlags( Wt::ItemFlag::Editable );
-
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Num
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Memo
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Account
-    _addColumn( columns, "n"        )-> setFlags( Wt::ItemFlag::Editable ); // R
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Deposit
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Withdrawal
-    _addColumn( columns, ""         )-> setFlags( Wt::ItemFlag::Editable ); // Balance
-    appendRow( std::move( columns ) )                                     ;
+    transMan.appendEmptyRow( true );
 
   } // endif( m_editable )
-#endif
 
   /*!
   ** poke all the header labels in.  Note that some of the labels change

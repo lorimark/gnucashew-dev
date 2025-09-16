@@ -226,6 +226,7 @@ class Manager
     ** append the row to the model
     */
     auto appendRow( bool _editable )-> void ;
+    auto appendEmptyRow( bool _editable )-> void ;
 
   private:
 

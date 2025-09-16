@@ -9,111 +9,6 @@
 
 const char * GCW::Dbo::Splits::s_tableName = "splits";
 
-namespace {
-
-/*!
-** \brief Splits Sorter
-**
-** This is a little (private) vector sorter used to sort the items pulled from the
-**  database.  The database can produce items in random order, and the 'date' is
-**  contained on the 'transaction' so sorting by date requires a lookup in to the
-**  transaction.
-**
-** The sorted_vector_of_splits is used in the Account Register editor, whereby the
-**  items need to be in correct chronological order so as to be able to calculate
-**  a running balance.
-*/
-void sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
-{
-  return;
-  if( _splitItems.size() > 5 )
-  {
-    const auto start = std::chrono::system_clock::now();
-
-    /*!
-    ** Sort the vector of splits by 'transaction date' + 'value' so that they can be loaded
-    **  in to the model in proper sequential order.
-    */
-    std::sort
-    (
-      _splitItems.begin(),
-      _splitItems.end(),
-      []
-      ( const GCW::Dbo::Splits::Item::Ptr splitItem1,
-        const GCW::Dbo::Splits::Item::Ptr splitItem2
-      )
-      {
-        /*
-        ** get the transactions
-        */
-        auto trans1 = GCW::Dbo::Transactions::byGuid( splitItem1-> tx_guid() );
-        auto trans2 = GCW::Dbo::Transactions::byGuid( splitItem2-> tx_guid() );
-
-        /*
-        ** if we got transactions, analyze them!
-        */
-        if( trans1
-         && trans2
-          )
-        {
-          /*
-          ** return .bool. if the .trans1. date is .less than. the .trans2. date
-          **
-          ** Also, return .bool. if the trans1-split-value is greater than the
-          **  trans2-split-value, if the dates are the same.  This way, debits
-          **  (positive values) are shown first in the register, and credits
-          **  follow, in value-descending order.  This resolves one issue that
-          **  has always driven me mental which is the register showing negative
-          **  balance values because the withdrawals are computed prior to the
-          **  deposits... for that same day.  This totally fixes that and lists
-          **  the deposits first, followed by the withdrawals.  neat!
-          **
-          ** note: it is possible to string-compare these date values, as they are
-          **        represented as ISO dates (YYYY-mm-DD HH:MM:ss) which is
-          **        sortable.  Alternatively, we can convert this string to an
-          **        internal WDate element, but that would be an unnecessary step.
-          **
-          **            return trans1-> post_date_as_date()
-          **                 < trans2-> post_date_as_date();
-          */
-          if( trans1-> post_date()
-           == trans2-> post_date()
-            )
-            /*
-            ** dates are the same, so compare the values
-            */
-            return splitItem1-> value()
-                 > splitItem2-> value()
-                 ;
-
-          /*
-          ** the dates are different so just compare them
-          */
-          else
-            return trans1-> post_date()
-                 < trans2-> post_date()
-                 ;
-        }
-
-        return false;
-
-      } // endlambda( ..compare.. )
-
-    ); // endstd::sort
-
-    std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
-      << " " << std::chrono::duration_cast< std::chrono::milliseconds >
-              ( std::chrono::system_clock::now() - start ).count()
-      << "mS load time for"
-      << " " << _splitItems.size() << " items"
-      << std::endl;
-
-  }
-
-} // endvoid sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
-
-} // endnamespace {
-
 auto
 GCW::Dbo::Splits::
 load( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Ptr
@@ -182,18 +77,37 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
 {
   GCW::Dbo::Splits::Item::Vector retVal;
 
-  const auto start = std::chrono::system_clock::now();
+//  const auto start = std::chrono::system_clock::now();
 
   if( _accountGuid != "" )
   {
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
+    /*
+    ** this sql will sort the results of the query by date,value(desc)
+    **  without having to sort in code.  this is way freaking faster
+    */
     std::string sql =
       "SELECT s "
       "FROM splits s "
       "JOIN transactions t ON s.tx_guid = t.guid "
       "WHERE s.account_guid = ? "
-      "ORDER BY t.post_date";
+      "ORDER BY t.post_date, s.value_num desc";
+
+#ifdef SQL_THAT_CAN_RETURN_RUNNING_BALANCE
+
+SELECT s
+    SUM(s.value_num * 1.0 / s.value_denom) OVER (
+        PARTITION BY s.account_guid
+        ORDER BY t.post_date, s.guid
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_balance,
+FROM splits s
+JOIN transactions t ON s.tx_guid = t.guid
+WHERE s.account_guid = ?
+ORDER BY t.post_date, s.value_num;
+
+#endif
 
     /*
     ** grab the raw data items out of the storage
@@ -212,19 +126,14 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
     for( auto result : results )
       retVal.push_back( result );
 
-    /*
-    ** sort the vector
-    */
-//    sort( retVal );
-
   } // endif( _accountGuid != "" )
 
-  std::cout << __FILE__ << ":" << __LINE__
-    << " " << std::chrono::duration_cast< std::chrono::milliseconds >
-            ( std::chrono::system_clock::now() - start ).count()
-    << "mS load time for"
-    << " " << retVal.size() << " items"
-    << std::endl;
+//  std::cout << __FILE__ << ":" << __LINE__
+//    << " " << std::chrono::duration_cast< std::chrono::milliseconds >
+//            ( std::chrono::system_clock::now() - start ).count()
+//    << "mS load time for"
+//    << " " << retVal.size() << " items"
+//    << std::endl;
 
   return retVal;
 
@@ -245,10 +154,18 @@ bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
   {
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
+    std::string sql =
+      "SELECT s "
+      "FROM splits s "
+      "JOIN transactions t ON s.tx_guid = t.guid "
+      "WHERE s.tx_guid = ? "
+      "AND   s.guid != ? "
+      "ORDER BY t.post_date, s.value_num desc";
+
     auto results =
-      GCW::app()-> gnucashew_session().find< GCW::Dbo::Splits::Item >()
-      .where( "tx_guid = ?" )
+      GCW::app()-> gnucashew_session().query< GCW::Dbo::Splits::Item::Ptr >( sql )
       .bind( splitItem-> tx_guid() )
+      .bind( splitItem-> guid() )
       .resultList()
       ;
 
@@ -257,14 +174,7 @@ bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
     **  matches our incoming split guid.
     */
     for( auto result : results )
-      if( result-> guid() != _splitGuid )
-        retVal.push_back( result );
-
-    /*
-    ** The vector is sorted by transction-date before
-    **  returning to the caller.
-    */
-    sort( retVal );
+      retVal.push_back( result );
 
   } // endif( GCW::app()-> gnucashew_session().isOpen() )
 
@@ -280,21 +190,21 @@ byTransaction( const std::string & _txGuid )-> GCW::Dbo::Splits::Item::Vector
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
+  std::string sql =
+    "SELECT s "
+    "FROM splits s "
+    "JOIN transactions t ON s.tx_guid = t.guid "
+    "WHERE s.tx_guid = ? "
+    "ORDER BY t.post_date, s.value_num desc";
+
   auto results =
-    GCW::app()-> gnucashew_session().find< GCW::Dbo::Splits::Item >()
-    .where( "tx_guid = ?" )
+    GCW::app()-> gnucashew_session().query< GCW::Dbo::Splits::Item::Ptr >( sql )
     .bind( _txGuid )
     .resultList()
     ;
 
   for( auto result : results )
     retVal.push_back( result );
-
-  /*
-  ** The vector is sorted by transction-date before
-  **  returning to the caller.
-  */
-  sort( retVal );
 
   return retVal;
 
@@ -304,8 +214,10 @@ auto
 GCW::Dbo::Splits::Item::
 set_value( GCW_NUMERIC _value )-> void
 {
-  m_value_num   = (_value * 100).getAsInteger();
-  m_value_denom = 100;
+  auto account = GCW::Dbo::Accounts::byGuid( account_guid() );
+
+  m_value_num   = (_value * account-> commodity_scu() ).getAsInteger();
+  m_value_denom = account-> commodity_scu();
 
 } // endset_value( GCW_NUMERIC _value )-> void
 
@@ -313,8 +225,10 @@ auto
 GCW::Dbo::Splits::Item::
 set_quantity( GCW_NUMERIC _value )-> void
 {
-  m_quantity_num   = (_value * 100).getAsInteger();
-  m_quantity_denom = 100;
+  auto account = GCW::Dbo::Accounts::byGuid( account_guid() );
+
+  m_quantity_num   = (_value * account-> commodity_scu() ).getAsInteger();
+  m_quantity_denom = account-> commodity_scu() ;
 
 } // endset_quantity( GCW_NUMERIC _value )-> void
 

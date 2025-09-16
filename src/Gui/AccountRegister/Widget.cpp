@@ -405,8 +405,8 @@ on_jump_triggered()-> void
   /*
   ** use a transaction manager so we can find the other split guid
   */
-//  auto transMan = GCW::Eng::Transaction::Manager();
-//  transMan.loadSplit( baseModel()-> getSplitGuid( m_rightClickIndex.row() ) );
+  auto transMan = GCW::Eng::Transaction::Manager();
+  transMan.loadSplit( baseModel()-> getSplitGuid( m_rightClickIndex.row() ) );
 
   /*!
   ** \todo should deal with multiple splits
@@ -418,7 +418,7 @@ on_jump_triggered()-> void
   **  it indicates that the jump will jump to the 'highest value'
   **  split... that could work.
   */
-//  jumpToAccount().emit( transMan.thatSplit()-> account_guid() );
+  jumpToAccount().emit( transMan.thatSplit()-> guid() );
 
 } // endon_jump_triggered()-> void
 
@@ -516,16 +516,16 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
   }
 
   // edit
-  {
-    auto item =
-      m_popupMenu
-      .addItem
-      (
-       TR( "gcw.AccountRegister.Popup.edit" ),
-       this,
-       &Widget::on_edit_triggered
-      );
-  }
+//  {
+//    auto item =
+//      m_popupMenu
+//      .addItem
+//      (
+//       TR( "gcw.AccountRegister.Popup.edit" ),
+//       this,
+//       &Widget::on_edit_triggered
+//      );
+//  }
 
 
 
@@ -544,6 +544,7 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
   // Select the item, if it was not yet selected.
   if( !tableView()-> isSelected( _index ) )
   {
+    tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
     editRow( _index );
   }
 
@@ -682,7 +683,6 @@ do_selectRow( Wt::WModelIndex _index )-> void
   wApp-> processEvents();
 #endif
 
-//  tableView()-> clearSelection();
   tableView()-> closeEditors( true );
   tableView()-> scrollTo( _index );
 //  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
@@ -694,9 +694,22 @@ do_selectRow( Wt::WModelIndex _index )-> void
 
 auto
 GCW::Gui::AccountRegister::Widget::
+selectSplit( const std::string & _guid )-> void
+{
+  auto row = baseModel()-> getSplitRow( _guid );
+
+  if( row > -1 )
+  {
+    do_selectRow( baseModel()-> index( row, 0 ) );
+  }
+
+} // enddo_selectRow( Wt::WModelIndex _index )-> void
+
+auto
+GCW::Gui::AccountRegister::Widget::
 editRow( Wt::WModelIndex _index )-> void
 {
-#ifndef NEVER
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << " " << __FUNCTION__ << "(" << _index.row() << "," << _index.column() << ")"
     << " ro:"     << baseModel()-> isReadOnly( _index.row() )
@@ -704,6 +717,8 @@ editRow( Wt::WModelIndex _index )-> void
     << std::endl;
 #endif
 
+//  tableView()-> clearSelection();
+  tableView()-> closeEditors( true );
   Editor editor( tableView() );
   editor.editRow( _index );
 

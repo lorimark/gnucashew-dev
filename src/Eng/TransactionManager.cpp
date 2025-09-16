@@ -437,8 +437,16 @@ createDate( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt
 //    .arg( thisSplit()-> guid()         )
 //    ;
 
-  retVal-> setData( transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
-  retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
+  if( thisSplit() )
+  {
+    if( transactionItem() )
+      retVal-> setData( transactionItem()-> post_date_as_date(), Wt::ItemDataRole::Edit );
+
+    if( thisSplit() )
+      retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
+
+  }
+
 //  retVal-> setToolTip( tip );
 
   return std::move( retVal );
@@ -449,10 +457,17 @@ auto
 GCW::Eng::Transaction::Manager::
 createNum( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> num() );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "txnum" );
   retVal-> setFlags( flags( _editable ) );
+
+  if( thisSplit() )
+  {
+    if( _txItem )
+    {
+      retVal-> setText( _txItem-> num() );
+    }
+  }
 
   return std::move( retVal );
 
@@ -463,10 +478,17 @@ auto
 GCW::Eng::Transaction::Manager::
 createNum( const SpItem & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> action() );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "spnum" );
   retVal-> setFlags( flags( _editable ) );
+
+  if( thisSplit() )
+  {
+    if( _spItem )
+    {
+      retVal-> setText( _spItem-> action() );
+    }
+  }
 
   return std::move( retVal );
 
@@ -477,10 +499,17 @@ auto
 GCW::Eng::Transaction::Manager::
 createDescription( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( _txItem-> description() );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "txdesc" );
   retVal-> setFlags( flags( _editable ) );
+
+  if( thisSplit() )
+  {
+    if( _txItem )
+    {
+      retVal-> setText( _txItem-> description() );
+    }
+  }
 
   return std::move( retVal );
 
@@ -491,10 +520,14 @@ auto
 GCW::Eng::Transaction::Manager::
 createDescription( const SpItem & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( _spItem-> memo() );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "spdesc" );
   retVal-> setFlags( flags( _editable ) );
+
+  if( _spItem )
+  {
+    retVal-> setText( _spItem-> memo() );
+  }
 
   return std::move( retVal );
 
@@ -621,48 +654,52 @@ createAccount( const SpItem & _splitItem, bool _editable ) const-> std::unique_p
   retVal-> setStyleClass( "acct" );
   retVal-> setFlags( flags( _editable ) );
 
-  auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
-
-  // yes, we have one account item
-  if( splitAccountItem )
+  if( _splitItem )
   {
-    retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
+    auto splitAccountItem = GCW::Dbo::Accounts::byGuid( _splitItem-> account_guid() );
 
-    auto tip =
-      Wt::WString
-      (
-       "spa:{1}\n"
-       "txi:{2}\n"
-      )
-      .arg( splitAccountItem-> guid() )
-      .arg( _splitItem-> guid() )
-      ;
-    retVal-> setToolTip( tip );
-  }
+    // yes, we have one account item
+    if( splitAccountItem )
+    {
+      retVal-> setText( GCW::Dbo::Accounts::fullName( splitAccountItem-> guid() ) );
 
-  // no, we don't have an account item
-  else
-  {
-    /*!
-    ** \par Another Imbalance
-    ** This is another problem... We have another split, but the account
-    **  we are split-to doesn't exist.  This is a problem and should not
-    **  happen and represents an error in the database.  This means the
-    **  account containing this guid nolonger exists.  That should never
-    **  happen.
-    */
-    retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
-    retVal-> setStyleClass( retVal-> styleClass() + " errval" );
+      auto tip =
+        Wt::WString
+        (
+         "spa:{1}\n"
+         "txi:{2}\n"
+        )
+        .arg( splitAccountItem-> guid() )
+        .arg( _splitItem-> guid() )
+        ;
+      retVal-> setToolTip( tip );
+    }
 
-    auto toolTip =
-      Wt::WString("target guid:{1}\n{2}")
-      .arg( _splitItem-> account_guid() )
-      .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
-      .toUTF8()
-      ;
-    retVal-> setToolTip( toolTip );
+    // no, we don't have an account item
+    else
+    {
+      /*!
+      ** \par Another Imbalance
+      ** This is another problem... We have another split, but the account
+      **  we are split-to doesn't exist.  This is a problem and should not
+      **  happen and represents an error in the database.  This means the
+      **  account containing this guid nolonger exists.  That should never
+      **  happen.
+      */
+      retVal-> setText( TR("gcw.AccountRegister.account.imbalanceUSD") );
+      retVal-> setStyleClass( retVal-> styleClass() + " errval" );
 
-  } // endelse no account item
+      auto toolTip =
+        Wt::WString("target guid:{1}\n{2}")
+        .arg( _splitItem-> account_guid() )
+        .arg( TR("gcw.AccountRegister.account.invalidTarget.toolTip") )
+        .toUTF8()
+        ;
+      retVal-> setToolTip( toolTip );
+
+    } // endelse no account item
+
+  } // endif( _splitItem )
 
   return std::move( retVal );
 
@@ -672,10 +709,14 @@ auto
 GCW::Eng::Transaction::Manager::
 createReconcile( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( _splitItem-> reconcile_state() );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "rec" );
   retVal-> setFlags( flags( _editable ) );
+
+  if( _splitItem )
+  {
+    retVal-> setText( _splitItem-> reconcile_state() );
+  }
 
   return std::move( retVal );
 
@@ -685,17 +726,19 @@ auto
 GCW::Eng::Transaction::Manager::
 createDebit( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >(  );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "dr" );
   retVal-> setFlags( flags( _editable ) );
 
-  /*
-  ** debits are always positive
-  */
-  if( _splitItem-> value() > 0 )
+  if( _splitItem )
   {
-    retVal -> setText( _splitItem-> valueAsString() );
+    /*
+    ** debits are always positive
+    */
+    if( _splitItem-> value() > 0 )
+    {
+      retVal -> setText( _splitItem-> valueAsString() );
+    }
   }
 
   return std::move( retVal );
@@ -706,20 +749,22 @@ auto
 GCW::Eng::Transaction::Manager::
 createCredit( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >(  );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "cr" );
   retVal-> setFlags( flags( _editable ) );
 
-  /*
-  ** credit are always negative
-  */
-  if( _splitItem-> value() < 0 )
+  if( _splitItem )
   {
     /*
-    **  set the value and invert(true) the sign
+    ** credit are always negative
     */
-    retVal -> setText( _splitItem-> valueAsString( true ) );
+    if( _splitItem-> value() < 0 )
+    {
+      /*
+      **  set the value and invert(true) the sign
+      */
+      retVal -> setText( _splitItem-> valueAsString( true ) );
+    }
   }
 
   return std::move( retVal );
@@ -730,10 +775,14 @@ auto
 GCW::Eng::Transaction::Manager::
 createBalance() const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
-
+  auto retVal = std::make_unique< Wt::WStandardItem >();
   retVal-> setStyleClass( "bal" );
   retVal-> setFlags( flags( false ) );
+
+  if( thisSplit() )
+  {
+    retVal-> setText( toString( model()-> m_balance, GCW::Cfg::decimal_format() ) );
+  }
 
   return std::move( retVal );
 
@@ -770,7 +819,9 @@ appendBasicLedger( bool _editable ) const-> void
 {
   RowItem row ;
 
-  auto ed = thisSplit()-> reconcile_state() == GCW_RECONCILE_NO;
+  bool ed = true;
+  if( thisSplit() )
+    ed = thisSplit()-> reconcile_state() == GCW_RECONCILE_NO;
 
   row.push_back( createDate        ( transactionItem() , ed ) );
   row.push_back( createNum         ( transactionItem() , ed ) );
@@ -886,7 +937,8 @@ appendRow( bool _editable )-> void
   /*
   ** calculate the running balance
   */
-  model()-> m_balance += thisSplit()-> value();
+  if( thisSplit() )
+    model()-> m_balance += thisSplit()-> value();
 
   /*
   ** build a row depending on the view mode
@@ -918,6 +970,19 @@ appendRow( bool _editable )-> void
     }
 
   } // endswitch( model()-> viewMode() )
+
+} // endappendRow()-> void
+
+
+auto
+GCW::Eng::Transaction::Manager::
+appendEmptyRow( bool _editable )-> void
+{
+
+  m_splitGuid = "";
+  m_splits.clear();
+
+  appendRow( _editable );
 
 } // endappendRow()-> void
 
