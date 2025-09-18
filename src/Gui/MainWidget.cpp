@@ -1,5 +1,7 @@
 #line 2 "src/Gui/MainWidget.cpp"
 
+#include <random>
+
 #include <Wt/WDialog.h>
 #include <Wt/WComboBox.h>
 #include <Wt/WPushButton.h>
@@ -8,6 +10,7 @@
 
 #include "../define.h"
 #include "../GnuCashew.h"
+#include "../Eng/TransactionManager.h"
 #include "MainWidget.h"
 #include "FilePropertiesWidget.h"
 #include "LanguagePicker.h"
@@ -191,6 +194,20 @@ setDoubleLine()-> void
 
 } // endsetDoubleLine()-> void
 
+namespace {
+
+auto randomNumber( int _min, int _max )-> int
+{
+  static std::random_device rd;  // Non-deterministic seed
+  static std::mt19937 gen( rd() ); // Mersenne Twister RNG
+
+  std::uniform_int_distribution<> dist( _min, _max ); // inclusive range
+
+  auto retVal = dist( gen );
+
+  return retVal;
+
+} // endauto randomNumber( int _min, int _max )-> int
 
 auto
 test_tableview()-> void
@@ -226,10 +243,284 @@ test_tableview()-> void
 } // endtest_tableview()-> void
 
 auto
+load_random_transactions()
+{
+  auto button = std::make_unique< Wt::WPushButton >( "load random transactions" );
+
+  std::map< std::string, std::vector< std::string > > expenses = {
+    { "Expenses:Medical Expenses",
+      {
+        "Copay for doctor visit",
+        "Prescription refill – CVS",
+        "Dental cleaning – Dr. Smith",
+        "Urgent care visit – weekend",
+        "Eye exam – optometrist",
+        "Physical therapy session",
+        "Lab tests – Quest Diagnostics",
+        "Over-the-counter medication",
+        "Hospital parking fee",
+        "Flu shot – Walgreens"
+      }},
+    { "Expenses:Laundry/Dry Cleaning",
+      {
+        "Dry cleaning suit – Cleaners Plus",
+        "Wash & fold service",
+        "Shirt pressing – Express Cleaners",
+        "Comforter dry cleaned",
+        "Stain removal – silk blouse",
+        "Laundry card refill",
+        "Pickup & delivery laundry",
+        "Uniform cleaning",
+        "Curtain dry cleaning",
+        "Weekly laundry service"
+      }},
+    { "Expenses:Groceries",
+      {
+        "Weekly grocery run – Walmart",
+        "Produce market – fresh veggies",
+        "Milk and bread – local store",
+        "Bulk items – Costco",
+        "Organic produce – Whole Foods",
+        "Meat & seafood purchase",
+        "Baking supplies – holiday",
+        "Frozen goods – Aldi",
+        "Snacks and beverages",
+        "Pet food – grocery aisle"
+      }},
+    { "Expenses:Cable",
+      {
+        "Monthly cable bill – Spectrum",
+        "Sports channel add-on",
+        "Premium movie package",
+        "DVR upgrade fee",
+        "Service technician visit",
+        "Late payment fee",
+        "Internet & cable bundle",
+        "Pay-per-view boxing event",
+        "Channel upgrade request",
+        "Equipment rental fee"
+      }},
+    { "Expenses:Taxes:Other Tax",
+      {
+        "Local occupancy tax",
+        "Vehicle registration tax",
+        "Luxury goods tax",
+        "Parking permit tax",
+        "Short-term rental tax",
+        "City environmental fee",
+        "Import duty – online order",
+        "Special assessment tax",
+        "Utility usage surcharge",
+        "Tourism tax"
+      }},
+    { "Expenses:Computer",
+      {
+        "New laptop purchase",
+        "External hard drive – backup",
+        "Software subscription – Adobe",
+        "Keyboard & mouse combo",
+        "Replacement charger",
+        "RAM upgrade",
+        "Anti-virus renewal",
+        "Laptop repair service",
+        "Cloud storage subscription",
+        "Graphics card upgrade"
+      }},
+    { "Expenses:Phone",
+      {
+        "Monthly mobile bill – Verizon",
+        "New phone case",
+        "Data overage charge",
+        "International calling plan",
+        "Screen protector purchase",
+        "Device insurance premium",
+        "Phone upgrade fee",
+        "SIM card replacement",
+        "Voicemail-to-text add-on",
+        "Mobile hotspot charge"
+      }},
+    { "Expenses:Books",
+      {
+        "Textbook purchase – college",
+        "E-book download – Kindle",
+        "Magazine subscription",
+        "Used books – thrift store",
+        "Study guide – exam prep",
+        "Children’s storybook",
+        "Hardcover bestseller",
+        "Travel guidebook",
+        "Audio book subscription",
+        "Book club order"
+      }},
+    { "Expenses:Insurance:Health Insurance",
+      {
+        "Monthly premium – Blue Cross",
+        "Policy renewal fee",
+        "Dependent coverage add-on",
+        "COBRA payment",
+        "Out-of-network reimbursement",
+        "Health plan deductible payment",
+        "Policy admin charge",
+        "Wellness program fee",
+        "Health savings account contribution",
+        "Employer premium adjustment"
+      }},
+    { "Expenses:Supplies",
+      {
+        "Office paper & pens",
+        "Printer ink cartridges",
+        "Cleaning supplies – janitorial",
+        "Packaging tape – shipping",
+        "Storage bins purchase",
+        "Paper towels & tissues",
+        "Refill for whiteboard markers",
+        "Safety gloves & masks",
+        "Breakroom coffee supplies",
+        "Stationery order"
+      }},
+    { "Expenses:Taxes:Social Security",
+      {
+        "Social security tax withholding",
+        "Additional SS tax adjustment",
+        "Employer SS contribution",
+        "Self-employment SS tax",
+        "Catch-up SS payment",
+        "Late SS filing fee",
+        "SS estimated tax",
+        "Overpayment refund offset",
+        "Correction to SS tax",
+        "Supplemental SS fee"
+      }},
+    { "Expenses:Entertainment:Recreation",
+      {
+        "Movie tickets – Friday night",
+        "Bowling alley fee",
+        "Zoo admission",
+        "Amusement park day pass",
+        "Concert ticket – local band",
+        "Game rental – board games",
+        "Streaming movie rental",
+        "Mini golf outing",
+        "Escape room experience",
+        "Comedy club cover charge"
+      }},
+    { "Expenses:Online Services",
+      {
+        "Cloud backup subscription",
+        "Website hosting fee",
+        "Domain renewal – personal site",
+        "Streaming service – Netflix",
+        "VPN annual plan",
+        "Stock photo download",
+        "Music subscription – Spotify",
+        "Online course enrollment",
+        "Web app premium upgrade",
+        "Paid newsletter subscription"
+      }},
+    { "Expenses:Taxes:State/Province",
+      {
+        "State income tax payment",
+        "Quarterly state estimated tax",
+        "State tax penalty",
+        "State tax refund offset",
+        "State franchise tax",
+        "State use tax – online order",
+        "State excise tax",
+        "State annual filing fee",
+        "State surtax adjustment",
+        "State environmental surcharge"
+      }},
+    { "Expenses:Insurance:Life Insurance",
+      {
+        "Term life premium – annual",
+        "Whole life policy contribution",
+        "Beneficiary change fee",
+        "Policy loan interest payment",
+        "Cash value withdrawal fee",
+        "Additional rider premium",
+        "Coverage renewal",
+        "Life insurance underwriting fee",
+        "Group life policy payment",
+        "Late policy premium fee"
+      }},
+    { "Expenses:Auto:Fuel",
+      {
+        "Gas fill-up – Shell",
+        "Diesel purchase – truck",
+        "Premium fuel – road trip",
+        "Gasoline – self-service",
+        "Fuel for rental car",
+        "Prepaid gas card load",
+        "Gas station coffee & snack",
+        "Topping off tank – holiday",
+        "Discount fuel club purchase",
+        "Fleet vehicle refueling"
+      }}
+  };
+
+// Assets:Current Assets:Checking Account
+// Income:Salary
+
+  button.get()->
+    clicked().connect( [=]()
+    {
+      GCW::Eng::Transaction::Manager transMan;
+
+      auto account1 = GCW::Dbo::Accounts::byFullName( "Assets:Current Assets:Checking Account" );
+      std::cout << __FILE__ << ":" << __LINE__
+        << " " << account1
+        << " " << expenses.size()
+        << " " << account1-> name()
+        << std::endl;
+
+      for( auto expense : expenses )
+      {
+        auto account2 = GCW::Dbo::Accounts::byFullName( expense.first );
+
+        std::cout << __FILE__ << ":" << __LINE__
+          << " " << account2
+          << " " << expense.second.size()
+          << " " << expense.first
+          << std::endl;
+
+        for( auto second : expense.second )
+        {
+          GCW_NUMERIC value( float( 12345.0 / randomNumber( 1, 99 ) ) );
+
+          auto number = randomNumber( 0, 9 );
+
+          transMan
+            .newTransaction
+            (
+             account1-> guid(),
+             account2-> guid(),
+             Wt::WDate::currentDate().addDays( randomNumber( 0, 365) ),
+             value,
+             expense.second.at( number )
+            );
+
+        }
+
+      }
+
+    });
+
+  Wt::WDialog dialog( "random transactions" );
+  dialog.contents()-> addWidget( std::move( button ) );
+  dialog.rejectWhenEscapePressed( true );
+  dialog.setClosable( true );
+  dialog.exec();
+
+} // endload_random_transactions()
+
+} // endnamespace {
+
+auto
 GCW::Gui::MainWidget::
 test()-> void
 {
-  test_tableview();
+//  test_tableview();
+  load_random_transactions();
 
 } // endtest()
 

@@ -21,6 +21,14 @@
 
 namespace GCW {
   namespace Gui {
+
+    /*!
+    ** \brief Account Register
+    **
+    ** The Account Register
+    **
+    **
+    */
     namespace AccountRegister {
 
 /*!

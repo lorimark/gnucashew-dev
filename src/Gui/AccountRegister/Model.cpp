@@ -551,9 +551,11 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
 
       else
       {
+#ifdef NO_NOISE
         std::cout << __FILE__ << ":" << __LINE__ << " setData:_valuesMatch"
           << " unhandled type " << _any1.type().name()
           << std::endl;
+#endif
       }
 
     } // endif( _any1.type() == _any2.type() )

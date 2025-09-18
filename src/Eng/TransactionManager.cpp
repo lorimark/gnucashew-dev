@@ -21,8 +21,16 @@ Manager( Gui::AccountRegister::Model * _model )
 
 auto
 GCW::Eng::Transaction::Manager::
-newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void
+newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2, const Wt::WDate & _date, GCW_NUMERIC _value, const std::string & _description )-> void
 {
+  std::cout << __FILE__ << ":" << __LINE__
+    << "\n acct1: "  << _accountGuid1
+    << "\n acct2: "  << _accountGuid2
+    << "\n  date: '" << _date.toString() << "'"
+    << "\n value: "  << _value
+    << "\n  desc: "  << _description
+    << std::endl;
+
   /*!
   ** The process begins by loading up the two accounts.
   */
@@ -39,19 +47,23 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   // transaction
   m_transactionItem.modify()-> set_currency_guid( accountItem1-> commodity_guid() );
-  m_transactionItem.modify()-> set_enter_date( Wt::WDateTime::currentDateTime() );
+  m_transactionItem.modify()-> set_enter_date( Wt::WDate::currentDate() );
+  m_transactionItem.modify()-> set_post_date( _date );
+  m_transactionItem.modify()-> set_description( _description );
   // Split1
   auto split1 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
   split1.modify()-> set_tx_guid         ( m_transactionItem-> guid() );
-  split1.modify()-> set_account_guid    ( _accountGuid1          );
-  split1.modify()-> set_reconcile_state ( GCW_RECONCILE_NO       );
-  split1.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE       );
+  split1.modify()-> set_account_guid    ( _accountGuid1              );
+  split1.modify()-> set_reconcile_state ( GCW_RECONCILE_NO           );
+  split1.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE           );
+  split1.modify()-> set_value           ( _value                     );
   // Split2
   auto split2 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
   split2.modify()-> set_tx_guid         ( m_transactionItem-> guid() );
-  split2.modify()-> set_account_guid    ( _accountGuid2          );
-  split2.modify()-> set_reconcile_state ( GCW_RECONCILE_NO       );
-  split2.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE       );
+  split2.modify()-> set_account_guid    ( _accountGuid2              );
+  split2.modify()-> set_reconcile_state ( GCW_RECONCILE_NO           );
+  split2.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE           );
+  split1.modify()-> set_value           ( -_value                    );
 
   /*
   ** record the splits
@@ -60,6 +72,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   m_splits.push_back( split2 );
 
 } // endnewTransaction()-> void
+
 
 auto
 GCW::Eng::Transaction::Manager::

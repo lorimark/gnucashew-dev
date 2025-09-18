@@ -700,7 +700,11 @@ selectSplit( const std::string & _guid )-> void
 
   if( row > -1 )
   {
-    do_selectRow( baseModel()-> index( row, 0 ) );
+    /*!
+    ** \todo determine best method to use here - table is not 'selecting/highlighting' properly
+    */
+    tableView()-> clicked().emit( baseModel()-> index( row, 0 ), Wt::WMouseEvent() );
+//    on_tableView_clicked( baseModel()-> index( row, 0 ), Wt::WMouseEvent() );
   }
 
 } // enddo_selectRow( Wt::WModelIndex _index )-> void

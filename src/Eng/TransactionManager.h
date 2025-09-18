@@ -108,7 +108,7 @@ class Manager
     ** This will create a new Transaction for an account within the
     **  system fully populated with at least two splits.
     */
-    auto newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2 )-> void ;
+    auto newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2, const Wt::WDate & _date = Wt::WDate::currentDate(), GCW_NUMERIC _value = GCW_NUMERIC(0), const std::string & _description = "" )-> void ;
 
     /*!
     ** \brief Transaction Item

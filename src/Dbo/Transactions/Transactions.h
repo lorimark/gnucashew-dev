@@ -93,10 +93,10 @@ class Item
       m_currency_guid = _guid;
     }
 
-    auto set_enter_date ( const std::string & _value )-> void;
+    auto set_enter_date ( const std::string   & _value )-> void;
+    auto set_enter_date ( const Wt::WDate     & _value )-> void;
     auto set_enter_date ( const Wt::WDateTime & _value )-> void;
-
-    auto set_num        ( const std::string & _value )-> void;
+    auto set_num        ( const std::string   & _value )-> void;
 
     /*!
     ** \brief Post Date as String
@@ -126,6 +126,7 @@ class Item
     }
 
     auto set_post_date( const std::string   & _value )-> void ;
+    auto set_post_date( const Wt::WDate & _value )-> void ;
     auto set_post_date( const Wt::WDateTime & _value )-> void ;
 
     auto set_description( const std::string & _value )-> void ;

@@ -181,6 +181,9 @@ byChildName( const std::string & _parentGuid, const std::string & _childName )->
 {
   GCW::Dbo::Accounts::Item::Ptr retVal;
 
+  /*
+  ** find an account matching the parent_guid and the child account name
+  */
   retVal =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
     .where( "parent_guid = ? AND name = ?" )
@@ -209,8 +212,8 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
 
   /*
   ** Start at the root and lope on up.  The return value
-  **  will be filled-in as we go.  We should end on the final
-  **  account, which is the one we wanted.
+  **  will be set accordingly as we go.  We should end on
+  **  the final account, which is the one we wanted.
   **
   */
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
@@ -221,6 +224,13 @@ byFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
   return retVal;
 
 } // endbyFullName( const std::string & _fullName )-> GCW::Dbo::Accounts::Item::Ptr
+
+auto
+GCW::Dbo::Accounts::
+byFullName( const char * _fullName )-> GCW::Dbo::Accounts::Item::Ptr
+{
+  return byFullName( std::string( _fullName ) );
+}
 
 auto
 GCW::Dbo::Accounts::
@@ -255,6 +265,7 @@ activeAccounts()-> GCW::Dbo::Accounts::Item::Vector
 {
   GCW::Dbo::Accounts::Item::Vector retVal;
 
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   auto results =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
     .resultList()
@@ -278,7 +289,7 @@ activeAccounts()-> GCW::Dbo::Accounts::Item::Vector
 
 auto
 GCW::Dbo::Accounts::Children::
-vector( const std::string & _parentGuid )-> GCW::Dbo::Accounts::Item::Vector
+byParent( const std::string & _parentGuid )-> GCW::Dbo::Accounts::Item::Vector
 {
   GCW::Dbo::Accounts::Item::Vector retVal;
 
@@ -328,7 +339,7 @@ fullName( const std::string & _accountGuid )-> std::string
     /*
     ** This is a recursive function that extracts the portions of
     **  the account names and assembles them in to a contiguous
-    **  string with ':' color separator.
+    **  string with ':' colon separator.
     **
     */
     retVal = fullName( accountItem-> parent_guid() );

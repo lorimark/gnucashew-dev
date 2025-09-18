@@ -22,6 +22,14 @@ set_enter_date ( const std::string & _value )-> void
 
 auto
 GCW::Dbo::Transactions::Item::
+set_enter_date ( const Wt::WDate & _value )-> void
+{
+  auto dateTime = Wt::WDateTime( _value, GCW_DATE_DEFAULT_TIME );
+  m_enter_date = dateTime.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+}
+
+auto
+GCW::Dbo::Transactions::Item::
 set_enter_date ( const Wt::WDateTime & _value )-> void
 {
   m_enter_date = _value.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
@@ -33,6 +41,16 @@ set_post_date( const std::string & _value )-> void
 {
   m_post_date = _value;
 }
+
+auto
+GCW::Dbo::Transactions::Item::
+set_post_date( const Wt::WDate & _value )-> void
+{
+  auto dateTime = Wt::WDateTime( _value, GCW_DATE_DEFAULT_TIME );
+
+  m_post_date = _value.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+
+} // endset_post_date( const Wt::WDate & _value )-> void
 
 auto
 GCW::Dbo::Transactions::Item::
