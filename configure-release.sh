@@ -5,7 +5,8 @@
 #
 cmake ../src \
   -DENABLE_BILLPAY=ON \
-  -DENABLE_ASAN=OFF
+  -DENABLE_ASAN=OFF   \
+  -DENABLE_DEV=OFF
 
 
 

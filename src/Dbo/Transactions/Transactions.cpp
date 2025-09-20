@@ -48,7 +48,7 @@ set_post_date( const Wt::WDate & _value )-> void
 {
   auto dateTime = Wt::WDateTime( _value, GCW_DATE_DEFAULT_TIME );
 
-  m_post_date = _value.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+  m_post_date = dateTime.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
 
 } // endset_post_date( const Wt::WDate & _value )-> void
 

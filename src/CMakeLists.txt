@@ -9,12 +9,19 @@ project (gnucashew-bin
 
 option(ENABLE_BILLPAY "Enable BillPay modules" OFF)
 option(ENABLE_ASAN "Enable AddressSanitizer for memory debugging" ON)
+option(ENABLE_DEV "Turn on to enable developer codes the application" ON)
 
 #
 # this library is used in the file guid.cpp for generating
 #  UUID values for the back-end database.
 #
 add_compile_definitions(GUID_LIBUUID)
+
+if(ENABLE_DEV)
+  add_compile_definitions(ENABLE_DEV=1)
+else()
+  add_compile_definitions(ENABLE_DEV=0)
+endif()
 
 if(ENABLE_BILLPAY)
   add_compile_definitions(ENABLE_BILLPAY)

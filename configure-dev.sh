@@ -4,8 +4,9 @@
 #    ENABLE_BILLPAY - turns on bill-pay module
 #
 cmake ../src \
-  -DENABLE_BILLPAY=ON \
-  -DENABLE_ASAN=ON
+  -DENABLE_BILLPAY=ON  \
+  -DENABLE_ASAN=ON     \
+  -DENABLE_DEV=ON
 
 
 

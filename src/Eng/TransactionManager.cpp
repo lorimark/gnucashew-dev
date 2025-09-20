@@ -63,7 +63,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   split2.modify()-> set_account_guid    ( _accountGuid2              );
   split2.modify()-> set_reconcile_state ( GCW_RECONCILE_NO           );
   split2.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE           );
-  split1.modify()-> set_value           ( -_value                    );
+  split2.modify()-> set_value           ( -_value                    );
 
   /*
   ** record the splits

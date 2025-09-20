@@ -97,12 +97,14 @@ load()-> void
   toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.new"    ) ) );
   toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.delete" ) ) );
 
+#if ENABLE_DEV == 1
   {
     auto b = std::make_unique< PushButton >( "devtest" );
     auto e = b.get();
     toolBar()-> addButton( std::move(b) );
     e-> clicked().connect( [=](){ test(); });
   }
+#endif
 
   statusBar()-> addNew< Wt::WText >( "status bar" );
 
@@ -485,7 +487,7 @@ load_random_transactions()
 
         for( auto second : expense.second )
         {
-          GCW_NUMERIC value( float( 12345.0 / randomNumber( 1, 99 ) ) );
+          GCW_NUMERIC value( float( 1234.0 / randomNumber( 1, 99 ) ) );
 
           auto number = randomNumber( 0, 9 );
 
@@ -495,13 +497,13 @@ load_random_transactions()
              account1-> guid(),
              account2-> guid(),
              Wt::WDate::currentDate().addDays( randomNumber( 0, 365) ),
-             value,
+             -value,
              expense.second.at( number )
             );
 
-        }
+        } // endfor( auto second : expense.second )
 
-      }
+      } // endfor( auto expense : expenses )
 
     });
 
