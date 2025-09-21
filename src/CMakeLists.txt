@@ -18,12 +18,12 @@ option(ENABLE_DEV "Turn on to enable developer codes the application" ON)
 add_compile_definitions(GUID_LIBUUID)
 
 if(ENABLE_DEV)
-  add_compile_definitions(ENABLE_DEV=1)
-else()
-  add_compile_definitions(ENABLE_DEV=0)
+  message(STATUS "Developer Codes ENABLED")
+  add_compile_definitions(ENABLE_DEV)
 endif()
 
 if(ENABLE_BILLPAY)
+  message(STATUS "Bill Pay ENABLED")
   add_compile_definitions(ENABLE_BILLPAY)
 endif()
 

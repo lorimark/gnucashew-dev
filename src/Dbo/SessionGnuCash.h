@@ -4,6 +4,8 @@
 #ifndef __DBO_SESSIONGNUCASH_H___
 #define __DBO_SESSIONGNUCASH_H___
 
+#include <glib.h>
+
 //#include <gnucash/gnc-session.h>
 //#include <gnucash/Account.h>
 //#include <gnucash/Transaction.h>
@@ -28,7 +30,7 @@ class Account
     **
     */
     Account(){}
-    Account( ::Account * _gncAccount, Book * _book );
+    Account( Account * _gncAccount, Book * _book );
 
     /*
     ** copy constructor
@@ -45,7 +47,7 @@ class Account
     std::vector< Account > children();
 
     Book * book();
-    ::Account * gncAccount();
+    Account * gncAccount();
 
 #ifdef ALL_THESE_FUNCTIONS_NEED_TO_BE_PACKED_INTO_THIS_OBJECT
 
@@ -172,7 +174,7 @@ const char * dxaccAccountGetPriceSrc (const Account *account)
 
     Book * m_book = nullptr;
 
-    ::Account * m_gncAccount = nullptr;
+    Account * m_gncAccount = nullptr;
 
 }; // endclass Account
 

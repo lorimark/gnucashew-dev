@@ -382,8 +382,6 @@ int main( int argc, char ** argv )
 {
   show_program_version( "start-up" );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << ENABLE_DEV << std::endl;
-
   /*
   ** Right now we're putting the 'database to open' on the command
   **  line.  We can then run a 'demo' version connected to the 'demo'

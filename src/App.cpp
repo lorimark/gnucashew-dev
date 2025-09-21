@@ -361,7 +361,7 @@ buildLoggedIn()-> void
 
 #endif
 
-  Wt::WTimer::singleShot( std::chrono::seconds(1), this, &App::showWelcome    );
+//  Wt::WTimer::singleShot( std::chrono::seconds(1), this, &App::showWelcome    );
 
   /*
   ** If we have the gnucashew extensions, then record that we logged on.

@@ -97,7 +97,7 @@ load()-> void
   toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.new"    ) ) );
   toolBar()-> addButton( std::make_unique< PushButton >( TR( "gcw.MainWidget.tb.delete" ) ) );
 
-#if ENABLE_DEV == 1
+#ifdef ENABLE_DEV
   {
     auto b = std::make_unique< PushButton >( "devtest" );
     auto e = b.get();
@@ -247,8 +247,6 @@ test_tableview()-> void
 auto
 load_random_transactions()
 {
-  auto button = std::make_unique< Wt::WPushButton >( "load random transactions" );
-
   std::map< std::string, std::vector< std::string > > expenses = {
     { "Expenses:Medical Expenses",
       {
@@ -463,7 +461,8 @@ load_random_transactions()
 // Assets:Current Assets:Checking Account
 // Income:Salary
 
-  button.get()->
+  auto pb_expense = std::make_unique< Wt::WPushButton >( "load random expenses" );
+  pb_expense.get()->
     clicked().connect( [=]()
     {
       GCW::Eng::Transaction::Manager transMan;
@@ -507,8 +506,43 @@ load_random_transactions()
 
     });
 
+  auto pb_income = std::make_unique< Wt::WPushButton >( "load random income" );
+  pb_income.get()->
+    clicked().connect( [=]()
+    {
+      GCW::Eng::Transaction::Manager transMan;
+
+      auto account1 = GCW::Dbo::Accounts::byFullName( "Assets:Current Assets:Checking Account" );
+      std::cout << __FILE__ << ":" << __LINE__
+        << " " << account1
+        << " " << expenses.size()
+        << " " << account1-> name()
+        << std::endl;
+
+      auto account2 = GCW::Dbo::Accounts::byFullName( "Income:Salary" );
+
+      for( int i=0; i< 12; i++ )
+      {
+          GCW_NUMERIC value( randomNumber( 1000, 2000 ) );
+
+          transMan
+            .newTransaction
+            (
+             account1-> guid(),
+             account2-> guid(),
+             Wt::WDate::currentDate().addDays( 60 + 28 * i + randomNumber( -5, 5 ) ),
+             value,
+             "Income"
+            );
+
+      } // endfor( auto expense : expenses )
+
+    });
+
   Wt::WDialog dialog( "random transactions" );
-  dialog.contents()-> addWidget( std::move( button ) );
+  dialog.contents()-> addWidget( std::move( pb_expense ) );
+  dialog.contents()-> addWidget( std::make_unique< Wt::WBreak >() );
+  dialog.contents()-> addWidget( std::move( pb_income  ) );
   dialog.rejectWhenEscapePressed( true );
   dialog.setClosable( true );
   dialog.exec();

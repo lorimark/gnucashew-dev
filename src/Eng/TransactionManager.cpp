@@ -57,6 +57,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   split1.modify()-> set_reconcile_state ( GCW_RECONCILE_NO           );
   split1.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE           );
   split1.modify()-> set_value           ( _value                     );
+  split1.modify()-> set_quantity        ( _value                     ); // qty set also?
   // Split2
   auto split2 = GCW::Dbo::Splits::add( GCW::Core::newGuid() );
   split2.modify()-> set_tx_guid         ( m_transactionItem-> guid() );
@@ -64,6 +65,21 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
   split2.modify()-> set_reconcile_state ( GCW_RECONCILE_NO           );
   split2.modify()-> set_reconcile_date  ( GCW_DEFAULT_DATE           );
   split2.modify()-> set_value           ( -_value                    );
+  split2.modify()-> set_quantity        ( -_value                    ); // qty set also?
+
+  /*!
+  ** \todo query why qty used here
+  **
+  ** this transaction posting shows that .value. as well as .quantity. are
+  **  set at the same time.  If .quantity. is not set, then when re-opening
+  **  the sql file in gnucash native causes the gnucash to take a very long
+  **  time to load.  This only happens once, and upon examining the database
+  **  afterwords, all the splits have the same .value. set to .quantity.  So,
+  **  some sort of massive update is happening there on file-open.  Therefore,
+  **  we will set .quantity. along with .value.  Doing so seems to mitigate
+  **  the long/slow load time.
+  **
+  */
 
   /*
   ** record the splits
