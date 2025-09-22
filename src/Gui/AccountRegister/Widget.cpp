@@ -275,8 +275,10 @@ on_delete_triggered()-> void
     auto pbCancel        = templt-> bindNew< Wt::WPushButton >( "cancel"         , TR("gcw.AccountRegister.delete.cancel") );
     auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
 
-    pbCancel-> setToolTip( TR( "gcw.AccountRegister.delete.cancel.toolTip" ) );
-    pbDelete-> setToolTip( TR( "gcw.AccountRegister.delete.delete.toolTip" ) );
+    rememberAlways  -> setToolTip( TR( "gcw.AccountRegister.delete.rem1.toolTip"   ) );
+    rememberSession -> setToolTip( TR( "gcw.AccountRegister.delete.rem2.toolTip"   ) );
+    pbCancel        -> setToolTip( TR( "gcw.AccountRegister.delete.cancel.toolTip" ) );
+    pbDelete        -> setToolTip( TR( "gcw.AccountRegister.delete.delete.toolTip" ) );
 
     auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
     auto transMan = GCW::Eng::Transaction::Manager();
