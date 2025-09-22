@@ -191,14 +191,22 @@ auto
 GCW::Gui::AccountRegister::Widget::
 deleteRow( int _row )-> void
 {
-  // BUGBUG working on the register, fix this!
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+  /// \todo BUGBUG working on the register, fix this!
 
   auto splitGuid = baseModel()-> getSplitGuid( _row );
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
 //  auto transMan = GCW::Eng::Transaction::Manager();
 //  transMan.loadSplit( splitGuid );
 //  transMan.deleteTransaction();
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   baseModel()-> refreshFromDisk();
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 } // enddeleteRow( int _row )-> void
 
@@ -267,13 +275,18 @@ on_delete_triggered()-> void
     auto pbCancel        = templt-> bindNew< Wt::WPushButton >( "cancel"         , TR("gcw.AccountRegister.delete.cancel") );
     auto pbDelete        = templt-> bindNew< Wt::WPushButton >( "delete"         , TR("gcw.AccountRegister.delete.delete") );
 
-    auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
-//    auto transMan = GCW::Eng::Transaction::Manager();
-//    transMan.loadSplit( splitGuid );
+    pbCancel-> setToolTip( TR( "gcw.AccountRegister.delete.cancel.toolTip" ) );
+    pbDelete-> setToolTip( TR( "gcw.AccountRegister.delete.delete.toolTip" ) );
 
-//    templt-> bindString( "date"  , transMan.getDateAsString () );
-//    templt-> bindString( "desc"  , transMan.getDescription  () );
-//    templt-> bindString( "amount", transMan.getValueAsString() );
+    auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
+    auto transMan = GCW::Eng::Transaction::Manager();
+    transMan.loadSplit( splitGuid );
+
+    templt-> bindString( "payFrom" , transMan.getFromAccount  () );
+    templt-> bindString( "payTo"   , transMan.getToAccount    () );
+    templt-> bindString( "date"    , transMan.getDateAsString () );
+    templt-> bindString( "desc"    , transMan.getDescription  () );
+    templt-> bindString( "amount"  , transMan.getValueAsString() );
 
     pbCancel-> clicked().connect( msgBox, &Wt::WDialog::reject );
     pbDelete-> clicked().connect( msgBox, &Wt::WDialog::accept );
@@ -295,11 +308,19 @@ on_delete_triggered()-> void
     msgBox->
       finished().connect( [this,rememberSession,msgBox]( Wt::DialogCode _code )
       {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
         if( _code == Wt::DialogCode::Accepted )
         {
+          std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
           askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
 
+          std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
           deleteRow( m_rightClickIndex.row() );
+
+          std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 
         }
         removeChild( msgBox );

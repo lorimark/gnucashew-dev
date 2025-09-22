@@ -246,6 +246,7 @@ class Model
 **
 ** \todo these are additional values that need to be available
 **
+** \code
 **   balance
 **   balance limit
 **   balance (Period)
@@ -262,6 +263,8 @@ class Model
 **   reconciled reconciled usd
 **   total total period
 **   total usd
+** \endcode
+**
 */
 
     int         m_splitCount ; // different than rowCount depending on 'viewMode'

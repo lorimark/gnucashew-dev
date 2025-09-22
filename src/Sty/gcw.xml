@@ -415,13 +415,15 @@
   <message id="gcw.AccountRegister.Popup.SplitTransaction"           >Split Transaction</message>
   <message id="gcw.AccountRegister.Popup.EditExchangeRate"           >Edit Exchange Rate</message>
   <message id="gcw.AccountRegister.Popup.Schedule"                   >Schedule...</message>
-  <message id="gcw.AccountRegister.Popup.Jump"                       >Jump to other account</message>
+  <message id="gcw.AccountRegister.Popup.Jump"                       >Jump to the other account</message>
   <message id="gcw.AccountRegister.Popup.AssignPayment"              >Assign as Payment...</message>
   <message id="gcw.AccountRegister.delete.title"                     >Delete Transaction</message>
   <message id="gcw.AccountRegister.delete.rem1"                      >Remember and don't ask me again.</message>
   <message id="gcw.AccountRegister.delete.rem2"                      >Remember and don't ask me this session.</message>
   <message id="gcw.AccountRegister.delete.cancel"                    >cancel</message>
+  <message id="gcw.AccountRegister.delete.cancel.toolTip"            >Just close the window and don't do or remember anything.</message>
   <message id="gcw.AccountRegister.delete.delete"                    >delete</message>
+  <message id="gcw.AccountRegister.delete.delete.toolTip"            >Delete the item (permanently) from the database and refresh the view.</message>
   <message id="gcw.AccountRegister.delete.contents"                  >
     <p>
       Delete this transaction?
@@ -431,9 +433,11 @@
     </p>
     <p>
       <table>
-        <tr><td> date:        </td><td><b>&nbsp;   ${date}   </b></td></tr>
-        <tr><td> description: </td><td><b>&nbsp;   ${desc}   </b></td></tr>
-        <tr><td> amount:      </td><td><b>&nbsp; $ ${amount} </b></td></tr>
+        <tr><td> pay from:    </td><td><b>&nbsp;   ${payFrom} </b></td></tr>
+        <tr><td> pay to:      </td><td><b>&nbsp;   ${payTo}   </b></td></tr>
+        <tr><td> date:        </td><td><b>&nbsp;   ${date}    </b></td></tr>
+        <tr><td> description: </td><td><b>&nbsp;   ${desc}    </b></td></tr>
+        <tr><td> amount:      </td><td><b>&nbsp; $ ${amount}  </b></td></tr>
       </table>
     </p>
     <p>

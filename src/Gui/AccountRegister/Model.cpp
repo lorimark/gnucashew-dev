@@ -621,6 +621,8 @@ refreshFromDisk()-> void
 {
   const auto start = std::chrono::system_clock::now();
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   /*
   ** this gets recomputed below
   */
@@ -637,18 +639,25 @@ refreshFromDisk()-> void
   */
   layoutAboutToBeChanged().emit();
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   /*!
   ** Before refreshing from disk, the entire contents of the
   **  model are cleared, so it is important to make sure anything
   **  to be saved from the model is done first.
   */
+  reset();
   clear();
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
   /*
   ** Get the prefrence item that can inform us about prefrences
   **  to be applied to this model.
   */
   auto prefrenceItem = GCW::Dbo::Prefrences::get();
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
   /*
   ** Get an account item loaded.  This is the account that _is_ this
@@ -660,6 +669,8 @@ refreshFromDisk()-> void
   ** use a transaction manager for accessing everything
   */
   GCW::Eng::Transaction::Manager transMan( this );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 #ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
@@ -691,6 +702,8 @@ refreshFromDisk()-> void
   */
   m_splitCount = splitItems.size();
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
   /*!
   ** Each item is processed from the vector in sequential order.
   **  In this process we grab the contents of the split, and
@@ -704,6 +717,8 @@ refreshFromDisk()-> void
   m_balance = GCW_NUMERIC( 0 );
   for( auto splitItem : splitItems )
   {
+    std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
     transMan.setSplitItem( splitItem );
 
     /*
@@ -715,6 +730,8 @@ refreshFromDisk()-> void
     */
     if( !transMan.transactionItem() )
       continue;
+
+    std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
     transMan.appendRow( true );
 

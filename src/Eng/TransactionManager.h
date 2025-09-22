@@ -220,6 +220,12 @@ class Manager
     auto thisSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
     auto thatSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
 
+    auto fromSplit() const-> GCW::Dbo::Splits::Item::Ptr ;
+    auto toSplit()   const-> GCW::Dbo::Splits::Item::Ptr ;
+
+    auto getFromAccount() const-> std::string ;
+    auto getToAccount()   const-> std::string ;
+
     auto setReadOnly( bool _value )-> void ;
 
     /*

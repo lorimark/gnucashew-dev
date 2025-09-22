@@ -195,6 +195,49 @@ thatSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
 auto
 GCW::Eng::Transaction::Manager::
+fromSplit() const-> GCW::Dbo::Splits::Item::Ptr
+{
+  for( auto split : m_splits )
+  {
+    if( split-> value() < 0 )
+      return split;
+  }
+
+  return GCW::Dbo::Splits::Item::Ptr();
+
+} // endfromSplit() const-> GCW::Dbo::Splits::Item::Ptr
+
+auto
+GCW::Eng::Transaction::Manager::
+toSplit() const-> GCW::Dbo::Splits::Item::Ptr
+{
+  for( auto split : m_splits )
+    if( split-> value() > 0 )
+      return split;
+
+  return GCW::Dbo::Splits::Item::Ptr();
+
+} // endtoSplit() const-> GCW::Dbo::Splits::Item::Ptr
+
+auto
+GCW::Eng::Transaction::Manager::
+getFromAccount() const-> std::string
+{
+  return GCW::Dbo::Accounts::fullName( fromSplit()-> account_guid() );
+
+} // endgetFromAccount() const-> std::string
+
+auto
+GCW::Eng::Transaction::Manager::
+getToAccount() const-> std::string
+{
+  return GCW::Dbo::Accounts::fullName( toSplit()-> account_guid() );
+
+} // endgetToAccount()   const-> std::string
+
+
+auto
+GCW::Eng::Transaction::Manager::
 forAccountSplit( const std::string & _accountGuid ) const-> GCW::Dbo::Splits::Item::Ptr
 {
   GCW::Dbo::Splits::Item::Ptr retVal;
