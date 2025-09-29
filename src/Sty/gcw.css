@@ -85,7 +85,7 @@
   .Wt-tv-contents
    .rowbl:nth-child(2n)
 {
-  background-color:#bfdeb9;
+  background-color:#feffda;
 }
 
 /* alternating row colors, second line (basic ledger: rowbl) */
@@ -94,7 +94,7 @@
   .Wt-tv-contents
    .rowbl:nth-child(2n+1)
 {
-  background-color:#feffda;
+  background-color:#bfdeb9;
 }
 
 /* static row colors, (transaction journal: rowtj) */
@@ -113,6 +113,13 @@
    .rowtd
 {
   background-color:#ede7d3;
+}
+
+/* static row colors, rowDoubleLine */
+.AccountRegister
+ .rowdl
+{
+  background-color:aliceblue;
 }
 
 /*

@@ -191,22 +191,15 @@ auto
 GCW::Gui::AccountRegister::Widget::
 deleteRow( int _row )-> void
 {
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
   /// \todo BUGBUG working on the register, fix this!
 
   auto splitGuid = baseModel()-> getSplitGuid( _row );
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 //  auto transMan = GCW::Eng::Transaction::Manager();
 //  transMan.loadSplit( splitGuid );
 //  transMan.deleteTransaction();
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
   baseModel()-> refreshFromDisk();
-
-  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
 
 } // enddeleteRow( int _row )-> void
 
@@ -310,19 +303,11 @@ on_delete_triggered()-> void
     msgBox->
       finished().connect( [this,rememberSession,msgBox]( Wt::DialogCode _code )
       {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
         if( _code == Wt::DialogCode::Accepted )
         {
-          std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
           askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
 
-          std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-
           deleteRow( m_rightClickIndex.row() );
-
-          std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
 
         }
         removeChild( msgBox );
@@ -591,6 +576,8 @@ setAccountGuid( const std::string & _accountGuid )-> void
 
   baseModel()-> setAccountGuid( _accountGuid );
 
+  tableView()-> setModel( m_baseModel );
+
   loadData();
 
   /*
@@ -604,10 +591,15 @@ auto
 GCW::Gui::AccountRegister::Widget::
 setDoubleLine( bool _state )-> void
 {
-
   baseModel()-> setDoubleLine( _state );
 
-  setAccountGuid( m_accountGuid );
+  if( tableView()-> selectedIndexes().size() )
+  {
+    auto index = *tableView()-> selectedIndexes().begin();
+
+    tableView()-> scrollTo( index );
+    tableView()-> select( index, Wt::SelectionFlag::ClearAndSelect );
+  }
 
 } // endsetDoubleLine( bool _state )-> void
 
@@ -623,8 +615,6 @@ auto
 GCW::Gui::AccountRegister::Widget::
 loadData()-> void
 {
-  tableView()-> setModel( m_baseModel );
-
   // 0 = Date
   tableView()-> setColumnWidth    ( asInt( Col::DATE        ), "125px"                   );
   tableView()-> setHeaderAlignment( asInt( Col::DATE        ), Wt::AlignmentFlag::Right  );
@@ -708,7 +698,7 @@ do_selectRow( Wt::WModelIndex _index )-> void
 
   tableView()-> closeEditors( true );
   tableView()-> scrollTo( _index );
-//  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
+  tableView()-> select( _index, Wt::SelectionFlag::ClearAndSelect );
 
   if( !baseModel()-> isReadOnly( _index.row() ) )
     editRow( _index );

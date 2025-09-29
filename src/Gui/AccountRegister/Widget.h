@@ -42,7 +42,7 @@ namespace GCW {
 ** \image html AccountRegister.png "Account Register" width=480
 **
 ** The goal here is to make this widget behave just as closely as possible to the
-**  GnuCash interface, because theirs is very slick and makes navigating the register
+**  GnuCash interface, because gnucash is very slick and makes navigating the register
 **  a no-mouse-necessary affair.  One of the problems with web-based interfaces, however,
 **  is trapping keys completely, such as the ~tab~ key.  So... we'll see how this
 **  goes!
@@ -55,8 +55,6 @@ class Widget
 : public Wt::WContainerWidget
 {
   private:
-
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
   public:
 

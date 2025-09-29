@@ -28,7 +28,51 @@ namespace GCW {
 class Model
 : public Wt::WStandardItemModel
 {
-  using RowItem = std::vector< std::unique_ptr< Wt::WStandardItem > > ;
+  class ColumnSet
+  : public std::vector< std::unique_ptr< Wt::WStandardItem > >
+  {
+    enum SetType
+    {
+      /// empty row, used for nothing, undefined (shouldn't happen?)
+      EmptyRow  = 0,
+
+      /// blank row, used for doubleLine
+      BlankRow  = 1,
+
+      /// basic Ledger row, everything on one line
+      BasicRow  = 2,
+
+      /// split Ledger row, multiple lines follow
+      SplitRow  = 3,
+
+      /// one of the split lines following SplitRow
+      SplitLine = 4
+
+    };
+
+    public:
+
+      ColumnSet()
+      {
+      }
+
+      /*
+      ** create an empty set for this type
+      */
+      ColumnSet( SetType _type )
+      : m_type( _type )
+      {}
+
+      /*
+      ** create a set on an existing row using the index
+      */
+      ColumnSet( Wt::WModelIndex _index )
+      {
+      }
+
+      SetType m_type = EmptyRow ;
+  };
+
   using ColItem = Wt::WStandardItem * ;
 
   public:
@@ -42,6 +86,7 @@ class Model
 
     auto setAccountGuid( const std::string & _accountGuid )-> void ;
     auto refreshFromDisk()-> void ;
+    auto applyDoubleLine()-> void ;
     auto saveToDisk()-> void ;
 
     auto viewMode() const-> ViewMode { return m_viewMode; }
@@ -173,7 +218,7 @@ class Model
     auto reconciled () const-> GCW_NUMERIC { return m_reconciled ; }
     auto projected  () const-> GCW_NUMERIC { return m_projected  ; }
 
-    auto makeRow( const std::string & _splitGuid )-> RowItem ;
+    auto makeColumnSet( const std::string & _splitGuid )-> ColumnSet ;
 
     /*!
     ** \brief Column Suggestions

@@ -236,9 +236,31 @@ test_tableview()-> void
   tableView-> setAlternatingRowColors ( true                         );
   tableView-> setModel                ( model                        );
 
+  auto pbgo = std::make_unique< Wt::WPushButton >( "go" );
+  pbgo.get()->
+    clicked().connect( [=]()
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+      int row = 99;
+      std::vector< std::unique_ptr< Wt::WStandardItem > > rowset;
+      for( int col = 0; col< 3; col++ )
+      {
+        auto item = std::make_unique< Wt::WStandardItem >( Wt::WString("row{1} col{2}").arg( row ).arg( col) );
+        rowset.push_back( std::move( item ) );
+      }
+
+      model-> insertRow( 2, std::move( rowset ) );
+
+    });
+
+
   Wt::WDialog dialog( "test" );
+  dialog.contents()-> addWidget( std::move( pbgo      ) );
   dialog.contents()-> addWidget( std::move( tableView ) );
   dialog.rejectWhenEscapePressed( true );
+  dialog.setResizable( true );
+  dialog.setMinimumSize( 600, 300 );
   dialog.setClosable( true );
   dialog.exec();
 
@@ -555,8 +577,8 @@ auto
 GCW::Gui::MainWidget::
 test()-> void
 {
-//  test_tableview();
-  load_random_transactions();
+  test_tableview();
+//  load_random_transactions();
 
 } // endtest()
 

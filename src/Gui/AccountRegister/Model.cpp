@@ -85,7 +85,7 @@ GCW::Gui::AccountRegister::Model::
 setDoubleLine( bool _doubleLine )-> void
 {
   m_doubleLine = _doubleLine;
-  refreshFromDisk();
+  applyDoubleLine();
 
 } // endsetDoubleLine( bool _doubleLine )-> void
 
@@ -783,13 +783,28 @@ refreshFromDisk()-> void
 
 auto
 GCW::Gui::AccountRegister::Model::
-makeRow( const std::string & _splitGuid )-> GCW::Gui::AccountRegister::Model::RowItem
+applyDoubleLine()-> void
 {
-  RowItem rowItem;
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_doubleLine << " " << rowCount() << std::endl;
 
-  return rowItem;
+  GCW::Eng::Transaction::Manager transMan( this );
 
-} // endmakeRow( const std::string & _splitGuid )-> GCW::Gui::AccountRegisterModel::RowItem
+  for( auto row = rowCount(); row > 0; row -= 1 )
+    transMan.insertDoubleLine( row );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+
+} // endapplyDoubleLine()-> void
+
+auto
+GCW::Gui::AccountRegister::Model::
+makeColumnSet( const std::string & _splitGuid )-> GCW::Gui::AccountRegister::Model::ColumnSet
+{
+  ColumnSet retVal;
+
+  return retVal;
+
+} // endmakeRow( const std::string & _splitGuid )-> GCW::Gui::AccountRegisterModel::ColSet
 
 auto
 GCW::Gui::AccountRegister::Model::

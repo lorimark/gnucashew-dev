@@ -233,6 +233,7 @@ class Manager
     */
     auto appendRow( bool _editable )-> void ;
     auto appendEmptyRow( bool _editable )-> void ;
+    auto insertDoubleLine( int _row )-> void ;
 
   private:
 

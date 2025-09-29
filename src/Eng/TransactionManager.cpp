@@ -974,24 +974,6 @@ appendTransactionJournal( bool _editable ) const-> void
     model()-> appendRow( std::move( row ) );
   }
 
-  if( model()-> doubleLine() )
-  {
-    RowItem row ;
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-    row.push_back( createEmpty() );
-
-    for( int col=0; col< row.size(); col++ )
-      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowte" );
-
-    model()-> appendRow( std::move( row ) );
-  }
-
 } // endappendTransactionJournal() const-> void
 
 auto
@@ -1043,6 +1025,24 @@ appendRow( bool _editable )-> void
 
   } // endswitch( model()-> viewMode() )
 
+  if( model()-> doubleLine() )
+  {
+    RowItem row ;
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+
+    for( int col=0; col< row.size(); col++ )
+      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowte" );
+
+    model()-> appendRow( std::move( row ) );
+  }
+
 } // endappendRow()-> void
 
 
@@ -1058,5 +1058,28 @@ appendEmptyRow( bool _editable )-> void
 
 } // endappendRow()-> void
 
+auto
+GCW::Eng::Transaction::Manager::
+insertDoubleLine( int _row )-> void
+{
+//  if( model()-> doubleLine() )
+  {
+    RowItem row ;
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+    row.push_back( createEmpty() );
+
+    for( int col=0; col< row.size(); col++ )
+      row.at(col)-> setStyleClass( row.at(col)-> styleClass() + " rowdl" );
+
+    model()-> insertRow( _row, std::move( row ) );
+  }
+
+} // endinsertDoubleLine( int row )-> void
 
 
