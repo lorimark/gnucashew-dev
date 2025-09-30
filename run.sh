@@ -16,5 +16,5 @@ echo "running"
   --approot="../approot" \
   --docroot="../docroot;.,/images,/resources,/styles,/themes,/dox" \
   --errroot="../errroot" \
-  --http-listen 0.0.0.0:$GNUCASHEW_PORT \
+  --http-listen $GNUCASHEW_LISTEN:$GNUCASHEW_PORT \
 
