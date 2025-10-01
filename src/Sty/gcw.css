@@ -301,7 +301,9 @@
 .billpay
  .active
 {
-  background-color: red !important;
+  background-color: #eddfdf !important;
+  font-weight: bolder;
+  color: #3b3ecd;
 }
 
 
