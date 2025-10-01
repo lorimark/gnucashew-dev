@@ -266,6 +266,12 @@ test_tableview()-> void
 
 } // endtest_tableview()-> void
 
+/*
+** this loads random transactions in to the database.  It focuses
+**  on the checking account as the primary account, and has a
+**  handful of other accounts that it generates random transactions
+**  for.  It also adds transactions as deposits.
+*/
 auto
 load_random_transactions()
 {

@@ -25,14 +25,14 @@ GCW::Dbo::Transactions::Item::
 set_enter_date ( const Wt::WDate & _value )-> void
 {
   auto dateTime = Wt::WDateTime( _value, GCW_DATE_DEFAULT_TIME );
-  m_enter_date = dateTime.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+  set_enter_date( dateTime.toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8() );
 }
 
 auto
 GCW::Dbo::Transactions::Item::
 set_enter_date ( const Wt::WDateTime & _value )-> void
 {
-  m_enter_date = _value.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+  set_enter_date ( _value.toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8() );
 }
 
 auto
@@ -48,7 +48,7 @@ set_post_date( const Wt::WDate & _value )-> void
 {
   auto dateTime = Wt::WDateTime( _value, GCW_DATE_DEFAULT_TIME );
 
-  m_post_date = dateTime.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+  set_post_date( dateTime.toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8() );
 
 } // endset_post_date( const Wt::WDate & _value )-> void
 
@@ -65,7 +65,7 @@ set_post_date( const Wt::WDateTime & _value )-> void
   **         So, therefore, when posting the 'post_date' of a transaction, it is
   **          a requirement that the hours be set like this.
   */
-  m_post_date = _value.toString( "yyyy-MM-dd 10:59:00" ).toUTF8();
+  set_post_date( _value.toString( "yyyy-MM-dd 10:59:00" ).toUTF8() );
 
 } // endset_post_date( const Wt::WDateTime & _value )-> void
 

@@ -455,7 +455,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createBlank() const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
 
   retVal-> setStyleClass( "blank" );
   retVal-> setFlags( flags( false ) );
@@ -468,7 +468,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createEmpty() const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
 
   retVal-> setStyleClass( "empty" );
   retVal-> setFlags( flags( false ) );
@@ -509,6 +509,9 @@ createDate( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt
 //    .arg( thisSplit()-> guid()         )
 //    ;
 
+  /*
+  ** if there is a split, set the date value
+  */
   if( thisSplit() )
   {
     if( transactionItem() )
@@ -517,6 +520,15 @@ createDate( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt
     if( thisSplit() )
       retVal-> setData( thisSplit()-> guid(), Wt::ItemDataRole::User );
 
+  }
+
+  /*
+  ** there is no split, so default to today's date
+  */
+  else
+  {
+    Wt::WDateTime dateTime( Wt::WDate::currentDate(), GCW_DATE_DEFAULT_TIME );
+    retVal-> setData( dateTime, Wt::ItemDataRole::Edit );
   }
 
 //  retVal-> setToolTip( tip );
@@ -529,7 +541,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createNum( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "txnum" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -550,7 +562,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createNum( const SpItem & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "spnum" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -571,7 +583,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createDescription( const TxItem & _txItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "txdesc" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -592,7 +604,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createDescription( const SpItem & _spItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "spdesc" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -610,7 +622,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createAccount( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "acct" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -722,7 +734,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createAccount( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "acct" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -781,7 +793,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createReconcile( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "rec" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -798,7 +810,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createDebit( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "dr" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -821,7 +833,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createCredit( const SpItem & _splitItem, bool _editable ) const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "cr" );
   retVal-> setFlags( flags( _editable ) );
 
@@ -847,7 +859,7 @@ auto
 GCW::Eng::Transaction::Manager::
 createBalance() const-> std::unique_ptr< Wt::WStandardItem >
 {
-  auto retVal = std::make_unique< Wt::WStandardItem >();
+  auto retVal = std::make_unique< Wt::WStandardItem >( "" );
   retVal-> setStyleClass( "bal" );
   retVal-> setFlags( flags( false ) );
 

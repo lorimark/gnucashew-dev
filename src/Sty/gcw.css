@@ -298,6 +298,13 @@
   border-bottom: 3px double black;
 }
 
+.billpay
+ .active
+{
+  background-color: red !important;
+}
+
+
 /*
 ** Selected 'month' columns are highlighted
 **  important overrides the alternating row colors

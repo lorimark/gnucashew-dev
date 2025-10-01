@@ -343,12 +343,17 @@ GCW::Gui::AccountRegister::Model::
 getSplitGuid( const Wt::WModelIndex & _index )-> std::string
 {
   return
-    Wt::asString                           // convert the index.data() to a WString
+    // convert the index.data() to a WString
+    Wt::asString
     (
-     index( _index.row(), asInt( Col::DATE ) )       // get the index of the DATE column
-     .data( Wt::ItemDataRole::User )       // get the (string/User) data from it
+     // get the index of the DATE column
+     index( _index.row(), asInt( Col::DATE ) )
+
+     // get the (string/User) data from it
+     .data( Wt::ItemDataRole::User )
     )
-    .toUTF8();                             // convert the WString to a std::string
+    // convert the WString to a std::string
+    .toUTF8();
 
 } // endgetSplitGuid( const Wt::WModelIndex & _index )-> std::string
 
@@ -496,24 +501,29 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   */
   auto _valuesMatch = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
   {
+#ifndef NEVER
+      std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
+        << "\n1 " << Wt::asString( _any1 )
+        << "\n2 " << Wt::asString( _any2 )
+        << "\n3 " << _any1.type().name()
+        << "\n4 " << _any1.type().hash_code()
+        << "\n5 " << _any2.type().name()
+        << "\n6 " << _any2.type().hash_code()
+         << std::endl;
+#endif
+
     /*
     ** In any case, the two values must be of the same type.
     */
     if( _any1.type() == _any2.type() )
     {
-#ifdef NEVER
-      std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
-        << "\n " << typeid(Wt::WString).name()
-        << "\n " << typeid(Wt::WString).hash_code()
-        << "\n " << _any1.type().name()
-        << "\n " << _any1.type().hash_code()
-        << std::endl;
-#endif
-
       if( typeid(std::string) == _any1.type() )
       {
         auto v1 = Wt::cpp17::any_cast< std::string >( _any1 );
         auto v2 = Wt::cpp17::any_cast< std::string >( _any2 );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
+
         return v1 == v2;
       }
 
@@ -522,6 +532,9 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
       {
         auto v1 = Wt::cpp17::any_cast< Wt::WString >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WString >( _any2 );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
+
         return v1 == v2;
       }
 
@@ -530,6 +543,9 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
       {
         auto v1 = Wt::cpp17::any_cast< int >( _any1 );
         auto v2 = Wt::cpp17::any_cast< int >( _any2 );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " int " << (v1 == v2) << std::endl;
+
         return v1 == v2;
       }
 
@@ -538,6 +554,9 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
       {
         auto v1 = Wt::cpp17::any_cast< Wt::WDate >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WDate >( _any2 );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " WDate " << (v1 == v2) << std::endl;
+
         return v1 == v2;
       }
 
@@ -546,6 +565,9 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
       {
         auto v1 = Wt::cpp17::any_cast< Wt::WDateTime >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WDateTime >( _any2 );
+
+        std::cout << __FILE__ << ":" << __LINE__ << " WDateTime " << (v1 == v2) << std::endl;
+
         return v1 == v2;
       }
 
@@ -561,7 +583,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     } // endif( _any1.type() == _any2.type() )
 
     /*
-    ** not a match!
+    ** not the same type, not a match!
     */
     return false;
 
@@ -570,12 +592,15 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   /*
   ** Only updating if the data actually changed
   */
+  std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << " " << _index.column() << std::endl;
+
   if( !_valuesMatch( _index.data( _role ), _value ) )
   {
-#ifdef NEVER
-    std::cout << BREAKHEADER
+#ifndef NEVER
+      std::cout << __FILE__ << ":" << __LINE__
       << "\n row:" << _index.row()
       << "\n col:" << _index.column()
+      << "\n rol:" << _role.value()
       << "\n cur:" << Wt::asString( _index.data( _role ) )
       << "\n new:" << Wt::asString( _value )
       << std::endl;
@@ -598,6 +623,12 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     std::cout << BREAKFOOTER
       << std::endl;
 #endif
+
+  }
+  else
+  {
+    std::cout << __FILE__ << ":" << __LINE__ << " match " << std::endl;
+
 
   } // endif( !_valuesMatch( _index.data( _role ), _value ) )
 

@@ -34,21 +34,24 @@ class Model
     enum SetType
     {
       /// empty row, used for nothing, undefined (shouldn't happen?)
-      EmptyRow  = 0,
+      EmptyRow  = 0x00,
 
       /// blank row, used for doubleLine
-      BlankRow  = 1,
+      BlankRow  = 0x01,
 
       /// basic Ledger row, everything on one line
-      BasicRow  = 2,
+      BasicRow  = 0x02,
 
       /// split Ledger row, multiple lines follow
-      SplitRow  = 3,
+      SplitRow  = 0x03,
 
       /// one of the split lines following SplitRow
-      SplitLine = 4
+      SplitLine = 0x04,
 
-    };
+      /// row is condensed (using reduced columns, for small displays)
+      Condensed = 0x08
+
+    }; // endenum SetType
 
     public:
 
@@ -71,7 +74,8 @@ class Model
       }
 
       SetType m_type = EmptyRow ;
-  };
+
+  }; // endclass ColumnSet
 
   using ColItem = Wt::WStandardItem * ;
 
@@ -107,7 +111,7 @@ class Model
     auto splitCount()-> int ;
 
     /*!
-    ** \brief Is Read Only
+    ** \brief Is Deletable
     **
     ** This returns .true. if the item can be deleted.
     */
@@ -128,13 +132,26 @@ class Model
     auto setReadOnly( bool _state ) { m_readOnly = _state; }
 
     /*!
-    ** \brief Get GUID from row
+    ** \brief Get GUID from index
     **
     ** This will retrieve the GUID value from the row.
     */
     auto getSplitGuid( const Wt::WModelIndex & _index )-> std::string ;
+
+    /*!
+    ** \brief Get GUID from row
+    **
+    ** This will retrieve the GUID value from the row.
+    */
     auto getSplitGuid( int _row )-> std::string ;
 
+    /*!
+    ** \brief Get Split Row
+    **
+    ** This will locate a split by its GUID and return the
+    **  row number that it is a part of
+    **
+    */
     auto getSplitRow( const std::string & _guid )-> int ;
 
     /*!

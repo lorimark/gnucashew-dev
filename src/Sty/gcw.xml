@@ -1,3 +1,10 @@
+<!--
+  Note, formatting (layout; spaces, tabs, new-lines) matters.  In the
+   case of tool-tips, inserting 'new-line' in to the messages causes
+   the tool-tips to display the line breaks (in a nice way).  Without
+   these new-line breaks, the tool-tip just stretches all the way out.
+   So, be sure to maintain that formatting when you see it.
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <messages xmlns:if="Wt.WTemplate.conditions">
 
@@ -419,9 +426,17 @@
   <message id="gcw.AccountRegister.Popup.AssignPayment"              >Assign as Payment...</message>
   <message id="gcw.AccountRegister.delete.title"                     >Delete Transaction</message>
   <message id="gcw.AccountRegister.delete.rem1"                      >Remember and don't ask me again.</message>
-  <message id="gcw.AccountRegister.delete.rem1.toolTip"              >By checking this box, and choosing 'delete', you will permanently no-longer be prompted for confirmation to delete.  You can reset this setting in the File:Prefrences.</message>
+  <message id="gcw.AccountRegister.delete.rem1.toolTip"              >
+By checking this box, and choosing 'delete', you will
+permanently no-longer be prompted for confirmation to
+delete... deletions will just happen without confirmation.
+You can reset this setting in the File:Prefrences.</message>
   <message id="gcw.AccountRegister.delete.rem2"                      >Remember and don't ask me this session.</message>
-  <message id="gcw.AccountRegister.delete.rem2.toolTip"              >By checking this box, and choosing 'delete, you will no-longer be prompted for confirmation to delete, just for this session.  The next time you open gnucashew, you will be prompted for deletions like normal.</message>
+  <message id="gcw.AccountRegister.delete.rem2.toolTip"              >
+By checking this box, and choosing 'delete, you will
+no-longer be prompted for confirmation to delete, just
+for this session.  The next time you open gnucashew,
+you will be prompted for deletions like normal.</message>
   <message id="gcw.AccountRegister.delete.cancel"                    >cancel</message>
   <message id="gcw.AccountRegister.delete.cancel.toolTip"            >Just close the window and don't do or remember anything.</message>
   <message id="gcw.AccountRegister.delete.delete"                    >delete</message>

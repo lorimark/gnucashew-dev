@@ -361,6 +361,9 @@ buildLoggedIn()-> void
 
 #endif
 
+  /*
+  ** when we are not developing, pop the welcome screen
+  */
 #ifndef ENABLE_DEV
   Wt::WTimer::singleShot( std::chrono::seconds(1), this, &App::showWelcome );
 #endif
@@ -369,13 +372,13 @@ buildLoggedIn()-> void
   ** If we have the gnucashew extensions, then record that we logged on.
   **
   */
-//  if( engine().hasGnuCashewExtensions() )
-//  {
-//    Wt::Dbo::Transaction t( gnucashew_session() );
-//    auto item = GCW::Dbo::Vars::get( "logon","sys" );
-//    item.modify()-> setVar( "logonOn", Wt::WDateTime::currentDateTime().toString( ISO_DATE_FORMAT ) );
-//    item.modify()-> setVar( "logonBy", "dev(0)" );
-//  }
+  if( engine().hasGnucashewExtensions() )
+  {
+    Wt::Dbo::Transaction t( gnucashew_session() );
+    auto item = GCW::Dbo::Vars::get( "logon","sys" );
+    item.modify()-> setVar( "logonOn", Wt::WDateTime::currentDateTime().toString( ISO_DATE_FORMAT ) );
+    item.modify()-> setVar( "logonBy", "dev(0)" );
+  }
 
 } // endbuildLoggedIn()-> void
 

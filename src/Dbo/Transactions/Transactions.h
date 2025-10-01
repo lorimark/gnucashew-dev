@@ -48,6 +48,8 @@ namespace GCW {
   namespace Dbo {
     namespace Transactions {
 
+extern const char * s_tableName;
+
 /*!
 ** \brief Transaction Item
 **
@@ -93,7 +95,6 @@ class Item
       m_currency_guid = _guid;
     }
 
-    auto set_enter_date ( const std::string   & _value )-> void;
     auto set_enter_date ( const Wt::WDate     & _value )-> void;
     auto set_enter_date ( const Wt::WDateTime & _value )-> void;
     auto set_num        ( const std::string   & _value )-> void;
@@ -108,7 +109,7 @@ class Item
     */
     auto post_date_as_string( const std::string & _format ) const-> std::string
     {
-      auto d = Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );
+      auto d = Wt::WDateTime::fromString( post_date(), GCW_DATETIME_FORMAT_STORAGE );
       return d.toString( _format ).toUTF8();
     }
 
@@ -122,10 +123,9 @@ class Item
     auto post_date_as_date() const-> Wt::WDateTime
     {
       return
-        Wt::WDateTime::fromString( post_date(), "yyyy-MM-dd hh:mm:ss" );
+        Wt::WDateTime::fromString( post_date(), GCW_DATETIME_FORMAT_STORAGE );
     }
 
-    auto set_post_date( const std::string   & _value )-> void ;
     auto set_post_date( const Wt::WDate & _value )-> void ;
     auto set_post_date( const Wt::WDateTime & _value )-> void ;
 
@@ -141,6 +141,11 @@ class Item
       Wt::Dbo::field( action, m_description    , "description"    , 2048 ); // text(2048)
     }
 
+  private:
+
+    auto set_enter_date ( const std::string & _value )-> void ;
+    auto set_post_date( const std::string & _value )-> void ;
+
     std::string m_guid           ;
     std::string m_currency_guid  ;
     std::string m_num            ;
@@ -150,17 +155,44 @@ class Item
 
 }; // endclass Item
 
-extern const char * s_tableName;
-
 /*!
 ** \brief Load Transaction by Guid
 **
 */
 auto load( const std::string & _txGuid )-> Item::Ptr ;
+
+/*!
+** \brief Load Transaction by Guid
+**
+*/
 auto byGuid( const std::string & _txGuid )-> Item::Ptr ;
+
+/*!
+** \brief Add Transaction with Guid
+**
+*/
 auto add( const std::string & _txGuid )-> Item::Ptr ;
+
+/*!
+** \brief Load Transactions for Account Guid
+**
+*/
 auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
+
+/*
+** \brief Load Transaction for Account Guid and Month
+**
+*/
 auto byAccountMonth( const std::string & _accountGuid, int _month )-> Item::Vector ;
+
+/*!
+** \brief Load Transactions for 'num' and Month
+**
+** The 'num' column is the column immediately to the right of the
+**  date field.  This query is used to find all the transactions
+**  that have this value in the 'num' field for a particular month.
+**
+*/
 auto byNumMonth( const std::string & _num, int _month )-> Item::Vector ;
 
     } // endnamespace Transactions {

@@ -274,7 +274,7 @@ GCW::Core::
 currentDateTimeStorageString()-> std::string
 {
   return
-    currentDateTime().toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+    currentDateTime().toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8();
 
 } // endcurrentDateTime()-> std::string
 
