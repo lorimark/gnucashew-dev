@@ -43,12 +43,12 @@
                process.
               -->
 
-             <!--
+             
                <dedicated-process>
                  <max-num-sessions>100</max-num-sessions>
                  <num-session-threads>10</num-session-threads>
                </dedicated-process>
-             -->
+            
 
             <!-- Multiple sessions within one process.
 
@@ -69,10 +69,12 @@
 
                Note: the wthttp connector will ignore the num-processes
                setting and use only process.
-              -->
+            -->
+               <!--
                <shared-process>
                 <num-processes>1</num-processes>
-               </shared-process>
+                 </shared-process>
+               -->
 
 
             <!-- Session tracking strategy.

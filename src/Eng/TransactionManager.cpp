@@ -108,13 +108,15 @@ loadTransaction( const std::string & _transactionGuid )-> void
 
 auto
 GCW::Eng::Transaction::Manager::
-deleteTransaction()-> void
+deleteTransaction()-> bool
 {
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   m_transactionItem.remove();
   for( auto & splitItem : m_splits )
     splitItem.remove();
+
+  return true;
 
 } // enddeleteTransaction()-> void
 
@@ -223,7 +225,10 @@ auto
 GCW::Eng::Transaction::Manager::
 getFromAccount() const-> std::string
 {
-  return GCW::Dbo::Accounts::fullName( fromSplit()-> account_guid() );
+  if( fromSplit() )
+    return GCW::Dbo::Accounts::fullName( fromSplit()-> account_guid() );
+
+  return TR8( "gcw.unassigned" );
 
 } // endgetFromAccount() const-> std::string
 
@@ -231,7 +236,10 @@ auto
 GCW::Eng::Transaction::Manager::
 getToAccount() const-> std::string
 {
-  return GCW::Dbo::Accounts::fullName( toSplit()-> account_guid() );
+  if( toSplit() )
+    return GCW::Dbo::Accounts::fullName( toSplit()-> account_guid() );
+
+  return TR8( "gcw.unassigned" );
 
 } // endgetToAccount()   const-> std::string
 

@@ -97,6 +97,7 @@ class Item
 
     auto set_enter_date ( const Wt::WDate     & _value )-> void;
     auto set_enter_date ( const Wt::WDateTime & _value )-> void;
+
     auto set_num        ( const std::string   & _value )-> void;
 
     /*!
@@ -143,7 +144,7 @@ class Item
 
   private:
 
-    auto set_enter_date ( const std::string & _value )-> void ;
+    auto set_enter_date( const std::string & _value )-> void ;
     auto set_post_date( const std::string & _value )-> void ;
 
     std::string m_guid           ;

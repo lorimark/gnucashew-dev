@@ -60,7 +60,7 @@ class Manager
     ** This insures all splits and any other data associated with the
     **  transaction is properly removed.
     */
-    auto deleteTransaction()-> void ;
+    auto deleteTransaction()-> bool ;
 
     auto setSplitItem( GCW::Dbo::Splits::Item::Ptr _splitItem )-> void ;
 

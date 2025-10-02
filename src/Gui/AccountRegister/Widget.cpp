@@ -194,12 +194,12 @@ deleteRow( int _row )-> void
   /// \todo BUGBUG working on the register, fix this!
 
   auto splitGuid = baseModel()-> getSplitGuid( _row );
-
-//  auto transMan = GCW::Eng::Transaction::Manager();
-//  transMan.loadSplit( splitGuid );
-//  transMan.deleteTransaction();
-
-  baseModel()-> refreshFromDisk();
+  auto transMan = GCW::Eng::Transaction::Manager();
+  transMan.loadSplit( splitGuid );
+  if( transMan.deleteTransaction() )
+  {
+    baseModel()-> removeRow( _row );
+  }
 
 } // enddeleteRow( int _row )-> void
 
@@ -246,13 +246,13 @@ on_delete_triggered()-> void
   **
   ** \bug the logic here is not correct
   */
-  static bool askThisSession = true;
-         bool askForever     = GCW::Dbo::Prefrences::get().askOnDelete();
+  bool askThisSession = GCW::Dbo::Prefrences::get().askOnDeleteThisSession();
+  bool askForever     = GCW::Dbo::Prefrences::get().askOnDeleteForever();
 
   /*
   ** ask sometimes
   */
-  if( askThisSession || askForever )
+  if( askThisSession && askForever )
   {
     /*
     ** build out a dialog box to prompt the user to delete or not
@@ -305,7 +305,7 @@ on_delete_triggered()-> void
       {
         if( _code == Wt::DialogCode::Accepted )
         {
-          askThisSession = rememberSession-> checkState() == Wt::CheckState::Checked;
+          GCW::Dbo::Prefrences::get().setAskOnDeleteThisSession( rememberSession-> checkState() != Wt::CheckState::Checked );
 
           deleteRow( m_rightClickIndex.row() );
 

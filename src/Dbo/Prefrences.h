@@ -80,11 +80,16 @@ class Item
 
     auto reverseBalanceAccounts() const-> ReverseBalanceAccounts;
     auto accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool;
-    auto askOnDelete() const-> bool;
+    auto askOnDeleteForever() const-> bool;
+    auto setAskOnDeleteForever( bool _state )-> void ;
+    auto askOnDeleteThisSession() const-> bool;
+    auto setAskOnDeleteThisSession( bool _state )-> void ;
 
   private:
 
     GCW::Dbo::Vars::Item m_varItem;
+
+    static bool m_askOnDeleteThisSession;
 
 }; // endclass Item
 

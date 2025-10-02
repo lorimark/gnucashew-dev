@@ -71,8 +71,15 @@
     </p>
   </message>
 
+  <!--
+    'generic' phrases and words
+  -->
   <message id="gcw.not-yet-implemented">This feature is not yet implemented.</message>
+  <message id="gcw.unassigned"         >~unassigned~</message>
 
+  <!--
+    menu items
+  -->
   <message id="gcw.MainWidget.mu.file"                               >File</message>
   <message id="gcw.MainWidget.mu.file.new"                           >New File</message>
   <message id="gcw.MainWidget.mu.file.open"                          >Open...</message>
@@ -433,7 +440,7 @@ delete... deletions will just happen without confirmation.
 You can reset this setting in the File:Prefrences.</message>
   <message id="gcw.AccountRegister.delete.rem2"                      >Remember and don't ask me this session.</message>
   <message id="gcw.AccountRegister.delete.rem2.toolTip"              >
-By checking this box, and choosing 'delete, you will
+By checking this box, and choosing 'delete', you will
 no-longer be prompted for confirmation to delete, just
 for this session.  The next time you open gnucashew,
 you will be prompted for deletions like normal.</message>

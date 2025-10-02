@@ -383,7 +383,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 saveToDisk( const Wt::WModelIndex & _index )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): "
     << "\n row:" << _index.row()
     << "\n col:" << _index.column()
@@ -479,6 +479,8 @@ saveToDisk( const Wt::WModelIndex & _index )-> void
 
   } // endswitch( index.column() )
 
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): " << std::endl;
+
 } // endsaveToDisk( const Wt::WModelIndex & _index )-> void
 
 auto
@@ -501,7 +503,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   */
   auto _valuesMatch = []( const Wt::cpp17::any & _any1, const Wt::cpp17::any & _any2 )
   {
-#ifndef NEVER
+#ifdef NEVER
       std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__
         << "\n1 " << Wt::asString( _any1 )
         << "\n2 " << Wt::asString( _any2 )
@@ -522,7 +524,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
         auto v1 = Wt::cpp17::any_cast< std::string >( _any1 );
         auto v2 = Wt::cpp17::any_cast< std::string >( _any2 );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
+//        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
 
         return v1 == v2;
       }
@@ -533,7 +535,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
         auto v1 = Wt::cpp17::any_cast< Wt::WString >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WString >( _any2 );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
+//        std::cout << __FILE__ << ":" << __LINE__ << " std::string " << (v1 == v2) << std::endl;
 
         return v1 == v2;
       }
@@ -544,7 +546,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
         auto v1 = Wt::cpp17::any_cast< int >( _any1 );
         auto v2 = Wt::cpp17::any_cast< int >( _any2 );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " int " << (v1 == v2) << std::endl;
+//        std::cout << __FILE__ << ":" << __LINE__ << " int " << (v1 == v2) << std::endl;
 
         return v1 == v2;
       }
@@ -555,7 +557,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
         auto v1 = Wt::cpp17::any_cast< Wt::WDate >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WDate >( _any2 );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " WDate " << (v1 == v2) << std::endl;
+//        std::cout << __FILE__ << ":" << __LINE__ << " WDate " << (v1 == v2) << std::endl;
 
         return v1 == v2;
       }
@@ -566,14 +568,14 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
         auto v1 = Wt::cpp17::any_cast< Wt::WDateTime >( _any1 );
         auto v2 = Wt::cpp17::any_cast< Wt::WDateTime >( _any2 );
 
-        std::cout << __FILE__ << ":" << __LINE__ << " WDateTime " << (v1 == v2) << std::endl;
+//        std::cout << __FILE__ << ":" << __LINE__ << " WDateTime " << (v1 == v2) << std::endl;
 
         return v1 == v2;
       }
 
       else
       {
-#ifdef NO_NOISE
+#ifdef ENABLE_DEV
         std::cout << __FILE__ << ":" << __LINE__ << " setData:_valuesMatch"
           << " unhandled type " << _any1.type().name()
           << std::endl;
@@ -592,11 +594,11 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   /*
   ** Only updating if the data actually changed
   */
-  std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << " " << _index.column() << std::endl;
+//  std::cout << __FILE__ << ":" << __LINE__ << " " << _index.row() << " " << _index.column() << std::endl;
 
   if( !_valuesMatch( _index.data( _role ), _value ) )
   {
-#ifndef NEVER
+#ifdef NEVER
       std::cout << __FILE__ << ":" << __LINE__
       << "\n row:" << _index.row()
       << "\n col:" << _index.column()
@@ -611,7 +613,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
     */
     retVal = Wt::WStandardItemModel::setData( _index, _value, _role );
 
-//    saveToDisk( _index );
+    saveToDisk( _index );
 
 //    m_dirtyRows.insert( _index.row() );
 
@@ -627,7 +629,7 @@ setData( const Wt::WModelIndex & _index, const Wt::cpp17::any & _value, Wt::Item
   }
   else
   {
-    std::cout << __FILE__ << ":" << __LINE__ << " match " << std::endl;
+//    std::cout << __FILE__ << ":" << __LINE__ << " match " << std::endl;
 
 
   } // endif( !_valuesMatch( _index.data( _role ), _value ) )
@@ -856,7 +858,7 @@ auto
 GCW::Gui::AccountRegister::Model::
 setStyleClass( int _row, const std::string & _class )-> void
 {
-  
+
 
 } // endsetStyleClass( int _row, const std::string & _class )-> void
 

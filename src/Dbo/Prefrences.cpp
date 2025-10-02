@@ -7,6 +7,9 @@
 #include "../App.h"
 #include "Prefrences.h"
 
+bool GCW::Dbo::Prefrences::Item::m_askOnDeleteThisSession = true;
+
+
 GCW::Dbo::Prefrences::Item::
 Item( GCW::Dbo::Vars::Item::Ptr _varItem )
 {
@@ -49,12 +52,31 @@ accountRegisterHighlight( AccountRegisterHighlight _value ) const-> bool
 
 auto
 GCW::Dbo::Prefrences::Item::
-askOnDelete() const-> bool
+askOnDeleteForever() const-> bool
 {
   return true;
 
 } // endaskOnDelete() const-> bool
 
+auto
+GCW::Dbo::Prefrences::Item::
+setAskOnDeleteForever( bool _state )-> void
+{
+}
 
+auto
+GCW::Dbo::Prefrences::Item::
+askOnDeleteThisSession() const-> bool
+{
+  return m_askOnDeleteThisSession;
+
+} // endaskOnDelete() const-> bool
+
+auto
+GCW::Dbo::Prefrences::Item::
+setAskOnDeleteThisSession( bool _state )-> void
+{
+  m_askOnDeleteThisSession = _state ;
+}
 
 
