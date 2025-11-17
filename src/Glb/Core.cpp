@@ -268,6 +268,9 @@ currentDateTime()-> Wt::WDateTime
 auto
 dateStorageString( const Wt::WDate * _date )-> std::string
 {
+  return
+    _date.toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+
 }
 
 auto

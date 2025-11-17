@@ -5,7 +5,7 @@
 #  live on-line demo is also always up to date.
 #
 
-[ -e "gnucashew-live" ] && rm gnucashew-live
+[[ -e "gnucashew-live" ]] && rm gnucashew-live
 
 pkill -9 gnucashew-bin
 make -j 4 && ../run.sh
