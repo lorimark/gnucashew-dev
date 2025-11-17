@@ -125,7 +125,7 @@ loadData( int _selectedMonth )-> void
   /*!
   ** Run the resultList collection through an analyzer that will
   **  extract billpay items that match the selection criteria of
-  **  paid/unpaid/disabled/yes/no accordingly.
+  **  month/paid/unpaid/disabled/yes/no accordingly.
   */
   std::vector< GCW::Gui::BillPay::Item > bpItems;
   for( auto item : items )

@@ -178,19 +178,19 @@ hexDump( const std::string & string, int start, int end )-> std::string
     std::string hexLine;
     std::string ascLine;
 
-    sprintf( buffer, "%04x: ", i );
+    snprintf( buffer, sizeof(buffer), "%04x: ", i );
     adrLine = std::string(buffer);
 
     for( int j=0; j<16; j++ )
     {
       if( i+j < string.length() )
       {
-        sprintf( buffer, "%02x ", (string.at(i+j) & 0xff) );
+        snprintf( buffer, sizeof(buffer), "%02x ", (string.at(i+j) & 0xff) );
         hexLine += std::string(buffer);
 
         if( std::isprint( string.at(i+j) ) )
         {
-          sprintf( buffer, "%c", string.at(i+j) );
+          snprintf( buffer, sizeof(buffer), "%c", string.at(i+j) );
           ascLine += std::string(buffer);
         }
         else
@@ -265,6 +265,19 @@ currentDateTime()-> Wt::WDateTime
 
 } // endcurrentDateTime()-> std::string
 
+auto
+dateStorageString( const Wt::WDate * _date )-> std::string
+{
+}
+
+auto
+GCW::Core::
+dateTimeStorageString( const Wt::WDateTime & _dateTime )-> std::string
+{
+  return
+    _dateTime.toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8();
+
+} // enddateTimeStorageString( const Wt::WDateTime & _dateTime )-> std::string
 
 /*
 **
@@ -274,10 +287,18 @@ GCW::Core::
 currentDateTimeStorageString()-> std::string
 {
   return
-    currentDateTime().toString( GCW_DATETIME_FORMAT_STORAGE ).toUTF8();
+    dateTimeStorageString( currentDateTime() );
 
 } // endcurrentDateTime()-> std::string
 
+auto
+GCW::Core::
+dateTimeDisplayString( const Wt::WDateTime & _dateTime )-> std::string
+{
+  return
+    _dateTime.toString( GCW_DATE_FORMAT_DISPLAY ).toUTF8();
+
+} // enddateTimeDisplayString( const Wt::WDateTime & _dateTime )-> std::string
 
 /*
 **
@@ -287,7 +308,7 @@ GCW::Core::
 currentDateTimeDisplayString()-> std::string
 {
   return
-    currentDateTime().toString( GCW_DATE_FORMAT_DISPLAY ).toUTF8();
+    dateTimeDisplayString( currentDateTime() );
 
 } // endcurrentDateTime()-> std::string
 

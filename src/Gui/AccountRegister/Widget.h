@@ -90,7 +90,7 @@ class Widget
 
     auto baseModel       ()-> std::shared_ptr< BaseModel       >  { return m_baseModel;       }
     auto sortFilterModel ()-> std::shared_ptr< SortFilterModel >  { return m_sortFilterModel; }
-    auto batchEditModel  ()-> std::shared_ptr< BatchEditModel  >  { return m_batchEditModel;  }
+//    auto batchEditModel  ()-> std::shared_ptr< BatchEditModel  >  { return m_batchEditModel;  }
 
     /*!
     ** \brief Status Bar
@@ -217,6 +217,13 @@ class Widget
     auto on_delete_triggered()-> void ;
 
     /*!
+    ** \brief Detail a Row
+    **
+    ** This will show the details of the transaction
+    */
+    auto on_details_triggered()-> void ;
+
+    /*!
     ** \brief Remove Splits
     **
     ** This will remove the splits from the transaction
@@ -324,7 +331,7 @@ class Widget
     std::string                                    m_accountGuid             ;
     std::shared_ptr< BaseModel                 >   m_baseModel               ;
     std::shared_ptr< Wt::WSortFilterProxyModel >   m_sortFilterModel         ;
-    std::shared_ptr< Wt::WBatchEditProxyModel  >   m_batchEditModel          ;
+//    std::shared_ptr< Wt::WBatchEditProxyModel  >   m_batchEditModel          ;
     GCW::Gui::TableView                          * m_tableView     = nullptr ;
     StatusBar                                    * m_statusBar     = nullptr ;
     ToolBar                                      * m_toolBar       = nullptr ;

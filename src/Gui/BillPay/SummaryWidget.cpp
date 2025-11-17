@@ -120,8 +120,8 @@ setMonth( int _month )-> void
       } // endfor( ..all payments.. )
 
       m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( subTotal, GCW::Cfg::decimal_format()  ) ) );
-      m_table-> elementAt( row,   0 )-> setStyleClass( "du" );
-      m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" );
+      m_table-> elementAt( row,   0 )-> setStyleClass( "du" ); // double-underline
+      m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" ); // single-underline
       row++;
 
       /*
@@ -217,7 +217,7 @@ setMonth( int _month )-> void
       .toUTF8()
       ;
 
-    m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( sum, GCW::Cfg::decimal_format()  ) ) );
+    m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( sum, GCW::Cfg::decimal_format() ) ) );
     m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString(TR("gcw.billPay.lbl.totalfor")).arg( payDay ) );
     m_table-> elementAt( row,   0 )-> setStyleClass( "du" ); // double-underline
     m_table-> elementAt( row-1, 0 )-> setStyleClass( "su" ); // single-underline
@@ -231,7 +231,7 @@ setMonth( int _month )-> void
 
   } // endif( day != 0 )
 
-  m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( grand, GCW::Cfg::decimal_format()  ) ) );
+  m_table-> elementAt( row,   0 )-> addNew< Wt::WText >( Wt::WString("{1}").arg( toString( grand, GCW::Cfg::decimal_format() ) ) );
   m_table-> elementAt( row,   1 )-> addNew< Wt::WText >( Wt::WString(TR("gcw.billPay.lbl.totalfor")).arg( TR("gcw.billPay.ttp." + toString( m_month ) ) ) );
   row++;
 

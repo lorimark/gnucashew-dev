@@ -129,7 +129,8 @@ init()-> void
 
   m_baseModel       = std::make_shared< BaseModel                 >();
   m_sortFilterModel = std::make_shared< Wt::WSortFilterProxyModel >();
-  m_batchEditModel  = std::make_shared< Wt::WBatchEditProxyModel  >();
+//  m_batchEditModel  = std::make_shared< Wt::WBatchEditProxyModel  >();
+
 //
 //  m_sortFilterModel-> setSourceModel( m_baseModel       );
 //  m_sortFilterModel-> sort(0);
@@ -242,9 +243,8 @@ on_delete_triggered()-> void
   /*!
   ** by default, the user will be asked to delete
   **  an item from the register, unless they
-  **  have chosen to never be asked.
+  **  have chosen to not be asked.
   **
-  ** \bug the logic here is not correct
   */
   bool askThisSession = GCW::Dbo::Prefrences::get().askOnDeleteThisSession();
   bool askForever     = GCW::Dbo::Prefrences::get().askOnDeleteForever();
@@ -261,7 +261,7 @@ on_delete_triggered()-> void
     auto templt = msgBox-> contents()-> addNew< Wt::WTemplate >( TR("gcw.AccountRegister.delete.contents") );
     msgBox-> setClosable( true );
     msgBox-> setMovable ( true );
-    msgBox-> show(); // exec() blocks other users, show() doesn't
+    msgBox-> show(); // exec() blocks other users, show() does not
 
     auto rememberAlways  = templt-> bindNew< Wt::WCheckBox   >( "rememberAlways" , TR("gcw.AccountRegister.delete.rem1"  ) );
     auto rememberSession = templt-> bindNew< Wt::WCheckBox   >( "rememberSession", TR("gcw.AccountRegister.delete.rem2"  ) );
@@ -298,7 +298,7 @@ on_delete_triggered()-> void
     /*
     ** When the dialog finishes, it is either accepted or rejected.
     **  In either case, the dialog will be removed from the addChild
-    **  from earlier so we don't got no memory leaks.
+    **  from earlier so we ain't gots no memory leaks.
     */
     msgBox->
       finished().connect( [this,rememberSession,msgBox]( Wt::DialogCode _code )
@@ -324,6 +324,45 @@ on_delete_triggered()-> void
   }
 
 } // endon_delete_triggered()-> void
+
+auto
+GCW::Gui::AccountRegister::Widget::
+on_details_triggered()-> void
+{
+  /*
+  ** build out a dialog box to prompt the user to delete or not
+  */
+  auto msgBox = addChild( std::make_unique< Wt::WDialog >( TR("gcw.AccountRegister.details.title") ) );
+  auto templt = msgBox-> contents()-> addNew< Wt::WTemplate >( TR("gcw.AccountRegister.details.contents") );
+  msgBox-> setClosable( true );
+  msgBox-> setMovable ( true );
+  msgBox-> show(); // exec() blocks other users, show() does not
+
+  auto pbOk = templt-> bindNew< Wt::WPushButton >( "ok" , TR("gcw.ok") );
+
+  auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
+  auto transMan = GCW::Eng::Transaction::Manager();
+  transMan.loadSplit( splitGuid );
+
+  templt-> bindString( "payFrom" , transMan.getFromAccount  () );
+  templt-> bindString( "payTo"   , transMan.getToAccount    () );
+  templt-> bindString( "date"    , transMan.getDateAsString () );
+  templt-> bindString( "desc"    , transMan.getDescription  () );
+  templt-> bindString( "amount"  , transMan.getValueAsString() );
+
+  pbOk-> clicked().connect( msgBox, &Wt::WDialog::reject );
+
+  /*
+  ** When the dialog finishes the dialog will be removed from
+  **  the addChild from earlier so we ain't gots no memory leaks.
+  */
+  msgBox->
+    finished().connect( [this,msgBox]( Wt::DialogCode _code )
+    {
+      removeChild( msgBox );
+    });
+
+} // endon_details_triggered()-> void
 
 auto
 GCW::Gui::AccountRegister::Widget::
@@ -491,6 +530,11 @@ on_showPopup_triggered( const Wt::WModelIndex & _index, const Wt::WMouseEvent & 
     */
     if( !(baseModel()-> isDeletable( _index )) )
       item-> setDisabled( true );
+  }
+
+  // details
+  {
+    auto item = m_popupMenu.addItem( TR( "gcw.AccountRegister.Popup.Details"), this, &Widget::on_details_triggered );
   }
 
 #ifdef NEVER

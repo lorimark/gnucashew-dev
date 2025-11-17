@@ -76,6 +76,9 @@
   -->
   <message id="gcw.not-yet-implemented">This feature is not yet implemented.</message>
   <message id="gcw.unassigned"         >~unassigned~</message>
+  <message id="gcw.ok"                 >Ok</message>
+  <message id="gcw.cancel"             >Cancel</message>
+  <message id="gcw.delete"             >Delete</message>
 
   <!--
     menu items
@@ -445,9 +448,12 @@ no-longer be prompted for confirmation to delete, just
 for this session.  The next time you open gnucashew,
 you will be prompted for deletions like normal.</message>
   <message id="gcw.AccountRegister.delete.cancel"                    >cancel</message>
-  <message id="gcw.AccountRegister.delete.cancel.toolTip"            >Just close the window and don't do or remember anything.</message>
+  <message id="gcw.AccountRegister.delete.cancel.toolTip"            >
+Just close the window and don't do or remember anything.</message>
   <message id="gcw.AccountRegister.delete.delete"                    >delete</message>
-  <message id="gcw.AccountRegister.delete.delete.toolTip"            >Delete the item (permanently) from the database and refresh the view.</message>
+  <message id="gcw.AccountRegister.delete.delete.toolTip"            >
+Delete the item (permanently) from the database and refresh
+the view.</message>
   <message id="gcw.AccountRegister.delete.contents"                  >
     <p>
       Delete this transaction?
@@ -475,10 +481,35 @@ you will be prompted for deletions like normal.</message>
     </p>
   </message>
 
+  <message id="gcw.AccountRegister.Popup.Details"                     >Details</message>
+  <message id="gcw.AccountRegister.details.title"                     >Transaction Details</message>
+  <message id="gcw.AccountRegister.details.contents"                  >
+    <p>
+      <table>
+        <tr><td> pay from:    </td><td><b>&nbsp;   ${payFrom} </b></td></tr>
+        <tr><td> pay to:      </td><td><b>&nbsp;   ${payTo}   </b></td></tr>
+        <tr><td> date:        </td><td><b>&nbsp;   ${date}    </b></td></tr>
+        <tr><td> description: </td><td><b>&nbsp;   ${desc}    </b></td></tr>
+        <tr><td> amount:      </td><td><b>&nbsp; $ ${amount}  </b></td></tr>
+      </table>
+    </p>
+    <p>
+      <center>
+        ${ok}
+      </center>
+    </p>
+  </message>
+
   <message id="gcw.AccountRegister.account.multisplit"               >~~ Split Transaction ~~</message>
   <message id="gcw.AccountRegister.account.imbalanceUSD"             >Imbalance-USD</message>
-  <message id="gcw.AccountRegister.account.imbalanceUSD.toolTip"     >This transaction is incomplete without a complete split.  Assign a split account to this transaction to clear this message. This is a result of missing the account/split on the other side of this transaction</message>
-  <message id="gcw.AccountRegister.account.invalidTarget.toolTip"    >This transaction is split, but the target account does not exist.</message>
+  <message id="gcw.AccountRegister.account.imbalanceUSD.toolTip"     >
+This transaction is incomplete without a complete split.
+Assign a split account to this transaction to clear this
+message. This is a result of missing the account/split
+on the other side of this transaction</message>
+  <message id="gcw.AccountRegister.account.invalidTarget.toolTip"    >
+This transaction is split, but the target account does
+not exist.</message>
   <message id="gcw.AccountRegister.account.tooltip">
     Split: {1}
     Date: {2}
@@ -495,7 +526,7 @@ you will be prompted for deletions like normal.</message>
 
   <message id="gcw.billPay.dialog.title"                         >Bill Pay ~ Record Payment</message>
   <message id="gcw.billPay.save.needaccount"                     >Please choose an account.</message>
-  <message id="gcw.billPay.save.positive"                        >The payment amount must be greater than zero.</message>
+  <message id="gcw.billPay.save.needpositive"                    >The payment amount must be greater than zero.</message>
   <message id="gcw.billPay.save.duplicate"                       >This account is already assigned to a Bill-Pay item. Duplicates are not supported yet.</message>
   <message id="gcw.billPay.tabName.payment"                      >Payment</message>
   <message id="gcw.billPay.tabName.history"                      >History</message>

@@ -205,9 +205,9 @@ loadData()-> void
     desc += " (" + bpItem.last4() + ")";
 
   m_date  -> setValueText( GCW::Core::currentDateTimeDisplayString() );
-  m_recon -> setValueText( "n" );
   m_num   -> setValueText( "bp" );
   m_desc  -> setValueText( desc );
+  m_recon -> setValueText( "n" );
 
   if( auto splitItem = lastSplit() )
     m_acct-> setValueText( GCW::Dbo::Accounts::fullName( splitItem-> account_guid() ) );
@@ -232,7 +232,7 @@ saveData()-> bool
   */
   if( value() < 1 )
   {
-    Wt::WMessageBox::show( TR("gcw.billPay.lbl.billPay"), TR("gcw.billPay.save.positive"), Wt::StandardButton::Ok );
+    Wt::WMessageBox::show( TR("gcw.billPay.lbl.billPay"), TR("gcw.billPay.save.needpositive"), Wt::StandardButton::Ok );
     return false;
   }
 
@@ -270,13 +270,19 @@ saveData()-> bool
   **          might have to deal with.
   */
   GCW::Eng::Transaction::Manager transMan;
-  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid()                );
-  transMan.setDescription( m_desc-> valueText()                                   );
-  transMan.setDate       ( m_date-> date()                                        );
+  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid(), m_date-> date(), value(), m_desc-> valueText().toUTF8() );
   transMan.setValue      ( acctItem-> guid()   , -value()                         );
-  transMan.setValue      ( bpItem.accountGuid(),  value()                         );
-  transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() );
+  transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() ); /// \todo insure gnucash can tolerate crlf in the middle of the memo field
   transMan.setNum        ( m_num-> valueText().toUTF8()                           );
+
+  std::string logMessage;
+  logMessage += GCW::Core::currentDateTimeStorageString();
+  logMessage += "\tpayment";
+  logMessage += "\t" + GCW::Dbo::Accounts::fullName( bpItem.accountGuid() );
+  logMessage += "\t" + GCW::Dbo::Accounts::fullName( acctItem-> guid()    );
+//  logMessage += "\t" + GCW::Core::dateStorageString( m_date-> date() );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << logMessage << std::endl;
 
   /*
   ** good save
