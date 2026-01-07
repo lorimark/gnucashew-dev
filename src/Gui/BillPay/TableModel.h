@@ -72,6 +72,9 @@ class TableModel
       /// Select a 'calendar month' to compare status
       int _selectedMonth,
 
+      /// Select a 'calendar year' to compare status
+      int _selectedYear,
+
       /// Select a BillPay::Status to evaluate to
       Status _status
     );
@@ -91,7 +94,7 @@ class TableModel
     **  the month selected.
     **
     */
-    auto loadData( int _selectedMonth )-> void ;
+    auto loadData( int _selectedMonth, int _selectedYear )-> void ;
 
   private:
 

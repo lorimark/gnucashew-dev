@@ -51,7 +51,7 @@ auto ordinalSuffix( int number )-> std::string
 #ifdef VERSION_LITTLEBETTER
 auto
 GCW::Gui::BillPay::SummaryWidget::
-setMonth( int _month )-> void
+setDate( int _month, int _year )-> void
 {
   /*
   ** open a transaction, helps all the queries to run faster
@@ -79,7 +79,7 @@ setMonth( int _month )-> void
   ** gather up all the payment splits and process them
   **  in to the report
   */
-  Splits splits( _month );
+  Splits splits( _month, _year );
   int row = 0;
   std::vector< DayTotal_t > dayTotals;
   for( auto payFromAcct : splits.payFroms() )
@@ -240,7 +240,7 @@ setMonth( int _month )-> void
   m_table-> elementAt( row, 0 )-> setAttributeValue( "style", "border-bottom:1px double black;" );
   row++;
 
-} // endsetMonth( int _month )-> void
+} // endsetDate( int _month, int _year )-> void
 #endif
 
 
@@ -431,13 +431,14 @@ setMonth( int _month )-> void
 
 
 GCW::Gui::BillPay::SummaryWidget::Splits::
-Splits( int _month )
-: m_month( _month )
+Splits( int _month, int _year )
+: m_month( _month ),
+  m_year( _year )
 {
   /*
   ** get all the transactions that happened for this account for this month
   */
-  auto txItems = GCW::Dbo::Transactions::byNumMonth( "bp", m_month );
+  auto txItems = GCW::Dbo::Transactions::byNumDate( "bp", m_month, m_year );
 
   /*
   ** if transactions happened, get them open and see if they should be in the summary report

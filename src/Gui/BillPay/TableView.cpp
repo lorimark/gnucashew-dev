@@ -7,7 +7,7 @@
 #include "BillPay.h"
 
 GCW::Gui::BillPay::TableView::
-TableView( int _selectedMonth, const Status _status )
+TableView( int _selectedMonth, int _selectedYear, const Status _status )
 {
   /*
   ** Add 'Unpaid', 'Paid', 'Disabled' to the style class of this
@@ -27,7 +27,7 @@ TableView( int _selectedMonth, const Status _status )
   /*
   ** Make a data model
   */
-  m_model = std::make_shared< TableModel >( _selectedMonth, _status );
+  m_model = std::make_shared< TableModel >( _selectedMonth, _selectedYear, _status );
 
   /*
   ** Set the model in to the table
@@ -48,7 +48,7 @@ TableView( int _selectedMonth, const Status _status )
 
 void
 GCW::Gui::BillPay::TableView::
-setMonth( int _month )
+setDate( int _month, int _year )
 {
   int selected_row = -1;
 
@@ -57,7 +57,7 @@ setMonth( int _month )
     selected_row = selectedIndexes().begin()-> row();
   }
 
-  m_model-> loadData( _month );
+  m_model-> loadData( _month, _year );
 
   if( selected_row > -1 )
   {

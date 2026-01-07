@@ -14,6 +14,7 @@
 #include "Status.h"
 #include "TableView.h"
 #include "ToolBar.h"
+#include "YearSelector.h"
 
 namespace GCW {
   namespace Gui {

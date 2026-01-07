@@ -44,6 +44,9 @@ class MainWidget
     auto clearSelectionExcept( TableView * = nullptr )-> void ;
     auto summaryClicked( const std::string & _txGuid )-> void ;
 
+    auto selectedMonth()-> int { return m_selectedMonth ; }
+    auto selectedYear()-> int ;
+
     std::unique_ptr< EditWidgetDialog > m_dialog ;
 
     /*

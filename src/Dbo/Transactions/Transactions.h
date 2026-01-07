@@ -187,14 +187,14 @@ auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 auto byAccountMonth( const std::string & _accountGuid, int _month )-> Item::Vector ;
 
 /*!
-** \brief Load Transactions for 'num' and Month
+** \brief Load Transactions for 'num' and Month and Year
 **
 ** The 'num' column is the column immediately to the right of the
 **  date field.  This query is used to find all the transactions
 **  that have this value in the 'num' field for a particular month.
 **
 */
-auto byNumMonth( const std::string & _num, int _month )-> Item::Vector ;
+auto byNumDate( const std::string & _num, int _month, int _year )-> Item::Vector ;
 
     } // endnamespace Transactions {
   } // endnamespace Dbo {

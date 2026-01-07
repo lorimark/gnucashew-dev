@@ -39,7 +39,7 @@ GCW::Gui::BillPay::ColumnDef_t columns[] =
 } // endnamespace {
 
 GCW::Gui::BillPay::TableModel::
-TableModel( int _selectedMonth, const Status _status )
+TableModel( int _selectedMonth, int _selectedYear, const Status _status )
 : Wt::WStandardItemModel( 0, COLUMN_COUNT ),
   m_status( _status )
 {
@@ -71,13 +71,13 @@ TableModel( int _selectedMonth, const Status _status )
   /*
   ** Load the data based on the month selected.
   */
-  loadData( _selectedMonth );
+  loadData( _selectedMonth, _selectedYear );
 
 } // endTableModel( const Status _status )
 
 auto
 GCW::Gui::BillPay::TableModel::
-loadData( int _selectedMonth )-> void
+loadData( int _selectedMonth, int _selectedYear )-> void
 {
   /*!
   ** On load, the first column-label is set to indicate the
@@ -95,7 +95,7 @@ loadData( int _selectedMonth )-> void
   (
    0,
    Wt::Orientation::Horizontal,
-   toString( _selectedMonth ) + " " + asString( m_status ),
+   toString( _selectedMonth ) + "/" + toString( _selectedYear ) + " " + asString( m_status ),
    Wt::ItemDataRole::Display
   );
 

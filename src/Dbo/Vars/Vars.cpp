@@ -102,12 +102,18 @@ getVarString( const std::string & _field ) const-> std::string
     try {
        Wt::Json::parse( varField(), jobj );
     }
-    catch( std::exception & e )
+    catch( std::exception & _e )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << e.what() << std::endl;
+      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << _e.what() << std::endl;
     }
 
-    retVal = jobj.get( _field ).orIfNull("");
+    try {
+      retVal = jobj.get( _field ).orIfNull("");
+    }
+    catch( std::exception & _e )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << _e.what() << std::endl;
+    }
 
   }
 
@@ -127,12 +133,18 @@ getVarInt( const std::string & _field ) const-> int
     try {
        Wt::Json::parse( varField(), jobj );
     }
-    catch( std::exception & e )
+    catch( std::exception & _e )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << e.what() << std::endl;
+      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << _e.what() << std::endl;
     }
 
-    retVal = jobj.get( _field ).orIfNull( 0 );
+    try {
+      retVal = jobj.get( _field ).orIfNull( 0 );
+    }
+    catch( std::exception & _e )
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " id:" << this-> id() << " " << _e.what() << std::endl;
+    }
 
   }
 

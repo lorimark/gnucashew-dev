@@ -23,9 +23,9 @@ class TableView
 {
   public:
 
-    TableView( int _selectedMonth, const Status _status );
+    TableView( int _selectedMonth, int _selectedYear, const Status _status );
 
-    auto setMonth( int _month )-> void ;
+    auto setDate( int _month, int _year )-> void ;
 
     auto selectItem( const std::string _itemIdent )-> void ;
 

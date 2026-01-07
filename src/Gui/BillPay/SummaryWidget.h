@@ -27,7 +27,7 @@ class SummaryWidget
 
     SummaryWidget( );
 
-    auto setMonth( int _month )-> void ;
+    auto setDate( int _month, int _year )-> void ;
 
     /*
     ** clicking on the pay-from account causes
@@ -67,7 +67,7 @@ class SummaryWidget
         **  for that selected month.
         **
         */
-        Splits( int _month );
+        Splits( int _month, int _year );
 
         /*
         ** this returns all the guids of all the splits found.
@@ -104,6 +104,11 @@ class SummaryWidget
         ** selected month
         */
         int m_month = -1;
+
+        /*
+        ** selected year
+        */
+        int m_year = -1;
 
         /*
         ** splits found in selected month

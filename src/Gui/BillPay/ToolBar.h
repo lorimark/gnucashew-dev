@@ -36,23 +36,26 @@ class ToolBar
 //    int selectedMonth() const;
 
 //    std::shared_ptr< Wt::WButtonGroup > buttonGroup    () const { return m_group;    }
+
+    auto selectedYear   () const-> int             ;
+    auto yearSelector   () const-> Wt::WComboBox * { return m_year; }
     auto inactiveButton () const-> Wt::WCheckBox * { return m_inactive; }
     auto showInactive   () const-> bool            ;
-
     auto summaryButton  () const-> Wt::WCheckBox * { return m_summary; }
     auto showSummary    () const-> bool            ;
 
-    auto importClicked()-> Wt::Signal<> & { return m_importClicked; }
-    auto exportClicked()-> Wt::Signal<> & { return m_exportClicked; }
+    auto importClicked  ()-> Wt::Signal<> & { return m_importClicked; }
+    auto exportClicked  ()-> Wt::Signal<> & { return m_exportClicked; }
 
   private:
 
 //    std::shared_ptr< Wt::WButtonGroup > m_group;
-    Wt::WCheckBox * m_inactive = nullptr;
-    Wt::WCheckBox * m_summary  = nullptr;
+    Wt::WComboBox * m_year     = nullptr ;
+    Wt::WCheckBox * m_inactive = nullptr ;
+    Wt::WCheckBox * m_summary  = nullptr ;
 
-    Wt::Signal<> m_importClicked;
-    Wt::Signal<> m_exportClicked;
+    Wt::Signal<> m_importClicked ;
+    Wt::Signal<> m_exportClicked ;
 
 }; // endclass ToolBar
 

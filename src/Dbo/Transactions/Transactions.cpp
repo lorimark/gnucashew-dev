@@ -185,11 +185,11 @@ byAccountMonth( const std::string & _accountGuid, int _month )-> GCW::Dbo::Trans
 
 auto
 GCW::Dbo::Transactions::
-byNumMonth( const std::string & _num, int _month )-> GCW::Dbo::Transactions::Item::Vector
+byNumDate( const std::string & _num, int _month, int _year )-> GCW::Dbo::Transactions::Item::Vector
 {
   GCW::Dbo::Transactions::Item::Vector retVal;
 
-  auto date = Wt::WDate( Wt::WDate::currentDate().year(), _month, 1 ).toString( "yyyy-MM" );
+  auto date = Wt::WDate( _year, _month, 1 ).toString( "yyyy-MM" );
 
   Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
   auto results =

@@ -53,7 +53,7 @@ buildContent()-> void
 
   // unpaid items
   {
-    m_unpaidView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Unpaid ) );
+    m_unpaidView = cw-> addWidget( std::make_unique< TableView >( selectedMonth(), selectedYear(), Status::Unpaid ) );
     m_unpaidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -81,7 +81,7 @@ buildContent()-> void
 
   // pending items
   {
-    m_pendingView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Pending ) );
+    m_pendingView = cw-> addWidget( std::make_unique< TableView >( selectedMonth(), selectedYear(), Status::Pending ) );
     m_pendingView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -102,7 +102,7 @@ buildContent()-> void
 
   // paid items
   {
-    m_paidView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Paid ) );
+    m_paidView = cw-> addWidget( std::make_unique< TableView >( selectedMonth(), selectedYear(), Status::Paid ) );
     m_paidView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -123,7 +123,7 @@ buildContent()-> void
 
   // inactive items
   {
-    m_inactiveView = cw-> addWidget( std::make_unique< TableView >( m_selectedMonth, Status::Inactive ) );
+    m_inactiveView = cw-> addWidget( std::make_unique< TableView >( selectedMonth(), selectedYear(), Status::Inactive ) );
     m_inactiveView->
       clicked().connect( [&]( Wt::WModelIndex _index, Wt::WMouseEvent _event )
       {
@@ -294,8 +294,6 @@ do_summaryClicked()-> void
   else
     m_summaryView-> setHidden( true );
 
-//  m_summaryView-> setMonth( m_selectedMonth );
-
 } // enddo_summaryClicked()-> void
 
 auto
@@ -304,11 +302,11 @@ setMonth( int _month )-> void
 {
   m_selectedMonth = _month;
 
-  if( m_unpaidView   ) m_unpaidView   -> setMonth( _month );
-  if( m_pendingView  ) m_pendingView  -> setMonth( _month );
-  if( m_paidView     ) m_paidView     -> setMonth( _month );
-  if( m_inactiveView ) m_inactiveView -> setMonth( _month );
-  if( m_summaryView  ) m_summaryView  -> setMonth( _month );
+  if( m_unpaidView   ) m_unpaidView   -> setDate( _month, selectedYear() );
+  if( m_pendingView  ) m_pendingView  -> setDate( _month, selectedYear() );
+  if( m_paidView     ) m_paidView     -> setDate( _month, selectedYear() );
+  if( m_inactiveView ) m_inactiveView -> setDate( _month, selectedYear() );
+  if( m_summaryView  ) m_summaryView  -> setDate( _month, selectedYear() );
 
   if( m_pendingView-> rowCount() > 0 )
       m_pendingView-> setHidden( false );
@@ -335,6 +333,15 @@ setMonth( int _month )-> void
   configItem().modify()-> setVar( "selectedMonth", m_selectedMonth );
 
 } // endsetMonth( int _month )-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
+selectedYear()-> int
+{
+  return
+    m_toolBar-> selectedYear();
+
+} // endselectedYear()-> int
 
 auto
 GCW::Gui::BillPay::MainWidget::
