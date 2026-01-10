@@ -255,6 +255,11 @@
   border: 1px solid black;
 }
 
+.BillPay .pointer
+{
+  cursor: pointer;
+}
+
 .BillPay .SummaryTable
 {
 /*  width: 100%; */

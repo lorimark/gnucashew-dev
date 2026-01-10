@@ -63,8 +63,9 @@ TableModel( int _selectedMonth, int _selectedYear, const Status _status )
   {
     for( int col = 1; col< COLUMN_COUNT; col++ )
     {
-      setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].name    , Wt::ItemDataRole::Display );
-      setHeaderData( col, Wt::Orientation::Horizontal, _toolTip( col )        , Wt::ItemDataRole::ToolTip );
+      setHeaderData( col, Wt::Orientation::Horizontal, columns[ col ].name    , Wt::ItemDataRole::Display    );
+      setHeaderData( col, Wt::Orientation::Horizontal, _toolTip( col )        , Wt::ItemDataRole::ToolTip    );
+      setHeaderData( col, Wt::Orientation::Horizontal, "pointer"              , Wt::ItemDataRole::StyleClass );
     }
   }
 

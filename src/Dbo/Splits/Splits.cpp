@@ -84,7 +84,7 @@ byAccount( const std::string & _accountGuid )-> GCW::Dbo::Splits::Item::Vector
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
     /*
-    ** this sql will sort the results of the query by date,value(desc)
+    ** this sql will sort the results of the query by date,value(descending)
     **  without having to sort in code.  this is way freaking faster
     */
     std::string sql =
@@ -154,6 +154,12 @@ bySplitExcept( const std::string & _splitGuid )-> GCW::Dbo::Splits::Item::Vector
   {
     Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
 
+    /*
+    ** this sql will sort the results of the query by date,value(descending)
+    **  without having to sort in code.  this is way freaking faster.  This
+    **  also omits the split with the matching guid - essentially returns
+    **  all of the 'other' splits related to this split.
+    */
     std::string sql =
       "SELECT s "
       "FROM splits s "
