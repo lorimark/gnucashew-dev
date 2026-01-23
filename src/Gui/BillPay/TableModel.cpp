@@ -107,7 +107,7 @@ filteredOut( const GCW::Gui::BillPay::Item & _bpItem )-> bool
   };
 
   /*
-  ** default to filter out
+  ** default to 'filter out'
   */
   auto retVal = true;
 
@@ -145,7 +145,7 @@ loadData( int _selectedMonth, int _selectedYear )-> void
   (
    0,
    Wt::Orientation::Horizontal,
-   toString( _selectedMonth ) + "/" + toString( _selectedYear ) + " " + asString( m_status ),
+   toString( _selectedYear ) + "-" + toString( _selectedMonth ) + " " + asString( m_status ),
    Wt::ItemDataRole::Display
   );
 
@@ -165,6 +165,10 @@ loadData( int _selectedMonth, int _selectedYear )-> void
 
   /*
   ** Calculate our yes/no status for grabbing items.
+  **  For each view;
+  **    yes   = Unpaid
+  **    no    = Paid
+  **    maybe = Pending
   */
   std::string yesNo = "yes";
   if( m_status == GCW::Gui::BillPay::Status::Pending )
@@ -175,15 +179,19 @@ loadData( int _selectedMonth, int _selectedYear )-> void
   /*!
   ** Run the resultList collection through an analyzer that will
   **  extract billpay items that match the selection criteria of
-  **  month/paid/unpaid/disabled/yes/no accordingly.
+  **  month/paid/unpaid/disabled/yes/no/filter accordingly.
   */
   std::vector< GCW::Gui::BillPay::Item > bpItems;
   for( auto item : items )
   {
     auto bpItem = GCW::Gui::BillPay::Item( item );
 
+    /*
+    ** if a filter is being used, apply it and filter-out
+    **  any items that don't meet the filter criteria
+    */
     if( filteredOut( bpItem ) )
-      continue;
+      continue; // skip to the next
 
     /*
     ** Calculate these boolean.
@@ -192,7 +200,7 @@ loadData( int _selectedMonth, int _selectedYear )-> void
     auto isVisible = bpItem.isVisible() == "yes";
 
     /*
-    ** This is for Paid and Unpaid (not Disabled).
+    ** This is for Paid, Unpaid, Pending (not Disabled).
     */
     if( m_status == GCW::Gui::BillPay::Status::Paid
      || m_status == GCW::Gui::BillPay::Status::Pending
@@ -255,12 +263,15 @@ loadData( int _selectedMonth, int _selectedYear )-> void
 
     if( accountGuid != "" )
     {
-      auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
-
       /*
       ** set the bpItem.guid so we can edit this row
       */
       accountName-> setData( bpItem.guid(), Wt::ItemDataRole::User  );
+
+      /*
+      ** fetch the account item
+      */
+      auto accountItem = GCW::Dbo::Accounts::byGuid( accountGuid );
 
       /*
       ** sometimes the 'account' can get lost, so check first the
@@ -276,6 +287,14 @@ loadData( int _selectedMonth, int _selectedYear )-> void
         */
         accountName-> setData( accountItem-> name() , Wt::ItemDataRole::Display );
         accountName-> setToolTip( GCW::Dbo::Accounts::fullName( accountGuid )   );
+      }
+
+      /*
+      ** whelp, looks like we lost the account... hmmph
+      */
+      else
+      {
+        accountName-> setData( "~missing~" , Wt::ItemDataRole::Display );
       }
 
     } // endif( accountGuid != "" )
