@@ -531,6 +531,7 @@ not exist.</message>
   <message id="gcw.billPay.tabName.payment"                      >Payment</message>
   <message id="gcw.billPay.tabName.history"                      >History</message>
 
+  <message id="gcw.billPay.pht.finder"                           >Find</message>
   <message id="gcw.billPay.lbl.billPay"                          >Bill Pay</message>
   <message id="gcw.billPay.lbl.add"                              >Add</message>
   <message id="gcw.billPay.lbl.edit"                             >Edit</message>

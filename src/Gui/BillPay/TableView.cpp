@@ -69,6 +69,15 @@ setDate( int _month, int _year )
 
 auto
 GCW::Gui::BillPay::TableView::
+setFilter( const std::string & _filter )-> void
+{
+  m_model-> setFilter( _filter );
+
+} // endsetFilter( const std::string & _filter )-> void
+
+
+auto
+GCW::Gui::BillPay::TableView::
 rowCount()-> int
 {
   return m_model-> rowCount();

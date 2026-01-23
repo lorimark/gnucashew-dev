@@ -14,7 +14,6 @@ ToolBar()
 {
   addStyleClass( "ToolBar" );
 
-
   /*
   ** Always use a layout
   */
@@ -23,25 +22,30 @@ ToolBar()
   table-> setAttributeValue( "style", "border-spacing:10px;border-collapse:separate;" );
   lw-> addWidget( std::make_unique< Wt::WContainerWidget >(), 1 );
 
-  /*
-  ** select operating year
-  */
   int col = 0;
+
+  /*
+  ** operating year selector
+  */
   m_year = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< YearSelector >() );
+
+  /*
+  ** finder input
+  */
+  m_finder = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WLineEdit >() );
+  m_finder-> setPlaceholderText( TR("gcw.billPay.pht.finder") );
 
   /*
   ** click to add
   */
-  auto pbAdd  = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.add") ) );
-  pbAdd-> setStyleClass( "btn-xs" );
-  pbAdd-> clicked().connect( [=](){ m_addClicked.emit(); } );
+  m_add  = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.add") ) );
+  m_add-> setStyleClass( "btn-xs" );
 
   /*
   ** click to edit
   */
-  auto pbEdit = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.edit") ) );
-  pbEdit-> setStyleClass( "btn-xs" );
-  pbEdit-> clicked().connect( [=](){ m_editClicked.emit(); } );
+  m_edit = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.edit") ) );
+  m_edit-> setStyleClass( "btn-xs" );
 
   /*
   ** hide and show disabled items
@@ -73,7 +77,7 @@ ToolBar()
 
     });
 
-#ifdef NEVER
+#ifdef BILL_PAY_IMPORT_EXPORT
   /*
   ** import export buttons
   */
@@ -92,27 +96,68 @@ ToolBar()
 
 } // endToolBar()
 
-bool
+auto
 GCW::Gui::BillPay::ToolBar::
-showInactive() const
+showInactive() const-> bool
 {
-  return inactiveButton()-> checkState() == Wt::CheckState::Checked? true:false;
-}
+  /*
+  ** default false
+  */
+  bool retVal = false;
 
-bool
+  if( inactiveButton() )
+    retVal = inactiveButton()-> checkState() == Wt::CheckState::Checked? true:false;
+
+  return retVal;
+
+} // endshowInactive() const-> bool
+
+auto
 GCW::Gui::BillPay::ToolBar::
-showSummary() const
+showSummary() const-> bool
 {
-  return summaryButton()-> checkState() == Wt::CheckState::Checked? true:false;
-}
+  /*
+  ** default false
+  */
+  bool retVal = false;
+
+  if( summaryButton() )
+    retVal = summaryButton()-> checkState() == Wt::CheckState::Checked? true:false;
+
+  return retVal;
+
+} // endshowSummary() const-> bool
 
 auto
 GCW::Gui::BillPay::ToolBar::
 selectedYear() const-> int
 {
-  return
-    GCW::Core::stoi( yearSelector()-> valueText().toUTF8() );
+  /*!
+  ** default 0
+  */
+  int retVal = 0;
+
+  if( yearSelector() )
+    retVal = GCW::Core::stoi( yearSelector()-> valueText().toUTF8() );
+
+  return retVal;
 
 } // endselectedYear() const-> int
+
+auto
+GCW::Gui::BillPay::ToolBar::
+finderText() const-> std::string
+{
+  /*
+  ** default empty
+  */
+  std::string retVal;
+
+  if( finderInput() )
+    retVal = finderInput()-> valueText().toUTF8();
+
+  return retVal;
+
+} // endfinderText() const-> std::string
 
 

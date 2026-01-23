@@ -27,35 +27,100 @@ class ToolBar
 
     ToolBar();
 
-    Wt::Signal<> & addClicked() { return m_addClicked; }
-    Wt::Signal<> m_addClicked;
+    /*!
+    ** return the selected year
+    */
+    auto selectedYear() const-> int ;
 
-    Wt::Signal<> & editClicked() { return m_editClicked; }
-    Wt::Signal<> m_editClicked;
+    /*!
+    ** return the text in the finder field
+    */
+    auto finderText() const-> std::string ;
 
-//    int selectedMonth() const;
+    /*!
+    ** Year Selector
+    */
+    auto yearSelector() const-> Wt::WComboBox *
+    {
+      return m_year;
+    }
 
-//    std::shared_ptr< Wt::WButtonGroup > buttonGroup    () const { return m_group;    }
+    /*!
+    ** Add Button
+    */
+    auto addButton() const-> Wt::WPushButton *
+    {
+      return m_add;
+    }
 
-    auto selectedYear   () const-> int             ;
-    auto yearSelector   () const-> Wt::WComboBox * { return m_year; }
-    auto inactiveButton () const-> Wt::WCheckBox * { return m_inactive; }
-    auto showInactive   () const-> bool            ;
-    auto summaryButton  () const-> Wt::WCheckBox * { return m_summary; }
-    auto showSummary    () const-> bool            ;
+    /*!
+    ** Edit Button
+    */
+    auto editButton() const-> Wt::WPushButton *
+    {
+      return m_edit;
+    }
 
-    auto importClicked  ()-> Wt::Signal<> & { return m_importClicked; }
-    auto exportClicked  ()-> Wt::Signal<> & { return m_exportClicked; }
+    /*!
+    ** Import Button
+    */
+    auto importButton() const-> Wt::WPushButton *
+    {
+      return m_import;
+    }
+
+    /*!
+    ** Export Button
+    */
+    auto exportButton() const-> Wt::WPushButton *
+    {
+      return m_export;
+    }
+
+    /*!
+    ** Inactive Button
+    */
+    auto inactiveButton() const-> Wt::WCheckBox *
+    {
+      return m_inactive;
+    }
+
+    /*!
+    ** Show Inactive
+    */
+    auto showInactive() const-> bool ;
+
+    /*!
+    ** Summary Button
+    */
+    auto summaryButton() const-> Wt::WCheckBox *
+    {
+      return m_summary;
+    }
+
+    /*!
+    ** Show Summary
+    */
+    auto showSummary() const-> bool ;
+
+    /*!
+    ** Finder Input
+    */
+    auto finderInput() const-> Wt::WLineEdit *
+    {
+      return m_finder;
+    }
 
   private:
 
-//    std::shared_ptr< Wt::WButtonGroup > m_group;
-    Wt::WComboBox * m_year     = nullptr ;
-    Wt::WCheckBox * m_inactive = nullptr ;
-    Wt::WCheckBox * m_summary  = nullptr ;
-
-    Wt::Signal<> m_importClicked ;
-    Wt::Signal<> m_exportClicked ;
+    Wt::WPushButton * m_add      = nullptr ;
+    Wt::WPushButton * m_edit     = nullptr ;
+    Wt::WPushButton * m_import   = nullptr ;
+    Wt::WPushButton * m_export   = nullptr ;
+    Wt::WComboBox   * m_year     = nullptr ;
+    Wt::WCheckBox   * m_inactive = nullptr ;
+    Wt::WCheckBox   * m_summary  = nullptr ;
+    Wt::WLineEdit   * m_finder   = nullptr ;
 
 }; // endclass ToolBar
 

@@ -3,6 +3,7 @@
 #include <Wt/WStandardItem.h>
 
 #include "../../App.h"
+#include "../../Glb/Core.h"
 #include "../Dbo/Vars/Vars.h"
 #include "BillPay.h"
 
@@ -76,10 +77,58 @@ TableModel( int _selectedMonth, int _selectedYear, const Status _status )
 
 } // endTableModel( const Status _status )
 
+
+auto
+GCW::Gui::BillPay::TableModel::
+filteredOut( const GCW::Gui::BillPay::Item & _bpItem )-> bool
+{
+  /*
+  ** if there is no filter, then this item should not be filtered out
+  */
+  if( m_filter.length() == 0 )
+    return false;
+
+  auto _foundIn = [this]( const std::string & _a )
+  {
+    std::string a = GCW::Core::tolower( _a );
+    std::string b = GCW::Core::tolower( m_filter );
+
+    /*
+    ** if the sub-string is not found, return false
+    */
+    if( a.find( b ) == std::string::npos )
+      return false;
+
+    /*
+    ** the sub-string is found
+    */
+    return true;
+
+  };
+
+  /*
+  ** default to filter out
+  */
+  auto retVal = true;
+
+  if( _foundIn( _bpItem.accountFullName() ) ) retVal = false;
+  if( _foundIn( _bpItem.nickname()        ) ) retVal = false;
+  if( _foundIn( _bpItem.url()             ) ) retVal = false;
+  if( _foundIn( _bpItem.last4()           ) ) retVal = false;
+  if( _foundIn( _bpItem.note()            ) ) retVal = false;
+
+  return retVal;
+
+} // endfilteredOut( const GCW::Gui::BillPay::Item & _bpItem )-> bool
+
+
 auto
 GCW::Gui::BillPay::TableModel::
 loadData( int _selectedMonth, int _selectedYear )-> void
 {
+  m_selectedMonth = _selectedMonth;
+  m_selectedYear  = _selectedYear;
+
   /*!
   ** On load, the first column-label is set to indicate the
   **  model type as well as the month selected.
@@ -132,6 +181,9 @@ loadData( int _selectedMonth, int _selectedYear )-> void
   for( auto item : items )
   {
     auto bpItem = GCW::Gui::BillPay::Item( item );
+
+    if( filteredOut( bpItem ) )
+      continue;
 
     /*
     ** Calculate these boolean.
@@ -313,5 +365,24 @@ sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
   );
 
 } // endsort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void
+
+auto
+GCW::Gui::BillPay::TableModel::
+setFilter( const std::string & _filter )-> void
+{
+  /*
+  ** we want at least 3 characters before filtering
+  */
+//  if( _filter.length() < 3 )
+//    m_filter = "";
+//  else
+    m_filter = _filter;
+
+  /*
+  ** Load the data based on the month selected.
+  */
+  loadData( m_selectedMonth, m_selectedYear );
+
+} // endsetFilter( const std::string & _filter )-> void
 
 

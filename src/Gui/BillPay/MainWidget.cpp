@@ -36,12 +36,16 @@ buildContent()-> void
   // toolbar
   {
     m_toolBar = cw-> addWidget( std::make_unique< ToolBar >() );
-    m_toolBar                    -> addClicked () .connect( this, &MainWidget:: do_addClicked      );
-    m_toolBar                    -> editClicked() .connect( this, &MainWidget:: do_editClicked     );
-    m_toolBar-> inactiveButton() -> clicked    () .connect( this, &MainWidget:: do_inactiveClicked );
-    m_toolBar-> summaryButton () -> clicked    () .connect( this, &MainWidget:: do_summaryClicked  );
-    m_toolBar-> importClicked ()                  .connect( this, &MainWidget:: importClicked      );
-    m_toolBar-> exportClicked ()                  .connect( this, &MainWidget:: exportClicked      );
+    toolBar()-> yearSelector  () -> activated  () .connect( this, &MainWidget:: do_yearChanged     );
+    toolBar()-> addButton     () -> clicked    () .connect( this, &MainWidget:: do_addClicked      );
+    toolBar()-> editButton    () -> clicked    () .connect( this, &MainWidget:: do_editClicked     );
+    toolBar()-> inactiveButton() -> clicked    () .connect( this, &MainWidget:: do_inactiveClicked );
+    toolBar()-> summaryButton () -> clicked    () .connect( this, &MainWidget:: do_summaryClicked  );
+#ifdef BILL_PAY_IMPORT_EXPORT
+    toolBar()-> importButton  () -> clicked    () .connect( this, &MainWidget:: importClicked      );
+    toolBar()-> exportButton  () -> clicked    () .connect( this, &MainWidget:: exportClicked      );
+#endif
+    toolBar()-> finderInput   () -> textInput  () .connect( this, &MainWidget:: finderInput        );
 
   } // toolbar
 
@@ -151,8 +155,25 @@ buildContent()-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
+finderInput()-> void
+{
+  /*
+  ** apply the filter to all the views
+  */
+  if( m_unpaidView   ) m_unpaidView   -> setFilter( toolBar()-> finderText() );
+  if( m_pendingView  ) m_pendingView  -> setFilter( toolBar()-> finderText() );
+  if( m_paidView     ) m_paidView     -> setFilter( toolBar()-> finderText() );
+  if( m_inactiveView ) m_inactiveView -> setFilter( toolBar()-> finderText() );
+
+} // endfinderInput()-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
 summaryClicked( const std::string & _itemIdent )-> void
 {
+  /*
+  ** select the item based on what was selected in the summary view
+  */
   m_unpaidView   -> selectItem( _itemIdent );
   m_pendingView  -> selectItem( _itemIdent );
   m_paidView     -> selectItem( _itemIdent );
@@ -165,6 +186,9 @@ auto
 GCW::Gui::BillPay::MainWidget::
 clearSelectionExcept( TableView * _view )-> void
 {
+  /*
+  ** clear all selections except the table that's being selected
+  */
   if( _view != m_unpaidView   ) m_unpaidView   -> clearSelection();
   if( _view != m_pendingView  ) m_pendingView  -> clearSelection();
   if( _view != m_paidView     ) m_paidView     -> clearSelection();
@@ -223,6 +247,14 @@ openEditor( const std::string & _bpGuid )-> void
 
 auto
 GCW::Gui::BillPay::MainWidget::
+do_yearChanged()-> void
+{
+  refreshViews();
+
+} // enddo_addClicked()-> void
+
+auto
+GCW::Gui::BillPay::MainWidget::
 do_addClicked()-> void
 {
   addClicked();
@@ -278,10 +310,10 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_inactiveClicked()-> void
 {
-  if( m_toolBar-> showInactive() )
-      m_inactiveView-> setHidden( false );
+  if( toolBar()-> showInactive() )
+      inactiveView()-> setHidden( false );
   else
-      m_inactiveView-> setHidden( true );
+      inactiveView()-> setHidden( true );
 
 } // endinactiveClicked()-> void
 
@@ -289,10 +321,10 @@ auto
 GCW::Gui::BillPay::MainWidget::
 do_summaryClicked()-> void
 {
-  if( m_toolBar-> showSummary() )
-    m_summaryView-> setHidden( false );
+  if( toolBar()-> showSummary() )
+    summaryView()-> setHidden( false );
   else
-    m_summaryView-> setHidden( true );
+    summaryView()-> setHidden( true );
 
 } // enddo_summaryClicked()-> void
 
@@ -339,7 +371,7 @@ GCW::Gui::BillPay::MainWidget::
 selectedYear()-> int
 {
   return
-    m_toolBar-> selectedYear();
+    toolBar()-> selectedYear();
 
 } // endselectedYear()-> int
 

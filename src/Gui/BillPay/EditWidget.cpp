@@ -35,55 +35,55 @@ EditWidget( const std::string & _bpGuid )
   /*
   ** add all the widgets
   */
-  m_pbSave    = templtMain-> bindNew< Wt::WPushButton           >( "save"      , TR("gcw.billPay.lbl.save")      );
-  m_pbCancel  = templtMain-> bindNew< Wt::WPushButton           >( "cancel"    , TR("gcw.billPay.lbl.cancel")    );
-  m_pbDelete  = templtMain-> bindNew< Wt::WPushButton           >( "delete"    , TR("gcw.billPay.lbl.delete")    );
-  m_pbProcess = templtMain-> bindNew< Wt::WPushButton           >( "process"   , TR("gcw.billPay.lbl.process")   );
-  m_account   = templtMain-> bindNew< GCW::Gui::AccountComboBox >( "account"                                     );
-  m_dueDay    = templtMain-> bindNew< Wt::WSpinBox              >( "dueDay"                                      );
-  m_minimum   = templtMain-> bindNew< Wt::WLineEdit             >( "minimum"                                     );
-  m_budget    = templtMain-> bindNew< Wt::WLineEdit             >( "budget"                                      );
-  m_nickname  = templtMain-> bindNew< Wt::WLineEdit             >( "nickname"                                    );
-  m_group     = templtMain-> bindNew< Wt::WSpinBox              >( "group"                                       );
-  m_limit     = templtMain-> bindNew< Wt::WLineEdit             >( "limit"                                       );
-  m_actual    = templtMain-> bindNew< Wt::WLineEdit             >( "actual"                                      );
-  m_ap        = templtMain-> bindNew< Wt::WCheckBox             >( "ap"        , TR("gcw.billPay.lbl.ap")        );
-  m_isActive  = templtMain-> bindNew< Wt::WCheckBox             >( "isActive"  , TR("gcw.billPay.lbl.isActive")  );
-  m_isVisible = templtMain-> bindNew< Wt::WCheckBox             >( "isVisible" , TR("gcw.billPay.lbl.isVisible") );
-  m_autoPay   = templtMain-> bindNew< Wt::WCheckBox             >( "autoPay"   , TR("gcw.billPay.lbl.autoPay")   );
-  m_payNow    = templtMain-> bindNew< Wt::WCheckBox             >( "payNow"    , TR("gcw.billPay.lbl.payNow")    );
+  m_pbSave    = templtMain-> bindNew< Wt::WPushButton           >( "save"      , TR( "gcw.billPay.lbl.save"      ) );
+  m_pbCancel  = templtMain-> bindNew< Wt::WPushButton           >( "cancel"    , TR( "gcw.billPay.lbl.cancel"    ) );
+  m_pbDelete  = templtMain-> bindNew< Wt::WPushButton           >( "delete"    , TR( "gcw.billPay.lbl.delete"    ) );
+  m_pbProcess = templtMain-> bindNew< Wt::WPushButton           >( "process"   , TR( "gcw.billPay.lbl.process"   ) );
+  m_account   = templtMain-> bindNew< GCW::Gui::AccountComboBox >( "account"                                       );
+  m_dueDay    = templtMain-> bindNew< Wt::WSpinBox              >( "dueDay"                                        );
+  m_minimum   = templtMain-> bindNew< Wt::WLineEdit             >( "minimum"                                       );
+  m_budget    = templtMain-> bindNew< Wt::WLineEdit             >( "budget"                                        );
+  m_nickname  = templtMain-> bindNew< Wt::WLineEdit             >( "nickname"                                      );
+  m_group     = templtMain-> bindNew< Wt::WSpinBox              >( "group"                                         );
+  m_limit     = templtMain-> bindNew< Wt::WLineEdit             >( "limit"                                         );
+  m_actual    = templtMain-> bindNew< Wt::WLineEdit             >( "actual"                                        );
+  m_ap        = templtMain-> bindNew< Wt::WCheckBox             >( "ap"        , TR( "gcw.billPay.lbl.ap"        ) );
+  m_isActive  = templtMain-> bindNew< Wt::WCheckBox             >( "isActive"  , TR( "gcw.billPay.lbl.isActive"  ) );
+  m_isVisible = templtMain-> bindNew< Wt::WCheckBox             >( "isVisible" , TR( "gcw.billPay.lbl.isVisible" ) );
+  m_autoPay   = templtMain-> bindNew< Wt::WCheckBox             >( "autoPay"   , TR( "gcw.billPay.lbl.autoPay"   ) );
+  m_payNow    = templtMain-> bindNew< Wt::WCheckBox             >( "payNow"    , TR( "gcw.billPay.lbl.payNow"    ) );
 
   m_pbSave    -> setStyleClass( "btn-xs" );
   m_pbCancel  -> setStyleClass( "btn-xs" );
   m_pbDelete  -> setStyleClass( "btn-xs" );
   m_pbProcess -> setStyleClass( "btn-xs" );
 
-  m_account   -> setToolTip( TR("gcw.billPay.ttp.account"     ) );
-  m_dueDay    -> setToolTip( TR("gcw.billPay.ttp.dueDay"      ) );
-  m_minimum   -> setToolTip( TR("gcw.billPay.ttp.minimum"     ) );
-  m_budget    -> setToolTip( TR("gcw.billPay.ttp.budget"      ) );
-  m_nickname  -> setToolTip( TR("gcw.billPay.ttp.nickname"    ) );
-  m_group     -> setToolTip( TR("gcw.billPay.ttp.group"       ) );
-  m_limit     -> setToolTip( TR("gcw.billPay.ttp.limit"       ) );
-  m_actual    -> setToolTip( TR("gcw.billPay.ttp.actual"      ) );
-  m_ap        -> setToolTip( TR("gcw.billPay.ttp.ap"          ) );
-  m_isActive  -> setToolTip( TR("gcw.billPay.ttp.isActive"    ) );
-  m_isVisible -> setToolTip( TR("gcw.billPay.ttp.isVisible"   ) );
-  m_autoPay   -> setToolTip( TR("gcw.billPay.ttp.autoPay"     ) );
-  m_payNow    -> setToolTip( TR("gcw.billPay.ttp.payNow"      ) );
+  m_account   -> setToolTip( TR( "gcw.billPay.ttp.account"     ) );
+  m_dueDay    -> setToolTip( TR( "gcw.billPay.ttp.dueDay"      ) );
+  m_minimum   -> setToolTip( TR( "gcw.billPay.ttp.minimum"     ) );
+  m_budget    -> setToolTip( TR( "gcw.billPay.ttp.budget"      ) );
+  m_nickname  -> setToolTip( TR( "gcw.billPay.ttp.nickname"    ) );
+  m_group     -> setToolTip( TR( "gcw.billPay.ttp.group"       ) );
+  m_limit     -> setToolTip( TR( "gcw.billPay.ttp.limit"       ) );
+  m_actual    -> setToolTip( TR( "gcw.billPay.ttp.actual"      ) );
+  m_ap        -> setToolTip( TR( "gcw.billPay.ttp.ap"          ) );
+  m_isActive  -> setToolTip( TR( "gcw.billPay.ttp.isActive"    ) );
+  m_isVisible -> setToolTip( TR( "gcw.billPay.ttp.isVisible"   ) );
+  m_autoPay   -> setToolTip( TR( "gcw.billPay.ttp.autoPay"     ) );
+  m_payNow    -> setToolTip( TR( "gcw.billPay.ttp.payNow"      ) );
 
   m_dueDay -> setRange( 1, 31 );
   m_group  -> setRange( 0, 30 );
   m_group  -> setSingleStep( 5 );
 
-  templtMain-> bindString( "accountLabel"  , TR("gcw.billPay.lbl.account"  ) );
-  templtMain-> bindString( "dueDayLabel"   , TR("gcw.billPay.lbl.dueDay"   ) );
-  templtMain-> bindString( "minimumLabel"  , TR("gcw.billPay.lbl.minimum"  ) );
-  templtMain-> bindString( "budgetLabel"   , TR("gcw.billPay.lbl.budget"   ) );
-  templtMain-> bindString( "nicknameLabel" , TR("gcw.billPay.lbl.nickname" ) );
-  templtMain-> bindString( "groupLabel"    , TR("gcw.billPay.lbl.group"    ) );
-  templtMain-> bindString( "limitLabel"    , TR("gcw.billPay.lbl.limit"    ) );
-  templtMain-> bindString( "actualLabel"   , TR("gcw.billPay.lbl.actual"   ) );
+  templtMain-> bindString( "accountLabel"  , TR( "gcw.billPay.lbl.account"  ) );
+  templtMain-> bindString( "dueDayLabel"   , TR( "gcw.billPay.lbl.dueDay"   ) );
+  templtMain-> bindString( "minimumLabel"  , TR( "gcw.billPay.lbl.minimum"  ) );
+  templtMain-> bindString( "budgetLabel"   , TR( "gcw.billPay.lbl.budget"   ) );
+  templtMain-> bindString( "nicknameLabel" , TR( "gcw.billPay.lbl.nickname" ) );
+  templtMain-> bindString( "groupLabel"    , TR( "gcw.billPay.lbl.group"    ) );
+  templtMain-> bindString( "limitLabel"    , TR( "gcw.billPay.lbl.limit"    ) );
+  templtMain-> bindString( "actualLabel"   , TR( "gcw.billPay.lbl.actual"   ) );
 
   /*
   ** this is the tab widget.  It takes up the remaining bottom space

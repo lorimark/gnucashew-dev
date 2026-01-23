@@ -27,6 +27,8 @@ class TableView
 
     auto setDate( int _month, int _year )-> void ;
 
+    auto setFilter( const std::string & _filter )-> void ;
+
     auto selectItem( const std::string _itemIdent )-> void ;
 
     auto rowCount()-> int ;

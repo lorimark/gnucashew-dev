@@ -96,6 +96,8 @@ class TableModel
     */
     auto loadData( int _selectedMonth, int _selectedYear )-> void ;
 
+    auto setFilter( const std::string & _filter )-> void ;
+
   private:
 
     /*!
@@ -112,6 +114,16 @@ class TableModel
     */
     auto sort( std::vector< GCW::Gui::BillPay::Item > & _bpItems )-> void ;
 
+    /*
+    ** \brief Filterer
+    **
+    ** This examines a bpItem to see if it meets any filter criteria
+    **
+    ** \ret .true. if the item should be ignored
+    **
+    */
+    auto filteredOut( const GCW::Gui::BillPay::Item & _bpItem )-> bool ;
+
     /*!
     ** \brief Model Status
     **
@@ -120,7 +132,10 @@ class TableModel
     **  and the selected month.
     **
     */
-    Status m_status;
+    Status      m_status        ;
+    int         m_selectedMonth ;
+    int         m_selectedYear  ;
+    std::string m_filter        ;
 
 }; // endclass TableModel
 

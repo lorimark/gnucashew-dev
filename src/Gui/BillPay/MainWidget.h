@@ -29,20 +29,92 @@ class MainWidget
 
   private:
 
+    /*!
+    ** Build Content
+    */
     auto buildContent()-> void ;
+
+    /*!
+    ** Do add clicked
+    */
     auto do_addClicked()-> void ;
+
+    /*!
+    ** Do edit clicked
+    */
     auto do_editClicked()-> void ;
+
+    /*!
+    ** Do inactive clicked
+    */
     auto do_inactiveClicked()-> void ;
+
+    /*!
+    ** Do summary clicked
+    */
     auto do_summaryClicked()-> void ;
+
+    /*!
+    ** Do year changed
+    */
+    auto do_yearChanged()-> void ;
+
+    /*!
+    ** Add Clicked Handler
+    */
     auto addClicked()-> void ;
+
+    /*!
+    ** Edit Clicked Handler
+    */
     auto editClicked( TableView * _table, Wt::WModelIndex _index )-> void ;
+
+    /*!
+    ** Open the Editor
+    */
     auto openEditor( const std::string & _bpGuid )-> void ;
+
+    /*!
+    ** Set the current Month
+    */
     auto setMonth( int _month )-> void ;
+
+    /*!
+    ** Refresh the views
+    */
     auto refreshViews()-> void ;
+
+    /*!
+    ** Import Handler
+    */
     auto importClicked()-> void ;
+
+    /*!
+    ** Export Handler
+    */
     auto exportClicked()-> void ;
+
+    /*!
+    ** Clear table selections except for the indicated table
+    */
     auto clearSelectionExcept( TableView * = nullptr )-> void ;
+
+    /*!
+    ** Summary Clicked Handler
+    */
     auto summaryClicked( const std::string & _txGuid )-> void ;
+
+    /*!
+    ** Finder Input Handler
+    */
+    auto finderInput()-> void ;
+
+    auto toolBar      () const-> ToolBar       * { return m_toolBar;      }
+    auto pendingView  () const-> TableView     * { return m_pendingView;  }
+    auto paidView     () const-> TableView     * { return m_paidView;     }
+    auto unpaidView   () const-> TableView     * { return m_unpaidView;   }
+    auto inactiveView () const-> TableView     * { return m_inactiveView; }
+    auto summaryView  () const-> SummaryWidget * { return m_summaryView;  }
 
     auto selectedMonth()-> int { return m_selectedMonth ; }
     auto selectedYear()-> int ;
