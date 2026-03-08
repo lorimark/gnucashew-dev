@@ -46,6 +46,14 @@ class ToolBar
     }
 
     /*!
+    ** Refresh Button
+    */
+    auto refreshButton() const-> Wt::WPushButton *
+    {
+      return m_refresh;
+    }
+
+    /*!
     ** Add Button
     */
     auto addButton() const-> Wt::WPushButton *
@@ -113,6 +121,7 @@ class ToolBar
 
   private:
 
+    Wt::WPushButton * m_refresh  = nullptr ;
     Wt::WPushButton * m_add      = nullptr ;
     Wt::WPushButton * m_edit     = nullptr ;
     Wt::WPushButton * m_import   = nullptr ;

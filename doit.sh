@@ -4,6 +4,10 @@
 #  it also copies the bin to the 'live' image so that the
 #  live on-line demo is also always up to date.
 #
+# to run, launch 'from' the 'build' folder.  This assumes there
+#  is also a 'run.sh' script available in the same folder so that
+#  the application will run after a successful build.
+#
 
 [[ -e "gnucashew-live" ]] && rm gnucashew-live
 

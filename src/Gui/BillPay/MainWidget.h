@@ -35,6 +35,11 @@ class MainWidget
     auto buildContent()-> void ;
 
     /*!
+    ** Do refresh clicked
+    */
+    auto do_refreshClicked()-> void ;
+
+    /*!
     ** Do add clicked
     */
     auto do_addClicked()-> void ;
@@ -58,6 +63,11 @@ class MainWidget
     ** Do year changed
     */
     auto do_yearChanged()-> void ;
+
+    /*!
+    ** Refresh Clicked Handler
+    */
+    auto refreshClicked()-> void ;
 
     /*!
     ** Add Clicked Handler
@@ -108,6 +118,11 @@ class MainWidget
     ** Finder Input Handler
     */
     auto finderInput()-> void ;
+
+    /*!
+    ** Recall selected month from config.
+    */
+    auto recallSelectedMonth() const-> int ;
 
     auto toolBar      () const-> ToolBar       * { return m_toolBar;      }
     auto pendingView  () const-> TableView     * { return m_pendingView;  }

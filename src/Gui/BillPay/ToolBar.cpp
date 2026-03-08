@@ -38,6 +38,12 @@ ToolBar()
   /*
   ** click to add
   */
+  m_refresh  = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.refresh") ) );
+  m_refresh-> setStyleClass( "btn-xs" );
+
+  /*
+  ** click to add
+  */
   m_add  = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WPushButton >( TR("gcw.billPay.lbl.add") ) );
   m_add-> setStyleClass( "btn-xs" );
 
