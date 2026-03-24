@@ -79,6 +79,8 @@
   <message id="gcw.ok"                 >Ok</message>
   <message id="gcw.cancel"             >Cancel</message>
   <message id="gcw.delete"             >Delete</message>
+  <message id="gcw.cancelChanges"      >Cancel these changes?</message>
+  <message id="gcw.saveChanges"        >Save these changes?</message>
 
   <!--
     menu items
@@ -518,11 +520,10 @@ not exist.</message>
     Account: {5}
   </message>
 
-  <message id="gcw.cw.tabName.Customer"                              >Customer</message>
-  <message id="gcw.cw.tabName.Customers"                             >Customers</message>
-  <message id="gcw.cw.tabName.Employees"                             >Employees</message>
-  <message id="gcw.cw.tabName.BillPay"                               >Bill Pay</message>
-
+  <message id="gcw.cw.tabName.Customer"                          >Customer</message>
+  <message id="gcw.cw.tabName.Customers"                         >Customers</message>
+  <message id="gcw.cw.tabName.Employees"                         >Employees</message>
+  <message id="gcw.cw.tabName.BillPay"                           >Bill Pay</message>
 
   <message id="gcw.billPay.dialog.title"                         >Bill Pay ~ Record Payment</message>
   <message id="gcw.billPay.save.needaccount"                     >Please choose an account.</message>

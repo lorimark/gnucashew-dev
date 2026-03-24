@@ -213,13 +213,17 @@ editAccount( const std::string & _accountGuid )
   ** Split the page to open/edit this item
   **
   */
-  m_editAccountWidget = m_gridLayout-> addWidget( std::make_unique< GCW::Gui::AccountEditor >( _accountGuid ), 0, 1 );
+  m_editAccountWidget = m_gridLayout-> addWidget( std::make_unique< GCW::Gui::AccountEditor >(), 0, 1 );
   m_gridLayout-> setColumnResizable( 0, true, "25%" );
 
   m_editAccountWidget->
     save().connect( [=]()
     {
 //      refreshViews();
+
+      if( m_editAccountWidget-> isDirty() )
+          m_editAccountWidget-> saveData( _accountGuid );
+
       m_gridLayout-> removeWidget( m_editAccountWidget );
       m_editAccountWidget = nullptr;
     });
@@ -228,8 +232,39 @@ editAccount( const std::string & _accountGuid )
     cancel().connect( [=]()
     {
 //      refreshViews();
-      m_gridLayout-> removeWidget( m_editAccountWidget );
-      m_editAccountWidget = nullptr;
+
+      auto _zapWidget = [&]()
+      {
+        m_gridLayout-> removeWidget( m_editAccountWidget );
+        m_editAccountWidget = nullptr;
+      };
+
+      /*
+      ** if the form is dirty, stop and ask!
+      */
+      if( m_editAccountWidget-> isDirty() )
+      {
+        /*
+        ** ask if they are sure they want to cancel.  If the answer is 'no',
+        **  then we just return here.
+        */
+        if( Wt::WMessageBox::show( "save", TR("gcw.cancelChanges"), Wt::StandardButton::Yes | Wt::StandardButton::No ) == Wt::StandardButton::No )
+          return;
+
+        /*
+        ** if they say 'yes, cancel' then we just zap it here
+        */
+        else
+          _zapWidget();
+
+      }
+
+      /*
+      ** not dirty, zap the form
+      */
+      else
+        _zapWidget();
+
     });
 
 #endif

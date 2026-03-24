@@ -16,6 +16,12 @@ namespace GCW {
 auto rootAccount()-> Item::Ptr ;
 
 /*!
+** \brief Load Root Account
+**
+*/
+auto templateRootAccount()-> Item::Ptr ;
+
+/*!
 ** \brief Load Account by GUID
 */
 auto load( const std::string & _guid )-> Item::Ptr ;
@@ -46,6 +52,18 @@ auto allAccounts()-> Item::Vector ;
 ** \brief Load accounts as; if( !hidden() && !placeHolder() )
 */
 auto activeAccounts()-> Item::Vector ;
+
+/*!
+** \brief Load active accounts
+**
+** This loads active accounts, including the account with the
+**  listed GUID.  This is useful for assembling combo boxes where
+**  the 'parent' account is being set up.  In this case, if the
+**  parent account is a placeholder account or a hidden account
+**  then it shouldn't be shown.
+**
+*/
+auto activeAccountsAnd( const std::string & _guid )-> Item::Vector ;
 
 /*!
 ** \brief Account Fullname via GUID

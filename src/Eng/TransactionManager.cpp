@@ -221,12 +221,45 @@ toSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
 } // endtoSplit() const-> GCW::Dbo::Splits::Item::Ptr
 
+namespace {
+
+auto
+makeTip( const GCW::Dbo::Splits::Item::Ptr & _split )-> std::string
+{
+  return
+    Wt::WString
+    (
+     "split: {1}\n"
+     "account: {2}\n"
+     "txn: {3}"
+    )
+    .arg( _split-> guid()         )
+    .arg( _split-> account_guid() )
+    .arg( _split-> tx_guid()      )
+    .toUTF8()
+    ;
+
+} // endmakeTip( const GCW::Dbo::Splits::Item::Ptr & _split )-> std::string
+
+}
+
+
+
+
 auto
 GCW::Eng::Transaction::Manager::
 getFromAccount() const-> std::string
 {
   if( fromSplit() )
-    return GCW::Dbo::Accounts::fullName( fromSplit()-> account_guid() );
+  {
+    return
+      Wt::WString("<span title=\"{2}\">{1}</span>")
+        .arg( GCW::Dbo::Accounts::fullName( fromSplit()-> account_guid() ) )
+        .arg( makeTip( fromSplit() ) )
+        .toUTF8()
+        ;
+
+  }
 
   return TR8( "gcw.unassigned" );
 
@@ -237,7 +270,15 @@ GCW::Eng::Transaction::Manager::
 getToAccount() const-> std::string
 {
   if( toSplit() )
-    return GCW::Dbo::Accounts::fullName( toSplit()-> account_guid() );
+  {
+    return
+      Wt::WString("<span title=\"{2}\">{1}</span>")
+        .arg( GCW::Dbo::Accounts::fullName( toSplit()-> account_guid() ) )
+        .arg( makeTip( toSplit() ) )
+        .toUTF8()
+        ;
+
+  }
 
   return TR8( "gcw.unassigned" );
 
@@ -758,11 +799,13 @@ createAccount( const SpItem & _splitItem, bool _editable ) const-> std::unique_p
       auto tip =
         Wt::WString
         (
-         "spa:{1}\n"
-         "txi:{2}\n"
+         "account:{1}\n"
+         "split:{2}\n"
+         "txn:{3}"
         )
         .arg( splitAccountItem-> guid() )
-        .arg( _splitItem-> guid() )
+        .arg( _splitItem-> guid()       )
+        .arg( _splitItem-> tx_guid()    )
         ;
       retVal-> setToolTip( tip );
     }

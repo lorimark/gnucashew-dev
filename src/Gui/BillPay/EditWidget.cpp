@@ -328,12 +328,12 @@ saveData()-> void
 
 
 
-static std::unique_ptr< GCW::Gui::BillPay::PaymentWidgetDialog > dialog;
+//static std::unique_ptr< GCW::Gui::BillPay::PaymentWidgetDialog > dialog;
 auto
 GCW::Gui::BillPay::EditWidget::
 processPayment()-> void
 {
-  dialog = std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid );
+  static std::unique_ptr< GCW::Gui::BillPay::PaymentWidgetDialog > dialog = std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid );
   dialog-> show();
   dialog->
     finished().connect( [&]()

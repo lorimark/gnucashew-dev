@@ -92,7 +92,7 @@ auto sort( GCW::Dbo::Accounts::Item::Vector & _accountItems )-> void
 } // endvoid sort( GCW::Dbo::Splits::Item::Vector & _splitItems )
 
 auto
-rootSql()-> GCW::Dbo::Accounts::Item::Ptr
+rootSql( const std::string & _key )-> GCW::Dbo::Accounts::Item::Ptr
 {
   GCW::Dbo::Accounts::Item::Ptr retVal;
 
@@ -106,7 +106,8 @@ rootSql()-> GCW::Dbo::Accounts::Item::Ptr
   */
   auto results =
     GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
-    .where( "(parent_guid = '' OR parent_guid IS NULL) AND name = 'Root Account'" )
+    .where( "(parent_guid = '' OR parent_guid IS NULL) AND name = ?" )
+    .bind( _key )
     .resultList()
     ;
 
@@ -125,7 +126,16 @@ auto
 GCW::Dbo::Accounts::
 rootAccount()-> GCW::Dbo::Accounts::Item::Ptr
 {
-  return rootSql();
+  return rootSql( "Root Account" );
+//  return rootGnc();
+
+} // endroot()-> GCW::Dbo::Accounts::Item::Ptr
+
+auto
+GCW::Dbo::Accounts::
+templateRootAccount()-> GCW::Dbo::Accounts::Item::Ptr
+{
+  return rootSql( "Template Root" );
 //  return rootGnc();
 
 } // endroot()-> GCW::Dbo::Accounts::Item::Ptr
@@ -283,9 +293,49 @@ activeAccounts()-> GCW::Dbo::Accounts::Item::Vector
       )
     retVal.push_back( result );
 
+  sort( retVal );
+
   return retVal;
 
 } // endactiveAccounts()-> GCW::Dbo::Accounts::Item::Vector
+
+auto
+GCW::Dbo::Accounts::
+activeAccountsAnd( const std::string & _guid )-> GCW::Dbo::Accounts::Item::Vector
+{
+  GCW::Dbo::Accounts::Item::Vector retVal;
+
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  auto results =
+    GCW::app()-> gnucashew_session().find< GCW::Dbo::Accounts::Item >()
+    .resultList()
+    ;
+
+  auto root = rootAccount();
+  auto tmpl = templateRootAccount();
+
+  /*
+  ** push back all accounts that are
+  **  this _guid match or
+  **  _not_ hidden, and
+  **  _not_ placeholder
+  **
+  */
+  for( auto & result : results )
+    if( result-> guid() == _guid
+     || (  result != root
+       &&  result != tmpl
+       && !result-> hidden()
+       && !result-> placeHolder()
+        )
+      )
+    retVal.push_back( result );
+
+  sort( retVal );
+
+  return retVal;
+
+} // endactiveAccountsAnd( const std::string & _guid )-> GCW::Dbo::Accounts::Item::Vector
 
 auto
 GCW::Dbo::Accounts::Children::

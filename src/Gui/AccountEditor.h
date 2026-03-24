@@ -27,60 +27,69 @@ class AccountEditor
   {
     public:
 
-      Tab1( const std::string & _accountGuid );
+      Tab1();
 
-      Wt::WLineEdit              * m_name           = nullptr ;
-      Wt::WLineEdit              * m_code           = nullptr ;
-      Wt::WLineEdit              * m_desc           = nullptr ;
-      GCW::Gui::AccountsTreeView * m_parent         = nullptr ;
-      Wt::WLineEdit              * m_accountType    = nullptr ;
-      Wt::WLineEdit              * m_security       = nullptr ;
-      Wt::WLineEdit              * m_fraction       = nullptr ;
-      Wt::WLineEdit              * m_color          = nullptr ;
-      Wt::WLineEdit              * m_notes          = nullptr ;
-      Wt::WLineEdit              * m_placeholder    = nullptr ;
-      Wt::WLineEdit              * m_hidden         = nullptr ;
-      Wt::WLineEdit              * m_autoTransfer   = nullptr ;
-      Wt::WLineEdit              * m_taxRelated     = nullptr ;
-      Wt::WLineEdit              * m_openingBalance = nullptr ;
+      Wt::WLineEdit   * m_name           = nullptr ;
+      Wt::WLineEdit   * m_code           = nullptr ;
+      Wt::WLineEdit   * m_desc           = nullptr ;
+      Wt::WComboBox   * m_parent         = nullptr ;
+      Wt::WComboBox   * m_accountType    = nullptr ;
+      Wt::WComboBox   * m_security       = nullptr ;
+      Wt::WComboBox   * m_fraction       = nullptr ;
+      Wt::WPushButton * m_color          = nullptr ;
+      Wt::WTextArea   * m_notes          = nullptr ;
+      Wt::WCheckBox   * m_placeholder    = nullptr ;
+      Wt::WCheckBox   * m_hidden         = nullptr ;
+      Wt::WCheckBox   * m_autoTransfer   = nullptr ;
+      Wt::WCheckBox   * m_taxRelated     = nullptr ;
+      Wt::WCheckBox   * m_openingBalance = nullptr ;
 
-      std::string m_accountGuid;
-  };
+      auto loadData( const std::string & _accountGuid )-> void ;
+      auto saveData( const std::string & _accountGuid )-> void ;
+
+  }; // endclass Tab1
 
   class Tab2
   : public Wt::WContainerWidget
   {
     public:
 
-      Tab2( const std::string & _accountGuid );
+      Tab2();
 
-      std::string m_accountGuid;
-  };
+      auto loadData( const std::string & _accountGuid )-> void ;
+      auto saveData( const std::string & _accountGuid )-> void ;
+
+  }; // endclass Tab2
 
   public:
 
-    AccountEditor( const std::string & _accountGuid );
+    AccountEditor();
 
     Wt::WTabWidget * tabWidget() { return m_tabWidget; }
 
-    auto t1()-> Tab1 * { return m_t1; }
-    auto t2()-> Tab2 * { return m_t2; }
+    auto tab1()-> Tab1 * { return m_tab1; }
+    auto tab2()-> Tab2 * { return m_tab2; }
 
-    auto save   ()-> Wt::Signal<> & { return m_save;   }
-    auto cancel ()-> Wt::Signal<> & { return m_cancel; }
+    auto loadData( const std::string & _accountGuid )-> void ;
+    auto saveData( const std::string & _accountGuid )-> void ;
+
+    auto isDirty   () const-> bool ;
+    auto save      ()      -> Wt::Signal<> & { return m_save;   }
+    auto cancel    ()      -> Wt::Signal<> & { return m_cancel; }
 
   private:
 
-    auto do_help   ()-> void;
-    auto do_cancel ()-> void;
-    auto do_ok     ()-> void;
+    auto do_help   ()-> void ;
+    auto do_cancel ()-> void ;
+    auto do_ok     ()-> void ;
 
     std::string                  m_accountGuid              ;
     Wt::Signal<>                 m_save                     ;
     Wt::Signal<>                 m_cancel                   ;
+    Wt::WText                  * m_accountName    = nullptr ;
     Wt::WTabWidget             * m_tabWidget      = nullptr ;
-    Tab1                       * m_t1             = nullptr ;
-    Tab2                       * m_t2             = nullptr ;
+    Tab1                       * m_tab1           = nullptr ;
+    Tab2                       * m_tab2           = nullptr ;
 
 }; // endclass AccountEditor
 

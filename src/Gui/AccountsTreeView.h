@@ -12,8 +12,6 @@
 
 #include "../define.h"
 #include "../GnuCashew.h"
-//#include "../Dbo/SessionGnuCash.h"
-//#include "../Dbo/SessionGnuCashew.h"
 #include "../Eng/AccountsTreeViewModel.h"
 #include "../Dbo/Vars/Vars.h"
 
