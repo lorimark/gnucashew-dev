@@ -487,19 +487,38 @@ the view.</message>
   <message id="gcw.AccountRegister.details.title"                     >Transaction Details</message>
   <message id="gcw.AccountRegister.details.contents"                  >
     <p>
-      <table>
-        <tr><td> pay from:    </td><td><b>&nbsp;   ${payFrom} </b></td></tr>
-        <tr><td> pay to:      </td><td><b>&nbsp;   ${payTo}   </b></td></tr>
-        <tr><td> date:        </td><td><b>&nbsp;   ${date}    </b></td></tr>
-        <tr><td> description: </td><td><b>&nbsp;   ${desc}    </b></td></tr>
-        <tr><td> amount:      </td><td><b>&nbsp; $ ${amount}  </b></td></tr>
-      </table>
-    </p>
-    <p>
+
       <center>
-        ${ok}
+        <span title="CREATE TABLE transactions(guid text(32) PRIMARY KEY NOT NULL, currency_guid text(32) NOT NULL, num text(2048) NOT NULL, post_date text(19), enter_date text(19), description text(2048));
+          CREATE INDEX tx_post_date_index ON transactions(post_date);"> 
+          <b>Transaction</b>
+        </span>
       </center>
+
+      <table>
+        <tr><td> guid        </td><td><b>&nbsp; <span title="guid text(32) PRIMARY KEY NOT NULL" > ${guid}           </span> </b></td></tr>
+        <tr><td> currency    </td><td><b>&nbsp; <span title="currency_guid text(32) NOT NULL"    > ${currency_guid}  </span> </b></td></tr>
+        <tr><td> num         </td><td><b>&nbsp; <span title="num text(2048) NOT NULL"            > ${num}            </span> </b></td></tr>
+        <tr><td> post_date   </td><td><b>&nbsp; <span title="post_date text(19)"                 > ${post_date}      </span> </b></td></tr>
+        <tr><td> enter_date  </td><td><b>&nbsp; <span title="enter_date text(19)"                > ${enter_date}     </span> </b></td></tr>
+        <tr><td> description </td><td><b>&nbsp; <span title="description text(2048)"             > ${description}    </span> </b></td></tr>
+      </table>
+
     </p>
+    ${splitsTable}
+  </message>
+
+  <message id="gcw.AccountRegister.details.contents.split" >
+    <div style="border:1px solid black; padding:5px; margin:5px;">
+      <table>
+        <tr><td> guid:      </td><td><b>&nbsp;   ${guid}      </b></td></tr>
+        <tr><td> account:   </td><td><b>&nbsp;   ${account}   </b></td></tr>
+        <tr><td> memo:      </td><td><b>&nbsp;   ${memo}      </b></td></tr>
+        <tr><td> action:    </td><td><b>&nbsp;   ${action}    </b></td></tr>
+        <tr><td> reconcile: </td><td><b>&nbsp;   ${reconcile} </b></td></tr>
+        <tr><td> value:     </td><td><b>&nbsp; $ ${value}     </b></td></tr>
+      </table>
+    </div>
   </message>
 
   <message id="gcw.AccountRegister.account.multisplit"               >~~ Split Transaction ~~</message>

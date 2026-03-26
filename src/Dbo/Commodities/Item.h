@@ -107,6 +107,18 @@ class Item
     auto nameSpace() const-> const std::string & { return m_nameSpace; }
 
     /*!
+    ** \brief Mnemonic
+    **
+    */
+    auto mnemonic() const-> const std::string & { return m_mnemonic; }
+
+    /*!
+    ** \brief Mnemonic
+    **
+    */
+    auto fullName() const-> const std::string & { return m_fullname; }
+
+    /*!
     ** \brief persist the data
     **
     ** This connects this object to the back-end database.

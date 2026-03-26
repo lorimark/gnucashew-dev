@@ -15,6 +15,7 @@
 #include "../Dbo/Prefrences.h"
 #include "../Dbo/Splits/Splits.h"
 #include "../Eng/TransactionManager.h"
+#include "../TransactionDetailWidget.h"
 #include "SuggestionPopup.h"
 #include "Widget.h"
 
@@ -333,34 +334,48 @@ on_details_triggered()-> void
   ** build out a dialog box to prompt the user to delete or not
   */
   auto msgBox = addChild( std::make_unique< Wt::WDialog >( TR("gcw.AccountRegister.details.title") ) );
-  auto templt = msgBox-> contents()-> addNew< Wt::WTemplate >( TR("gcw.AccountRegister.details.contents") );
+
+  auto detailWidget = msgBox-> contents()-> addNew< GCW::Gui::TransactionDetailWidget >();
   msgBox-> setClosable( true );
+  msgBox-> rejectWhenEscapePressed();
   msgBox-> setMovable ( true );
   msgBox-> show(); // exec() blocks other users, show() does not
 
-  auto pbOk = templt-> bindNew< Wt::WPushButton >( "ok" , TR("gcw.ok") );
-
   auto splitGuid = baseModel()-> getSplitGuid( m_rightClickIndex.row() );
-  auto transMan = GCW::Eng::Transaction::Manager();
-  transMan.loadSplit( splitGuid );
-
-  templt-> bindString( "payFrom" , transMan.getFromAccount  () );
-  templt-> bindString( "payTo"   , transMan.getToAccount    () );
-  templt-> bindString( "date"    , transMan.getDateAsString () );
-  templt-> bindString( "desc"    , transMan.getDescription  () );
-  templt-> bindString( "amount"  , transMan.getValueAsString() );
-
-  pbOk-> clicked().connect( msgBox, &Wt::WDialog::reject );
+  detailWidget-> setSplitGuid( splitGuid );
 
   /*
-  ** When the dialog finishes the dialog will be removed from
+  ** hitting OK will save the data, then close the window
+  */
+  msgBox-> contents()-> addNew< Wt::WPushButton >( TR("gcw.ok") )->
+    clicked().connect( [this,msgBox,detailWidget]()
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+      detailWidget-> saveData();
+      msgBox-> done( Wt::DialogCode::Accepted );
+    });
+
+//  /*
+//  ** hitting CANCEL will close the window without saving the data
+//  */
+//  msgBox-> contents()-> addNew< Wt::WPushButton >( TR("gcw.cancel") )->
+//    clicked().connect( [this,msgBox]()
+//    {
+//      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
+//      msgBox-> done( Wt::DialogCode::Rejected );
+//    });
+
+  /*
+  ** When the widget finishes the dialog will be removed from
   **  the addChild from earlier so we ain't gots no memory leaks.
   */
   msgBox->
     finished().connect( [this,msgBox]( Wt::DialogCode _code )
     {
+      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
       removeChild( msgBox );
     });
+
 
 } // endon_details_triggered()-> void
 

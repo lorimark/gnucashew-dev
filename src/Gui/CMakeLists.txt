@@ -19,6 +19,7 @@ set( GCW_FILES ${GCW_FILES}
   # ${CMAKE_CURRENT_SOURCE_DIR}/SlotsWidget.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/FilePropertiesWidget.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/TableView.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/TransactionDetailWidget.cpp
   PARENT_SCOPE
 )
 

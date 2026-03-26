@@ -21,7 +21,7 @@ typedef struct COMMODITY_S
   std::string smallestFraction;
   std::string localSymbol;
 
-} Commodity_t;
+} Commodity_t ;
 
 /*!
 ** \brief Get Commodities
@@ -30,19 +30,19 @@ typedef struct COMMODITY_S
 **  iso-4217-currencies.xml file
 **
 */
-auto getIso4217Commodities()-> std::vector< Commodity_t >;
+auto getIso4217Commodities()-> std::vector< Commodity_t > ;
 
 /*!
 ** \brief Load Account by GUID
 **
 */
-auto load( const std::string & _guid )-> Item::Ptr;
+auto load( const std::string & _guid )-> Item::Ptr ;
 
 /*!
 ** \brief Load Account by GUID
 **
 */
-auto byGuid( const std::string & _guid )-> Item::Ptr;
+auto byGuid( const std::string & _guid )-> Item::Ptr ;
 
     } // Commodities
   } // Dbo
