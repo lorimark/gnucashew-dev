@@ -492,6 +492,7 @@ the view.</message>
         <span title="CREATE TABLE transactions(guid text(32) PRIMARY KEY NOT NULL, currency_guid text(32) NOT NULL, num text(2048) NOT NULL, post_date text(19), enter_date text(19), description text(2048));
           CREATE INDEX tx_post_date_index ON transactions(post_date);"> 
           <b>Transaction</b>
+          <br />
         </span>
       </center>
 

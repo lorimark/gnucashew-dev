@@ -50,6 +50,13 @@ class EditWidget
     auto processPayment()-> void ;
     auto accountIsDuplicated()-> bool ;
 
+    /*!
+    ** \brief Open URL field in browser
+    **
+    ** This opens the URL in another browser window/tab
+    */
+    auto url_open()-> void ;
+
     Wt::Signal<> m_saved;
     Wt::Signal<> m_canceled;
     Wt::Signal<> m_deleted;

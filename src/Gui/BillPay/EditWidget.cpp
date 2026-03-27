@@ -112,10 +112,9 @@ EditWidget( const std::string & _bpGuid )
       templtPayment-> bindWidget( "cb" + toString( cb+1 ), std::move( cbx ) );
     }
 
-    auto pbgo = templtPayment-> bindNew< Wt::WPushButton >( "go", TR("gcw.billPay.lbl.go") );
-    pbgo-> setStyleClass( "btn-xs" );
-
     m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
+    m_url-> doubleClicked().connect( this, &EditWidget::url_open         );
+
     m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
     m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
 //    m_note  = templtPayment-> bindNew< Wt::WTextEdit >( "note"           );
@@ -229,6 +228,15 @@ loadData()-> void
   m_register -> setAccountGuid( bpItem.accountGuid() );
 
 } // endloadData()-> void
+
+auto
+GCW::Gui::BillPay::EditWidget::
+url_open()-> void
+{
+  wApp-> doJavaScript( "window.open( '" + m_url-> valueText().toUTF8() + "', '_blank' )" );
+
+} // endurl_open()-> void
+
 
 auto
 GCW::Gui::BillPay::EditWidget::
