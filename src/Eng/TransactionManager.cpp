@@ -1,5 +1,7 @@
 #line 2 "src/Eng/TransactionManager.cpp"
 
+#define INCLUDE_TOOL_TIP_ON_DESCRIPTION
+
 #include "../Glb/Core.h"
 #include "../Gui/AccountRegister/Model.h"
 #include "TransactionManager.h"
@@ -640,7 +642,36 @@ createDescription( const TxItem & _txItem, bool _editable ) const-> std::unique_
   {
     if( _txItem )
     {
-      retVal-> setText( _txItem-> description() );
+      /*
+      ** set the text
+      */
+      retVal-> setText( _txItem -> description() );
+
+#ifdef INCLUDE_TOOL_TIP_ON_DESCRIPTION
+      /*
+      ** this makes the tool-tip show whatever is on
+      **  the various splits (just two for now)
+      **  it's a bit of a hack
+      */
+      std::string toolTip;
+      if( thisSplit()-> memo() != "" )
+        toolTip = thisSplit()-> memo();
+
+      if( thatSplit() )
+      {
+        if( thatSplit()-> memo() != ""
+         && toolTip != "" )
+            toolTip += " :: ";
+
+        toolTip += thatSplit() -> memo();
+      }
+
+      /*
+      ** set the tooltip
+      */
+      retVal-> setToolTip( toolTip );
+#endif
+
     }
   }
 
