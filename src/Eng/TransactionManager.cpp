@@ -25,6 +25,7 @@ auto
 GCW::Eng::Transaction::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2, const Wt::WDate & _date, GCW_NUMERIC _value, const std::string & _description )-> void
 {
+#ifdef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << "\n acct1: "  << GCW::Dbo::Accounts::fullName( _accountGuid1 )
     << "\n acct2: "  << GCW::Dbo::Accounts::fullName( _accountGuid2 )
@@ -32,6 +33,7 @@ newTransaction( const std::string & _accountGuid1, const std::string & _accountG
     << "\n value: "  << _value
     << "\n  desc: "  << _description
     << std::endl;
+#endif
 
   /*!
   ** The process begins by loading up the two accounts.

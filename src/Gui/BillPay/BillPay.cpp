@@ -65,6 +65,24 @@ toString( int _value )-> std::string
 
 auto
 GCW::Gui::BillPay::
+toOneLineString( const std::string & _value )-> std::string
+{
+  std::string retVal ;
+
+  for( auto c : _value )
+  {
+    if( c == 13 || c == 10 )
+      retVal += "\\n";
+    else
+      retVal += c;
+  }
+
+  return retVal;
+
+} // endtoString( int _value )-> std::string
+
+auto
+GCW::Gui::BillPay::
 exportAll()-> void
 {
 

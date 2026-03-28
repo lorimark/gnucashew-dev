@@ -276,10 +276,20 @@ currentDateTime()-> Wt::WDateTime
 } // endcurrentDateTime()-> std::string
 
 auto
+GCW::Core::
 dateStorageString( const Wt::WDate * _date )-> std::string
 {
   return
     _date-> toString( GCW_DATE_FORMAT_STORAGE ).toUTF8();
+
+}
+
+auto
+GCW::Core::
+dateStorageString( const Wt::WDate & _date )-> std::string
+{
+  return
+    dateStorageString( &_date );
 
 }
 

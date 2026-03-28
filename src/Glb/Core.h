@@ -58,6 +58,7 @@ auto newGuid()-> std::string ;
 auto currentDateTime()-> Wt::WDateTime ;
 
 auto dateStorageString( const Wt::WDate * _date )-> std::string ;
+auto dateStorageString( const Wt::WDate & _date )-> std::string ;
 auto dateTimeStorageString( const Wt::WDateTime & _dateTime )-> std::string ;
 auto dateTimeDisplayString( const Wt::WDateTime & _dateTime )-> std::string ;
 auto currentDateTimeStorageString()-> std::string ;

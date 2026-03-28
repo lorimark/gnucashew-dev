@@ -74,6 +74,15 @@ auto bpItem( const std::string & _guid )-> GCW::Gui::BillPay::Item ;
 */
 auto toString( int _value )-> std::string ;
 
+/*!
+** \brief Convert a string with new-lines
+**
+** This removes any \x0a and \x0c (cr/lf) from a line string
+**  for the purpose of outputting to a csv file or something
+**  that doesn't tolerate crlf very well.
+*/
+auto toOneLineString( const std::string & _input )-> std::string ;
+
 auto exportAll()-> void;
 auto importAll()-> void;
 

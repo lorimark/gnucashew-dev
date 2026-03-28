@@ -1,5 +1,8 @@
 #line 2 "src/Gui/BillPay/PaymentWidget.cpp"
 
+#include <fstream>
+#include <filesystem>
+
 #include <Wt/WVBoxLayout.h>
 
 #include "../../Eng/TransactionManager.h"
@@ -280,9 +283,29 @@ saveData()-> bool
   logMessage += "\tpayment";
   logMessage += "\t" + GCW::Dbo::Accounts::fullName( bpItem.accountGuid() );
   logMessage += "\t" + GCW::Dbo::Accounts::fullName( acctItem-> guid()    );
-//  logMessage += "\t" + GCW::Core::dateStorageString( m_date-> date() );
+  logMessage += "\t" + GCW::Core::dateStorageString( m_date-> date()      );
+  logMessage += "\t" + toString( value() );
+  logMessage += "\t" + toOneLineString( m_confirm-> valueText().toUTF8() );
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << logMessage << std::endl;
+  {
+    auto fileName =
+      Wt::WString("logs/{1}-billPay.tsv")
+      .arg( Wt::WDate::currentDate().toString("yyyy-MM-dd") )
+      .toUTF8()
+      ;
+
+    bool hasHeader = std::filesystem::exists( fileName );
+
+    std::ofstream file( fileName, std::ios_base::out | std::ios_base::app );
+
+    if( !hasHeader )
+      file << "dateTime\taction\ttoAccount\tfromAccount\tpaymentDate\tpaymentAmount\tconfirmation" << std::endl;
+
+    file << logMessage << std::endl;
+
+    std::cout << __FILE__ << ":" << __LINE__ << " " << fileName << ":\t" << logMessage << std::endl;
+
+  }
 
   /*
   ** good save
