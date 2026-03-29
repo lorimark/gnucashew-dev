@@ -340,13 +340,13 @@ auto
 GCW::Gui::BillPay::EditWidget::
 processPayment()-> void
 {
-  m_paymentDialog = std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid );
-  m_paymentDialog-> show();
-  m_paymentDialog->
-    finished().connect( [&]()
+  auto msgBox = addChild( std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid ) );
+  msgBox-> show();
+  msgBox->
+    finished().connect( [this,msgBox]()
     {
-      m_lastPaymentDate = m_paymentDialog-> paymentDate();
-      m_paymentDialog.reset( nullptr );
+      m_lastPaymentDate = msgBox-> paymentDate();
+      removeChild( msgBox );
     });
 
 } // endprocessPayment()-> void

@@ -350,7 +350,6 @@ on_details_triggered()-> void
   msgBox-> contents()-> addNew< Wt::WPushButton >( TR("gcw.ok") )->
     clicked().connect( [this,msgBox,detailWidget]()
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
       detailWidget-> saveData();
       msgBox-> done( Wt::DialogCode::Accepted );
     });
@@ -372,7 +371,6 @@ on_details_triggered()-> void
   msgBox->
     finished().connect( [this,msgBox]( Wt::DialogCode _code )
     {
-      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
       removeChild( msgBox );
     });
 

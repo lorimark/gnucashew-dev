@@ -19,7 +19,6 @@
 #include <Wt/WTextEdit.h>
 
 #include "../AccountComboBox.h"
-#include "PaymentWidget.h"
 
 namespace GCW {
   namespace Gui {
@@ -48,7 +47,14 @@ class EditWidget
 
   private:
 
+    /*
+    ** this opens a payment process window
+    */
     auto processPayment()-> void ;
+
+    /*
+    ** this is used in duplicate detection
+    */
     auto accountIsDuplicated()-> bool ;
 
     /*!
@@ -92,8 +98,6 @@ class EditWidget
     Wt::WImage                        * m_image     = nullptr ;
     Wt::WTabWidget                    * m_tabWidget = nullptr ;
     std::vector< Wt::WCheckBox* >       m_cbx;
-
-    std::unique_ptr< GCW::Gui::BillPay::PaymentWidgetDialog > m_paymentDialog;
 
 }; // endclass EditWidget
 
