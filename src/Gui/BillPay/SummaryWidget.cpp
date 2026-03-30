@@ -11,6 +11,62 @@
 #include "../../Glb/Core.h"
 #include "BillPay.h"
 
+namespace {
+
+/*
+** this produces a 'ordinal suffix' which is a thing
+**  that is attached to the end of a number as follows;
+**     1st
+**     2nd
+**     3rd
+**     4th
+**
+*/
+auto ordinalSuffix( int _number )-> std::string
+{
+  /*
+  ** must be not zero to have a suffix
+  */
+  if( _number > 0 )
+  {
+    /*
+    ** edge detectors
+    */
+    int lastTwo = _number % 100;
+    int lastOne = _number % 10;
+
+    /*
+    ** these are straight forward 'th' for the special case
+    **  of 11, 12, and 13.
+    */
+    if( lastTwo >= 11
+     && lastTwo <= 13
+      )
+      return "th";
+
+    /*
+    ** switch on 1, 2 or 3 accordingly
+    */
+    switch( lastOne )
+    {
+      case 1:  return "st";
+      case 2:  return "nd";
+      case 3:  return "rd";
+      default: return "th";
+
+    } // endswitch()
+
+  } // endif( _number > 0 )
+
+  /*
+  ** no suffix
+  */
+  return "";
+
+} // endauto ordinalSuffix( int number )-> std::string
+
+} // endnamespace {
+
 GCW::Gui::BillPay::SummaryWidget::
 SummaryWidget()
 : Wt::WContainerWidget()
@@ -21,32 +77,6 @@ SummaryWidget()
   m_table = addWidget( std::make_unique< Wt::WTable >() );
 
 } // endSummaryWidget( const std::string & _accountGuid )
-
-namespace {
-
-auto ordinalSuffix( int number )-> std::string
-{
-  int lastTwo = number % 100;
-  int lastOne = number % 10;
-
-  if( lastTwo >= 11
-   && lastTwo <= 13
-    )
-    return "th";
-
-  switch( lastOne )
-  {
-    case 1:  return "st";
-    case 2:  return "nd";
-    case 3:  return "rd";
-    default: return "th";
-  }
-
-  return "";
-
-} // endauto ordinalSuffix( int number )-> std::string
-
-} // endnamespace {
 
 #ifdef VERSION_LITTLEBETTER
 auto

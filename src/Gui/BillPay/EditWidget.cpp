@@ -340,12 +340,23 @@ auto
 GCW::Gui::BillPay::EditWidget::
 processPayment()-> void
 {
+  /*
+  ** create a message box child to this object, so we can
+  **  properly destroy it later
+  */
   auto msgBox = addChild( std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid ) );
   msgBox-> show();
+
+  /*
+  ** when the dialog is finished, we remove it from the
+  **  child object collection and properly destroy it - no leaks!
+  */
   msgBox->
     finished().connect( [this,msgBox]()
     {
-      m_lastPaymentDate = msgBox-> paymentDate();
+///\todo remove this
+//  ...check the header, it's there also
+//      m_lastPaymentDate = msgBox-> paymentDate();
       removeChild( msgBox );
     });
 

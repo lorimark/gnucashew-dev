@@ -70,7 +70,9 @@ class EditWidget
     Wt::Signal<> m_processed;
 
     std::string m_bpGuid;
-    std::string m_lastPaymentDate;
+
+// not sure why I had this attribute in here, it never got used.
+//    std::string m_lastPaymentDate;
 
     GCW::Gui::AccountRegister::Widget * m_register  = nullptr ;
     Wt::WPushButton                   * m_pbSave    = nullptr ;

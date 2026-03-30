@@ -84,9 +84,10 @@ rowCount()-> int
 
 } // endrowCount()-> int
 
-/*
+/*!
 ** BUGBUG: this is really crappy
 **
+** \todo fix this
 ** This function is here to capture the SummaryReport
 **  clicked() txItem-> description() value.  This value
 **  is a simple text-value from the description of the
@@ -116,7 +117,16 @@ selectItem( const std::string _itemIdent )-> void
   {
     if( m_model-> item( row, 2 )-> text() == id )
     {
-      select( m_model-> index( row, 2 ) );
+      /*
+      ** this selects the item in the view and also
+      **  emits a 'clicked' signal so any other entity
+      **  interested in this selection can respond
+      **  accordinly.
+      */
+      auto index = m_model-> index( row, 2 );
+      select( index );
+      clicked().emit( index, Wt::WMouseEvent() );
+      return;
     }
   }
 
