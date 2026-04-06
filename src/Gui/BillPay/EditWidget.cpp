@@ -112,8 +112,17 @@ EditWidget( const std::string & _bpGuid )
       templtPayment-> bindWidget( "cb" + toString( cb+1 ), std::move( cbx ) );
     }
 
+    /*
+    ** URL field
+    */
     m_url   = templtPayment-> bindNew< Wt::WLineEdit >( "url"            );
     m_url-> doubleClicked().connect( this, &EditWidget::url_open         );
+
+    /*
+    ** URL-> go button
+    */
+    templtPayment-> bindNew< Wt::WPushButton >( "urlgo", TR("gcw.billPay.lbl.go") )->
+      clicked().connect( this, &EditWidget::url_open );
 
     m_last4 = templtPayment-> bindNew< Wt::WLineEdit >( "last4"          );
     m_note  = templtPayment-> bindNew< Wt::WTextArea >( "note"           );
