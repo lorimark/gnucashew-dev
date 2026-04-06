@@ -236,7 +236,7 @@ GCW::Gui::BillPay::Item::
 cb ( int _index ) const-> std::string
 {
   return
-    m_varItem-> getVarString( FN_CB + toString( _index ) );
+    m_varItem-> getVarString( FN_CB + BillPay::toString( _index ) );
 
 } // endcb ( int _index) const-> std::string
 
@@ -390,7 +390,26 @@ auto
 GCW::Gui::BillPay::Item::
 set_cb ( int _index, const Wt::WString & _value )-> void
 {
-  setVar( FN_CB + toString( _index ), _value );
+  /*
+  ** set the variable
+  */
+  setVar
+  (
+    /*
+    ** a CB variable
+    */
+    FN_CB +
+
+    /*
+    ** identified by index; '01' '02' and so on
+    */
+    BillPay::toString( _index ),
+
+    /*
+    ** to this value: 'yes', 'no', 'maybe'
+    */
+    _value
+  );
 
 } // endset_cb ( int _index, const Wt::WString & _value )-> void
 
