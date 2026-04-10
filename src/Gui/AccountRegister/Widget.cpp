@@ -42,8 +42,9 @@ init()-> void
   */
   m_toolBar = lw-> addWidget( std::make_unique< ToolBar >() );
 
-
-
+  /*
+  ** table view right under the toolbar
+  */
   m_tableView = lw-> addWidget( std::make_unique< GCW::Gui::TableView >(), 1 );
 //  tableView()-> setRowHeight( "20px" );
 

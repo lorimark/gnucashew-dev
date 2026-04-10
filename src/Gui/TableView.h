@@ -75,22 +75,24 @@ protected:
     auto handleMouseDown   ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 //    auto handleMouseUp     ( const Wt::WModelIndex & _index, const Wt::WMouseEvent & _event )-> void;
 
-    Wt::WModelIndex m_lastIndexClick;
+    Wt::WModelIndex m_lastIndexClick ;
 
     /*
     ** Map table columns to width
     */
-    std::map< int, Wt::WLength > m_widths;
+    std::map< int, Wt::WLength > m_widths ;
 
     /*
     ** Rows visible before scroll bar
     */
-    int m_visible_rows = -1;
+    int m_visible_rows = -1 ;
 
     /*
     ** Indicates which row is being edited
     */
-    int m_editingRow = -1;
+    int m_editingRow = -1 ;
+
+    unsigned long long m_lastTime = 0 ;
 
 }; // endclass TableView :
 

@@ -3,8 +3,7 @@
 #ifndef __GUI_ACCOUNTREGISTER_TOOLBAR_H___
 #define __GUI_ACCOUNTREGISTER_TOOLBAR_H___
 
-#include <Wt/WItemDelegate.h>
-#include <Wt/WModelIndex.h>
+#include <Wt/WToolBar.h>
 
 namespace GCW {
   namespace Gui {
@@ -14,7 +13,7 @@ namespace GCW {
 ** The tool-bar presents various tool button for the register.
 */
 class ToolBar
-: public Wt::WContainerWidget
+: public Wt::WToolBar
 {
   public:
     ToolBar();

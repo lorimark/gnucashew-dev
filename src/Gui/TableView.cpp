@@ -1,5 +1,7 @@
 #line 2 "src/Gui/TableView.cpp"
 
+#include <ctime>
+
 #include <Wt/WMessageBox.h>
 #include <Wt/WStandardItem.h>
 #include <Wt/WStandardItemModel.h>
@@ -257,7 +259,16 @@ auto
 GCW::Gui::TableView::
 layoutSizeChanged( int _width, int _height )-> void
 {
-//  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " )" << std::endl;
+  unsigned long long _currentTime = time(NULL);
+  unsigned long long _elapsedTime = _currentTime - m_lastTime;
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " ) " << " " << m_lastTime << _elapsedTime << std::endl;
+
+  if( _elapsedTime < 1 )
+  {
+    Wt::WTableView::layoutSizeChanged( _width, _height );
+    return;
+  }
 
   // Calculate our fixed width columns
   auto nfixed = 0;
@@ -322,6 +333,8 @@ layoutSizeChanged( int _width, int _height )-> void
 
   // Pass the call up the chain
   Wt::WTableView::layoutSizeChanged( _width, _height );
+
+  m_lastTime = time(NULL);
 
 } // endauto GCW::Gui::TableView::layoutSizeChanged( int _width, int _height ) -> void
 

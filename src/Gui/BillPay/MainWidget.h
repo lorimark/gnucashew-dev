@@ -152,6 +152,15 @@ class MainWidget
     TableView     * m_inactiveView = nullptr ;
     SummaryWidget * m_summaryView  = nullptr ;
 
+    /*!
+    ** \brief Header Clicked
+    **
+    ** This responds to the header/columns being clicked on.  It
+    **  selects the current month to be worked on for bill pay.
+    **
+    ** /ref see; m_selectedMonth;
+    **
+    */
     auto on_headerClicked( int _col, const Wt::WMouseEvent _me )-> void ;
 
     /*!
@@ -166,10 +175,32 @@ class MainWidget
     **
     */
     Wt::WModelIndex m_selectedIndex;
+
+    /*!
+    ** \brief Selected Month
+    **
+    ** Bill Pay works on one month at a time.  The month is chosen
+    **  by clicking on one of the month columns.
+    **
+    */
     int m_selectedMonth = -1;
 
 //    Wt::WGridLayout * m_gridLayout = nullptr ;
     Wt::WHBoxLayout * m_hlw         = nullptr ;
+
+    /*
+    ** \brief Encryption Password
+    **
+    ** This is a very simple (and dumb) password tool for the bill-pay data.
+    **  Since it is possible (to unwisely) code user names and passwords
+    **  in to the notes field (yes we do) it is a good idea to offer
+    **  encryption.
+    **
+    ** When BillPay is opened, this password is empty by default, so the user
+    **  will be required to enter the password to access the notes field.
+    **
+    */
+    std::string _password ;
 
 };  // endclass MainWidget
 
