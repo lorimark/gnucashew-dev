@@ -262,8 +262,19 @@ layoutSizeChanged( int _width, int _height )-> void
   unsigned long long _currentTime = time(NULL);
   unsigned long long _elapsedTime = _currentTime - m_lastTime;
 
-  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " ) " << " " << m_lastTime << _elapsedTime << std::endl;
-
+  /*!
+  ** HACK HACK HACK
+  **
+  ** This is a total hack.  Just upgraded to Wt-4.12.6 and now the WTableView is
+  **  calling layoutSizeChanged() repeatedly.  It wasn't doing this in earlier
+  **  versions of the view.  However, earlier versions of the view (not 4.10)
+  **  were unselectable.  This (dumb) timer thing just prevents this function
+  **  from getting called over and over, until I have time to figure this out.
+  **
+  **  \todo remove this hack
+  **
+  */
+  std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " ) " << " " << m_lastTime << " " << _elapsedTime << std::endl;
   if( _elapsedTime < 1 )
   {
     Wt::WTableView::layoutSizeChanged( _width, _height );

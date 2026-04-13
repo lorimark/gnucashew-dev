@@ -272,11 +272,13 @@ saveData()-> bool
   **          but I don't know the long-term impact of storing data like this that gnucash
   **          might have to deal with.
   */
-  GCW::Eng::Transaction::Manager transMan;
-  transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid(), m_date-> date(), value(), m_desc-> valueText().toUTF8() );
-  transMan.setValue      ( acctItem-> guid()   , -value()                         );
-  transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() ); /// \todo insure gnucash can tolerate crlf in the middle of the memo field
-  transMan.setNum        ( m_num-> valueText().toUTF8()                           );
+  {
+    GCW::Eng::Transaction::Manager transMan;
+    transMan.newTransaction( bpItem.accountGuid(), acctItem-> guid(), m_date-> date(), value(), m_desc-> valueText().toUTF8() );
+    transMan.setValue      ( acctItem-> guid()   , -value()                         );
+    transMan.setNotes      ( bpItem.accountGuid(), m_confirm-> valueText().toUTF8() ); /// \todo insure gnucash can tolerate crlf in the middle of the memo field
+    transMan.setNum        ( m_num-> valueText().toUTF8()                           );
+  }
 
   std::string logMessage;
   logMessage += GCW::Core::currentDateTimeStorageString();
@@ -326,10 +328,11 @@ paymentDate() const-> std::string
 GCW::Gui::BillPay::PaymentWidgetDialog::
 PaymentWidgetDialog( const std::string & _bpGuid )
 {
+  addStyleClass( "PaymentWidgetDialog" );
+
   rejectWhenEscapePressed( true );
   setClosable( true );
 
-  addStyleClass( "PaymentWidgetDialog" );
   setWindowTitle( TR( "gcw.billPay.dialog.title" ) );
 
   m_editWidget = contents()-> addNew< PaymentWidget >( _bpGuid );

@@ -355,16 +355,6 @@ on_details_triggered()-> void
       msgBox-> done( Wt::DialogCode::Accepted );
     });
 
-//  /*
-//  ** hitting CANCEL will close the window without saving the data
-//  */
-//  msgBox-> contents()-> addNew< Wt::WPushButton >( TR("gcw.cancel") )->
-//    clicked().connect( [this,msgBox]()
-//    {
-//      std::cout << __FILE__ << ":" << __LINE__ << " " << std::endl;
-//      msgBox-> done( Wt::DialogCode::Rejected );
-//    });
-
   /*
   ** When the widget finishes the dialog will be removed from
   **  the addChild from earlier so we ain't gots no memory leaks.

@@ -8,7 +8,8 @@ Secondly... this is ~not~ GnuCash.  At present, no GnuCash code is in use
  here.  This tool works directly with gnucash.sqlite files only, by making
  direct calls to the database (it can also work with MySql and Postgres).
  Therefore, GnuCashew intends to replicate the functionality of the gnucash
- engine (lots to do there!).
+ engine (lots to do there!).  If I can find a way to practically weld the
+ gnucash.lib files and use them here I would certainly pursue.  We'll see.
 
 This is an attempt to produce a web-based interface for the GnuCash program.
  Knowing that there have been several other attempts, this is based on my
@@ -36,7 +37,7 @@ This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library
   3. multi-user integration
 
 \par Multi-lingual
- GnuCashew support multiple language capacity.
+ GnuCashew supports multiple language capacity.
 
 \par Super Fast Table Views
  GnuCashew makes use of the
@@ -70,6 +71,59 @@ This project uses Wt (https://www.webtoolkit.eu/wt) as the web rendering library
 \par
 You will be able to locate documentation on \ref Wt::WTableView
 
+\page KnownIssues Known Issues
+
+\par Multi-user Muli-access
+
+This program makes calls to directly modify the sqlite database.  It does not use
+ any of the native gnucash libraries but instead uses standard sqlite libraries.
+ The sqlite  database is not multi-user compatible - meaning no two programs should
+ open and manipulate the database simultaneously.  When running gnucashew, make
+ sure to close any running instances of gnucash, or any other open sessions of
+ gnucashew.  Violating these stipulations can lead to database corruption (ask
+ me how I know).
+
+In my case, I ended up with a split that showed up on the wrong account.  In fact,
+ that split (item) showed up on two accounts, the one it was correctly mapped to
+ and a different account it was completely unrelated to.  So somewhere in there
+ the indexes got smushed.
+
+PRO TIP: don't open the database twice
+
+So, if you do end up corrupting your sqlite3 file, there are a few things you
+ can do to fix it.  In my case, I had 'corrupted indexes';
+
+\code
+sqlite> pragma integrity_check;
+wrong # of entries in index splits_account_guid_index
+wrong # of entries in index splits_tx_guid_index
+wrong # of entries in index sqlite_autoindex_splits_1
+wrong # of entries in index sqlite_autoindex_transactions_1
+\endcode
+
+So, to fix this issue, or other corruption issues, you can try to regenerate
+ the indexes;
+
+\code
+sqlite3 sqlite3data.gnucash <<'SQL'
+PRAGMA writable_schema=OFF;
+BEGIN;
+REINDEX;
+COMMIT;
+SQL
+\endcode
+
+Alternatively, (I have not tried) you could try to load the data file in
+ to gnucash, save the file as an xml type file.  Re-open that xml file
+ and re-save it as sql.  That would likely regenerate the file properly.
+
+Long term it is my plan to have Gnucashew allow multiple simultaneous
+ users.  If a single Gnucashew server is running, then it can marshall
+ database connections between multiple users.  However, if gnucash is
+ also running, then... forget it.  Can't do that.
+
+Anyway, that's the case for now.  Just be careful with this tool, and
+ make sure you have good backups.
 
 \page AccountEditor Account Editor
 

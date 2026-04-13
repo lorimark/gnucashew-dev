@@ -25,7 +25,7 @@ auto
 GCW::Eng::Transaction::Manager::
 newTransaction( const std::string & _accountGuid1, const std::string & _accountGuid2, const Wt::WDate & _date, GCW_NUMERIC _value, const std::string & _description )-> void
 {
-#ifdef NEVER
+#ifndef NEVER
   std::cout << __FILE__ << ":" << __LINE__
     << "\n acct1: "  << GCW::Dbo::Accounts::fullName( _accountGuid1 )
     << "\n acct2: "  << GCW::Dbo::Accounts::fullName( _accountGuid2 )
@@ -436,9 +436,9 @@ auto
 GCW::Eng::Transaction::Manager::
 setValue( GCW_NUMERIC _value )-> void
 {
-//  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-//  thisSplit().modify()-> set_value( _value      );
-//  thatSplit().modify()-> set_value( _value * -1 );
+  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+  thisSplit().modify()-> set_value( _value      );
+  thatSplit().modify()-> set_value( _value * -1 );
 
 } // endsetDebit( GCW_NUMERIC _value )-> void
 

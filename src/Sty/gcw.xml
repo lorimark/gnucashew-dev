@@ -513,6 +513,7 @@ the view.</message>
     <div style="border:1px solid black; padding:5px; margin:5px;">
       <table>
         <tr><td> guid:      </td><td><b>&nbsp;   ${guid}      </b></td></tr>
+        <tr><td> tx_guid:   </td><td><b>&nbsp;   ${tx_guid}   </b></td></tr>
         <tr><td> account:   </td><td><b>&nbsp;   ${account}   </b></td></tr>
         <tr><td> memo:      </td><td><b>&nbsp;   ${memo}      </b></td></tr>
         <tr><td> action:    </td><td><b>&nbsp;   ${action}    </b></td></tr>

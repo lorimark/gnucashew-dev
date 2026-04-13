@@ -363,9 +363,7 @@ processPayment()-> void
   msgBox->
     finished().connect( [this,msgBox]()
     {
-///\todo remove this
-//  ...check the header, it's there also
-//      m_lastPaymentDate = msgBox-> paymentDate();
+      m_lastPaymentDate = msgBox-> paymentDate();
       removeChild( msgBox );
     });
 

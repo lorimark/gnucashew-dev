@@ -66,6 +66,7 @@ setSplitGuid( const std::string & _guid )-> void
   for( auto splitItem : transMan.splits() )
   {
     m_splitsTable-> elementAt( row, 0 )-> addNew< GCW::Gui::TransactionDetailWidget::SplitWidget >( splitItem-> guid() );
+    row++;
   }
 
 } // endsetSplitGuid( const std::string & _guid )-> void
@@ -109,7 +110,8 @@ SplitWidget( const std::string & _guid )
   };
 
   templt-> bindString( "guid",      splitItem-> guid()            );
-  templt-> bindString( "account",   GCW::Dbo::Accounts::fullName( splitItem-> account_guid() ) );
+  templt-> bindString( "tx_guid",   splitItem-> tx_guid()         );
+  templt-> bindString( "account",   splitItem-> account_guid() + "<br />" + GCW::Dbo::Accounts::fullName( splitItem-> account_guid() ) );
   templt-> bindString( "memo",      splitItem-> memo()            );
   templt-> bindString( "action",    splitItem-> action()          );
   templt-> bindString( "reconcile", _reconcile_state()            );
