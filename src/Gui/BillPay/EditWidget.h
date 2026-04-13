@@ -71,8 +71,7 @@ class EditWidget
 
     std::string m_bpGuid;
 
-// not sure why I had this attribute in here, it never got used.
-//    std::string m_lastPaymentDate;
+    std::string m_lastPaymentDate;
 
     GCW::Gui::AccountRegister::Widget * m_register  = nullptr ;
     Wt::WPushButton                   * m_pbSave    = nullptr ;
