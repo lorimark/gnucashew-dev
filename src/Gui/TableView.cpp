@@ -1,6 +1,10 @@
 #line 2 "src/Gui/TableView.cpp"
 
+//#define TABLEVIEW_HACK_V4_12_16
+
+#ifdef TABLEVIEW_HACK_V4_12_16
 #include <ctime>
+#endif
 
 #include <Wt/WMessageBox.h>
 #include <Wt/WStandardItem.h>
@@ -259,9 +263,7 @@ auto
 GCW::Gui::TableView::
 layoutSizeChanged( int _width, int _height )-> void
 {
-  unsigned long long _currentTime = time(NULL);
-  unsigned long long _elapsedTime = _currentTime - m_lastTime;
-
+#ifdef TABLEVIEW_HACK_V4_12_16
   /*!
   ** HACK HACK HACK
   **
@@ -275,11 +277,14 @@ layoutSizeChanged( int _width, int _height )-> void
   **
   */
   std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "("  << " w:" << _width << ", h:" << _height << " ) " << " " << m_lastTime << " " << _elapsedTime << std::endl;
+  unsigned long long _currentTime = time(NULL);
+  unsigned long long _elapsedTime = _currentTime - m_lastTime;
   if( _elapsedTime < 1 )
   {
     Wt::WTableView::layoutSizeChanged( _width, _height );
     return;
   }
+#endif
 
   // Calculate our fixed width columns
   auto nfixed = 0;
@@ -345,7 +350,9 @@ layoutSizeChanged( int _width, int _height )-> void
   // Pass the call up the chain
   Wt::WTableView::layoutSizeChanged( _width, _height );
 
+#ifdef TABLEVIEW_HACK_V4_12_16
   m_lastTime = time(NULL);
+#endif
 
 } // endauto GCW::Gui::TableView::layoutSizeChanged( int _width, int _height ) -> void
 

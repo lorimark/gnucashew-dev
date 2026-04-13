@@ -92,7 +92,9 @@ protected:
     */
     int m_editingRow = -1 ;
 
+#ifdef TABLEVIEW_HACK_V4_12_16
     unsigned long long m_lastTime = 0 ;
+#endif
 
 }; // endclass TableView :
 
