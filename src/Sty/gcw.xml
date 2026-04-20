@@ -589,7 +589,7 @@ not exist.</message>
   <message id="gcw.billPay.lbl.go"                               >go</message>
   <message id="gcw.billPay.lbl.totalfor"                         >Total for {1}</message>
   <message id="gcw.billPay.lbl.transfers"                        > * * * TRANSFERS * * * </message>
-  <message id="gcw.billPay.lbl.selectedMonth"                    >Selected Month: {1}</message>
+  <message id="gcw.billPay.lbl.selectedMonth"                    >Selected Month: {1}, {2}</message>
 
   <message id="gcw.billPay.ttp.account"                          >Account Reference</message>
   <message id="gcw.billPay.ttp.taccount"                         >This is where the payment is being made to.</message>
@@ -651,6 +651,59 @@ not exist.</message>
   <message id="gcw.billPay.tableView.yes"                        >yes</message>
   <message id="gcw.billPay.tableView.maybe"                      >pen</message>
   <message id="gcw.billPay.tableView.no"                         >no</message>
+
+  <message id="gcw.billPay.report.head">
+    <![CDATA[
+    <html>
+      <head>
+        <style>
+          .SummaryTable
+          {
+            border-collapse: separate;
+          }
+          .SummaryTable .acctDay
+          {
+            text-align:center !important;
+            color:black;
+            border-top: 1px solid black;
+            border-right: 1px solid black;
+            padding-top: 5px;
+          }
+          .SummaryTable td
+          {
+            padding-left:4px;
+            padding-right:3px;
+          }
+          .SummaryTable td:nth-child(1)
+          {
+            border-left: 1px solid black;
+            text-align:right;
+          }
+          .SummaryTable td:nth-child(2)
+          {
+            border-right: 1px solid black;
+            text-align:left;
+          }
+          .SummaryTable .su
+          {
+            border-bottom: 1px solid black;
+          }
+          .SummaryTable .du
+          {
+            borde-bottom: 3px double black;
+          }
+        </style>
+      </head>
+      <body>
+    ]]>
+  </message>
+
+  <message id="gcw.billPay.report.foot">
+    <![CDATA[
+      </body>
+    </html>
+    ]]>
+  </message>
 
 </messages>
 

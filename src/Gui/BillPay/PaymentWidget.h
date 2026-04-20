@@ -41,6 +41,11 @@ class PaymentWidget
   public:
 
     PaymentWidget( const std::string & _bpGuid );
+    ~PaymentWidget()
+    {
+      std::cout << __FILE__ << ":" << __LINE__ << " ~PaymentWidget(" + m_bpGuid + ")" << std::endl;
+    }
+
 
     auto bpGuid() const-> const std::string & { return m_bpGuid; }
 

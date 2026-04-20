@@ -353,7 +353,7 @@ processPayment()-> void
   ** create a message box child to this object, so we can
   **  properly destroy it later
   */
-  auto msgBox = addChild( std::make_unique< GCW::Gui::BillPay::PaymentWidgetDialog >( m_bpGuid ) );
+  auto msgBox = addChild( std::make_unique< BillPay::PaymentWidgetDialog >( m_bpGuid ) );
   msgBox-> show();
 
   /*

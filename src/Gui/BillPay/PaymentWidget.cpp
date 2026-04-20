@@ -16,6 +16,8 @@ PaymentWidget( const std::string & _bpGuid )
 {
   addStyleClass( "PaymentWidget" );
 
+  std::cout << __FILE__ << ":" << __LINE__ << " PaymentWidget(" + m_bpGuid + ")" << std::endl;
+
   /*
   ** use a layout.
   */

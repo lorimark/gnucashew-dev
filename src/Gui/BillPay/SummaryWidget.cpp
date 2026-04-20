@@ -3,6 +3,9 @@
 //#define VERSION_SOSO
 #define VERSION_LITTLEBETTER
 
+#include <fstream>
+#include <filesystem>
+
 #include <Wt/WMenuItem.h>
 #include <Wt/WVBoxLayout.h>
 #include <Wt/WMessageBox.h>
@@ -103,6 +106,7 @@ setDate( int _month, int _year )-> void
     (
      Wt::WString( TR("gcw.billPay.lbl.selectedMonth") )
      .arg( TR("gcw.billPay.ttp." + toString( m_month ) ) )
+     .arg( toString( _year ) )
     );
 
   /*
@@ -270,8 +274,29 @@ setDate( int _month, int _year )-> void
   m_table-> elementAt( row, 0 )-> setAttributeValue( "style", "border-bottom:1px double black;" );
   row++;
 
+  outputReport( _year );
+
 } // endsetDate( int _month, int _year )-> void
-#endif
+#endif // #ifdef VERSION_LITTLEBETTER
+
+auto
+GCW::Gui::BillPay::SummaryWidget::
+outputReport( int _year ) -> void
+{
+  auto fileName =
+    Wt::WString( "logs/{1}-{2}-billPay.html" )
+    .arg( _year )
+    .arg( toString( m_month ) )
+    .toUTF8()
+    ;
+
+  std::ofstream file( fileName, std::ios_base::out );
+
+  file << TR("gcw.billPay.report.head");
+  htmlText( file );
+  file << TR("gcw.billPay.report.foot");
+
+} // endoutputReport() const -> void
 
 
 #ifdef VERSION_SOSO
@@ -457,7 +482,7 @@ setMonth( int _month )-> void
 
 
 } // endsetMonth( int _month )-> void
-#endif
+#endif // end #ifdef VERSION_SOSO
 
 
 GCW::Gui::BillPay::SummaryWidget::Splits::

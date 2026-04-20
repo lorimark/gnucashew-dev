@@ -38,6 +38,12 @@ class SummaryWidget
 
   private:
 
+    /*
+    ** This formats the data in to a formatted HTML report suitable
+    **  for printing
+    */
+    auto outputReport( int _year ) -> void ;
+
     typedef struct DAYTOTAL_S
     {
       int         day   ;
