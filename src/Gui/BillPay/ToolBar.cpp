@@ -83,6 +83,19 @@ ToolBar()
 
     });
 
+  m_summaryDetail = table-> elementAt( 0, col++ )-> addWidget( std::make_unique< Wt::WCheckBox >( TR("gcw.billPay.lbl.summaryDetail" ) ) );
+  m_summaryDetail-> setValueText( configItem()-> getVarString( "showSummaryDetail" ) );
+  m_summaryDetail->
+    clicked().connect( [&]( Wt::WMouseEvent _event )
+    {
+      auto item = configItem();
+      Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+      item.modify()-> setVar( "showSummaryDetail", m_summaryDetail-> valueText() );
+      item.flush();
+
+    });
+
+
 #ifdef BILL_PAY_IMPORT_EXPORT
   /*
   ** import export buttons
@@ -129,6 +142,22 @@ showSummary() const-> bool
 
   if( summaryButton() )
     retVal = summaryButton()-> checkState() == Wt::CheckState::Checked? true:false;
+
+  return retVal;
+
+} // endshowSummary() const-> bool
+
+auto
+GCW::Gui::BillPay::ToolBar::
+showSummaryDetail() const-> bool
+{
+  /*
+  ** default false
+  */
+  bool retVal = false;
+
+  if( summaryDetailButton() )
+    retVal = summaryDetailButton()-> checkState() == Wt::CheckState::Checked? true:false;
 
   return retVal;
 

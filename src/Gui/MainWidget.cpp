@@ -8,6 +8,10 @@
 #include <Wt/WVBoxLayout.h>
 #include <Wt/Json/Serializer.h>
 
+#ifdef STATUS_BAR_CLOCK
+#include <Wt/WTimer.h>
+#endif
+
 #include "../define.h"
 #include "../GnuCashew.h"
 #include "../Eng/TransactionManager.h"
@@ -47,6 +51,13 @@ MainWidget()
 
   m_statusBar     = lw-> addWidget( std::make_unique< Wt::WContainerWidget    >()    );
   m_statusBar-> addStyleClass( "StatusBar" );
+
+#ifdef STATUS_BAR_CLOCK
+  auto timer = addChild( std::make_unique< Wt::WTimer >() );
+  timer-> setInterval( std::chrono::seconds(1) );
+  timer-> timeout().connect( this, &MainWidget::do_statusBarUpdate );
+  timer-> start();
+#endif
 
 } // endGCW::MainWidget::MainWidget()
 
@@ -106,9 +117,24 @@ load()-> void
   }
 #endif
 
+#ifdef STATUS_BAR_CLOCK
   statusBar()-> addNew< Wt::WText >( "status bar" );
+  m_clock = statusBar()-> addNew< Wt::WText >();
+  m_clock-> setAttributeValue( "style", "float:right;" );
+#endif
 
 } // endload()-> void
+
+auto
+GCW::Gui::MainWidget::
+do_statusBarUpdate()-> void
+{
+#ifdef STATUS_BAR_CLOCK
+  m_clock-> setText( Wt::WDateTime::currentDateTime().addSecs( -1*60*60*5 ).toString() );
+#endif
+
+} // enddo_statusBarUpdate()-> void
+
 
 auto
 GCW::Gui::MainWidget::

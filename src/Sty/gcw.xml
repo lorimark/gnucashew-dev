@@ -560,6 +560,7 @@ not exist.</message>
   <message id="gcw.billPay.lbl.edit"                             >Edit</message>
   <message id="gcw.billPay.lbl.inactive"                         >inactive</message>
   <message id="gcw.billPay.lbl.summary"                          >summary</message>
+  <message id="gcw.billPay.lbl.summaryDetail"                    >detail</message>
   <message id="gcw.billPay.lbl.account"                          >Account</message>
   <message id="gcw.billPay.lbl.taccount"                         >Target Account</message>
   <message id="gcw.billPay.lbl.paccount"                         >Payment Source</message>

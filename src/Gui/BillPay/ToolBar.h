@@ -107,9 +107,22 @@ class ToolBar
     }
 
     /*!
+    ** Summary Button
+    */
+    auto summaryDetailButton() const-> Wt::WCheckBox *
+    {
+      return m_summaryDetail;
+    }
+
+    /*!
     ** Show Summary
     */
     auto showSummary() const-> bool ;
+
+    /*!
+    ** Show Summary Detail
+    */
+    auto showSummaryDetail() const-> bool ;
 
     /*!
     ** Finder Input
@@ -121,15 +134,16 @@ class ToolBar
 
   private:
 
-    Wt::WPushButton * m_refresh  = nullptr ;
-    Wt::WPushButton * m_add      = nullptr ;
-    Wt::WPushButton * m_edit     = nullptr ;
-    Wt::WPushButton * m_import   = nullptr ;
-    Wt::WPushButton * m_export   = nullptr ;
-    Wt::WComboBox   * m_year     = nullptr ;
-    Wt::WCheckBox   * m_inactive = nullptr ;
-    Wt::WCheckBox   * m_summary  = nullptr ;
-    Wt::WLineEdit   * m_finder   = nullptr ;
+    Wt::WPushButton * m_refresh       = nullptr ;
+    Wt::WPushButton * m_add           = nullptr ;
+    Wt::WPushButton * m_edit          = nullptr ;
+    Wt::WPushButton * m_import        = nullptr ;
+    Wt::WPushButton * m_export        = nullptr ;
+    Wt::WComboBox   * m_year          = nullptr ;
+    Wt::WCheckBox   * m_inactive      = nullptr ;
+    Wt::WCheckBox   * m_summary       = nullptr ;
+    Wt::WCheckBox   * m_summaryDetail = nullptr ;
+    Wt::WLineEdit   * m_finder        = nullptr ;
 
 }; // endclass ToolBar
 

@@ -18,7 +18,6 @@ namespace GCW {
 **
 ** Bill Pay Summary Widget
 **
-
 */
 class SummaryWidget
 : public Wt::WContainerWidget
@@ -27,7 +26,9 @@ class SummaryWidget
 
     SummaryWidget( );
 
-    auto setDate( int _month, int _year )-> void ;
+    auto showSummaryDetail( bool _state ) -> void ;
+
+    auto setDate( int _month, int _year ) -> void ;
 
     /*
     ** clicking on the pay-from account causes
@@ -39,10 +40,22 @@ class SummaryWidget
   private:
 
     /*
+    ** this builds the whole report
+    */
+    auto refreshReport() -> void ;
+
+
+    /*
+    ** this generates the report in to the
+    **  table provided.
+    */
+    auto generateReport( Wt::WTable * _table, bool _showDetail ) -> void ;
+
+    /*
     ** This formats the data in to a formatted HTML report suitable
     **  for printing
     */
-    auto outputReport( int _year ) -> void ;
+    auto outputReport() -> void ;
 
     typedef struct DAYTOTAL_S
     {
@@ -123,10 +136,13 @@ class SummaryWidget
 
     }; // endclass Splits
 
-    int                       m_month = -1      ;
-    Wt::WText               * m_title = nullptr ;
-    Wt::WTable              * m_table = nullptr ;
-    Wt::Signal< std::string > m_clicked         ;
+    int                       m_month      = -1      ;
+    int                       m_year       = -1      ;
+    bool                      m_showDetail = false   ;
+    Wt::WText               * m_test       = nullptr ;
+    Wt::WText               * m_title      = nullptr ;
+    Wt::WTable              * m_table      = nullptr ;
+    Wt::Signal< std::string > m_clicked              ;
 
 }; // endclass SummaryWidget
 

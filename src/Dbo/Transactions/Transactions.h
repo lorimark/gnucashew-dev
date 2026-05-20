@@ -183,6 +183,8 @@ auto byAccount( const std::string & _accountGuid )-> Item::Vector ;
 /*
 ** \brief Load Transaction for Account Guid and Month
 **
+** This loads transactions for an entire month for 'this year'.
+**
 */
 auto byAccountMonth( const std::string & _accountGuid, int _month )-> Item::Vector ;
 
@@ -191,10 +193,26 @@ auto byAccountMonth( const std::string & _accountGuid, int _month )-> Item::Vect
 **
 ** The 'num' column is the column immediately to the right of the
 **  date field.  This query is used to find all the transactions
-**  that have this value in the 'num' field for a particular month.
+**  that have this value in the 'num' field for a particular
+**  month/year combo.  This is used for the
+**  [Bill Pay](\ref GCW::Gui::BillPay)
+**  module to find all bill-pay transactions ('bp') for a
+**  particular time period.
 **
 */
-auto byNumDate( const std::string & _num, int _month, int _year )-> Item::Vector ;
+auto byNumDate(
+
+    /** 'num' column (just to the left of the 'date' field) */
+    const std::string & _num,
+
+    /** 'month' - range 1..12 */
+    int _month,
+
+    /** 'year' - range 1970..2100 */
+    int _year
+
+/** \return returns Vector of Transaction::Items */
+)-> Transactions::Item::Vector ;
 
     } // endnamespace Transactions {
   } // endnamespace Dbo {

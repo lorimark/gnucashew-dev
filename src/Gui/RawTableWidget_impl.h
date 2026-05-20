@@ -25,7 +25,7 @@ RawTableWidget( const std::string & _viewName )
 
   auto w_ = std::make_unique< Wt::WLineEdit   >();
   m_search = w_.get();
-  m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Right );
+  m_toolBar-> addWidget( std::move( w_ ), Wt::AlignmentFlag::Left );
   m_toolBar-> addWidget( std::make_unique< Wt::WText >( "<span style=\"color:red;\">these tables have been designed to facilitate the complete destruction of your database.  clicking can ruin your day!  use caution!</span>" ) );
   m_search -> setPlaceholderText( "Search" );
   m_search -> textInput().connect( this, &RawTableWidget<C>::on_search );
@@ -81,12 +81,13 @@ loadData()-> void
   m_model-> reload();
   m_model-> addAllFieldsAsColumns();
 
-  m_proxy = std::make_shared< Wt::WSortFilterProxyModel >();
-  m_proxy-> setSourceModel( m_model );
-  m_proxy-> setDynamicSortFilter( true );
-  m_proxy-> setFilterKeyColumn( 0 );
+//  m_proxy = std::make_shared< Wt::WSortFilterProxyModel >();
+//  m_proxy-> setSourceModel( m_model );
+//  m_proxy-> setDynamicSortFilter( true );
+//  m_proxy-> setFilterKeyColumn( 0 );
 
-  tableView()-> setModel( m_proxy );
+//  tableView()-> setModel( m_proxy );
+  tableView()-> setModel( m_model );
 
 } // endloadData()-> void
 
@@ -95,9 +96,49 @@ auto
 GCW::Gui::RawTableWidget<C>::
 on_search()-> void
 {
-  auto regex = std::make_unique< std::regex >( Wt::WString(".*{1}.*").arg( m_search-> valueText() ).toUTF8() );
-  m_proxy-> invalidate();
-  m_proxy-> setFilterRegExp( std::move( regex ) );
+//  auto regex = std::make_unique< std::regex >( Wt::WString(".*{1}.*").arg( m_search-> valueText() ).toUTF8() );
+//  m_proxy-> invalidate();
+//  m_proxy-> setFilterRegExp( std::move( regex ) );
+
+  std::cout << __FILE__ << ":" << __LINE__ << " " << m_search-> valueText() << std::endl;
+
+//  auto sql =
+//    Wt::WString()
+//    .arg()
+//    .toUTF8()
+//    ;
+
+//  auto query =
+//    GCW::app()-> gnucashew_session().find( typename C::Item >()
+
+  auto item = std::make_unique< GCW::Dbo::Accounts::Item >();
+//  item-> persist( []( GCW::Dbo::Accounts::Item::Ptr _item, const std::string & _name, auto _x ){ } );
+
+#ifdef NEVER
+  {
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+    auto splits =
+      GCW::app()-> gnucashew_session().query< std::string >( "select name from sqlite_master where type = 'table'" )
+      .resultList();
+
+    std::cout << __FILE__ << ":" << __LINE__ << " " << splits.size() << " tables" << std::endl;
+    for( auto tableName : splits )
+      std::cout << __FILE__ << ":" << __LINE__ << " " << tableName << std::endl;
+  }
+#endif
+
+#ifdef NEVER
+  {
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+    auto splits =
+      GCW::app()-> gnucashew_session().query< std::string >( "select sql from sqlite_master where type = 'table'" )
+      .resultList();
+
+    std::cout << __FILE__ << ":" << __LINE__ << " " << splits.size() << " tables" << std::endl;
+    for( auto tableName : splits )
+      std::cout << __FILE__ << ":" << __LINE__ << " " << tableName << std::endl;
+  }
+#endif
 
 } // endon_search()-> void
 

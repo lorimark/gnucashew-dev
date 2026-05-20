@@ -189,22 +189,45 @@ byNumDate( const std::string & _num, int _month, int _year )-> GCW::Dbo::Transac
 {
   GCW::Dbo::Transactions::Item::Vector retVal;
 
-  auto date = Wt::WDate( _year, _month, 1 ).toString( "yyyy-MM" );
+  /*
+  ** make sure the date request is within range
+  */
+  if( _year  > 1970
+   && _year  < 2100
+   && _month > 0
+   && _month < 13
+    )
+  {
+    /*
+    ** convert the date into a string
+    */
+    auto date = Wt::WDate( _year, _month, 1 ).toString( "yyyy-MM" );
 
-  Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
-  auto results =
-    GCW::app()-> gnucashew_session().find< GCW::Dbo::Transactions::Item >()
-    .where( "num = ? and post_date LIKE ?" )
-    .bind( _num )
-    .bind( date + "%" )
-    .orderBy( "post_date" )
-    .resultList();
-    ;
+    /*
+    ** run a sql to grab the data we want
+    **   num       -> action field on transaction
+    **   post_date -> string as 'yyyy-mm-dd' we want only 'yyyy-mm%'
+    */
+    Wt::Dbo::Transaction t( GCW::app()-> gnucashew_session() );
+    auto results =
+      GCW::app()-> gnucashew_session().find< GCW::Dbo::Transactions::Item >()
+      .where( "num = ? and post_date LIKE ?" )
+      .bind( _num )
+      .bind( date + "%" )
+      .orderBy( "post_date" )
+      .resultList();
+      ;
 
-  for( auto item : results )
-    retVal.push_back( item );
+    /*
+    ** pull everthing into a vector
+    */
+    for( auto item : results )
+      retVal.push_back( item );
+
+  } // endif( ..within date range.. )
 
   return retVal;
 
-} // endbyNumMonth( const std::string & _num, int _month )-> GCW::Dbo::Transactions::Item::Vector
+} // endbyNumDate( const std::string & _num, int _month, int _year )-> GCW::Dbo::Transactions::Item::Vector
+
 

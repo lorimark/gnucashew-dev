@@ -3,6 +3,7 @@
 #include <Wt/WVBoxLayout.h>
 #include <Wt/WHBoxLayout.h>
 #include <Wt/WTable.h>
+#include <Wt/WTimer.h>
 #include <Wt/WPushButton.h>
 
 #include "BillPay.h"
@@ -36,12 +37,13 @@ buildContent()-> void
   // toolbar
   {
     m_toolBar = cw-> addWidget( std::make_unique< ToolBar >() );
-    toolBar()-> yearSelector  () -> activated  () .connect( this, &MainWidget:: do_yearChanged     );
-    toolBar()-> refreshButton () -> clicked    () .connect( this, &MainWidget:: do_refreshClicked  );
-    toolBar()-> addButton     () -> clicked    () .connect( this, &MainWidget:: do_addClicked      );
-    toolBar()-> editButton    () -> clicked    () .connect( this, &MainWidget:: do_editClicked     );
-    toolBar()-> inactiveButton() -> clicked    () .connect( this, &MainWidget:: do_inactiveClicked );
-    toolBar()-> summaryButton () -> clicked    () .connect( this, &MainWidget:: do_summaryClicked  );
+    toolBar()-> yearSelector        () -> activated  () .connect( this, &MainWidget:: do_yearChanged     );
+    toolBar()-> refreshButton       () -> clicked    () .connect( this, &MainWidget:: do_refreshClicked  );
+    toolBar()-> addButton           () -> clicked    () .connect( this, &MainWidget:: do_addClicked      );
+    toolBar()-> editButton          () -> clicked    () .connect( this, &MainWidget:: do_editClicked     );
+    toolBar()-> inactiveButton      () -> clicked    () .connect( this, &MainWidget:: do_inactiveClicked );
+    toolBar()-> summaryButton       () -> clicked    () .connect( this, &MainWidget:: do_summaryClicked  );
+    toolBar()-> summaryDetailButton () -> clicked    () .connect( this, &MainWidget:: do_refreshClicked  );
 #ifdef BILL_PAY_IMPORT_EXPORT
     toolBar()-> importButton  () -> clicked    () .connect( this, &MainWidget:: importClicked      );
     toolBar()-> exportButton  () -> clicked    () .connect( this, &MainWidget:: exportClicked      );
@@ -366,6 +368,8 @@ setMonth( int _month )-> void
   {
     if( _view ) _view-> setDate( _month, selectedYear() );
   };
+
+  m_summaryView-> showSummaryDetail( toolBar()-> showSummaryDetail() );
 
   _setDate( m_unpaidView   );
   _setDate( m_pendingView  );

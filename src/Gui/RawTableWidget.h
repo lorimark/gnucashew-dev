@@ -66,7 +66,7 @@ class RawTableWidget
     auto on_search()-> void ;
 
     std::shared_ptr< Model >   m_model ;
-    std::shared_ptr< Wt::WSortFilterProxyModel > m_proxy ;
+//    std::shared_ptr< Wt::WSortFilterProxyModel > m_proxy ;
     Wt::WToolBar             * m_toolBar   = nullptr ;
     Wt::WLineEdit            * m_search    = nullptr ;
     GCW::Gui::TableView      * m_tableView = nullptr ;

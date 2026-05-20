@@ -293,6 +293,12 @@
   text-align:left;
 }
 
+.BillPay .SummaryTable td:nth-child(3)
+{
+  border-right: 1px solid black;
+  text-align:left;
+}
+
 .BillPay .SummaryTable .su
 {
   border-bottom: 1px solid black;
